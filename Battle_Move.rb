@@ -59,7 +59,7 @@ class PokeBattle_Move
   end
 
   def contactMove?
-    return true if (@function == 0x309 || @function == 0x20D) && pbIsPhysical?(type = @type)
+    return true if (@function == 0x309 || @function == 0x20D || @function == 0x900) && pbIsPhysical?(type = @type)
     return @data.nil? ? false : @data.checkFlag?(:contact)
   end
 
@@ -1795,6 +1795,13 @@ class PokeBattle_Move
 				atkstage = 6 #getspecialstat handles unaware
 			end
     end
+
+    # @SWu: Fmrfjgl this attack
+    if @function == 0x900 # SUPER UMD
+      atk=attacker.spdef
+      atkstage=attacker.stages[PBStats::SPDEF]+6
+    end
+
     if opponent.ability != :UNAWARE || opponent.moldbroken
       atkstage=6 if opponent.damagestate.critical && atkstage<6
       atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor

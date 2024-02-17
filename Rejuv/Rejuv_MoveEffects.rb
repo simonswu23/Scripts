@@ -752,3 +752,70 @@ class PokeBattle_Move_80E < PokeBattle_Move
     @battle.pbAnimation(:DARKVOID,attacker,opponent,hitnum) 
   end
 end
+
+
+### BEGINNING OF @SWU'S MOVES ###
+
+################################################################################
+# Hammer mode lowers opponent's Def and SpDef 
+# Cannon mode lowers opponent's Atk and SpAtk (Ultra Mega Death Hammer/Cannon)
+# Original (Super UMD Move) 900
+################################################################################
+
+class PokeBattle_Move_900 < PokeBattle_Move
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    # @SWu's current shitty fix for this animation bug wtf is happening
+
+    if rand(2) == 0
+      @category = :physical
+    else
+      @category = :special
+    end
+    
+    return super(attacker,opponent,hitnum,alltargets,showanimation)
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    statdrop = false
+    
+    if @category == :physical
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,abilitymessage:false, statdropper: attacker)
+        statdrop = true
+      end
+      if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
+        opponent.pbReduceStat(PBStats::SPDEF,1,abilitymessage:false, statdropper: attacker)
+        statdrop = true
+      end
+      if statdrop
+        @battle.pbDisplay(_INTL("Hammer mode lowered {1}'s defenses!",
+          opponent.pbThis))
+      end
+    else
+      if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
+        opponent.pbReduceStat(PBStats::ATTACK,1,abilitymessage:false, statdropper: attacker)
+        statdrop = true
+      end
+      if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
+        opponent.pbReduceStat(PBStats::SPATK,1,abilitymessage:false, statdropper: attacker)
+        statdrop = true
+      end
+      if statdrop
+        @battle.pbDisplay(_INTL("Cannon mode lowered {1}'s offenses!",
+          opponent.pbThis))
+      end
+    end
+    return true
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if @category == :physical
+      @battle.pbAnimation(:ULTRAMEGAHAMMER,attacker,opponent,hitnum) #physical
+    else
+      @battle.pbAnimation(:ULTRAMEGADEATH,attacker,opponent,hitnum) #special
+    end
+  end
+
+end

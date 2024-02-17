@@ -13781,4 +13781,39 @@ MOVEHASH = {
 	:desc => "Quickly strikes the target up to three times, each hit increasing in power."
 },
 
+# @SWu's Moves here:
+
+:ULTRAMEGADEATH2 => {
+	:ID => 900,
+	:name => "Super U.M.D. Move",
+	:longname => "OG Super Ultra Mega Death Move",
+	:function => 0x900,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 100,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 100,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:desc => "Spicy Move"
+},
+
+:ULTRAMEGAHAMMER2 => {
+	:name => "Super U.M.D. Move ANIMATION",
+	:longname => "OG Super Ultra Mega Death Move",
+	:function => 0x900,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 100,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 100,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "Spicy move"
+},
+
+
 }

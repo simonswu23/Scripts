@@ -185,7 +185,7 @@ def compileTrainers
 		name = trainer[:teamid][0]
 		items = trainer[:items]
 		pkmn = trainer[:mons]
-		partyid =trainer[:teamid][2]
+		partyid = trainer[:teamid][2]
 		ace = trainer[:ace]
 		defeat = trainer[:defeat]
 		trainereffect = trainer[:trainereffect] if Rejuv
