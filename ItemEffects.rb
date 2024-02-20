@@ -761,6 +761,21 @@ ItemHandlers::UseOnPokemon.add(:REVIVALHERB,proc{|item,pokemon,scene|
    end
 })
 
+### @SWu's Item Handlers Here ###
+ItemHandlers::UseOnPokemon.add(:POISONPOTION,proc{|item,pokemon,scene|
+   if pokemon.hp<=0 || pokemon.status==:POISON
+     scene.pbDisplay(_INTL("It won't have any effect."))
+     next false
+   else
+     pokemon.status=:POISON
+     # Regular poison, not badly poisoned
+     pokemon.statusCount=0
+     scene.pbRefresh
+     scene.pbDisplay(_INTL("{1} was poisoned!.",pokemon.name))
+     next true
+   end
+})
+
 
 ItemHandlers::BattleUseOnPokemon.add(:PEPPERMINT,proc{|item,pokemon,battler,scene|
    if pokemon.hp<=0 || pokemon.status!=:POISON
@@ -3165,6 +3180,8 @@ ItemHandlers::BattleUseOnPokemon.add(:YELLOWFLUTE,proc{|item,pokemon,battler,sce
 })
 
 ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
+
+### @SWu's items here ###
 
 #===============================================================================
 # BattleUseOnBattler handlers

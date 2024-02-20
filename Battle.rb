@@ -1346,7 +1346,8 @@ class PokeBattle_Battle
         pri -= 1 if @battle.FE == :DEEPEARTH && @choices[i][2].move == :COREENFORCER
         pri += 1 if @field.effect == :CHESS && @battlers[i].pokemon && @battlers[i].pokemon.piece == :KING
         pri += 1 if @battlers[i].ability == :PRANKSTER && @choices[i][2].basedamage==0 && @battlers[i].effects[:TwoTurnAttack] == 0 # Is status move
-        pri += 1 if @battlers[i].ability == :GALEWINGS && @choices[i][2].type==:FLYING && ((@battlers[i].hp == @battlers[i].totalhp) || ((@field.effect == :MOUNTAIN || @field.effect == :SNOWYMOUNTAIN) && @weather == :STRONGWINDS))
+        # @SWu unnerfing Gale Wings
+        pri += 1 if @battlers[i].ability == :GALEWINGS && @choices[i][2].type==:FLYING && ((true) || ((@field.effect == :MOUNTAIN || @field.effect == :SNOWYMOUNTAIN) && @weather == :STRONGWINDS))
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
         pri += 1 if @choices[i][2].move == :QUASH && @field.effect == :DIMENSIONAL
         pri += 1 if @choices[i][2].basedamage != 0 && @battlers[i].crested == :FERALIGATR && @battlers[i].turncount == 1 # Feraligatr Crest
@@ -5032,6 +5033,7 @@ class PokeBattle_Battle
       end
       # Poison/Bad poison
       if i.status== :POISON && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !(i.ability == :GUTS && @battle.FE == :CROWD)
+        # @SWu: Gastro crest not working currently (idk why not)
         if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE)
           if i.effects[:HealBlock]==0
             if i.hp<i.totalhp

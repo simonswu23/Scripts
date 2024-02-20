@@ -10026,4 +10026,61 @@ ITEMHASH = {
 	:noUseInBattle => true,
 	:noUse => true,
 },
+
+### @SWu's Items HERE ###
+
+:GASTROCREST => {
+	:ID => 2000,
+	:name => "Gastrodon Crest",
+	:desc => "Nullifies damage and boosts SpDef when hit by a Grass-type move. Summons Aqua Ring when entering battle.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:POISONPOTION => {
+	:ID => 2001,
+	:name => "Poison Potion",
+	:desc => "A spray-type chemical. It poisons one Pokémon, even if it otherwise cannot be.",
+	:price => 200,
+	:crest => false,
+	:noUseInBattle => true,
+	:noUse => false,
+	:medicine => true,
+},
+
+:BURNPOTION => {
+	:ID => 2002,
+	:name => "Burn Potion",
+	:desc => "A spray-type chemical. It burns one Pokémon, even if it otherwise cannot be.",
+	:price => 200,
+	:crest => false,
+	:noUseInBattle => true,
+	:noUse => false,
+	:medicine => true,
+},
+
+:PARAPOTION => {
+	:ID => 2003,
+	:name => "Paralysis Potion",
+	:desc => "A spray-type chemical. It paralyzes one Pokémon, even if it otherwise cannot be.",
+	:price => 200,
+	:crest => false,
+	:noUseInBattle => true,
+	:noUse => false,
+	:medicine => true,
+},
+
+:SLEEPPOTION => {
+	:ID => 2004,
+	:name => "Sleep Potion",
+	:desc => "A spray-type chemical. It puts one Pokémon to sleep, even if it otherwise cannot be.",
+	:price => 200,
+	:crest => false,
+	:noUseInBattle => true,
+	:noUse => false,
+	:medicine => true,
+},
+
 }

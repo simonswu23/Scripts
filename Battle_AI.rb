@@ -513,7 +513,7 @@ class PokeBattle_AI
 						scoremult*= (1+2*mondata.scorearray[pi][moveindex]/100.0)
 					elsif (move.pbType(battler) == :FIRE && (battler.pbPartner.ability == :FLASHFIRE || battler.pbPartner.crested == :DRUDDIGON)) ||
 							(move.pbType(battler) == :WATER && (battler.pbPartner.ability == :WATERABSORB || battler.pbPartner.ability == :STORMDRAIN || battler.pbPartner.ability == :DRYSKIN)) ||
-							(move.pbType(battler) == :GRASS && (battler.pbPartner.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH)) ||
+							(move.pbType(battler) == :GRASS && (battler.pbPartner.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON)) ||
 							(move.pbType(battler) == :ELECTRIC && (battler.pbPartner.ability == :VOLTABSORB || battler.pbPartner.ability == :LIGHTNINGROD || battler.pbPartner.ability == :MOTORDRIVE)) ||
 							(move.pbType(battler) == :GROUND && battler.pbPartner.crested == :SKUNTANK)
 						scoremult*=2
@@ -2136,7 +2136,8 @@ class PokeBattle_AI
 			when 0xaa # Protect, Detect
 				miniscore = protectcode()
 			when 0xab # Quick Guard
-				if (@opponent.ability == :GALEWINGS && (@opponent.hp == @opponent.totalhp || @battle.FE == :SKY)) || (@opponent.ability == :PRANKSTER && (!@attacker.hasType?(:DARK) || @battle.FE == :BEWITCHED)) || checkAIpriority()
+				# @SWu unnerfing Gale Wings
+				if (@opponent.ability == :GALEWINGS && (true || @battle.FE == :SKY)) || (@opponent.ability == :PRANKSTER && (!@attacker.hasType?(:DARK) || @battle.FE == :BEWITCHED)) || checkAIpriority()
 					miniscore = specialprotectcode()
 				else
 					miniscore = 0
@@ -6914,7 +6915,7 @@ class PokeBattle_AI
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:WATER || bestmove2.pbType(@attacker.pbOpposing2) ==:WATER
 		elsif @opponent.ability == :MOTORDRIVE || @opponent.ability == :LIGHTNINGROD || @opponent.ability == :VOLTABSORB
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:ELECTRIC ||bestmove2.pbType(@attacker.pbOpposing2) ==:ELECTRIC
-		elsif @opponent.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH
+		elsif @opponent.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GRASS
 		elsif battler.pbPartner.crested == :SKUNTANK
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GROUND
@@ -7184,7 +7185,8 @@ class PokeBattle_AI
 			pri = battlermove.priority if !battlermove.zmove
 			pri = pri.nil? ? 0 : pri
 			pri += 1 if battler.ability == :PRANKSTER && battlermove.basedamage==0 # Is status move
-			pri += 1 if battler.ability == :GALEWINGS && battlermove.type==:FLYING && ((battler.hp == battler.totalhp) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.pbWeather == :STRONGWINDS))
+			# @SWu unnerfing Gale Wings
+			pri += 1 if battler.ability == :GALEWINGS && battlermove.type==:FLYING && ((true) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.pbWeather == :STRONGWINDS))
 			pri += 1 if @battle.FE == :CHESS && battler.pokemon && battler.pokemon.piece == :KING
 			pri += 1 if battlermove.move == :GRASSYGLIDE && (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0)
 			pri += 3 if battler.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(battlermove.function)
@@ -8939,7 +8941,8 @@ class PokeBattle_AI
 						abilityscore+=50 if !pbAIfaster?(nil,nil,i,@opponent) && !@opponent.hasType?(:DARK)
 						abilityscore+=50 if (@opponent.pbPartner.hp > 0 && !pbAIfaster?(nil,nil,i,@opponent.pbPartner) && !@opponent.pbPartner.hasType?(:DARK))
 					when :GALEWINGS
-						abilityscore+=50 if !pbAIfaster?(nil,nil,i,@opponent) && i.hp==i.totalhp && !@attacker.pbOwnSide.effects[:StealthRock]
+						# @SWu unnerfing Gale Wings
+						abilityscore+=50 if !pbAIfaster?(nil,nil,i,@opponent) && true
 						abilityscore+=50 if @opponent.pbPartner.hp > 0 && !pbAIfaster?(nil,nil,i,@opponent.pbPartner) && i.hp==i.totalhp && !@attacker.pbOwnSide.effects[:StealthRock]
 					when :BULLETPROOF
 						abilityscore+=60 if (PBStuff::BULLETMOVE).include?(checkAIbestMove().move) || (@opponent.pbPartner.hp > 0 && (PBStuff::BULLETMOVE).include?(checkAIbestMove(@opponent.pbPartner).move))

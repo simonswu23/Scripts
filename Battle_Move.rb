@@ -308,10 +308,10 @@ class PokeBattle_Move
     if (darttype = :FIRE || fieldsecondtype.include?(:FIRE)) && ((((opp2.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || (opp2.ability == :MAGMAARMOR && [:VOLCANICTOP,:DRAGONSDEN,:INFERNAL].include?(@battle.FE))) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE)) || opp2.crested == :DRUDDIGON)
       return [opp1]
     end
-    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp1.ability == :SAPSIPPER && !opp1.moldbroken) || opp1.crested == :WHISCASH)
+    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp1.ability == :SAPSIPPER && !opp1.moldbroken) || opp1.crested == :WHISCASH || opp1.crested == :GASTRODON)
       return [opp2]
     end
-    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp2.ability == :SAPSIPPER && !opp2.moldbroken) || opp2.crested == :WHISCASH)
+    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp2.ability == :SAPSIPPER && !opp2.moldbroken) || opp2.crested == :WHISCASH || opp2.crested == :GASTRODON)
       return [opp1]
     end
     if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE) && !opp2.moldbroken
@@ -418,12 +418,12 @@ class PokeBattle_Move
     calcspdefmult*=2.0 if opponent.hasWorkingItem(:DEEPSEASCALE) && (opponent.pokemon.species == :CLAMPERL)
     # end spdef boosts
     calcspdef=(opponent.spdef*1.0*(stagemul[calcspdefstage]/stagediv[calcspdefstage])*calcspdefmult).floor
-    
+
     # Compares difference between Atk/Def and SpAtk/SpDef to determine Physical or Special
     @category=(calcattack-calcdefense>calcspatk-calcspdef) ? :physical : :special
     return
   end
-  
+
   #These functions are intended to be subclassed
   def pbNumHits(attacker)
     return 1
@@ -871,6 +871,19 @@ class PokeBattle_Move
           end
           return 0
         end
+      when :GASTRODON
+        if type == :GRASS
+          if opponent.pbCanIncreaseStatStage?(PBStats::SPDEF)
+            opponent.pbIncreaseStatBasic(PBStats::SPDEF,2)
+            @battle.pbCommonAnimation("StatUp",opponent,nil)
+            @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Special Defense!",
+               opponent.pbThis,getItemName(opponent.item)))
+          else
+            @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+               opponent.pbThis,getItemName(opponent.item),self.name))
+          end
+          return 0
+        end
     end
     return 4
   end
@@ -1026,6 +1039,19 @@ class PokeBattle_Move
             opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
             @battle.pbCommonAnimation("StatUp",opponent,nil)
             @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!",
+               opponent.pbThis,getItemName(opponent.item)))
+          else
+            @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+               opponent.pbThis,getItemName(opponent.item),self.name))
+          end
+          return 0
+        end
+      when :GASTRODON
+        if (type == :GRASS || (!secondtype.nil? && secondtype.include?(:GRASS)))
+          if opponent.pbCanIncreaseStatStage?(PBStats::SPDEF)
+            opponent.pbIncreaseStatBasic(PBStats::SPDEF,2)
+            @battle.pbCommonAnimation("StatUp",opponent,nil)
+            @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Special Defense!",
                opponent.pbThis,getItemName(opponent.item)))
           else
             @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
@@ -2482,7 +2508,8 @@ class PokeBattle_Move
     pri += 1 if @battle.FE == :CHESS && attacker.pokemon && attacker.pokemon.piece == :KING
     pri += 1 if attacker.crested == :FERALIGATR && @basedamage != 0 && attacker.turncount == 1 # Feraligatr Crest
     pri += 1 if attacker.ability == :PRANKSTER && @basedamage==0 && attacker.effects[:TwoTurnAttack] == 0 # Is status move
-    pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING && ((attacker.hp == attacker.totalhp) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.weather == :STRONGWINDS))
+    # @SWu unnerfing Gale Wings
+    pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING && ((true) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.weather == :STRONGWINDS))
     pri += 3 if attacker.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@function)
     pri -= 1 if @battle.FE == :DEEPEARTH && @move == :COREENFORCER
     return pri
