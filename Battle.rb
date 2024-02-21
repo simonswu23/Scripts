@@ -4909,6 +4909,12 @@ class PokeBattle_Battle
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Aqua Ring restored its HP a little!",i.pbThis)) if hpgain>0
         end
+        # @SWu buffing aqua ring
+        if !i.status.nil?
+          pbDisplay(_INTL("{1}'s {2} was cured by Aqua Ring!",i.pbThis,i.status.downcase))
+          i.status=nil
+          i.statusCount=0
+        end
       end
     end
     # Ingrain

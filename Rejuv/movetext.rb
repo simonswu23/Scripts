@@ -8202,7 +8202,7 @@ MOVEHASH = {
 	:snatchable => true,
 	:nonmirror => true,
 	:healingmove => true,
-	:desc => "The user envelops itself in a veil made of water. It regains some HP on every turn."
+	:desc => "The user envelops itself in a veil made of water. It regains some HP and cures status on every turn."
 },
 
 :RAINDANCE => {

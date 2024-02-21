@@ -3314,6 +3314,8 @@ class PokeBattle_AI
 		miniscore*=0.2 if @opponent.ability == :TOXICBOOST || @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET
 		miniscore*=0.1 if @opponent.ability == :POISONHEAL || @opponent.crested == :ZANGOOSE || @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
+		# @SWu buffing aqua ring
+		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=1.1 if (@opponent.ability == :STURDY || (@battle.FE == :CHESS && @opponent.pokemon.piece==:PAWN) || (@battle.FE == :COLOSSEUM && @opponent.ability == :STALWART)) && @move.basedamage>0
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.status.nil? && !@attacker.hasType?(:POISON) && !@attacker.hasType?(:STEEL)
 		miniscore*=0.2 if checkAImoves([:FACADE])
@@ -3345,6 +3347,8 @@ class PokeBattle_AI
 		miniscore*=0.5 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.2 if @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
+		# @SWu buffing aqua ring
+		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanParalyze?(false)
 		miniscore*=1.2 if @mondata.roles.include?(:PHYSICALWALL) || @mondata.roles.include?(:SPECIALWALL) || @mondata.roles.include?(:PIVOT)
 		miniscore*=1.3 if @mondata.roles.include?(:TANK)
@@ -3384,6 +3388,8 @@ class PokeBattle_AI
 		miniscore*=0.7 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.1 if @opponent.ability == :GUTS || @opponent.ability == :FLAREBOOST
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
+		# @SWu buffing aqua ring
+		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanBurn?(false)
 		miniscore*=0.5 if @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
 		miniscore*=0.3 if @opponent.ability == :QUICKFEET
@@ -3431,6 +3437,8 @@ class PokeBattle_AI
 		miniscore*=0.7 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.1 if @opponent.ability == :GUTS 
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
+		# @SWu buffing aqua ring
+		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanPetrify?(false)
 		miniscore*=0.5 if @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
 		miniscore*=0.3 if @opponent.ability == :QUICKFEET
@@ -3570,6 +3578,8 @@ class PokeBattle_AI
 			miniscore*=0.7 if @opponent.ability == :TOXICBOOST
 		end
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN || @opponent.ability == :NATURALCURE || @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET || @opponent.ability == :MARVELSCALE
+		# @SWu buffing aqua ring
+		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.7 if checkAImoves([:FACADE])
 		miniscore*=1.3 if checkAImoves([:HEX])
 		miniscore*=1.3 if @attacker.pbHasMove?(:HEX)
@@ -5349,6 +5359,8 @@ class PokeBattle_AI
 			miniscore*=1.3 if @attacker.pbHasMove?(:SLEEPTALK)
 			miniscore*=1.2 if @attacker.pbHasMove?(:SNORE)
 			miniscore*=1.1 if @attacker.ability == :SHEDSKIN || @attacker.ability == :EARLYBIRD
+			# @SWu buffing aqua ring
+			miniscore*=1.5 if @attacker.effects[:AQUARING]
 			miniscore*=0.8 if @battle.doublebattle
 		else
 			if @attacker.item == :LUMBERRY || @attacker.item == :CHESTOBERRY
@@ -6332,6 +6344,8 @@ class PokeBattle_AI
 		miniscore*=6 if @opponent.ability == :COMATOSE
 		miniscore*=6 if @initial_scores.length>0 && hasbadmoves(25)
 		miniscore*=0.5 if @opponent.ability == :SHEDSKIN || @opponent.ability == :EARLYBIRD
+		# @SWu buffing aqua ring
+		miniscore*=0.1 if @opponent.effects[:AQUARING]
 		if PBStuff::TRAPPINGABILITIESAI.include?(@attacker.ability) || (@attacker.ability == :MAGNETPULL && @opponent.hasType?(:STEEL))  || @opponent.effects[:MeanLook]>=0 || @opponent.pbNonActivePokemonCount==0
 			miniscore*=1.3
 		else
@@ -8340,6 +8354,8 @@ class PokeBattle_AI
 				itemscore*=0.5 if @attacker.pbHasMove?(:REFRESH) || @attacker.pbHasMove?(:REST) || @attacker.pbHasMove?(:PURIFY)
 				itemscore*=0.2 if @attacker.ability == :NATURALCURE && partynumber>1
 				itemscore*=0.3 if @attacker.ability == :SHEDSKIN
+				# @SWu buffing aqua ring
+				itemscore*=0.1 if @opponent.effects[:AQUARING]
 				
 			end
 			# General "Is it a good idea to use an item at all right now" checks
