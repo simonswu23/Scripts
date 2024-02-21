@@ -1805,9 +1805,8 @@ class PokeBattle_AI
 				statarray = [0,0,0,0,4,0,0] if @mondata.skill >= BESTSKILL && @move.move == :SCARYFACE && @battle.FE == :HAUNTED
 				miniscore = oppstatdrop(statarray)
 			when 0x4e # Captivate
-				agender=@attacker.gender
-				ogender=@opponent.gender
-				if (agender==2 || ogender==2 || agender==ogender || @opponent.effects[:Attract]>=0 || ((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
+				# @SWu buffing captivate
+				if (((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
 					miniscore = 0
 				else
 					miniscore = oppstatdrop([0,0,0,2,0,0,0])
@@ -3508,9 +3507,8 @@ class PokeBattle_AI
 	end
 
 	def attractcode
-		agender=@attacker.gender
-		ogender=@opponent.gender
-		return 0 if (agender==2 || ogender==2 || agender==ogender || @opponent.effects[:Attract]>=0 || ((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
+		# @SWu buffing attract
+		return 0 if (@opponent.effects[:Attract]>=0 || ((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
 		miniscore=1.2
 		miniscore*=0.7 if @attacker.ability == :CUTECHARM
 		miniscore*=1.3 if @mondata.roles.include?(:PHYSICALWALL) || @mondata.roles.include?(:SPECIALWALL)
@@ -11085,6 +11083,11 @@ class PokeBattle_AI
 			# Sandstorm weather
 			if @battle.pbWeather== :SANDSTORM
 				defense=(defense*1.5).round if opponent.hasType?(:ROCK) && applysandstorm
+			end
+			# @SWu buffing hail
+			# Hail weather
+			if @battle.pbWeather== :HAIL
+				defense=(defense*1.5).round if opponent.hasType?(:ICE) && !applysandstorm
 			end
 			# Defensive Abilities
 			if opponent.ability == :MARVELSCALE

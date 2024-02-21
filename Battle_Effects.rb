@@ -505,12 +505,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    agender=attacker.gender
-    ogender=self.gender
-    if agender==2 || ogender==2 || agender==ogender
-      @battle.pbDisplay(_INTL("But it failed!")) if showMessages
-      return false
-    end
+    # @SWu buffing attract
     if ability == (:OBLIVIOUS) && !(self.moldbroken) 
       @battle.pbDisplay(_INTL("{1}'s {2} prevents infatuation!",pbThis,
         getAbilityName(self.ability))) if showMessages
