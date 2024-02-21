@@ -10286,7 +10286,8 @@ class PokeBattle_AI
 		end
 		return 0 if move.zmove && ((opponent.effects[:Disguise] || (opponent.effects[:IceFace] && (move.pbIsPhysical? || @battle.FE == :FROZENDIMENSION))) && !moldBreakerCheck(opponent))
 		return basedamage if (0x6A..0x73).include?(move.function) || [0xD4,0xE1].include?(move.function) #fixed damage function codes (sonicboom, etc)
-		basedamage*=1.25 if (attacker.effects[:ParentalBond] || attacker.effects[:TyphBond]) && move.pbNumHits(attacker)==1
+		# @SWu unnerfing parental bond
+		basedamage*=1.5 if (attacker.effects[:ParentalBond] || attacker.effects[:TyphBond]) && move.pbNumHits(attacker)==1
 		basedamage*=4 if attacker.crested == :LEDIAN && move.punchMove?
 		if attacker.crested == :CINCCINO && !move.pbIsMultiHit
 			basedamage*=0.3

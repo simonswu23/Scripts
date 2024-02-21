@@ -3535,7 +3535,8 @@ class PokeBattle_Move_079 < PokeBattle_UnimplementedMove
       damage *= 1.5
     end
     if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
-      damage /= 4
+      # @SWu unnerfing parental bond
+      damage /= 2
     end
     if opponent.damagestate.typemod!=0
       if @battle.previousMove == :FUSIONFLARE
@@ -3567,9 +3568,10 @@ class PokeBattle_Move_07A < PokeBattle_UnimplementedMove
     if attacker.effects[:MeFirst]
       damage *= 1.5
     end
+    # @SWu unnerfing parental bond
     if hitnum == 1 && attacker.effects[:ParentalBond] &&
       pbNumHits(attacker)==1
-      damage /= 4
+      damage /= 2
     end
     if opponent.damagestate.typemod!=0
       if @battle.previousMove == :FUSIONBOLT

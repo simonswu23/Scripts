@@ -1125,7 +1125,8 @@ ABILHASH = {
 	:ID => 180,
 	:name => "Parental Bond",
 	:desc => "Parent and child attack together...",
-	:fullDesc => "Each attack deals an additional 25% damage and rolls effects separately, except for Secret Power."
+	# @SWu unnerfing parental bond
+	:fullDesc => "Each attack deals an additional 50% damage and rolls effects separately, except for Secret Power."
 },
 
 :PIXILATE => {

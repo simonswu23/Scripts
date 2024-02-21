@@ -2481,7 +2481,8 @@ class PokeBattle_Move
     damage=pbCalcDamage(attacker,opponent,hitnum: hitnum)
     
     damage *= 1.5 if attacker.effects[:MeFirst]
-    damage /= 4 if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+    # @SWu unnerfing parental bond
+    damage /= 2 if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
     damage *= 0.3 if hitnum == 1 && attacker.effects[:TyphBond] && pbNumHits(attacker)==1
     if opponent.damagestate.typemod!=0 
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation) 
