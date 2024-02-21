@@ -5872,6 +5872,8 @@ class PokeBattle_AI
 		miniscore*=1.3 if (@mondata.attitemworks && @attacker.item == :ICYROCK) || [:ICY,:SNOWYMOUNTAIN,:FROZENDIMENSION,:CLOUDS,:SKY].include?(@battle.FE)
 		miniscore*=1.3 if @battle.pbWeather!=0 && @battle.pbWeather!=:HAIL
 		miniscore*= (@attacker.hasType?(:ICE)) ? 5 : 0.7
+		# @SWu buffing hail
+		miniscore*=1.5 if @attacker.hasType?(:ICE)
 		if @attacker.ability == :SLUSHRUSH || @attacker.crested == :EMPOLEON || (@attacker.crested == :CASTFORM && @attacker.form == 3)
 			miniscore*=2
 			miniscore*=2 if notOHKO?(@attacker, @opponent, true)

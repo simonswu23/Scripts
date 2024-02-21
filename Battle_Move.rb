@@ -1985,6 +1985,7 @@ class PokeBattle_Move
     defense=opponent.defense
     defstage=opponent.stages[PBStats::DEFENSE]+6
     # TODO: Wonder Room should apply around here
+    # @ghostDango @SWu TODO:
     
     applysandstorm=false
     if pbHitsSpecialStat?(type)
@@ -2003,6 +2004,10 @@ class PokeBattle_Move
       defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
     end
     if @battle.pbWeather== :SANDSTORM && opponent.hasType?(:ROCK) && applysandstorm
+      defense=(defense*1.5).round
+    end
+    # @SWu buffing hail
+    if @battle.pbWeather== :HAIL && opponent.hasType?(:ICE) && !applysandstorm
       defense=(defense*1.5).round
     end
     defmult=1.0
