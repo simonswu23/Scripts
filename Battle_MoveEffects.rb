@@ -724,6 +724,9 @@ class PokeBattle_Move_013 < PokeBattle_Move
   end
 
   # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :SMITE
       @battle.pbAnimation(:SWIFT,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
