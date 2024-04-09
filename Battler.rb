@@ -86,7 +86,8 @@ class PokeBattle_Battler
     :MiracleEye, :Nightmare, :NoRetreat, :ParentalBond, :Powder,
     :PowerTrick, :ProtectNegation, :QuickDrawSnipe, :Quash, :RagePowder, :Rage, :Roost,
     :Round, :ShellTrap, :SkyDrop, :SmackDown, :Snatch, :Tantrum, :TarShot, :Torment,
-    :Trace, :Transform, :Truant, :TyphBond,:UsingSubstituteRightNow, :Shelter, :SwampWeb]
+    :Trace, :Transform, :Truant, :TyphBond,:UsingSubstituteRightNow, :Shelter, :SwampWeb,
+    :HydreigonCrest]
   #turn count vars
   TurnEff = [:Bide, :Charge, :Confusion, :Disable, :Embargo, :Encore, 
     :FuryCutter, :HealBlock, :HyperBeam, :LaserFocus, :LockOn, :MagnetRise, 
@@ -5095,7 +5096,7 @@ class PokeBattle_Battler
       end
       if target.damagestate.calcdamage>0 && !target.isFainted?
         # Defrost
-        if (basemove.pbType(user) == :FIRE || basemove.function==0x0A) && target.status== :FROZEN && !(user.ability == (:PARENTALBOND) && i==0)
+        if (basemove.pbType(user) == :FIRE || basemove.function==0x0A) && target.status== :FROZEN && !(user.ability == (:PARENTALBOND) && i==0) && !(user.crested == :HYDREIGON && i==0) 
           target.pbCureStatus
         end
         # Rage
@@ -5577,6 +5578,26 @@ class PokeBattle_Battler
         else
           user.effects[:ParentalBond] = false
         end
+
+        # Hydreigon Crest
+        if numhits < 3 && !choice[2].zmove && user.crested == :HYDREIGON
+          counter1=0
+          counter2=0
+          for k in @battle.battlers
+            next if k.isFainted?
+            counter1+=1
+          end
+          for j in @battle.battlers
+            next unless user.pbIsOpposing?(j.index)
+            next if j.isFainted?
+            counter2+=1
+          end
+          user.effects[:HydreigonCrest] = true unless ((targetchoices == :AllNonUsers && !(counter1==2)) || (targetchoices == :AllOpposing && !(counter2==1)))
+          numhits = 3 unless ((targetchoices == :AllNonUsers && !(counter1==2)) || (targetchoices == :AllOpposing && !(counter2==1)))
+        else
+          user.effects[:HydreigonCrest] = false
+        end
+
         if numhits == 1 && basemove.contactMove? && user.crested == :TYPHLOSION && !choice[2].zmove
           counter1=0
           counter2=0

@@ -4758,6 +4758,27 @@ class PokeBattle_Battle
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
 
+      # Gourmandize
+      # @SWu how is ability suppression handled here?
+      if (i.ability == :GOURMANDIZE && i.effects[:Stockpile] < 3)
+        # @SWu figure out animation here
+        # pbShowAnimation(:STOCKPILE,attacker,opponent,hitnum,alltargets,showanimation)
+        i.effects[:Stockpile]+=1
+        @battle.pbDisplay(_INTL("{1} stockpiled {2}!",i.pbThis,
+            i.effects[:Stockpile]))
+        showanim=true
+        if i.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
+          i.pbIncreaseStat(PBStats::DEFENSE,1,abilitymessage:false)
+          i.effects[:StockpileDef]+=1
+          showanim=false
+        end
+        if i.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+          i.pbIncreaseStat(PBStats::SPDEF,1,abilitymessage:false)
+          i.effects[:StockpileSpDef]+=1
+          showanim=false
+        end
+      end
+
       # Dry Skin
       if (i.ability == :DRYSKIN)
         if (pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) && i.effects[:HealBlock]==0

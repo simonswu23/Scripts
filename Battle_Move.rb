@@ -1139,10 +1139,14 @@ class PokeBattle_Move
         if !($game_switches[:Inversemode] ^ (@battle.FE == :INVERSE))
           typemod = 16 / typemod if typemod != 0
         end
+      when :HYDREIGON
+        typemod /= 8 if type == :FAIRY
       end
+    
     end
     typemod *= 4 if @move == :FREEZEDRY && opponent.hasType?(:WATER)
     typemod *= 4 if @move == :CUT && opponent.hasType?(:GRASS)
+    typemod *= 4 if type == :DARK && opponent.hasType?(:FAIRY) && attacker.crested == :HYDREIGON
     if @move == :CUT && opponent.hasType?(:GRASS) && ((!Rejuv && @battle.FE == :FOREST) || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,2,5))
       typemod *= 2
     end
@@ -2334,7 +2338,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("The {1} weakened the damage to {2}!",getItemName(opponent.pokemon.itemRecycle),opponent.pbThis))
       end
     end
-    finalmult*=0.8 if (opponent.crested == :MEGANIUM || opponent.pbPartner.crested == :MEGANIUM)
+    finalmult*=0.75 if (opponent.crested == :MEGANIUM || opponent.pbPartner.crested == :MEGANIUM)
     if attacker.crested == :SEVIPER
       multiplier = 0.5*(opponent.pokemon.hp*1.0)/(opponent.pokemon.totalhp*1.0)
       multiplier += 1.0
@@ -2463,7 +2467,7 @@ class PokeBattle_Move
         @battle.growField("The critical hit",attacker)
       end
     end
-    if !pbIsMultiHit && !attacker.effects[:ParentalBond]
+    if !pbIsMultiHit && !attacker.effects[:ParentalBond] && !attacker.effects[:HydreigonCrest]
       if opponent.damagestate.typemod>4
         @battle.pbDisplay(_INTL("It's super effective!"))
       elsif opponent.damagestate.typemod>=1 && opponent.damagestate.typemod<4
@@ -2520,6 +2524,7 @@ class PokeBattle_Move
     damage *= 1.5 if attacker.effects[:MeFirst]
     # @SWu unnerfing parental bond
     damage /= 2 if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+    damage /= 4 if hitnum > 0 && attacker.effects[:HydreigonCrest] && pbNumHits(attacker)==1
     damage *= 0.3 if hitnum == 1 && attacker.effects[:TyphBond] && pbNumHits(attacker)==1
     if opponent.damagestate.typemod!=0 
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation) 

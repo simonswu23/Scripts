@@ -10083,4 +10083,15 @@ ITEMHASH = {
 	:medicine => true,
 },
 
+:HYDREICREST => {
+	:ID => 2005,
+	:name => "Hydreigon Crest",
+	:desc => "Overwhelms Fairy type attacks and pokemon with Darkness. Extra heads attack.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+
 }

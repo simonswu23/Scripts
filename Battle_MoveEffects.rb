@@ -3655,6 +3655,9 @@ class PokeBattle_Move_079 < PokeBattle_UnimplementedMove
       # @SWu unnerfing parental bond
       damage /= 2
     end
+    if hitnum > 0 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+      damage /= 4
+    end
     if opponent.damagestate.typemod!=0
       if @battle.previousMove == :FUSIONFLARE
         pbShowAnimation(:FUSIONBOLT2,attacker,opponent,hitnum,alltargets,showanimation) rescue pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
@@ -3689,6 +3692,9 @@ class PokeBattle_Move_07A < PokeBattle_UnimplementedMove
     if hitnum == 1 && attacker.effects[:ParentalBond] &&
       pbNumHits(attacker)==1
       damage /= 2
+    end
+    if hitnum > 0 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+      damage /= 4
     end
     if opponent.damagestate.typemod!=0
       if @battle.previousMove == :FUSIONBOLT
@@ -3738,7 +3744,7 @@ class PokeBattle_Move_07C < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       opponent.status== :PARALYSIS && !(attacker.ability == :PARENTALBOND && hitnum==0)
+       opponent.status== :PARALYSIS && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0) 
       opponent.status=nil
       @battle.pbDisplay(_INTL("{1} was cured of paralysis.",opponent.pbThis))
     end
@@ -3761,7 +3767,7 @@ class PokeBattle_Move_07D < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       opponent.status== :SLEEP && !(attacker.ability == :PARENTALBOND && hitnum==0)
+       opponent.status== :SLEEP && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0) 
       opponent.pbCureStatus
     end
     return ret
@@ -6104,6 +6110,8 @@ class PokeBattle_Move_0D2 < PokeBattle_Move
     if opponent.damagestate.calcdamage>0 && attacker.effects[:Outrage]==0 && attacker.status!=:SLEEP  #TODO: Not likely what actually happens, but good enough
       if attacker.ability == :PARENTALBOND
         attacker.effects[:Outrage]=4+(@battle.pbRandom(2)*2)
+      elsif attacker.crested == :HYDREIGON
+        attacker.effects[:Outrage]=4+(@battle.pbRandom(2)*3)
       else
         attacker.effects[:Outrage]=2+@battle.pbRandom(2)
       end
@@ -6800,7 +6808,7 @@ class PokeBattle_Move_0EC < PokeBattle_Move
     if !attacker.isFainted? && !opponent.isFainted? &&
      opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
      (opponent.ability != :SUCTIONCUPS || opponent.moldbroken) &&
-     !opponent.effects[:Ingrain] && !(attacker.ability == :PARENTALBOND && hitnum==0) &&
+     !opponent.effects[:Ingrain] && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0) &&
      !(opponent.isbossmon && opponent.chargeAttack) && @battle.FE != :COLOSSEUM
       if !@battle.opponent && !@battle.battlers.any?{|battler| battler.isbossmon}
         if !((opponent.level>attacker.level) || opponent.isbossmon)
@@ -6863,7 +6871,7 @@ class PokeBattle_Move_0EE < PokeBattle_Move
     attacker.vanished=true
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !attacker.isFainted? && @battle.pbCanChooseNonActive?(attacker.index) &&
-       !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) && !(attacker.ability == :PARENTALBOND && hitnum==0)
+       !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0) 
 
       if !opponent.hasWorkingItem(:EJECTBUTTON)
         attacker.userSwitch = true if pbTypeModifier(@type,attacker,opponent)!=0 && !(@battle.FE == :INVERSE)
@@ -6953,7 +6961,7 @@ class PokeBattle_Move_0F0 < PokeBattle_Move
       if opponent.ability == :STICKYHOLD && !(opponent.moldbroken)
         abilityname=getAbilityName(opponent.ability)
         @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",opponent.pbThis,abilityname,@name))
-      elsif !@battle.pbIsUnlosableItem(opponent,opponent.item) && !(attacker.ability == :PARENTALBOND && hitnum==0)
+      elsif !@battle.pbIsUnlosableItem(opponent,opponent.item) && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0) 
         # Items that still work before being knocked of
         if opponent.item==:WEAKNESSPOLICY && opponent.damagestate.typemod>4 && opponent.hp > 0
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -7144,7 +7152,7 @@ class PokeBattle_Move_0F4 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !attacker.isFainted? && opponent.damagestate.calcdamage>0 &&
-       !opponent.damagestate.substitute && (!opponent.item.nil? && pbIsBerry?(opponent.item)) && !(attacker.ability == :PARENTALBOND && hitnum==0) && 
+       !opponent.damagestate.substitute && (!opponent.item.nil? && pbIsBerry?(opponent.item)) && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.crested == :HYDREIGON && hitnum==0)  && 
        !opponent.pokemon.corrosiveGas
       if opponent.ability == :STICKYHOLD && !(opponent.moldbroken)
         abilityname=getAbilityName(opponent.ability)

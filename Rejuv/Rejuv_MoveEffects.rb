@@ -861,7 +861,7 @@ class PokeBattle_Move_902 < PokeBattle_Move
     attacker.vanished=true
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !attacker.isFainted? && @battle.pbCanChooseNonActive?(attacker.index) &&
-       !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) && !(attacker.ability == :PARENTALBOND && hitnum==0)
+       !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) && !(attacker.ability == :PARENTALBOND && hitnum==0) && !(attacker.isCrested == :HYDREIGON && hitnum==0) 
 
       if !opponent.hasWorkingItem(:EJECTBUTTON)
         attacker.userSwitch = true if pbTypeModifier(@type,attacker,opponent)!=0 && !(@battle.FE == :INVERSE)
