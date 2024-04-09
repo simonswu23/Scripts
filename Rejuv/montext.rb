@@ -23457,6 +23457,8 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
+		:Type1 => :DARK,
+		:Type2 => :FAIRY,
 		:BaseStats => [65, 150, 60, 115, 60, 115],
 		:Abilities => [:MAGICBOUNCE],
 		:BaseEXP => 198,

@@ -2195,7 +2195,7 @@ class PokeBattle_Move
     if opponent.damagestate.critical
       damage*=1.5
       damage*=1.5 if attacker.ability == :SNIPER
-      damage*=1.5 if @move = :AIRCUTTER
+      damage*=1.5 if @move == :AIRCUTTER
     end
     # STAB-addition from Crests 
     typecrest = false
