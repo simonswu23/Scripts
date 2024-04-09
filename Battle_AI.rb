@@ -1022,7 +1022,7 @@ class PokeBattle_AI
 				return 0
 			end
 			if 	(@move.pbType(@attacker) == :FIRE && @opponent.nullsFire?) || (@move.pbType(@attacker) == :GRASS && @opponent.nullsGrass?) ||
-				(@move.pbType(@attacker) == :WATER && @opponent.nullsWater?) || (@move.pbType(@attacker) == :ELECTRIC && @opponent.nullsElec?)
+				(@move.pbType(@attacker) == :WATER && @opponent.nullsWater?) || (@move.pbType(@attacker) == :ELECTRIC && @opponent.nullsElec?) || (@move.pbType(@attacker) == :POISON && @opponent.nullsPoison?) 
 				$ai_log_data[@attacker.index].final_score_moves.push(-1)
 				return -1
 			end

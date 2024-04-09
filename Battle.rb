@@ -1349,6 +1349,7 @@ class PokeBattle_Battle
         # @SWu unnerfing Gale Wings
         pri += 1 if @battlers[i].ability == :GALEWINGS && @choices[i][2].type==:FLYING && ((true) || ((@field.effect == :MOUNTAIN || @field.effect == :SNOWYMOUNTAIN) && @weather == :STRONGWINDS))
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
+        pri += 1 if @choices[i][2].move == :SLEIGHRIDE && (@battle.pbWeather == :HAIL)
         pri += 1 if @choices[i][2].move == :QUASH && @field.effect == :DIMENSIONAL
         pri += 1 if @choices[i][2].basedamage != 0 && @battlers[i].crested == :FERALIGATR && @battlers[i].turncount == 1 # Feraligatr Crest
         pri += 3 if @battlers[i].ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
@@ -4733,12 +4734,23 @@ class PokeBattle_Battle
         end
       end
     end
+    # @SWu buff Meganium Crest
     for i in priority
       next if i.isFainted?
+      # @SWu buff Meganium Crest
+      if i.crested == :MEGANIUM
+        party=@battle.pbParty(i.index)
+        for j in 0...party.length
+          next if @battle.battlers.include?(j)
+          next if !party[j] || party[j].isEgg?
+          party[j].healHp(((party[j].totalhp+1)/16).floor);
+        end
+        pbDisplay(_INTL("The Meganium Crest restored the team's HP a little!",i.pbThis(true)))
+      end
       # Meganium + Meganium Crest
       if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
           hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
-          pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0       
+          pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0    
       end
       # Rain Dish
       if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)))&& i.effects[:HealBlock]==0
@@ -5091,6 +5103,11 @@ class PokeBattle_Battle
             i.pbReduceHP((i.totalhp/16.0).floor)
           end
         end
+      end
+      # Frostbite
+      if i.status== :FROSTBITE && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+        i.pbContinueStatus
+        i.pbReduceHP((i.totalhp/16.0).floor)
       end
       # Shiinotic Crest
       if i.crested == :SHIINOTIC

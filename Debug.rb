@@ -913,7 +913,8 @@ def pbPokemonDebug(origin, pkmn, pkmnid=nil, selected=nil, heldpoke=nil)
             _INTL("Status: Poison"),
             _INTL("Status: Burn"),
             _INTL("Status: Paralysis"),
-            _INTL("Status: Frozen")
+            _INTL("Status: Frozen"),
+            _INTL("Status: Frostbite")
           ]
           arr.push(_INTL("Status: Petrified")) if Rejuv
           arr += [
@@ -939,7 +940,7 @@ def pbPokemonDebug(origin, pkmn, pkmnid=nil, selected=nil, heldpoke=nil)
           # Set status
           elsif cmd >= 1 && cmd < arr.length - 2
             if pkmn.hp>0
-              statuses = [:SLEEP, :POISON, :BURN, :PARALYSIS, :FROZEN]
+              statuses = [:SLEEP, :POISON, :BURN, :PARALYSIS, :FROZEN, :FROSTBITE]
               statuses.push(:PETRIFIED) if Rejuv
               pkmn.status=statuses[cmd-1]
               pkmn.statusCount=0

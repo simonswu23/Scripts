@@ -238,7 +238,7 @@ ABILHASH = {
 :MAGMAARMOR => {
 	:ID => 40,
 	:name => "Magma Armor",
-	:desc => "Prevents the Pokémon from becoming frozen."
+	:desc => "Prevents the Pokémon from frostbite and becoming frozen."
 },
 
 :WATERVEIL => {
@@ -1776,6 +1776,18 @@ ABILHASH = {
 	:name => "Prism Power",
 	:desc => "Raises stats once per battle...",
 	:fullDesc => "Increases the user's Attack, Defense, Sp. Attack, Sp, Defense and Speed one stage upon switching in, once per battle."
+},
+
+:RESONANCE => {
+	:ID => 314,
+	:name => "Resonance",
+	:desc => "Sets up Aurora Veil upon switching in."
+},
+
+:HYDROVEIL => {
+	:ID => 315,
+	:name => "Hydro Veil",
+	:desc => "Summons Aqua Ring for the user upon switching into battle."
 },
 
 }

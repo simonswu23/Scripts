@@ -14,6 +14,7 @@ class PBStatuses
   FROZEN    = 5
   FAINTED   = 6
   POKERUS   = 7
+  FROSTBITE = 8
 end
 
 class PBStats

@@ -138,7 +138,7 @@ class PokeBattle_Move_203 < PokeBattle_Move
       end
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
       attacker.pbOwnSide.effects[:AreniteWall]=5
-      attacker.pbOwnSide.effects[:AreniteWall]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
+      attacker.pbOwnSide.effects[:AreniteWall]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUMc
       attacker.pbOwnSide.effects[:AreniteWall]=8 if [:DESERT,:ROCKY,:ASHENBEACH].include?(@battle.FE)
       if !@battle.pbIsOpposing?(attacker.index)
         @battle.pbDisplay(_INTL("A wall is protecting your team!"))
@@ -766,7 +766,6 @@ class PokeBattle_Move_900 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     # @SWu's current shitty fix for this animation bug wtf is happening
-
     if rand(2) == 0
       @category = :physical
     else
@@ -817,5 +816,203 @@ class PokeBattle_Move_900 < PokeBattle_Move
       @battle.pbAnimation(:ULTRAMEGADEATH,attacker,opponent,hitnum) #special
     end
   end
+end
 
+################################################################################
+# Inflicts Frostbite on the Target. 
+################################################################################
+class PokeBattle_Move_901 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
+    return -1 if !opponent.pbCanFrostbite?(true)
+    pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+    opponent.pbFrostbite(attacker)
+    @battle.pbDisplay(_INTL("{1} was frostbitten!",opponent.pbThis))
+    return 0
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    return false if !opponent.pbCanFrostbite?(false)
+    opponent.pbFrostbite(attacker)
+    @battle.pbDisplay(_INTL("{1} was frostbitten!",opponent.pbThis))
+    return true
+  end
+
+  # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :BITTERMALICE
+      @battle.pbAnimation(:HEX,attacker,opponent,hitnum)
+    elsif id == :FLURRY || id == :SUNDAE
+      @battle.pbAnimation(:POWDERSNOW,attacker,opponent,hitnum)
+    elsif id == :CHILLINGWATER
+      @battle.pbAnimation(:DELUGE,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
+  end
+end
+
+################################################################################
+# Rabbit Escape
+################################################################################
+class PokeBattle_Move_902 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    attacker.vanished=true
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if !attacker.isFainted? && @battle.pbCanChooseNonActive?(attacker.index) &&
+       !@battle.pbAllFainted?(@battle.pbParty(opponent.index)) && !(attacker.ability == :PARENTALBOND && hitnum==0)
+
+      if !opponent.hasWorkingItem(:EJECTBUTTON)
+        attacker.userSwitch = true if pbTypeModifier(@type,attacker,opponent)!=0 && !(@battle.FE == :INVERSE)
+      else
+        attacker.vanished=false
+      end
+      if @battle.FE == :INVERSE && !opponent.hasWorkingItem(:EJECTBUTTON)
+        attacker.userSwitch = true
+      else
+        attacker.vanished=false
+      end
+      if @battle.FE == :COLOSSEUM
+        attacker.userSwitch = false
+        attacker.vanished=false
+      end
+      if @move == :VOLTSWITCH && (opponent.ability == :MOTORDRIVE ||
+        opponent.ability == :VOLTABSORB || 
+        opponent.ability == :LIGHTNINGROD)
+        attacker.userSwitch = false
+        attacker.vanished=false
+      end
+      #Going to switch, check for pursuit
+      if attacker.userSwitch
+        for j in @battle.priority
+          next if !attacker.pbIsOpposing?(j.index)
+          # if Pursuit and this target was chosen
+          if !j.hasMovedThisRound? && @battle.pbChoseMoveFunctionCode?(j.index,0x88) && !j.effects[:Pursuit] && (@battle.choices[j.index][3]!=j.pbPartner.index)
+            attacker.vanished=false
+            @battle.pbCommonAnimation("Fade in",attacker,nil)
+            newpoke=@battle.pbPursuitInterrupt(j,attacker)
+          end
+          break if attacker.isFainted?
+        end
+      end
+    else
+      attacker.vanished=false
+      @battle.pbCommonAnimation("Fade in",attacker,nil)
+    end
+    return ret
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    # @SWu double check if this triggers for all targets
+    if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,false)
+      opponent.pbReduceStat(PBStats::ACCURACY,1,abilitymessage:false, statdropper: attacker)
+    end
+    return true
+  end
+end
+
+
+
+################################################################################
+# Chain Drain
+################################################################################
+class PokeBattle_Move_903 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if opponent.damagestate.calcdamage>0
+      hpgain=((opponent.damagestate.hplost+1)/2).floor
+      hpgain=((opponent.damagestate.hplost+1)*3/4).floor if Rejuv && @battle.FE == :ELECTERRAIN && @move == :PARABOLICCHARGE
+      hpgain=((opponent.damagestate.hplost+1)*3/4).floor if Rejuv && @battle.FE == :GRASSY && [:ABSORB,:MEGADRAIN,:GIGADRAIN,:HORNLEECH].include?(@move)
+      if opponent.ability == :LIQUIDOOZE
+        hpgain*=2 if @battle.FE == :WASTELAND || @battle.FE == :MURKWATERSURFACE || @battle.FE == :CORRUPTED
+        attacker.pbReduceHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))  
+        activepkmn=[]
+        for i in @battle.battlers
+          next if attacker.pbIsOpposing?(i.index)
+          i.pbReduceHP(((attacker.totalhp+1)/16).floor,true)
+          activepkmn.push(i.pokemonIndex)
+        end
+        party=@battle.pbParty(attacker.index) # NOTE: Considers both parties in multi battles
+        for i in 0...party.length
+          next if attacker.include?(i)
+          next if !party[i] || party[i].isEgg?
+          i.pbReduceHP(((attacker.totalhp+1)/16).floor,true)
+        end
+        @battle.pbDisplay(_INTL("{1} hurt its teammates!",attacker.pbThis))
+      else
+        if Rejuv && @battle.FE == :GRASSY
+          hpgain=(hpgain*1.6).floor if attacker.hasWorkingItem(:BIGROOT)
+        else
+          hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
+        end
+        hpgain=(hpgain*1.3).floor if attacker.crested == :SHIINOTIC
+        attacker.pbRecoverHP(hpgain,true)
+        @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
+        activepkmn=[]
+        for i in @battle.battlers
+          next if attacker.pbIsOpposing?(i.index)
+          i.pbRecoverHP(((attacker.totalhp+1)/16).floor,true)
+          activepkmn.push(i.pokemonIndex)
+        end
+        party=@battle.pbParty(attacker.index) # NOTE: Considers both parties in multi battles
+        for i in 0...party.length
+          next if activepkmn.include?(i) || i == attacker
+          next if !party[i] || party[i].isEgg?
+          # @SWu this is still bugged + need to figure out how to fix
+          party[i].healHp(((party[i].totalhp+1)/16).floor);
+        end
+        @battle.pbDisplay(_INTL("{1} healed its teammates!",attacker.pbThis))
+      end
+      if Rejuv && @battle.FE == :SWAMP 
+        stat = [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED].sample
+        if opponent.pbCanReduceStatStage?(stat,true)
+          opponent.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
+        end
+      end
+    end
+    return ret
+  end
+end
+
+
+################################################################################
+# Dark Delirium
+################################################################################
+class PokeBattle_Move_904 < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    for i in @battle.battlers
+      if i.pbCanIncreaseStatStage?(PBStats::ATTACK,abilitymessage:false)
+        i.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false)
+      end
+      if i.pbCanIncreaseStatStage?(PBStats::SPATK,abilitymessage:false)
+        i.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+      end
+    end
+    if opponent.pbCanConfuse?(false)
+      opponent.effects[:Confusion]=2+@battle.pbRandom(4)
+      @battle.pbCommonAnimation("Confusion",opponent,nil)
+      @battle.pbDisplay(_INTL("{1} became confused!",opponent.pbThis))
+
+      if !(opponent.effects[:Taunt]>0 || 
+           (!@battle.pbCheckSideAbility(:AROMAVEIL,opponent).nil? && !(opponent.moldbroken)) ||
+           (opponent.ability == :OBLIVIOUS) && !(opponent.moldbroken))
+        # @SWu hard coded this, might be bad :')
+        pbShowAnimation(:TAUNT,attacker,opponent,0,nil,true)
+        opponent.effects[:Taunt]=4
+        @battle.pbDisplay(_INTL("{1} fell for the taunt!",opponent.pbThis))
+      end
+
+      return true
+    end
+    return false
+  end
+end
+
+################################################################################
+# Damages based off of speed rather than attack (Skitter Smack)
+################################################################################
+class PokeBattle_Move_905 < PokeBattle_Move
+  # Handled Elsewhere.
 end

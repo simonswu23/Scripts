@@ -953,6 +953,12 @@ class PokeBattle_Pokemon
     healPP
   end
 
+  def healHp(amount)
+    return if egg?
+    return if @hp == 0
+    @hp = [@hp + amount, @totalhp].min
+  end
+
   def changeHappiness(method)
     gain=0; luxury=false
     case method

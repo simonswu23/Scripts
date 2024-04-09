@@ -79,7 +79,8 @@ class PokeBattle_Move
     elsif opponent.effects[:Disguise] && (!attacker || attacker.index!=opponent.index) &&
       opponent.effects[:Substitute]<=0 && opponent.damagestate.typemod!=0 && !opponent.moldbroken
       opponent.pbBreakDisguise
-      opponent.pbReduceHP((opponent.totalhp/8.0).floor)
+      # @SWu unnerfing disguise
+      # opponent.pbReduceHP((opponent.totalhp/8.0).floor)
       @battle.pbDisplay(_INTL("{1}'s Disguise was busted!",opponent.name))
       opponent.effects[:Disguise]=false
       damage=0
@@ -501,6 +502,8 @@ class PokeBattle_Battle
             canstatus = @battle.battlers[i].pbCanFreeze?(false)
           when :PETRIFIED
             canstatus = @battle.battlers[i].pbCanPetrify?(false)
+          when :FROSTBITE
+            canstatus = @battle.battlers[i].pbCanFrostbite?(false)
           end
           if canstatus 
             @battle.battlers[i].status = onBreakdata[:bossSideStatusChanges][0]
@@ -1661,6 +1664,8 @@ class BossPokemonDataBox < SpriteWrapper
         return "Paralysis"
       when :PETRIFIED
         return "Petrified"  
+      when :FROSTBITE
+        return "Frostbite"
     end 
     return "" 
   end 

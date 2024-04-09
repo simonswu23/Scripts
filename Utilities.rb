@@ -2230,13 +2230,22 @@ def pbStatusRenaming
   width = 48
   oldfilename=sprintf("Graphics/Pictures/Battle/battleStatuses")
   if pbResolveBitmap(oldfilename)
-    statuses = ["Sleep","Burn","Frozen","Poison","Paralysis"]
+    statuses = ["Sleep","Burn","Frozen","Poison","Paralysis","Frostbite"]
     original = RPG::Cache.load_bitmap(oldfilename)
     for status in 1...5
       rectangle = Rect.new(0,(status)*16,width,height)
       newbitmap = Bitmap.new(width,height)
       newbitmap.blt(0,0,original,rectangle)
       newbitmap.to_file(sprintf("Graphics/Pictures/Battle/battleStatuses%s.png",statuses[status]))
+    end
+    # Frostbite (for now @SWu is lazy -- reuse freeze)
+    lazyFrostbite = false;
+    status = 6
+    if (lazyFrostbite)
+      rectangle = Rect.new(0,(status)*16,width,height)
+      newbitmap = Bitmap.new(width,height)
+      newbitmap.blt(0,0,original,rectangle)
+      newbitmap.to_file(sprintf("Graphics/Pictures/Battle/battleStatuses%s.png","Frozen"))
     end
     File.delete(sprintf("%s.png",oldfilename))
   end

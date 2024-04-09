@@ -1542,6 +1542,7 @@ class PokeBattle_Scene
     return true if pokemon.status == :BURN && PBStuff::BURNITEMS.include?(item)
     return true if pokemon.status == :SLEEP && PBStuff::SLEEPITEMS.include?(item)
     return true if pokemon.status == :FROZEN && PBStuff::FREEZEITEMS.include?(item)
+    return true if pokemon.status == :FROSTBITE && PBStuff::FREEZEITEMS.include?(item)
     return true if battler && battler.effects[:Confusion]>0 && PBStuff::CONFUITEMS.include?(item)
     return true if pokemon.hp<=0 && PBStuff::REVIVEITEMS.include?(item)
     if PBStuff::PPITEMS.include?(item)

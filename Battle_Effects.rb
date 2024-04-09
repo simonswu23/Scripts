@@ -381,6 +381,57 @@ class PokeBattle_Battler
   end
 
 #===============================================================================
+# Frostbite
+#===============================================================================
+def pbCanFrostbite?(showMessages)
+  return false if isFainted? && !(Rejuv && isbossmon && @shieldCount>0)
+  if self.status== :FROSTBITE
+    @battle.pbDisplay(_INTL("{1} already has a frostbite.",pbThis)) if showMessages
+    return false
+  end
+  return false if !pbCanStatus?(showMessages)
+  if hasType?(:ICE)
+    @battle.pbDisplay(_INTL("It doesn't affect {1}...",pbThis(true))) if showMessages
+    return false
+  end
+  if (self.ability == :MAGMAARMOR) && !(self.moldbroken)
+    @battle.pbDisplay(_INTL("{1}'s {2} prevents burns!",pbThis,getAbilityName(self.ability))) if showMessages
+    return false
+  end
+  
+  return true
+end
+
+def pbCanFrostbiteSynchronize?(opponent,showMessages=false)
+  return false if isFainted? && !(Rejuv && isbossmon && @shieldCount>0)
+  return false if !pbCanStatus?(showMessages)
+  if hasType?(:ICE)
+    @battle.pbDisplay(_INTL("{1}'s {2} had no effect on {3}!",
+        opponent.pbThis,getAbilityName(opponent.ability),pbThis(true)))
+    return false
+  end
+  if (self.ability == :MAGMAARMOR)
+    @battle.pbDisplay(_INTL("{1}'s {2} prevents {3}'s {4} from working!",
+    pbThis,getAbilityName(self.ability),
+    opponent.pbThis(true),getAbilityName(opponent.ability)))
+    return false
+  end
+  
+  return true
+end
+
+def pbFrostbite(attacker)
+  self.status=:FROSTBITE
+  self.statusCount=0
+  if self.index!=attacker.index
+    @battle.synchronize[0]=self.index
+    @battle.synchronize[1]=attacker.index
+    @battle.synchronize[2]=:FROSTBITE
+  end
+  @battle.pbCommonAnimation("Frozen",self,nil)
+end
+
+#===============================================================================
 # Generalised status displays
 #===============================================================================
   def pbContinueStatus(showAnim=true)
@@ -400,6 +451,9 @@ class PokeBattle_Battler
       when :FROZEN
         @battle.pbCommonAnimation("Frozen",self,nil)
         @battle.pbDisplay(_INTL("{1} is frozen solid!",pbThis))
+      when :FROSTBITE
+        @battle.pbCommonAnimation("Frozen",self,nil)
+        @battle.pbDisplay(_INTL("{1} is hurt by frostbite!",pbThis))
     end
     if self.isbossmon
       if self.chargeAttack
@@ -430,6 +484,7 @@ class PokeBattle_Battler
         when :POISON
         when :BURN
         when :PARALYSIS
+        when :FROSTBITE
         when :FROZEN
           @battle.pbDisplay(_INTL("{1} was defrosted!",pbThis))
           if self.isbossmon

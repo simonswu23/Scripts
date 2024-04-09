@@ -208,7 +208,7 @@ class PokeBattle_Move
 
   def pbHitsSpecialStat?(type = @type)
     return false if @function == 0x122  # Psyshock/Psystrike
-    return true if @function == 0x204   # Matrix Shot
+    return true if @function == 0x204   # Matrix Shot/Psycho Cut
     return pbIsSpecial?(type)
   end
 
@@ -314,6 +314,9 @@ class PokeBattle_Move
     if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp2.ability == :SAPSIPPER && !opp2.moldbroken) || opp2.crested == :WHISCASH || opp2.crested == :GASTRODON)
       return [opp1]
     end
+    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && (opp1.ability == :PASTELVEIL && !opp1.moldbroken)
+      return [opp2]
+    end
     if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE) && !opp2.moldbroken
       return [opp1]
     end
@@ -326,6 +329,7 @@ class PokeBattle_Move
     if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK)
       return [opp2]
     end
+    
     # is dragon darts being called by a status move on a mon with prankster and is either target dark type?
     if attacker.ability == :PRANKSTER && opp1.hasType?(:DARK) && (@battle.choices[attacker.index][2]!=self) && @battle.FE != :BEWITCHED
       return [opp2]
@@ -582,7 +586,8 @@ class PokeBattle_Move
         (atype == :GRASS && opponent.ability == :SAPSIPPER) ||
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && opponent.ability == :LEVITATE && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) 
+        (atype == :GROUND && opponent.ability == :LEVITATE && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :POISON && opponent.ability == :PASTELVEIL)
         mod1=0
       end
     end
@@ -590,7 +595,7 @@ class PokeBattle_Move
       mod1=2 if (otype1 == :FLYING) && (atype == :GROUND)
       mod2=2 if (otype2 == :FLYING) && (atype == :GROUND)
     end
-    if @move == :VENAMSKISS
+    if @move == :VENAMSKISS || @move == :CORROSIVEGAS
       mod1=4 if (otype1 == :STEEL) && (atype == :POISON)
       mod2=4 if (otype2 == :STEEL) && (atype == :POISON)
     end
@@ -624,7 +629,7 @@ class PokeBattle_Move
       mod1=2 if mod1==0
       mod2=2 if mod2==0
     end
-    if (attacker.ability == :SCRAPPY)
+    if (attacker.ability == :SCRAPPY || @move == :SECRETSWORD)
       mod1=2 if (otype1 == :GHOST) && ((atype == :NORMAL) || (atype == :FIGHTING))
       mod2=2 if (otype2 == :GHOST) && ((atype == :NORMAL) || (atype == :FIGHTING))
     end
@@ -825,7 +830,8 @@ class PokeBattle_Move
       end
       return 0
     end
-    if opponent.ability == :MAGMAARMOR && type == :FIRE && (@battle.FE == :DRAGONSDEN || @battle.FE == :VOLCANICTOP || @battle.FE == :INFERNAL) && !(opponent.moldbroken)
+    # @SWu added Heatproof Here
+    if type == :FIRE && (opponent.ability == :HEATPROOF || (opponent.ability == :MAGMAARMOR && (@battle.FE == :DRAGONSDEN || @battle.FE == :VOLCANICTOP || @battle.FE == :INFERNAL) && !(opponent.moldbroken)))
       @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
        opponent.pbThis,getAbilityName(opponent.ability),self.name))
       return 0
@@ -1136,6 +1142,7 @@ class PokeBattle_Move
       end
     end
     typemod *= 4 if @move == :FREEZEDRY && opponent.hasType?(:WATER)
+    typemod *= 4 if @move == :CUT && opponent.hasType?(:GRASS)
     if @move == :CUT && opponent.hasType?(:GRASS) && ((!Rejuv && @battle.FE == :FOREST) || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,2,5))
       typemod *= 2
     end
@@ -1286,9 +1293,19 @@ class PokeBattle_Move
     return true if attacker.ability == :NOGUARD || opponent.ability == :NOGUARD || (attacker.ability == (:FAIRYAURA) && @battle.FE == :FAIRYTALE)
     return true if opponent.effects[:Telekinesis]>0
     return true if @function==0x0D && @battle.pbWeather== :HAIL # Blizzard
+    return true if @move == :MOUNTAINGALE && @battle.pbWeather == :HAIL
+    return true if @move == :HEATWAVE && @battle.pbWeather== :SUNNYDAY # Heat Wave
+    return true if @move == :PRECIPICEBLADES && @battle.pbWeather ==:DESOLATELAND
+    return true if @move == :ORIGINPULSE && @battle.pbWeather ==:PRIMORDIALSEA
+    return true if @move == :SPRINGTIDESTORM && @battle.pbWeather ==:SUNNYDAY
+    return true if @move == :WILDBOLTSTORM && @battle.pbWeather ==:RAINDANCE
+    return true if @move == :SANDSEARSTORM && @battle.pbWeather ==:SANDSTORM
+    return true if @move == :BLEAKWINDSTORM && @battle.pbWeather ==:HAIL
     return true if (@function==0x08 || @function==0x15) && @battle.pbWeather== :RAINDANCE # Thunder, Hurricane
     return true if @type == :ELECTRIC && @battle.FE == :UNDERWATER
     return true if attacker.hasType?(:POISON) && @move == :TOXIC
+    return true if attacker.hasType?(:ICE) && @move == :FLURRY
+    return true if attacker.hasType?(:ELECTRIC) && @move == :THUNDERWAVE
     return true if (@function==0x10 || @move == :BODYSLAM ||
                     @function==0x137 || @function==0x9B) &&
                     opponent.effects[:Minimize] # Flying Press, Stomp, DRush
@@ -1805,6 +1822,13 @@ class PokeBattle_Move
       when 0x184 # Body Press
         atk=attacker.defense
         atkstage=attacker.stages[PBStats::DEFENSE]+6
+      when 0x905 #Skitter smack
+        atk=attacker.speed
+        atkstage=attacker.stages[PBStats::SPEED]+6
+      when 0x900 # Super UMD
+        # @SWu I'm pretty sure this doesn't scale with an assault vest item as a modifier (need to update)
+        atk=attacker.spdef
+        atkstage=attacker.stages[PBStats::SPDEF]+6
       else
         atk=attacker.attack
         atkstage=attacker.stages[PBStats::ATTACK]+6
@@ -1820,12 +1844,6 @@ class PokeBattle_Move
 				atk = attacker.getSpecialStat(opponent.ability == :UNAWARE)
 				atkstage = 6 #getspecialstat handles unaware
 			end
-    end
-
-    # @SWu: Fmrfjgl this attack
-    if @function == 0x900 # SUPER UMD
-      atk=attacker.spdef
-      atkstage=attacker.stages[PBStats::SPDEF]+6
     end
 
     if opponent.ability != :UNAWARE || opponent.moldbroken
@@ -2177,6 +2195,7 @@ class PokeBattle_Move
     if opponent.damagestate.critical
       damage*=1.5
       damage*=1.5 if attacker.ability == :SNIPER
+      damage*=1.5 if @move = :AIRCUTTER
     end
     # STAB-addition from Crests 
     typecrest = false
@@ -2195,7 +2214,7 @@ class PokeBattle_Move
         end
       end
     # STAB
-    if (attacker.hasType?(type) && (!attacker.effects[:DesertsMark])|| (attacker.ability == :STEELWORKER && type == :STEEL)  || (attacker.ability == :SOLARIDOL && type == :FIRE) || (attacker.ability == :LUNARIDOL && type == :ICE) || typecrest==true)
+    if (attacker.hasType?(type) && (!attacker.effects[:DesertsMark]) || (attacker.ability == :STEELWORKER && type == :STEEL)  || (attacker.ability == :SOLARIDOL && type == :FIRE) || (attacker.ability == :LUNARIDOL && type == :ICE) || typecrest==true)
       if attacker.ability == :ADAPTABILITY
         damage*=2.0
       elsif (attacker.ability == :STEELWORKER && type == :STEEL) && @battle.FE == :FACTORY # Factory Field
@@ -2205,6 +2224,17 @@ class PokeBattle_Move
       end
       if attacker.crested == :SILVALLY
         damage*=1.2
+      end
+      if attacker.species == :GENESECT
+        if (type == :WATER && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE))
+          damage*=1.5
+        elsif (type == :ELECTRIC && opp2.species == :GENESECT && opp2.hasWorkingItem(:SHOCKDRIVE))
+          damage*=1.5
+        elsif (type == :ICE && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE))
+          damage*=1.5
+        elsif (type == :FIRE && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE))
+          damage*=1.5
+        end
       end
     end
     # Type effectiveness
@@ -2217,6 +2247,7 @@ class PokeBattle_Move
       return 0
     end
     damage*=0.5 if attacker.status== :BURN && pbIsPhysical?(type) && attacker.ability != :GUTS && @move != :FACADE
+    damage*=0.5 if attacker.status== :FROSTBITE && !pbIsPhysical?(type)
     # Random Variance
     if !$game_switches[:No_Damage_Rolls] || @battle.isOnline?
       random = 85+@battle.pbRandom(16)
@@ -2359,7 +2390,8 @@ class PokeBattle_Move
     elsif opponent.effects[:Disguise] && (!attacker || attacker.index!=opponent.index) &&
       opponent.effects[:Substitute]<=0 && opponent.damagestate.typemod!=0 && !opponent.moldbroken
       opponent.pbBreakDisguise
-      opponent.pbReduceHP((opponent.totalhp/8.0).floor)
+      # @SWu unnerfing disguise
+      # opponent.pbReduceHP((opponent.totalhp/8.0).floor)
       @battle.pbDisplay(_INTL("{1}'s Disguise was busted!",opponent.name))
       opponent.effects[:Disguise]=false
       damage=0

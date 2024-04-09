@@ -161,9 +161,10 @@ class PokeBattle_Battler
     return true if $PokemonBag.pbQuantity(:SILVCREST)>0 && crestmon.species == :SILVALLY && @battle.pbOwnedByPlayer?(@index)
     return true if @battle.pbGetOwnerItems(@index).include?(:SILVCREST) && crestmon.species == :SILVALLY && !@battle.pbOwnedByPlayer?(@index)
     return false if !crestmon.item || !$cache.items[crestmon.item].checkFlag?(:crest)
+    # @SWu generalizing crests
     return false if crestmon.species == :DARMANITAN && ![0,1].include?(crestmon.form)
-    return false if [:TYPHLOSION,:SAMUROTT,:ELECTRODE,:ZOROARK].include?(crestmon.species) && crestmon.form!=0
-    return false if crestmon.species == :AMPHAROS && crestmon.form!=1
+    # return false if [:TYPHLOSION,:SAMUROTT,:ELECTRODE,:ZOROARK].include?(crestmon.species) && crestmon.form!=0
+    # return false if crestmon.species == :AMPHAROS # && crestmon.form!=1
     return PBStuff::POKEMONTOCREST[crestmon.species]==crestmon.item
   end
 
@@ -762,11 +763,15 @@ class PokeBattle_Battler
   end
 
   def nullsFire?
-    return @ability == :FLASHFIRE
+    return @ability == :FLASHFIRE || @ability == :HEATPROOF
   end
 
   def nullsGrass?
     return @ability == :SAPSIPPER
+  end
+
+  def nullsPoison?
+    return @ability == :PASTELVEIL
   end
 
   def pbSpeed()
@@ -1909,6 +1914,26 @@ class PokeBattle_Battler
     if Rejuv
       rejuvAbilities(onactive)
     end
+    # @SWu's abilities here for ease of reading
+    # Resonance
+    if self.ability == :RESONANCE && onactive && self.pbOwnSide.effects[:AuroraVeil] <= 0
+      # Animations are fucked right now -- fix later
+      # pbShowAnimation(:AURORAVEIL,self,nil,0,nil,true)
+      self.pbOwnSide.effects[:AuroraVeil]=5
+      self.pbOwnSide.effects[:AuroraVeil]=8 if @battle.FE == :MIRROR
+      @battle.pbDisplay(_INTL("An Aurora is protecting your team!"))
+      if @battle.FE == :MIRROR && self.pbCanIncreaseStatStage?(PBStats::EVASION,false)
+        self.pbIncreaseStat(PBStats::EVASION,1,abilitymessage:false)
+      end
+    end
+    if Rejuv
+      rejuvAbilities(onactive)
+    end
+    # Hydro Veil
+    if self.ability == :HYDROVEIL && onactive
+      self.effects[:AquaRing]=true
+      @battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",self.pbThis))
+    end
     # Download
     if self.ability == :DOWNLOAD && onactive
       if (Rejuv && (@battle.FE == :SHORTCIRCUIT || @battle.FE == :GLITCH))
@@ -2819,6 +2844,7 @@ class PokeBattle_Battler
         self.pbAbilitiesOnSwitchIn(true)
       end
     end
+    
   end
 
   def pbEffectsOnDealingDamage(move,user,target,damage,innards)
@@ -3641,7 +3667,7 @@ class PokeBattle_Battler
         end
         status = "burn"
       when :ASPEARBERRY
-        if self.status== :FROZEN
+        if self.status== :FROZEN || self.status == :FROSTBITE
           healing = 0
           status_berry = true
         end
@@ -4303,13 +4329,8 @@ class PokeBattle_Battler
         # physical contact
         if basemove.contactMove? && !(user.ability == :LONGREACH)
           if target.effects[:Protect] == :KingsShield
-            if Rejuv
-              user.pbReduceStat(PBStats::ATTACK,2)
-              user.pbReduceStat(PBStats::SPATK,2) if @battle.FE == :FAIRYTALE || @battle.FE == :CHESS || @battle.FE == :COLOSSEUM
-            else
-              user.pbReduceStat(PBStats::ATTACK,1)
-              user.pbReduceStat(PBStats::SPATK,1) if @battle.FE == :FAIRYTALE || @battle.FE == :CHESS || @battle.FE == :COLOSSEUM
-            end
+            user.pbReduceStat(PBStats::ATTACK,2)
+            user.pbReduceStat(PBStats::SPATK,2) if @battle.FE == :FAIRYTALE || @battle.FE == :CHESS || @battle.FE == :COLOSSEUM
           elsif target.effects[:Protect] == :Obstruct
             user.pbReduceStat(PBStats::DEFENSE,2)
           elsif target.effects[:Protect] == :SpikyShield
@@ -4418,12 +4439,25 @@ class PokeBattle_Battler
         return false
       end
     end
+    # @SWu I finally found it
     if basemove.basedamage==0 #Status move type absorb abilities
       type=basemove.pbType(user)
       if basemove.pbStatusMoveAbsorption(type,user,target)==0
         return false
       end
     end
+
+    if (basemove.pbType(user) == :POISON)
+      if (target.ability == :PASTELVEIL)
+        @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbThis,getAbilityName(target.ability)))
+        return false
+      elsif (target.pbPartner.ability == :PASTELVEIL)
+        @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbPartner.pbThis,getAbilityName(target.pbPartner.ability)))
+        return false
+      end
+
+    end
+
     if accuracy
       if target.effects[:LockOn]>0 && target.effects[:LockOnPos]==user.index
         return true
@@ -4839,14 +4873,21 @@ class PokeBattle_Battler
         addleffect=100 if basemove.move == :LICK && @battle.FE == :HAUNTED
         addleffect=100 if basemove.move == :DIRECLAW && @battle.FE == :WASTELAND
         addleffect=100 if basemove.move == :INFERNALPARADE && @battle.FE == :INFERNAL
-        addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
+        addleffect=100 if basemove.move == :SUNDAE && @battle.weather == :HAIL
+
+        # @SWu buff Ledian Crest
+        #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
+        addleffect=0 if (user.crested == :CINCCINO && i>1)
+
         if @battle.pbRandom(100)<addleffect
           basemove.pbAdditionalEffect(user,target)
         end
+
         addleffect=basemove.moreeffect
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
-        addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
+        #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
+        addleffect=0 if (user.crested == :CINCCINO && i>1)
         if @battle.pbRandom(100)<addleffect
           basemove.pbSecondAdditionalEffect(user,target)
         end
@@ -4878,11 +4919,12 @@ class PokeBattle_Battler
       # Corrosion random status
       if user.ability == :CORROSION && @battle.FE == :WASTELAND && damage > 0
         if @battle.pbRandom(10)==0
-          case @battle.pbRandom(4)
+          case @battle.pbRandom(5)
             when 0 then target.pbBurn(user)       if target.pbCanBurn?(false)
             when 1 then target.pbPoison(user)     if target.pbCanPoison?(false)
             when 2 then target.pbParalyze(user)   if target.pbCanParalyze?(false)
             when 3 then target.pbFreeze           if target.pbCanFreeze?(false)
+            when 4 then target.pbFrostbite           if target.pbCanFrostbite?(false)
           end
         end
       end
