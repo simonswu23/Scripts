@@ -1141,6 +1141,8 @@ class PokeBattle_Move
         end
       when :HYDREIGON
         typemod /= 8 if type == :FAIRY
+      when :CHERRIM
+        typemod /= 4 if type == :FIRE
       end
     
     end
@@ -1512,6 +1514,8 @@ class PokeBattle_Move
               basemult*=1.3 
           end
         end
+      when :LIQUIDVOICE
+        basemult*=1.3 if isSoundBased?
       when :RIVALRY       then basemult*= attacker.gender==opponent.gender ? 1.25 : 0.75 if attacker.gender!=2
       when :MEGALAUNCHER  then basemult*=1.5 if [:AURASPHERE,:DRAGONPULSE,:DARKPULSE,:WATERPULSE,:ORIGINPULSE,:TERRAINPULSE].include?(@move)
       when :SANDFORCE     then basemult*=1.3 if (@battle.pbWeather== :SANDSTORM || @battle.FE == :DESERT || @battle.FE == :ASHENBEACH) && (type == :ROCK || type == :GROUND || type == :STEEL)
@@ -1566,7 +1570,7 @@ class PokeBattle_Move
       when :INEXORABLE    then basemult*=1.3 if type == :DRAGON && (!opponent.hasMovedThisRound? || @battle.switchedOut[opponent.index])
     end
     case opponent.ability
-      when :HEATPROOF     then basemult*=0.5 if !(opponent.moldbroken) && type == :FIRE
+      when :HEATPROOF     then basemult*=0 if !(opponent.moldbroken) && type == :FIRE
       when :DRYSKIN       then basemult*=1.25 if !(opponent.moldbroken) && type == :FIRE
       when :TRANSISTOR    then basemult*=0.5 if (@battle.FE == :ELECTERRAIN && type == :GROUND) && !(opponent.moldbroken)
     end
@@ -2239,6 +2243,9 @@ class PokeBattle_Move
         elsif (type == :FIRE && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE))
           damage*=1.5
         end
+      end
+      if attacker.crested == :CHERRIM && type == :FIRE
+        damage*=1.5
       end
     end
     # Type effectiveness

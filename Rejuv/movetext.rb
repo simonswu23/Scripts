@@ -195,6 +195,7 @@ MOVEHASH = {
 	:maxpp => 10,
 	:target => :SingleNonUser,
 	:contact => true,
+	:healingmove => true,
 	:desc => "The user drains the target's blood. The user's HP is restored by half the damage taken."
 },
 
@@ -1481,6 +1482,7 @@ MOVEHASH = {
 	:contact => true,
 	:kingrock => true,
 	:punchmove => true,
+	:healingmove => true,
 	:desc => "An energy-draining punch. The user's HP is restored by half the damage dealt."
 },
 
@@ -2999,6 +3001,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 10,
 	:target => :SingleNonUser,
+	:healingmove => true,
 	:desc => "A nutrient-draining attack. The user's HP is restored by half the damage taken."
 },
 
@@ -3013,6 +3016,7 @@ MOVEHASH = {
 	:maxpp => 10,
 	:target => :SingleNonUser,
 	:contact => true,
+	:healingmove => true,
 	:desc => "Energy is drained by horns. The user's HP is restored by half the damage taken."
 },
 
@@ -3099,6 +3103,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 15,
 	:target => :SingleNonUser,
+	:healingmove => true,
 	:desc => "A nutrient-draining attack. The user's HP is restored by half the damage taken."
 },
 
@@ -3141,6 +3146,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 25,
 	:target => :SingleNonUser,
+	:healingmove => true,
 	:desc => "A nutrient-draining attack. The user's HP is restored by half the damage taken."
 },
 
@@ -6653,6 +6659,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 15,
 	:target => :SingleNonUser,
+	:healingmove => true,
 	:desc => "The user eats the dreams of a sleeping target. It absorbs half the damage caused."
 },
 
@@ -8397,6 +8404,7 @@ MOVEHASH = {
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
+	:healingmove => true,
 	:desc => "The user steals the target's energy with a kiss. Over half of the damage goes to the user's HP."
 },
 
@@ -8747,6 +8755,7 @@ MOVEHASH = {
 	:maxpp => 10,
 	:target => :SingleNonUser,
 	:kingrock => true,
+	:healingmove => true,
 	:desc => "The user absorbs its target's HP. The HP is restored by over half of the damage."
 },
 
@@ -8761,6 +8770,7 @@ MOVEHASH = {
 	:maxpp => 20,
 	:target => :AllNonUsers,
 	:kingrock => true,
+	:healingmove => true,
 	:desc => "The user attacks everything around it. HP is restored by half of the damage."
 },
 
@@ -13961,6 +13971,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 10,
 	:target => :SingleNonUser,
+	:healingmove => true,
 	:desc => "The user attacks the target with a life-draining magic, healing itself and its allies."
 },
 
@@ -14004,6 +14015,19 @@ MOVEHASH = {
 	:effect => 100,
 	:target => :SingleNonUser,
 	:desc => "The user bombards the target with telekinetic force. A wondrous wall of light is put up to weaken the power of the opposing Pokémon's special moves."
+},
+
+:BLOSSOMSTORM => {
+	:ID => 913,
+	:name => "Blossom Storm",
+	:function => 0x906,
+	:type => :FAIRY,
+	:category => :physical,
+	:basedamage => 140,
+	:accuracy => 100,
+	:maxpp => 10,
+	:target => :AllOpposing,
+	:desc => "The user releases a torrent of cherry blossom petals at foes, lowering its attack and special defense after use."
 },
 
 }

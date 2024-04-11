@@ -4779,6 +4779,104 @@ class PokeBattle_Battle
         end
       end
 
+      # Downdraft
+      # @SWu how is ability suppression handled here?
+      if (i.ability == :DOWNDRAFT)
+        # @SWu figure out animation here
+        # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+        
+        #figure out how to lower evasion
+        for j in priority
+          # @SWu this is bugged when the mega corviknight is on the other side
+          next if (i.index % 2 == j.index % 2) || j.isFainted?
+          j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:i)
+          if i.pbOpposingSide.effects[:Reflect]>0
+            i.pbOpposingSide.effects[:Reflect]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team's Reflect wore off!"))
+            else
+                @battle.pbDisplay(_INTL("Your team's Reflect wore off!"))
+            end
+          end
+          if i.pbOpposingSide.effects[:LightScreen]>0
+            i.pbOpposingSide.effects[:LightScreen]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team's Light Screen wore off!"))
+            else
+              @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
+            end
+          end
+          if i.pbOpposingSide.effects[:AuroraVeil]>0
+            i.pbOpposingSide.effects[:AuroraVeil]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team's Aurora Veil wore off!"))
+            else
+              @battle.pbDisplay(_INTL("Your team's Aurora Veil wore off!"))
+            end
+          end
+          if i.pbOpposingSide.effects[:AreniteWall]>0
+            i.pbOpposingSide.effects[:AreniteWall]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team's Arenite Wall wore off!"))
+            else
+              @battle.pbDisplay(_INTL("Your team's Arenite Wall wore off!"))
+            end
+          end
+          if i.pbOpposingSide.effects[:Mist]>0 || j.pbOwnSide.effects[:Mist]>0
+            j.pbOwnSide.effects[:Mist]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team is no longer protected by Mist."))
+            else
+              @battle.pbDisplay(_INTL("Your team is no longer protected by Mist."))
+            end
+          end
+          if i.pbOpposingSide.effects[:Safeguard]>0 || j.pbOwnSide.effects[:Safeguard]>0
+            j.pbOwnSide.effects[:Safeguard]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team is no longer protected by Safeguard."))
+            else
+              @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
+            end
+          end
+          if i.pbOwnSide.effects[:Spikes]>0 || j.pbOwnSide.effects[:Spikes]>0
+            i.pbOwnSide.effects[:Spikes]=0
+            j.pbOwnSide.effects[:Spikes]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+            else
+              @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+            end
+          end
+          if i.pbOwnSide.effects[:StealthRock] || j.pbOwnSide.effects[:StealthRock]
+            i.pbOwnSide.effects[:StealthRock]=false
+            j.pbOwnSide.effects[:StealthRock]=false
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+            else
+              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+            end
+          end
+          if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
+            i.pbOwnSide.effects[:ToxicSpikes]=0
+            j.pbOwnSide.effects[:ToxicSpikes]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+            else
+              @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+            end
+          end
+          if i.pbOwnSide.effects[:StickyWeb] || j.pbOwnSide.effects[:StickyWeb]
+            attacker.pbOwnSide.effects[:StickyWeb]=false
+            j.pbOwnSide.effects[:StickyWeb]=false
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+            else
+              @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+            end
+          end
+        end
+      end
+
       # Dry Skin
       if (i.ability == :DRYSKIN)
         if (pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) && i.effects[:HealBlock]==0
@@ -5135,8 +5233,9 @@ class PokeBattle_Battle
         for j in priority
           next if j == i
           next if j.isFainted?
-          next if j.status.nil?
-          hploss=(j.totalhp/16.0).floor
+          next if !pbIsOpposing?(j)
+          # next if j.status.nil?
+          hploss=(j.totalhp/8.0).floor
           hploss= hploss * 2 if @field.effect == :WASTELAND
           pbCommonAnimation("LeechSeed",i,j)
           j.pbReduceHP(hploss,true)
@@ -5356,6 +5455,7 @@ class PokeBattle_Battle
       end
     end
     # Embargo
+    # @SWu todo: change embargo to have an effect on the whole team side
     for i in priority
       next if i.isFainted?
       if i.effects[:Embargo]>0

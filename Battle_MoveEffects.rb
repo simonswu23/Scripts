@@ -1348,6 +1348,9 @@ class PokeBattle_Move_028 < PokeBattle_Move
       increment = 2
       increment = 3 if @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,3,5)
     end
+    if (attacker.crested == :CHERRIM)
+      increment = 3
+    end
     for stat in [PBStats::ATTACK,PBStats::SPATK]
       if attacker.pbCanIncreaseStatStage?(stat,false)
         attacker.pbIncreaseStat(stat,increment,abilitymessage:false)
@@ -3951,8 +3954,10 @@ end
 ################################################################################
 class PokeBattle_Move_087 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    if @battle.pbWeather!=0 || @battle.FE == :RAINBOW
-      return basedmg*2
+    if attacker.crested == :CHERRIM
+      basedmg*=4
+    elsif @battle.pbWeather!=0 || @battle.FE == :RAINBOW
+      basedmg*=2
     end
     return basedmg
   end
@@ -3961,12 +3966,12 @@ class PokeBattle_Move_087 < PokeBattle_Move
     weather=@battle.pbWeather
     type=(:NORMAL) || 0
     if !attacker.hasWorkingItem(:UTILITYUMBRELLA)
-      type=((:FIRE) || type) if weather== :SUNNYDAY
       type=((:WATER) || type) if weather== :RAINDANCE
       type=((:ROCK) || type) if weather== :SANDSTORM
       type=((:ICE)  || type) if weather== :HAIL
       type=((:FLYING) || type) if @battle.FE == :SKY && weather == :STRONGWINDS
       type=((:SHADOW) || type) if Rejuv && weather == :SHADOWSKY
+      type=((:FIRE) || type) if weather== :SUNNYDAY || attacker.crested == :CHERRIM  
     end
     type=super(attacker,type)
     return type
@@ -5518,6 +5523,7 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
       @immediate=true if (@battle.pbWeather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
       @immediate=true if @battle.FE == :RAINBOW
       @immediate=true if (attacker.crested == :CLAYDOL && @move == :SOLARBEAM)
+      @immediate=true if (attacker.crested == :CHERRIM)
     end
     if !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -5533,7 +5539,7 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
 
   def pbBaseDamageMultiplier(damagemult,attacker,opponent)
     if @battle.pbWeather!=0 &&
-       @battle.pbWeather!=:SUNNYDAY
+       @battle.pbWeather!=:SUNNYDAY && !(attacker.crested == :CHERRIM)
       return (damagemult*0.5).round
     end
     return damagemult
@@ -5544,7 +5550,7 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
       @battle.pbCommonAnimation("Solar Beam charging",attacker,nil)
       @battle.pbDisplay(_INTL("{1} took in sunlight!",attacker.pbThis))
     end
-     if @battle.FE == :DARKCRYSTALCAVERN && @battle.pbWeather != :SUNNYDAY
+     if @battle.FE == :DARKCRYSTALCAVERN && @battle.pbWeather != :SUNNYDAY && !(attacker.crested == :CHERRIM)
         @battle.pbDisplay(_INTL("But it failed...",attacker.pbThis))
         attacker.effects[:TwoTurnAttack]=0
       return 0
@@ -6305,7 +6311,7 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
     else
       if (@battle.pbWeather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
         hpgain=(attacker.totalhp*2/3.0).floor
-      elsif (@battle.pbWeather!=0 && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
+      elsif (@battle.pbWeather!=0 && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && !(attacker.crested == :CHERRIM))
         hpgain=(attacker.totalhp/4.0).floor
       else
         hpgain=(attacker.totalhp/2.0).floor
@@ -10152,7 +10158,7 @@ class PokeBattle_Move_16D < PokeBattle_Move
 
   def pbBaseDamageMultiplier(damagemult,attacker,opponent)
     if @battle.pbWeather!=0 && @battle.pbWeather == :SUNNYDAY
-      return (damagemult*2).round
+      return (damagemult*3).round
     end
     return damagemult
   end

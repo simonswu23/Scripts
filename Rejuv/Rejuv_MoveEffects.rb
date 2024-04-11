@@ -1016,3 +1016,26 @@ end
 class PokeBattle_Move_905 < PokeBattle_Move
   # Handled Elsewhere.
 end
+
+################################################################################
+# Blossom Storm
+################################################################################
+class PokeBattle_Move_906 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if opponent.damagestate.calcdamage>0
+      for stat in [PBStats::ATTACK,PBStats::SPDEF]
+        if attacker.pbCanReduceStatStage?(stat,false,true) && (@battle.pbWeather != :SUNNYDAY) && (attacker.crested != :CHERRIM)
+          attacker.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
+        end
+      end
+    end
+    return ret
+  end
+
+  # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    @battle.pbAnimation(:PETALBLIZZARD,attacker,opponent,hitnum)
+  end
+end

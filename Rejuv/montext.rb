@@ -179,7 +179,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 107, 108, 125, 125, 80],
+		:BaseStats => [80, 82, 108, 150, 125, 80],
 		:Abilities => [:CHLOROPHYLL],
 		:Height => 240,
 		:Weight => 2216,
@@ -27190,6 +27190,7 @@ MONHASH = {
 		},
 		:Moveset => [
 			[0,:PETALDANCE],
+			[0,:FAIRYWIND],
 			[1,:MORNINGSUN],
 			[1,:TACKLE],
 			[1,:LEAFAGE],
@@ -27200,11 +27201,16 @@ MONHASH = {
 			[13,:HELPINGHAND],
 			[19,:MAGICALLEAF],
 			[22,:SUNNYDAY],
+			[22,:WEATHERBALL],
 			[30,:WORRYSEED],
 			[35,:TAKEDOWN],
 			[43,:SOLARBEAM],
 			[48,:LUCKYCHANT],
-			[50,:PETALBLIZZARD]],
+			[50,:PETALBLIZZARD],
+			[57,:PLAYROUGH],
+			[65,:MOONBLAST],
+			[75,:SOLARBLADE],
+			[80,:BLOSSOMSTORM]],
 		:compatiblemoves => [:BULLETSEED,:DAZZLINGGLEAM,:DRAININGKISS,:ENERGYBALL,:FLASH,:GIGADRAIN,:GIGAIMPACT,:GRASSKNOT,:GRASSYGLIDE,:GRASSYTERRAIN,:HELPINGHAND,:HYPERBEAM,:LASERFOCUS,:MAGICALLEAF,:NATUREPOWER,:PLAYROUGH,:POLLENPUFF,:ROLLOUT,:SAFEGUARD,:SEEDBOMB,:SOLARBEAM,:SOLARBLADE,:SUNNYDAY,:SWORDSDANCE,:SYNTHESIS,:WEATHERBALL,:WORRYSEED,
 			#Rejuv only moves
 			:SLASHANDBURN],
@@ -27222,6 +27228,9 @@ MONHASH = {
 	},
 
 	"Sunshine Form" => {
+		:Type1 => :GRASS,
+		:Type2 => :FAIRY,
+		:BaseStats => [70, 110, 70, 97, 118, 85],
 		:Color => "Pink",
 	},
 
@@ -51861,7 +51870,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 145, 82, 102, 82, 139],
+		:BaseStats => [80, 155, 82, 82, 82, 149],
 		:Abilities => [:LIBERO],
 		:Height => 270,
 		:Weight => 1653,
@@ -52297,7 +52306,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [98, 122, 145, 53, 110, 67],
-		:Abilities => [:MIRRORARMOR],
+		:Abilities => [:DOWNDRAFT],
 		:Height => 140,
 		:Weight => 1653,
 		:BattlerEnemyY => -2,
@@ -54875,8 +54884,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [65, 80, 105, 130, 141, 74],
-		:Abilities => [:AROMAVEIL],
+		:BaseStats => [65, 60, 105, 150, 161, 54],
+		:Abilities => [:FINALE],
 		:Height => 300,
 		:Weight => 2456,
 	},

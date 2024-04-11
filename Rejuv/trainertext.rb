@@ -1,5 +1,5 @@
 TEAMARRAY = [{
-:teamid => ["Dan",:LEADER_KETA,0],
+:teamid => ["SWu",:LEADER_KETA,0],
 :items => [:SILVCREST,:SUPERPOTION],
 :ace => "sighs about it",
 =begin
@@ -38,7 +38,7 @@ TEAMARRAY = [{
 	:species => :BANETTE,
 	:level => 63,
 	:item => :BANETTITE,
-	:moves => [:SHADOWSNEAK,:DISABLE,:GUNKSHOT,:PHANTOMFORCE],
+	:moves => [:LIGHTSCREEN],
 	:ability => :INSOMNIA,
 	:gender => "M",
 	:shiny => true,

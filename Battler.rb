@@ -831,6 +831,7 @@ class PokeBattle_Battler
     end
     speed*=2 if self.crested == :CASTFORM && self.form == 3 && (@battle.pbWeather== :HAIL || @battle.FE==:ICY || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:FROZENDIMENSION)
     speed*=2 if self.crested == :EMPOLEON && (@battle.pbWeather== :HAIL || @battle.FE==:ICY || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:FROZENDIMENSION)
+    speed*=2 if self.crested == :CHERRIM
     speed*=0.5 if self.item == :IRONBALL if !@battle.FE == :DEEPEARTH
     if self.status== :PARALYSIS && self.ability != :QUICKFEET
       speed=(speed/2.0).floor
@@ -1552,6 +1553,7 @@ class PokeBattle_Battler
           end
         end
       end
+
       if !@battle.pbCheckGlobalAbility(:DESOLATELAND)
         if @battle.state.effects[:HarshSunlight]
           @battle.pbDisplay(_INTL("The harsh sunlight faded!"))
@@ -1575,6 +1577,7 @@ class PokeBattle_Battler
         end
       end
     end
+
     # END OF PRIMAL WEATHER DEACTIVATION TESTS
     if !@battle.pbCheckGlobalAbility(:DARKSURGE) && (@battle.FE==:DARKNESS1 || @battle.FE==:DARKNESS2 || @battle.FE==:DARKNESS3)
       if @battle.field.duration>0
@@ -1752,9 +1755,13 @@ class PokeBattle_Battler
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:HEATROCK) ||
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :CHERRIM
         @battle.pbCommonAnimation("Sunny",nil,nil)
-        @battle.pbDisplay(_INTL("{1}'s Drought intensified the sun's rays!",pbThis))
+        if (ability == :DROUGHT)
+          @battle.pbDisplay(_INTL("{1}'s Drought intensified the sun's rays!",pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1}'s Crest intensified the sun's rays!",pbThis))
+        end
         if @battle.FE == :DARKCRYSTALCAVERN
           @battle.setField(:CRYSTALCAVERN,@battle.weatherduration)
           @battle.pbDisplay(_INTL("The sun lit up the crystal cavern!"))
@@ -1912,6 +1919,100 @@ class PokeBattle_Battler
         @battle.battlers[i].pbReduceAttackStatStageIntimidate(self)
       end
     end
+    # Downdraft
+    if self.ability == :DOWNDRAFT && onactive
+      for index in 0...4
+        next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
+        i = self
+        j = @battle.battlers[index]
+        j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:self)
+        if i.pbOpposingSide.effects[:Reflect]>0
+          i.pbOpposingSide.effects[:Reflect]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team's Reflect wore off!"))
+          else
+              @battle.pbDisplay(_INTL("Your team's Reflect wore off!"))
+          end
+        end
+        if i.pbOpposingSide.effects[:LightScreen]>0
+          i.pbOpposingSide.effects[:LightScreen]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team's Light Screen wore off!"))
+          else
+            @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
+          end
+        end
+        if i.pbOpposingSide.effects[:AuroraVeil]>0
+          i.pbOpposingSide.effects[:AuroraVeil]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team's Aurora Veil wore off!"))
+          else
+            @battle.pbDisplay(_INTL("Your team's Aurora Veil wore off!"))
+          end
+        end
+        if i.pbOpposingSide.effects[:AreniteWall]>0
+          i.pbOpposingSide.effects[:AreniteWall]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team's Arenite Wall wore off!"))
+          else
+            @battle.pbDisplay(_INTL("Your team's Arenite Wall wore off!"))
+          end
+        end
+        if i.pbOpposingSide.effects[:Mist]>0 || j.pbOwnSide.effects[:Mist]>0
+          j.pbOwnSide.effects[:Mist]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team is no longer protected by Mist."))
+          else
+            @battle.pbDisplay(_INTL("Your team is no longer protected by Mist."))
+          end
+        end
+        if i.pbOpposingSide.effects[:Safeguard]>0 || j.pbOwnSide.effects[:Safeguard]>0
+          j.pbOwnSide.effects[:Safeguard]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The opposing team is no longer protected by Safeguard."))
+          else
+            @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
+          end
+        end
+        if i.pbOwnSide.effects[:Spikes]>0 || j.pbOwnSide.effects[:Spikes]>0
+          i.pbOwnSide.effects[:Spikes]=0
+          j.pbOwnSide.effects[:Spikes]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+          else
+            @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+          end
+        end
+        if i.pbOwnSide.effects[:StealthRock] || j.pbOwnSide.effects[:StealthRock]
+          i.pbOwnSide.effects[:StealthRock]=false
+          j.pbOwnSide.effects[:StealthRock]=false
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+          else
+            @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+          end
+        end
+        if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
+          i.pbOwnSide.effects[:ToxicSpikes]=0
+          j.pbOwnSide.effects[:ToxicSpikes]=0
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+          else
+            @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+          end
+        end
+        if i.pbOwnSide.effects[:StickyWeb] || j.pbOwnSide.effects[:StickyWeb]
+          attacker.pbOwnSide.effects[:StickyWeb]=false
+          j.pbOwnSide.effects[:StickyWeb]=false
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+          else
+            @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+          end
+        end
+      end
+    end
+
     if Rejuv
       rejuvAbilities(onactive)
     end
@@ -5762,6 +5863,19 @@ class PokeBattle_Battler
         end
 
         user.pbFaint if user.isFainted? # no return
+      end
+
+      # Finale
+      if user.ability == (:FINALE) && @effects[:HealBlock]==0
+        hpgain1=((user.totalhp+1)/4).floor
+        hpgain2=((user.pbPartner.totalhp+1)/4).floor
+        user.pbRecoverHP([hpgain1.floor,1].max,true)
+        if (!user.pbPartner.isFainted?)
+          user.pbPartner.pbRecoverHP([hpgain2.floor,1].max,true)
+        end
+        if hpgain1>0 || hpgain2 >0
+          @battle.pbDisplay(_INTL("{1}'s Finale restored its allies HP!",user.pbThis))
+        end
       end
 
       # Dancer

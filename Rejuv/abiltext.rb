@@ -1796,4 +1796,22 @@ ABILHASH = {
 	:desc => "The user gains a stockpile at the end of each turn."
 },
 
+:DOWNDRAFT => {
+	:ID => 317,
+	:name => "Downdraft",
+	:desc => "The user clears all hazards and screens at the end of each turn."
+},
+
+:FINALE => {
+	:ID => 318,
+	:name => "Finale",
+	:desc => "The user squirts delicious cream after each attack, healing the HP of its allies a little."
+},
+
+:FOUNDRY => {
+	:ID => 319,
+	:name => "Foundry",
+	:desc => "The user's furnace-like body protects it from water and rock attacks, and boosts fire attacks against rock targets."
+}
+
 }
