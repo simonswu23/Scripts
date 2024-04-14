@@ -127,6 +127,7 @@ class PokeBattle_Move_000 < PokeBattle_Move
         opponent.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
       end
     end
+
     return ret
   end
 
@@ -135,6 +136,8 @@ class PokeBattle_Move_000 < PokeBattle_Move
     return if !showanimation
     if id == :AQUACUTTER
       @battle.pbAnimation(:RAZORSHELL,attacker,opponent,hitnum)
+    elsif (@move == :RAINBOWSCALES)
+      @battle.pbAnimation(:FAIRYWIND,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
     end
@@ -768,6 +771,7 @@ end
 ################################################################################
 class PokeBattle_Move_016 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     if !opponent.pbCanAttract?(attacker)
       return -1
     end
@@ -785,13 +789,32 @@ class PokeBattle_Move_016 < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",opponent.pbThis,
       getItemName(opponent.item),attacker.pbThis(true)))
     end
-    if (@move == :SPRINGTIDESTORM)
-      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.effects[:Torment]=true
-      @battle.pbDisplay(_INTL("{1} was subjected to torment!",opponent.pbThis))
-    end
     return 0
   end
+
+  def pbAdditionalEffect(attacker,opponent)
+    if !@battle.pbCheckSideAbility(:AROMAVEIL,opponent).nil? && !(opponent.moldbroken)
+      @battle.pbDisplay(_INTL("The Aroma Veil protects #{opponent.pbThis} from infatuation!"))
+    end
+    if opponent.pbCanAttract?(attacker)
+      opponent.effects[:Attract]=attacker.index
+      @battle.pbCommonAnimation("Attract",opponent,nil)
+      @battle.pbDisplay(_INTL("{1} fell in love!",opponent.pbThis))
+      if opponent.hasWorkingItem(:DESTINYKNOT) && attacker.ability != :OBLIVIOUS && attacker.effects[:Attract]<0
+        attacker.effects[:Attract]=opponent.index
+        @battle.pbCommonAnimation("Attract",attacker,nil)
+        @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",opponent.pbThis,
+        getItemName(opponent.item),attacker.pbThis(true)))
+      end
+    end
+    if (@move == :SPRINGTIDESTORM && !opponent.effects[:Torment])
+      opponent.effects[:Torment]=true
+      @battle.pbAnimation(:TORMENT,attacker,opponent,1)
+      @battle.pbDisplay(_INTL("{1} was subjected to torment!",opponent.pbThis))
+    end
+    return true
+  end
+
 end
 
 ################################################################################

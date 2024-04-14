@@ -1812,6 +1812,12 @@ ABILHASH = {
 	:ID => 319,
 	:name => "Foundry",
 	:desc => "The user's furnace-like body protects it from water and rock attacks, and boosts fire attacks against rock targets."
+},
+
+:SILVERSCALES => {
+	:ID => 320,
+	:name => "Silver Scales",
+	:desc => "The user's body is coated with shimmering silver scales, shielding it from damage and boosting its wind attacks."
 }
 
 }

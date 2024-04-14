@@ -4979,7 +4979,8 @@ class PokeBattle_Battler
 
         # @SWu buff Ledian Crest
         #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
-        addleffect=0 if (user.crested == :CINCCINO && i>1)
+
+        addleffect=100 if user.ability == :SILVERSCALES && (PBFields::WINDMOVES.include?(basemove.move) || PBFields::WINDRIDERMOVES.include?(basemove.move))
 
         if @battle.pbRandom(100)<addleffect
           basemove.pbAdditionalEffect(user,target)
@@ -4987,9 +4988,9 @@ class PokeBattle_Battler
 
         addleffect=basemove.moreeffect
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
+
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
         #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
-        addleffect=0 if (user.crested == :CINCCINO && i>1)
         if @battle.pbRandom(100)<addleffect
           basemove.pbSecondAdditionalEffect(user,target)
         end

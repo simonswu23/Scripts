@@ -1039,3 +1039,41 @@ class PokeBattle_Move_906 < PokeBattle_Move
     @battle.pbAnimation(:PETALBLIZZARD,attacker,opponent,hitnum)
   end
 end
+
+################################################################################
+# Flutterby (Spring Breeze)
+################################################################################
+class PokeBattle_Move_907 < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    rnd=@battle.pbRandom(5)
+    case rnd
+      when 0
+        return false if !opponent.pbCanSleep?(false)
+        opponent.pbSleep
+        @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
+      when 1
+        return false if !opponent.pbCanPoison?(false)
+        opponent.pbPoison(attacker)
+        @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
+      when 2
+        return false if !opponent.pbCanParalyze?(false)
+        opponent.pbParalyze(attacker)
+        @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
+      when 3
+        return false if !opponent.pbCanSleep?(false)
+        opponent.pbSleep
+        @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
+      when 4
+        return false if !opponent.pbCanSleep?(false)
+        opponent.pbSleep
+        @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
+    end
+    return true
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    @battle.pbAnimation(:SILVERWIND,attacker,opponent,hitnum)
+  end
+
+end

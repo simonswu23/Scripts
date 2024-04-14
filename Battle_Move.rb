@@ -1202,6 +1202,9 @@ class PokeBattle_Move
         end
       end
     end
+    if (@move == :RAINBOWSCALES || @move == :NEEDLEPIERCE && typemod < 4)
+      return 4
+    end
     return typemod
   end
 
@@ -2045,6 +2048,7 @@ class PokeBattle_Move
     #Abilities defense boost
     case opponent.ability
       when :ICESCALES then defmult*=2.0 if pbIsSpecial?(type) && !(opponent.moldbroken)
+      when :SILVERSCALES then defmult*=2.0 if effect > 0 && !(opponent.moldbroken)
       when :MARVELSCALE then defmult*=1.5 if (pbIsPhysical?(type) && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0))) && !(opponent.moldbroken)
       when :GRASSPELT then defmult*=1.5 if pbIsPhysical?(type) && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
       when :FURCOAT then defmult*=2.0 if pbIsPhysical?(type) && !(opponent.moldbroken)

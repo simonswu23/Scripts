@@ -665,7 +665,7 @@ MONHASH = {
 		:dexnum => 12,
 		:Type1 => :BUG,
 		:Type2 => :FLYING,
-		:BaseStats => [60, 45, 50, 90, 80, 70],
+		:BaseStats => [60, 55, 60, 95, 85, 80],
 		:EVs => [0, 0, 0, 2, 1, 0],
 		:Abilities => [:COMPOUNDEYES, :TINTEDLENS],
 		:GrowthRate => :MediumFast,
@@ -699,7 +699,10 @@ MONHASH = {
 			[37,:CAPTIVATE],
 			[41,:TAILWIND],
 			[43,:AIRSLASH],
-			[47,:QUIVERDANCE]],
+			[47,:QUIVERDANCE],
+			[50,:HURRICANE],
+			[60,:SPRINGBREEZE],
+			[68,:RAINBOWSCALES]],
 		:compatiblemoves => [:ACROBATICS,:AERIALACE,:AIRCUTTER,:AIRSLASH,:BATONPASS,:BIDE,:BUGBITE,:BUGBUZZ,:CURSE,:DEFOG,:DOUBLEEDGE,:DRAININGKISS,:DREAMEATER,:DUALWINGBEAT,:ELECTROWEB,:ENERGYBALL,:FLASH,:GIGADRAIN,:GIGAIMPACT,:HEADBUTT,:HURRICANE,:HYPERBEAM,:INFESTATION,:IRONDEFENSE,:MEGADRAIN,:MIMIC,:NIGHTMARE,:OMINOUSWIND,:POLLENPUFF,:PSYCHIC,:PSYCHUP,:PSYWAVE,:RAGE,:RAINDANCE,:RAZORWIND,:REFLECT,:ROOST,:SAFEGUARD,:SHADOWBALL,:SIGNALBEAM,:SILVERWIND,:SKILLSWAP,:SOLARBEAM,:STRINGSHOT,:STRUGGLEBUG,:SUNNYDAY,:SWEETSCENT,:SWIFT,:TAILWIND,:TAKEDOWN,:TELEPORT,:THIEF,:TWISTER,:UTURN,:VENOSHOCK,:WHIRLWIND,
 			#Rejuv only moves
 			:IRRITATION],
@@ -719,9 +722,9 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [60, 45, 50, 140, 80, 120],
-		:Abilities => [:TINTEDLENS],
+		:BaseStats => [60, 25, 70, 145, 115, 120],
 		:Height => 170,
+		:Abilities => [:SILVERSCALES],
 		:Weight => 705,
 	},
 
@@ -819,7 +822,7 @@ MONHASH = {
 		:dexnum => 15,
 		:Type1 => :BUG,
 		:Type2 => :POISON,
-		:BaseStats => [65, 90, 40, 45, 80, 75],
+		:BaseStats => [65, 100, 50, 45, 80, 95],
 		:EVs => [0, 2, 0, 0, 1, 0],
 		:Abilities => [:SWARM, :SNIPER],
 		:GrowthRate => :MediumFast,
@@ -867,9 +870,8 @@ MONHASH = {
 		:BattlerEnemyY => 13,
 		:BattlerAltitude => 11,
 	},
-
 	"Mega Form" => {
-		:BaseStats => [65, 150, 40, 15, 80, 145],
+		:BaseStats => [65, 155, 65, 15, 90, 145],
 		:Abilities => [:ADAPTABILITY],
 		:BaseEXP => 223,
 		:Height => 14,
@@ -17217,7 +17219,7 @@ MONHASH = {
 		:Type2 => :GROUND,
 		:BaseStats => [100, 110, 90, 85, 90, 60],
 		:EVs => [0, 3, 0, 0, 0, 0],
-		:Abilities => [:TORRENT, :DAMP],
+		:Abilities => [:TORRENT, :REGENERATOR],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :FemEighth,
 		:BaseEXP => 241,

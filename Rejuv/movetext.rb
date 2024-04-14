@@ -14027,7 +14027,49 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 10,
 	:target => :AllOpposing,
-	:desc => "The user releases a torrent of cherry blossom petals at foes, lowering its attack and special defense after use."
+	:desc => "Attacks with a torrent of cherry blossom petals at foes. Lowers attack and special defense outside of sun."
+},
+
+:RAINBOWSCALES => {
+	:ID => 914,
+	:name => "Rainbow Scales",
+	:function => 0x000,
+	:type => :BUG,
+	:category => :special,
+	:basedamage => 120,
+	:accuracy => 85,
+	:maxpp => 10,
+	:target => :AllOpposing,
+	:desc => "Attacks foes with a stream of glimmering rainbow scales. Ignores resistances."
+},
+
+:SPRINGBREEZE => {
+	:ID => 915,
+	:name => "Spring Breeze",
+	:function => 0x907,
+	:type => :BUG,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 30,
+	:target => :AllOpposing,
+	:desc => "Attacks opponents with springtime air. May poison, paralyze, or sleep."
+},
+
+:NEEDLEPIERCE => {
+	:ID => 916,
+	:name => "Needle Pierce",
+	:function => 0x10B,
+	:type => :BUG,
+	:category => :physical,
+	:basedamage => 130,
+	:accuracy => 90,
+	:maxpp => 10,
+	:effect => 30,
+	:target => :AllOpposing,
+	# @SWu todo: finish defense modifier implementations
+	:desc => "INCOMPLETE IMPLEMENTATION: Stabs the target with a huge needle, piercing through defenses and resistances."
 },
 
 }
