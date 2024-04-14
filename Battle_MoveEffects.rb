@@ -731,6 +731,8 @@ class PokeBattle_Move_013 < PokeBattle_Move
     return if !showanimation
     if id == :SMITE
       @battle.pbAnimation(:SWIFT,attacker,opponent,hitnum)
+    elsif id == :MIRAGEBEAM
+      @battle.pbAnimation(:PSYBEAM,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
     end

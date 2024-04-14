@@ -14072,4 +14072,20 @@ MOVEHASH = {
 	:desc => "INCOMPLETE IMPLEMENTATION: Stabs the target with a huge needle, piercing through defenses and resistances."
 },
 
+:MIRAGEBEAM => {
+	:ID => 914,
+	:name => "Mirage Beam",
+	:function => 0x013,
+	:type => :PSYCHIC,
+	:category => :special,
+	:basedamage => 100,
+	:accuracy => 100,
+	:maxpp => 15,
+	:effect => 20,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:beammove => true,
+	:desc => "The user attacks with a shimmering beam of light. It may also confuse the target."
+},
+
 }
