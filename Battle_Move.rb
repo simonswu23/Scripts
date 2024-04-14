@@ -1945,12 +1945,6 @@ class PokeBattle_Move
     if ((@battle.pbWeather== :SUNNYDAY && !(attitemworks && attacker.item == :UTILITYUMBRELLA)) || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN) || @battle.FE == :BEWITCHED) && pbIsPhysical?(type)
       atkmult*=1.5 if attacker.ability == :FLOWERGIFT || attacker.pbPartner.ability == :FLOWERGIFT
     end
-    if (@battle.pbWeather== :SUNNYDAY) && pbIsPhysical?(type)
-      atkmult*=1.5 if attacker.ability == :SOLARIDOL 
-    end
-    if (@battle.pbWeather== :HAIL) && pbIsSpecial?(type)
-      atkmult*=1.5 if attacker.ability == :LUNARIDOL
-    end
     if attacker.pbPartner.ability == (:BATTERY) && pbIsSpecial?(type) && @battle.FE != :GLITCH
       if Rejuv && @battle.FE == :ELECTERRAIN
         atkmult*=1.5
