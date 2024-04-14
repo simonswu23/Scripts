@@ -399,6 +399,7 @@ class PokeBattle_Move
     calcdefmult = 1.0       
     calcdefmult*=1.5 if @battle.FE == :SNOWYMOUNTAIN && opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL        
     calcdefmult*=1.5 if @battle.FE == :ICY && opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL
+    calcdefmult*=1.5 if opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL
     calcdefmult*=1.5 if opponent.ability == :MARVELSCALE && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0)) && !(opponent.moldbroken)
     calcdefmult*=1.5 if opponent.ability == :GRASSPELT && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
     calcdefmult*=2.0 if opponent.ability == :FURCOAT && !(opponent.moldbroken)
@@ -2033,7 +2034,7 @@ class PokeBattle_Move
       defense=(defense*1.5).round
     end
     # @SWu buffing hail
-    if @battle.pbWeather== :HAIL && opponent.hasType?(:ICE) && !applysandstorm
+    if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL)
       defense=(defense*1.5).round
     end
     defmult=1.0
