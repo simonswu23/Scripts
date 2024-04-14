@@ -1732,7 +1732,7 @@ class PokeBattle_Battler
       end
     end
 
-    if (ability == :DROUGHT) && onactive && @battle.weather!=:SUNNYDAY
+    if (ability == :DROUGHT || ability == :SOLARIDOL) && onactive && @battle.weather!=:SUNNYDAY
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1755,22 +1755,21 @@ class PokeBattle_Battler
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:HEATROCK) ||
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :CHERRIM
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || ability == :SOLARIDOL
         @battle.pbCommonAnimation("Sunny",nil,nil)
-        if (ability == :DROUGHT)
-          @battle.pbDisplay(_INTL("{1}'s Drought intensified the sun's rays!",pbThis))
-        else
-          @battle.pbDisplay(_INTL("{1}'s Crest intensified the sun's rays!",pbThis))
-        end
+        @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,getAbilityName(ability)))
+
         if @battle.FE == :DARKCRYSTALCAVERN
           @battle.setField(:CRYSTALCAVERN,@battle.weatherduration)
           @battle.pbDisplay(_INTL("The sun lit up the crystal cavern!"))
         end
         @battle.reduceField if @battle.ProgressiveFieldCheck(PBFields::DARKNESS,2,3)
       end
+    elsif (ability == :SOLARIDOL && onactive && @battle.weather==:SUNNYDAY)
+      @battle.weatherduration=-1
     end
 
-    if (ability == :SNOWWARNING) && onactive && @battle.weather!=:HAIL
+    if (ability == :SNOWWARNING || ability == :LUNARIDOL) && onactive && @battle.weather!=:HAIL
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1790,9 +1789,9 @@ class PokeBattle_Battler
         @battle.weather=:HAIL
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:ICYROCK) || @battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :FROZENDIMENSION || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || ability == :LUNARIDOL
         @battle.pbCommonAnimation("Hail",nil,nil)
-        @battle.pbDisplay(_INTL("{1}'s Snow Warning made it hail!",pbThis))
+        @battle.pbDisplay(_INTL("{1}'s {2} made it hail!",pbThis,getAbilityName(ability)))
         for facemon in @battle.battlers
           if facemon.species==:EISCUE && facemon.form==1 # Eiscue
             facemon.pbRegenFace
@@ -1800,6 +1799,8 @@ class PokeBattle_Battler
           end
         end
       end
+    elsif (ability == :LUNARIDOL && onactive && @battle.weather==:HAIL)
+      @battle.weatherduration=-1
     end
     if (ability== :TEMPEST) && onactive 
       weathers=rand(5)
@@ -4557,7 +4558,11 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbPartner.pbThis,getAbilityName(target.pbPartner.ability)))
         return false
       end
+    end
 
+    if (basemove.pbType(user) == :FIRE && target.ability == :HEATPROOF)
+      @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbThis,getAbilityName(target.ability)))
+      return false
     end
 
     if accuracy
@@ -4976,6 +4981,8 @@ class PokeBattle_Battler
         addleffect=100 if basemove.move == :DIRECLAW && @battle.FE == :WASTELAND
         addleffect=100 if basemove.move == :INFERNALPARADE && @battle.FE == :INFERNAL
         addleffect=100 if basemove.move == :SUNDAE && @battle.weather == :HAIL
+        addleffect=100 if basemove.move == :SOLARFLARE && @battle.weather == :SUNNYDAY
+        addleffect=100 if basemove.move == :MIRAGEBEAM && @battle.weather == :SUNNYDAY
 
         # @SWu buff Ledian Crest
         #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)

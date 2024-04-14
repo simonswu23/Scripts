@@ -14030,4 +14030,20 @@ MOVEHASH = {
 	:desc => "The user releases a torrent of cherry blossom petals at foes, lowering its attack and special defense after use."
 },
 
+:MIRAGEBEAM => {
+	:ID => 914,
+	:name => "Mirage Beam",
+	:function => 0x013,
+	:type => :PSYCHIC,
+	:category => :special,
+	:basedamage => 100,
+	:accuracy => 100,
+	:maxpp => 15,
+	:effect => 20,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:beammove => true,
+	:desc => "The user attacks with a shimmering beam of light. It may also confuse the target."
+},
+
 }
