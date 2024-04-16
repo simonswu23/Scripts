@@ -590,6 +590,7 @@ class PokeBattle_Move
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
         (atype == :GROUND && opponent.ability == :LEVITATE && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN)) ||
         (atype == :POISON && opponent.ability == :PASTELVEIL)
         mod1=0
       end
@@ -1409,7 +1410,7 @@ class PokeBattle_Move
     return 3 if @function==0x201 && attacker.hp<=((attacker.totalhp)*0.5).floor # Gale Strike
     return 3 if attacker.ability == :MERCILESS && (opponent.status == :POISON || [:CORROSIVE,:CORRPSIVEMIST,:WASTELAND,:MURKWATERSURFACE].include?(@battle.FE))
     return 3 if (opponent.ability == :RATTLED || opponent.ability == :WIMPOUT) && @battle.FE == :COLOSSEUM
-    return 3 if attacker.crested == :ARIADOS && (opponent.status == :POISON || opponent.stages[PBStats::SPEED] < 0) # ariados crest
+    return 3 if attacker.crested == :ARIADOS && (opponent.status == :POISON || opponent.stages[PBStats::SPEED] < 0 || !opponent.hasMovedThisRound?) # ariados crest
     return 3 if (attacker.ability == :QUICKDRAW && attacker.effects[:QuickDrawSnipe])
     c=0    
     c+=attacker.effects[:FocusEnergy]
@@ -1588,7 +1589,9 @@ class PokeBattle_Move
       if $cache.items[attacker.item].checkFlag?(:typeboost) == type
         basemult*=1.2
         if $cache.items[attacker.item].checkFlag?(:gem)
-          basemult*=1.0833 #gems are 1.3; 1.2 * 1.0833 = 1.3
+          #@basemult*=1.0833 #gems are 1.3; 1.2 * 1.0833 = 1.3
+          # @SWu buffing gems to 1.5
+          basemult *= 1.25
           attacker.takegem=true
           @battle.pbDisplay(_INTL("The {1} strengthened {2}'s power!",getItemName(attacker.item),self.name))
         end
@@ -1670,7 +1673,7 @@ class PokeBattle_Move
           @fieldmessageshown = true
         end
         # Queen piece boost
-        if attacker.pokemon.piece==:QUEEN || attacker.ability == :QUEENLYMAJESTY
+        if attacker.pokemon.piece==:QUEEN || attacker.ability == :QUEENLYMAJESTY || attacker.ability == :HIVEQUEEN
           basemult*=1.5
           if attacker.pokemon.piece==:QUEEN
             @battle.pbDisplay("The Queen is dominating the board!")  && !@fieldmessageshown
@@ -1938,6 +1941,9 @@ class PokeBattle_Move
       when :GORILLATACTICS then atkmult*=1.5 if pbIsPhysical?(type)
       when :QUARKDRIVE then atkmult*=1.3 if (attacker.effects[:Quarkdrive][0] == PBStats::ATTACK && pbIsPhysical?(type)) || (attacker.effects[:Quarkdrive][0] == PBStats::SPATK && pbIsSpecial?(type))
     end
+    if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && type == :BUG
+      atkmult*=1.5
+    end
     # Mid Battle stat multiplying crests; Spiritomb Crest, Castform Crest
     case attacker.crested
       when :CASTFORM then atkmult*=1.5 if attacker.form == 1 && (@battle.pbWeather== :SUNNYDAY && !(attitemworks && attacker.item == :UTILITYUMBRELLA)) && pbIsSpecial?(type) && (@battle.FE != :GLITCH &&  @battle.FE != :FROZENDIMENSION)
@@ -1970,6 +1976,7 @@ class PokeBattle_Move
         when :LIGHTBALL then atkmult*=2.0 if attacker.pokemon.species == :PIKACHU && @battle.FE != :GLITCH
         when :CHOICEBAND then atkmult*=1.5 if pbIsPhysical?(type)
         when :CHOICESPECS then atkmult*=1.5 if pbIsSpecial?(type) && @battle.FE != :GLITCH
+        when :SOULDEW then atkmult*=1.5 if pbIsSpecial?(type) && (attacker.pokemon.species == :LATIAS || attacker.pokemon.species == :LATIOS) && @battle.FE != :GLITCH
       end
     end
     if @battle.FE != :INDOOR
@@ -2004,6 +2011,7 @@ class PokeBattle_Move
       end
       case attacker.ability
         when :QUEENLYMAJESTY then atkmult*=1.5 if @battle.FE == :FAIRYTALE
+        when :HIVEQUEEN then atkmult*=1.5 if @battle.FE == :FAIRYTALE
         when :LONGREACH then atkmult*=1.5 if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY)
         when :CORROSION then atkmult*=1.5 if (@battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :CORRUPTED)
         when :SKILLLINK then atkmult*=1.2 if (@battle.FE == :COLOSSEUM && (@function == 0xC0 || @function == 0x307 || (attacker.crested == :CINCCINO && !pbIsMultiHit))) #0xC0: 2-5 hits; 0x307: Scale Shot
@@ -2084,11 +2092,18 @@ class PokeBattle_Move
     if opponent.hasWorkingItem(:ASSAULTVEST) && pbIsSpecial?(type) && @battle.FE != :GLITCH
       defmult*=1.5
     end
+    if opponent.hasWorkingItem(:SOULDEW) && pbIsSpecial?(type) && (opponent.pokemon.species == :LATIAS || opponent.pokemon.species == :LATIOS) && @battle.FE != :GLITCH
+      defmult*=1.5
+    end
     if opponent.hasWorkingItem(:DEEPSEASCALE) && @battle.FE != :GLITCH && (opponent.pokemon.species == :CLAMPERL) && pbIsSpecial?(type)
       defmult*=2.0
     end
     if opponent.hasWorkingItem(:METALPOWDER) && (opponent.pokemon.species == :DITTO) && !opponent.effects[:Transform] && pbIsPhysical?(type)
       defmult*=2.0
+    end
+    
+    if opponent.crested == :VESPIQUEN
+      defmult*=1.5
     end
 
     #General damage modifiers
@@ -2208,6 +2223,7 @@ class PokeBattle_Move
     if opponent.damagestate.critical
       damage*=1.5
       damage*=1.5 if attacker.ability == :SNIPER
+      damage*=1.5 if attacker.crested == :ARIADOS
       damage*=1.5 if @move == :AIRCUTTER
     end
     # STAB-addition from Crests 
@@ -2568,7 +2584,8 @@ class PokeBattle_Move
     pri += 1 if attacker.crested == :FERALIGATR && @basedamage != 0 && attacker.turncount == 1 # Feraligatr Crest
     pri += 1 if attacker.ability == :PRANKSTER && @basedamage==0 && attacker.effects[:TwoTurnAttack] == 0 # Is status move
     # @SWu unnerfing Gale Wings
-    pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING && ((true) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.weather == :STRONGWINDS))
+    pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING
+    pri += 1 if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && @type==:BUG 
     pri += 3 if attacker.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@function)
     pri -= 1 if @battle.FE == :DEEPEARTH && @move == :COREENFORCER
     return pri

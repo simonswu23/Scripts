@@ -392,10 +392,10 @@ class PokeBattle_Battler
             else
               @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
             end
-            if pbPartner.ability == :INTIMIDATE
+            if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
               for i in @battle.battlers
                 next if i.isFainted? || !pbIsOpposing?(i.index)
-                i.pbReduceAttackStatStageIntimidate(pbPartner)
+                i.pbReduceStatStageOnEntry(pbPartner, pbPartner.ability)
               end
             end
           end

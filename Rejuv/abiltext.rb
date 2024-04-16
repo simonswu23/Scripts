@@ -1818,6 +1818,12 @@ ABILHASH = {
 	:ID => 320,
 	:name => "Silver Scales",
 	:desc => "The user's body is coated with shimmering silver scales, shielding it from damage and boosting its wind attacks."
+},
+
+:HIVEQUEEN => {
+	:ID => 321,
+	:name => "Hive Queen",
+	:desc => "Boosts the speed and power of all friendly bug attacks."
 }
 
 }

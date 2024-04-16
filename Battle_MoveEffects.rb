@@ -121,13 +121,6 @@ end
 class PokeBattle_Move_000 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret = super(attacker,opponent,hitnum,alltargets,showanimation)
-    if Rejuv && @battle.FE == :SWAMP  && @move == :ATTACKORDER
-      stat = [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED].sample
-      if opponent.pbCanReduceStatStage?(stat,true)
-        opponent.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
-      end
-    end
-
     return ret
   end
 
@@ -3637,7 +3630,8 @@ class PokeBattle_Move_078 < PokeBattle_Move
        $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC || # Bounce
        $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCE)    # Sky Drop
       return basedmg*2
-    elsif opponent.hasType?(:FLYING) || opponent.ability == :LEVITATE || opponent.effects[:MagnetRise]>0 || opponent.effects[:Telekinesis]>0
+    elsif opponent.hasType?(:FLYING) || opponent.ability == :LEVITATE || opponent.effects[:MagnetRise]>0 || opponent.effects[:Telekinesis]>0 ||
+          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
       return basedmg*2
     end
     return basedmg
@@ -3650,7 +3644,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -4954,6 +4948,25 @@ class PokeBattle_Move_0AD < PokeBattle_Move
       opponent.pbOwnSide.effects[:QuickGuard]=false
       opponent.pbOwnSide.effects[:MatBlock]=false
     end
+    if Rejuv && @battle.FE == :SWAMP  && @move == :ATTACKORDER
+      stat = [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED].sample
+      if opponent.pbCanReduceStatStage?(stat,true)
+        opponent.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
+      end
+    end
+    if Rejuv && attacker.crested == :VESPIQUEN && @move == :ATTACKORDER
+      if !opponent.isFainted? && opponent.damagestate.calcdamage>0 &&
+        !opponent.damagestate.substitute
+       if opponent.effects[:MultiTurn]==0
+         opponent.effects[:MultiTurn]=4+@battle.pbRandom(2)
+         opponent.effects[:MultiTurn]=7 if attacker.hasWorkingItem(:GRIPCLAW)
+         opponent.effects[:MultiTurnAttack]=:INFESTATION
+         opponent.effects[:MultiTurnUser]=attacker.index
+         opponent.effects[:BindingBand] = attacker.hasWorkingItem(:BINDINGBAND)
+         @battle.pbDisplay(_INTL("{1} has been afflicted with an infestation by {2}!",opponent.pbThis,attacker.pbThis(true)))
+       end
+      end
+    end
     return ret
   end
 end
@@ -6256,17 +6269,64 @@ end
 ################################################################################
 class PokeBattle_Move_0D5 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.hp==attacker.totalhp
+    if attacker.hp==attacker.totalhp && (attacker.crested != :VESPIQUEN)
       @battle.pbDisplay(_INTL("{1}'s HP is full!",attacker.pbThis))
       return -1
+    elsif attacker.crested == :VESPIQUEN && attacker.hp==attacker.totalhp && attacker.pbPartner.hp==attacker.pbPartner.totalhp &&
+          attacker.status == nil && attacker.pbPartner.status == nil
+      @battle.pbDisplay(_INTL("But everyone is healthy!"))
+      return -1
     end
-    pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
-    if @battle.FE == :FOREST && (@move == :HEALORDER)
-      attacker.pbRecoverHP(((attacker.totalhp+1) * 0.66).floor,true)
-    else
-      attacker.pbRecoverHP(((attacker.totalhp+1)/2).floor,true)
+    if (attacker.hp!=attacker.totalhp)
+      pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+      if @battle.FE == :FOREST && (@move == :HEALORDER)
+        attacker.pbRecoverHP(((attacker.totalhp+1) * 0.66).floor,true)
+      else
+        attacker.pbRecoverHP(((attacker.totalhp+1)/2).floor,true)
+      end
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
     end
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbThis))
+    
+    if (@move == :HEALORDER && attacker.species == :VESPIQUEN)
+      t=attacker.status
+      if (t != nil)
+        pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+      end
+      attacker.status=nil
+      attacker.statusCount=0
+      if t== :BURN
+        @battle.pbDisplay(_INTL("{1} was cured of its burn.",attacker.pbThis))
+      elsif t== :POISON
+        @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",attacker.pbThis))
+      elsif t== :PARALYSIS
+        @battle.pbDisplay(_INTL("{1} was cured of its paralysis.",attacker.pbThis))
+      elsif t== :FROSTBITE
+        @battle.pbDisplay(_INTL("{1} was cured of its frostbite.",attacker.pbThis))
+      end
+      if (attacker.crested == :VESPIQUEN && !attacker.pbPartner.isFainted?)
+        if attacker.pbPartner.hp != attacker.pbPartner.totalhp
+          pbShowAnimation(@move,attacker.pbPartner,nil,hitnum,alltargets,showanimation)
+          partnerHpGain = ((attacker.pbPartner.totalhp+1)/2).floor
+          attacker.pbPartner.pbRecoverHP(partnerHpGain,true)
+          @battle.pbDisplay(_INTL("{1}'s HP was restored.",attacker.pbPartner.pbThis))
+        end
+        t=attacker.pbPartner.status
+        if (t != nil)
+          pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+        end
+        attacker.pbPartner.status=nil
+        attacker.pbPartner.statusCount=0
+        if t == :BURN
+          @battle.pbDisplay(_INTL("{1} was cured of its burn.",attacker.pbPartner.pbThis))
+        elsif t== :POISON
+          @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",attacker.pbPartner.pbThis))
+        elsif t== :PARALYSIS
+          @battle.pbDisplay(_INTL("{1} was cured of its paralysis.",attacker.pbPartner.pbThis))
+        elsif t== :FROSTBITE
+          @battle.pbDisplay(_INTL("{1} was cured of its frostbite.",attacker.pbPartner.pbThis))
+        end
+      end
+    end
     return 0
   end
 end
@@ -8544,7 +8604,7 @@ class PokeBattle_Move_11C < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce

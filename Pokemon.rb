@@ -839,7 +839,7 @@ class PokeBattle_Pokemon
   def isAirborne?
     return false if @item == :IRONBALL
     return true if (self.type1 == :FLYING || self.type2 == :FLYING)
-    return true if @ability == :LEVITATE
+    return true if @ability == :LEVITATE || @ability == :SOLARIDOL || @ability == :LUNARIDOL || @ability == :HIVEQUEEN
     return true if @item == :AIRBALLOON
     return false
   end

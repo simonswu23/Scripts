@@ -899,10 +899,10 @@ class PokeBattle_Battler
         else
           @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
         end
-        if pbPartner.ability == :INTIMIDATE
+        if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
           for i in @battle.battlers
             next if i.isFainted? || !pbIsOpposing?(i.index)
-            i.pbReduceAttackStatStageIntimidate(pbPartner)
+            i.pbReduceStatStageOnEntry(pbPartner, pbPartner.ability)
           end
         end
       end
@@ -1917,7 +1917,21 @@ class PokeBattle_Battler
     if self.ability == :INTIMIDATE && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-        @battle.battlers[i].pbReduceAttackStatStageIntimidate(self)
+        @battle.battlers[i].pbReduceStatStageOnEntry(self, :INTIMIDATE)
+      end
+    end
+    # Pressure
+    if self.ability == :PRESSURE && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStatStageOnEntry(self, :PRESSURE)
+      end
+    end
+    # Unnerve
+    if self.ability == :UNNERVE && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStatStageOnEntry(self, :UNNERVE)
       end
     end
     # Downdraft
@@ -4339,8 +4353,8 @@ class PokeBattle_Battler
         return false
       end
     end
-    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
-      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
+    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
+      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
       @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user
       if (basemove.priorityCheck(user) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
