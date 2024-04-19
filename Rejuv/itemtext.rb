@@ -10093,5 +10093,25 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:VOLCARONACREST => {
+	:ID => 2006,
+	:name => "Volcarona Crest",
+	:desc => "Summons the power of the sun.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:TOXAPEXCREST => {
+	:ID => 2007,
+	:name => "Toxapex Crest",
+	:desc => "Spreads corrosion and heals at the end of each turn.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 
 }

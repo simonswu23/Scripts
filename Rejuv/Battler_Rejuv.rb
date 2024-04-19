@@ -84,7 +84,7 @@ class PokeBattle_Battler
           self.status=nil
         end
         if (self.ability == :REGENERATOR || (self.ability == :TRACE &&
-          self.effects[:TracedAbility]==:REGENERATOR)) && @pokemon && @hp>0
+          (self.effects[:TracedAbility]==:REGENERATOR || self.effects[:TracedAbility] == :TIDEPOOLTYRANT)) || self.ability == :TIDEPOOLTYRANT) && @pokemon && @hp>0
             self.pbRecoverHP((totalhp/3.0).floor)
         end
         pbInitPokemon(pkmn,index)

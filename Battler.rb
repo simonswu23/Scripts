@@ -557,7 +557,7 @@ class PokeBattle_Battler
     if self.ability == :NATURALCURE && @pokemon
       self.status=nil
     end
-    if self.ability == :REGENERATOR && @pokemon && @hp>0
+    if (self.ability == :REGENERATOR || self.ability == :TIDEPOOLTYRANT) && @pokemon && @hp>0
       self.pbRecoverHP((totalhp/3.0).floor)
     end
     pbInitPokemon(pkmn,index)
@@ -1732,7 +1732,7 @@ class PokeBattle_Battler
       end
     end
 
-    if (ability == :DROUGHT || ability == :SOLARIDOL) && onactive && @battle.weather!=:SUNNYDAY
+    if ((ability == :DROUGHT && onactive) || self.crested == :VOLCARONA) && @battle.weather!=:SUNNYDAY
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1755,7 +1755,7 @@ class PokeBattle_Battler
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:HEATROCK) ||
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || ability == :SOLARIDOL
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VOLCARONA
         @battle.pbCommonAnimation("Sunny",nil,nil)
         @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,getAbilityName(ability)))
 
@@ -1765,7 +1765,7 @@ class PokeBattle_Battler
         end
         @battle.reduceField if @battle.ProgressiveFieldCheck(PBFields::DARKNESS,2,3)
       end
-    elsif (ability == :SOLARIDOL && onactive && @battle.weather==:SUNNYDAY)
+    elsif (self.crested == :VOLCARONA && @battle.weather==:SUNNYDAY)
       @battle.weatherduration=-1
     end
 
@@ -3019,10 +3019,11 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} paralyzed {3}! It may be unable to move!", target.pbThis,getAbilityName(target.ability),user.pbThis(true)))
           end
         end
-        if target.ability == :FLAMEBODY && @battle.pbRandom(10)<3 && user.pbCanBurn?(false) && @battle.FE != :FROZENDIMENSION
+        if (((target.ability == :FLAMEBODY && @battle.pbRandom(10)<3)|| target.crested == :VOLCARONA) && user.pbCanBurn?(false) && @battle.FE != :FROZENDIMENSION)
           user.pbBurn(target)
-          @battle.pbDisplay(_INTL("{1}'s {2} burned {3}!",target.pbThis,
-            getAbilityName(target.ability),user.pbThis(true)))
+          negator = getAbilityName(target.ability)
+          negator = getItemName(target.item) if target.crested == :VOLCARONA
+          @battle.pbDisplay(_INTL("{1}'s {2} burned {3}!",target.pbThis,negator,user.pbThis(true)))
         end
         if target.ability == :IRONBARBS && !user.isFainted? && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           @battle.scene.pbDamageAnimation(user,0)
@@ -3703,6 +3704,10 @@ class PokeBattle_Battler
       pbRecoverHP((self.totalhp/16).floor,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
     end
+    if hpcure && self.crested == :TOXAPEX && self.hp!=self.totalhp
+      pbRecoverHP((self.totalhp/10).floor,true)
+      @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
+    end
     if self.item == :WHITEHERB
       reducedstats=false
       for i in 1..7
@@ -3716,6 +3721,7 @@ class PokeBattle_Battler
         return
       end
     end
+    
     if self.item == :MENTALHERB && (@effects[:Attract]>=0 || @effects[:Taunt]>0 || @effects[:Encore]>0 ||
        @effects[:Torment] || @effects[:Disable]>0 || @effects[:HealBlock]>0)
       @battle.pbDisplay(_INTL("{1}'s {2} cured its love problem!",pbThis,itemname)) if @effects[:Attract]>=0
@@ -5040,8 +5046,26 @@ class PokeBattle_Battler
         end
       end
 
+      # Tidepool Tyrant
+      if user.ability == :TIDEPOOLTYRANT
+        if (basemove.type == :POISON && !(target.pokemon.corrosiveGas || target.ability == (:STICKYHOLD) || 
+          @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?))
+          target.pokemon.corrosiveGas = true
+          @battle.pbDisplay(_INTL("{1} corroded {2}'s {3}!",user.pbThis,target.pbThis(true),getItemName(target.item)))
+        elsif (basemove.type == :WATER && target.damagestate.calcdamage>0 && !target.damagestate.substitute)
+          target.stages[PBStats::ATTACK]   = 0
+          target.stages[PBStats::DEFENSE]  = 0
+          target.stages[PBStats::SPEED]    = 0
+          target.stages[PBStats::SPATK]    = 0
+          target.stages[PBStats::SPDEF]    = 0
+          target.stages[PBStats::ACCURACY] = 0
+          target.stages[PBStats::EVASION]  = 0
+          @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",target.pbThis))
+        end
+      end
+
       # Corrosion random status
-      if user.ability == :CORROSION && @battle.FE == :WASTELAND && damage > 0
+      if (user.ability == :CORROSION || user.ability == :TIDEPOOLTYRANT) && @battle.FE == :WASTELAND && damage > 0
         if @battle.pbRandom(10)==0
           case @battle.pbRandom(5)
             when 0 then target.pbBurn(user)       if target.pbCanBurn?(false)
@@ -5543,7 +5567,7 @@ class PokeBattle_Battler
         @battle.battlers[i].moldbroken = false
       end
     end
-    if user.ability == (:CORROSION)
+    if user.ability == (:CORROSION) || user.ability == :TIDEPOOLTYRANT
       for battlers in targets
         battlers.corroded = true
       end

@@ -4168,7 +4168,7 @@ class PokeBattle_Battle
                i.ability == (:STURDY) || i.ability == (:BATTLEARMOR) ||
                i.ability == (:SHELLARMOR) || i.ability == (:WATERBUBBLE) ||
                i.ability == (:MAGICGUARD) || i.ability == (:WONDERGUARD) ||
-               i.ability == (:PRISMARMOR) || i.effects[:AquaRing] ||
+               i.ability == (:PRISMARMOR) || i.effects[:AquaRing] || i.ability == :SOLARIDOL ||
                i.pbOwnSide.effects[:WideGuard] || (i.pbOwnSide.effects[:AreniteWall]>0)
               pbDisplay(_INTL("{1} is immune to the eruption!",i.pbThis))
             else

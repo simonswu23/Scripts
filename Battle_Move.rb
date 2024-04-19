@@ -486,6 +486,10 @@ class PokeBattle_Move
       mod1=2 if otype1 == :GHOST && (atype == :NORMAL || atype == :FIGHTING)
       mod2=2 if otype2 == :GHOST && (atype == :NORMAL || atype == :FIGHTING)
     end
+    if attacker.ability == :CORROSION || attacker.ability == :TIDEPOOLTYRANT
+      mod1=1 if otype1 == :STEEL && atype == :POISON
+      mod2=1 if otype1 == :STEEL && atype == :POISON
+    end
     if @battle.FE == :HOLY
       mod1=4 if (otype1 == :GHOST || otype1 == :DARK) && atype == :NORMAL
       mod2=4 if (otype2 == :GHOST || otype2 == :DARK) && atype == :NORMAL
@@ -821,11 +825,11 @@ class PokeBattle_Move
         return 0
       end
     end
-    if (((opponent.ability == :FLASHFIRE || opponent.ability == :SOLARIDOL) && !opponent.moldbroken) || 
-      (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))) && 
-      type == :FIRE && @battle.FE != :FROZENDIMENSION
+    if ((opponent.ability == :FLASHFIRE && !opponent.moldbroken) || opponent.crested == :VOLCARONA ||
+        (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))) && 
+        type == :FIRE && @battle.FE != :FROZENDIMENSION
       negator = getAbilityName(opponent.ability)
-      negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))
+      negator = getItemName(opponent.item) if (opponent.crested == :VOLCARONA || (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE)))
       if !opponent.effects[:FlashFire]
         opponent.effects[:FlashFire]=true
         @battle.pbDisplay(_INTL("{1}'s {2} activated, boosting the power of its fire moves!",
@@ -1086,14 +1090,14 @@ class PokeBattle_Move
         return 0
       end
     end
-    if (((opponent.ability == :FLASHFIRE || opponent.ability == :SOLARIDOL) && !opponent.moldbroken) || 
-      (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))) && 
-      (type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))) && @battle.FE != :FROZENDIMENSION
+    if ((opponent.ability == :FLASHFIRE && !opponent.moldbroken) || opponent.crested == :VOLCARONA ||
+        (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))) && 
+        (type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))) && @battle.FE != :FROZENDIMENSION
       negator = getAbilityName(opponent.ability)
-      negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE))
+      negator = getItemName(opponent.item) if (opponent.crested == :VOLCARONA || (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:BURNDRIVE)))
       if !opponent.effects[:FlashFire]
         opponent.effects[:FlashFire]=true
-        @battle.pbDisplay(_INTL("{1}'s {2} activated!",
+        @battle.pbDisplay(_INTL("{1}'s {2} activated, boosting the power of its fire moves!",
            opponent.pbThis,negator))
       else
         @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
@@ -1409,6 +1413,7 @@ class PokeBattle_Move
     return 3 if attacker.effects[:LaserFocus]>0 || @function==0xA0 || @function==0x319 # Frost Breath, Surging Strikes
     return 3 if @function==0x201 && attacker.hp<=((attacker.totalhp)*0.5).floor # Gale Strike
     return 3 if attacker.ability == :MERCILESS && (opponent.status == :POISON || [:CORROSIVE,:CORRPSIVEMIST,:WASTELAND,:MURKWATERSURFACE].include?(@battle.FE))
+    return 3 if attacker.ability == :TIDEPOOLTYRANT && (!opponent.status.nil? || [:CORROSIVE,:CORRPSIVEMIST,:WASTELAND,:MURKWATERSURFACE].include?(@battle.FE))
     return 3 if (opponent.ability == :RATTLED || opponent.ability == :WIMPOUT) && @battle.FE == :COLOSSEUM
     return 3 if attacker.crested == :ARIADOS && (opponent.status == :POISON || opponent.stages[PBStats::SPEED] < 0 || !opponent.hasMovedThisRound?) # ariados crest
     return 3 if (attacker.ability == :QUICKDRAW && attacker.effects[:QuickDrawSnipe])
@@ -1436,7 +1441,7 @@ class PokeBattle_Move
     if Rejuv && @battle.FE == :CHESS
       c+=1 if (opponent.ability == :RECKLESS || opponent.ability == :GORILLATACTICS)
       c+=1 if [:STOMPINGTANTRUM,:THRASH,:OUTRAGE].include?(opponent.lastMoveUsed) 
-      if attacker.ability == :MERCILESS
+      if attacker.ability == :MERCILESS || attacker.ability == :TIDEPOOLTYRANT
         frac = (1.0*opponent.hp) / (1.0*opponent.totalhp)  
         if frac < 0.8  
           c+=1  
@@ -1579,9 +1584,6 @@ class PokeBattle_Move
       when :INEXORABLE    then basemult*=1.3 if type == :DRAGON && (!opponent.hasMovedThisRound? || @battle.switchedOut[opponent.index])
     end
     case opponent.ability
-      # when :HEATPROOF     then basemult*=0 if !(opponent.moldbroken) && type == :FIRE
-      # when :SOLARIDOL     then basemult*=0 if !(opponent.moldbroken) && type == :FIRE
-      # when :LUNARIDOL     then basemult*=0 if !(opponent.moldbroken) && type == :ICE
       when :DRYSKIN       then basemult*=1.25 if !(opponent.moldbroken) && type == :FIRE
       when :TRANSISTOR    then basemult*=0.5 if (@battle.FE == :ELECTERRAIN && type == :GROUND) && !(opponent.moldbroken)
     end
@@ -1955,6 +1957,12 @@ class PokeBattle_Move
     if ((@battle.pbWeather== :SUNNYDAY && !(attitemworks && attacker.item == :UTILITYUMBRELLA)) || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN) || @battle.FE == :BEWITCHED) && pbIsPhysical?(type)
       atkmult*=1.5 if attacker.ability == :FLOWERGIFT || attacker.pbPartner.ability == :FLOWERGIFT
     end
+    if (@battle.pbWeather== :SUNNYDAY) && pbIsPhysical?(type)
+      atkmult*=1.5 if attacker.ability == :SOLARIDOL 
+    end
+    if (@battle.pbWeather== :HAIL) && pbIsSpecial?(type)
+      atkmult*=1.5 if attacker.ability == :LUNARIDOL
+    end
     if attacker.pbPartner.ability == (:BATTERY) && pbIsSpecial?(type) && @battle.FE != :GLITCH
       if Rejuv && @battle.FE == :ELECTERRAIN
         atkmult*=1.5
@@ -2014,6 +2022,7 @@ class PokeBattle_Move
         when :HIVEQUEEN then atkmult*=1.5 if @battle.FE == :FAIRYTALE
         when :LONGREACH then atkmult*=1.5 if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY)
         when :CORROSION then atkmult*=1.5 if (@battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :CORRUPTED)
+        when :TIDEPOOLTYRANT then atkmult*=1.5 if (@battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :CORRUPTED)
         when :SKILLLINK then atkmult*=1.2 if (@battle.FE == :COLOSSEUM && (@function == 0xC0 || @function == 0x307 || (attacker.crested == :CINCCINO && !pbIsMultiHit))) #0xC0: 2-5 hits; 0x307: Scale Shot
       end
     end

@@ -39,7 +39,7 @@ PokeBattle_Battler.class_eval{
     atkmult=(atkmult*1.5).round if self.hasWorkingItem(:CHOICEBAND)
     atkmult=(atkmult*1.5).round if self.ability == (:QUEENLYMAJESTY) && (@battle.FE==:CHESS || @battle.FE==:FAIRYTALE)
     atkmult=(atkmult*1.5).round if self.ability == (:LONGREACH) && (@battle.FE==:MOUNTAIN || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:SKY)
-    atkmult=(atkmult*1.5).round if self.ability == (:CORROSION) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
+    atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) ||  self.ability == (:TIDEPOOLTYRANT)) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
     atkmult=(atkmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::ATTACK    
     atk=(atk*atkmult*1.0/0x1000).round
     return atk
@@ -80,7 +80,7 @@ PokeBattle_Battler.class_eval{
     end
     atkmult=(atkmult*1.5).round if self.ability == (:QUEENLYMAJESTY) && (@battle.FE==:CHESS || @battle.FE==:FAIRYTALE)
     atkmult=(atkmult*1.5).round if self.ability == (:LONGREACH) && (@battle.FE==:MOUNTAIN || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:SKY)
-    atkmult=(atkmult*1.5).round if self.ability == (:CORROSION) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
+    atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) || self.ability == (:TIDEPOOLTYRANT)) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
     atkmult=(atkmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::SPATK   
     atk=(atk*atkmult*1.0/0x1000).round
     return atk

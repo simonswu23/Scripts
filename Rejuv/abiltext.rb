@@ -1824,6 +1824,12 @@ ABILHASH = {
 	:ID => 321,
 	:name => "Hive Queen",
 	:desc => "Boosts the speed and power of all friendly bug attacks."
+},
+
+:TIDEPOOLTYRANT => {
+	:ID => 322,
+	:name => "Tidepool Tyrant",
+	:desc => "Big Pex."
 }
 
 }

@@ -110,6 +110,18 @@
         @battlers[index].attack, @battlers[index].spatk = @battlers[index].spatk, @battlers[index].attack #@type1 == :FIGHTING
         @battlers[index].type1 = :FIGHTING
       end
+    when :TOXAPEX
+      for i in 0...4
+        next if @battle.battlers[i].isFainted? || @battle.battlers[i].damagestate.substitute
+        @battle.battlers[i].stages[PBStats::ATTACK]     = 0
+        @battle.battlers[i].stages[PBStats::DEFENSE]    = 0
+        @battle.battlers[i].stages[PBStats::SPATK]      = 0
+        @battle.battlers[i].stages[PBStats::SPDEF]      = 0
+        @battle.battlers[i].stages[PBStats::SPEED]      = 0
+        @battle.battlers[i].stages[PBStats::ACCURACY]   = 0
+        @battle.battlers[i].stages[PBStats::EVASION]    = 0
+      end
+      @battle.pbDisplay(_INTL("{1} cleared all stat changes!",battlers[index].pbThis))
     end
   
   end
