@@ -1757,7 +1757,10 @@ class PokeBattle_Battler
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
         @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VOLCARONA
         @battle.pbCommonAnimation("Sunny",nil,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,getAbilityName(ability)))
+        sunTrigger = getAbilityName(ability)
+        sunTrigger = getItemName(self.item) if self.crested == :VOLCARONA
+        # @SWu move this to Battle_Rejuv in the future!
+        @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,sunTrigger))
 
         if @battle.FE == :DARKCRYSTALCAVERN
           @battle.setField(:CRYSTALCAVERN,@battle.weatherduration)
