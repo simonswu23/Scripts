@@ -3704,7 +3704,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
     end
     if hpcure && self.crested == :GOTHITELLE && self.hasType?(:PSYCHIC) && self.hp!=self.totalhp
-      pbRecoverHP((self.totalhp/16).floor,true)
+      pbRecoverHP((self.totalhp/8).floor,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
     end
     if hpcure && self.crested == :TOXAPEX && self.hp!=self.totalhp

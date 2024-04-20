@@ -422,6 +422,7 @@ class PokeBattle_Move
     end
     calcspdefmult*=2.0 if opponent.ability == :ICESCALES && !(opponent.moldbroken)
     calcspdefmult*=1.5 if opponent.hasWorkingItem(:ASSAULTVEST)
+    calcspdefmult*=1.5 if opponent.crested == :GOTHITELLE
     calcspdefmult*=2.0 if opponent.hasWorkingItem(:DEEPSEASCALE) && (opponent.pokemon.species == :CLAMPERL)
     # end spdef boosts
     calcspdef=(opponent.spdef*1.0*(stagemul[calcspdefstage]/stagediv[calcspdefstage])*calcspdefmult).floor
@@ -1153,6 +1154,13 @@ class PokeBattle_Move
         typemod /= 8 if type == :FAIRY
       when :CHERRIM
         typemod /= 4 if type == :FIRE
+      when :GOTHITELLE
+        if (opponent.type1 == :PSYCHIC)
+          typemod /= 2 if (type == :DARK || type == :GHOST)
+          typemod = 9 if type == :PSYCHIC
+        elsif (opponent.type1 == :DARK)
+          typemod /= 2 if (type == :FIGHTING)
+        end
       end
     
     end

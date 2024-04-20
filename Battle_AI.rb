@@ -7374,7 +7374,7 @@ class PokeBattle_AI
 		healing += @battle.FE == :CORRUPTED ? 0.125 : 0.0625 if attacker.itemWorks? && (attacker.item == :BLACKSLUDGE && attacker.hasType?(:POISON))
 		healing += 0.0625 if attacker.itemWorks? && attacker.item == :LEFTOVERS 
 		healing += 0.0625 if attacker.crested == :INFERNAPE
-		healing += 0.0625 if attacker.crested == :GOTHITELLE && attacker.type1 == :PSYCHIC
+		healing += 0.125 if attacker.crested == :GOTHITELLE && attacker.type1 == :PSYCHIC
 		healing += 0.0625 if attacker.crested == :VESPIQUEN && attacker.effects[:VespiCrest] == false
 		healing += (attacker.pbEnemyFaintedPokemonCount*0.05) if attacker.crested == :SPIRITOMB
 		healing += 0.0625 if attacker.ability == :RAINDISH && @battle.pbWeather== :RAINDANCE
