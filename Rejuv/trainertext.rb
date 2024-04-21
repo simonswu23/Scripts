@@ -38,7 +38,7 @@ TEAMARRAY = [{
 	:species => :BANETTE,
 	:level => 63,
 	:item => :SITRUSBERRY,
-	:moves => [:FLAMECHARGE],
+	:moves => [:EARTHQUAKE],
 	:ability => :INSOMNIA,
 	:gender => "M",
 	:shiny => true,
@@ -35925,7 +35925,7 @@ TEAMARRAY = [{
 	:nature => :ADAMANT,
 	:happiness => 255,
 	:iv => 31,
-	:ev => [252, 252, 0, 0, 0, 0]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :OVERQWIL,
 	:level => 87,

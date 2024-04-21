@@ -1732,7 +1732,7 @@ class PokeBattle_Battler
       end
     end
 
-    if ((ability == :DROUGHT && onactive) || self.crested == :VOLCARONA) && @battle.weather!=:SUNNYDAY
+    if (ability == :DROUGHT && onactive) && @battle.weather!=:SUNNYDAY
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1755,11 +1755,9 @@ class PokeBattle_Battler
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:HEATROCK) ||
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VOLCARONA
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true
         @battle.pbCommonAnimation("Sunny",nil,nil)
         sunTrigger = getAbilityName(ability)
-        sunTrigger = getItemName(self.item) if self.crested == :VOLCARONA
-        # @SWu move this to Battle_Rejuv in the future!
         @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,sunTrigger))
 
         if @battle.FE == :DARKCRYSTALCAVERN
@@ -2008,6 +2006,15 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
           else
             @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+          end
+        end
+        if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
+          i.pbOwnSide.effects[:Steelsurge]=false
+          j.pbOwnSide.effects[:Steelsurge]=false
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+          else
+            @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
           end
         end
         if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
@@ -3163,6 +3170,27 @@ class PokeBattle_Battler
       end
     end
     if damage>0
+      if target.crested == :COFAGRIGUS
+        if (user.effects[:MeanLook]<0)
+          user.effects[:MeanLook]=target.index
+          @battle.pbDisplay(_INTL("{1} can't escape now!",user.pbThis))
+        end
+        if (!user.effects[:Curse])
+          user.effects[:Curse]=true
+          @battle.pbDisplay(_INTL("{1} laid a curse on {2}!",target.pbThis,user.pbThis))
+        end
+      end
+      if target.crested == :RUNERIGUS
+        if (user.effects[:MeanLook]<0)
+          user.effects[:MeanLook]=target.index
+          @battle.pbDisplay(_INTL("{1} can't escape now!",user.pbThis))
+        end
+        if (user.pbCanReduceStatStage?(PBStats::ATTACK,true) || user.pbCanReduceStatStage?(PBStats::SPATK,true))
+          user.pbReduceStat(PBStats::ATTACK,2,abilitymessage:false, statdropper: target)
+          user.pbReduceStat(PBStats::SPATK,2,abilitymessage:false, statdropper: target)
+          @battle.pbDisplay(_INTL("{1} reduced {2}'s offenses!",target.pbThis,user.pbThis))
+        end
+      end
       if target.effects[:ShellTrap] && move.pbIsPhysical?(movetype)
         target.effects[:ShellTrap]=false
       end
@@ -5080,6 +5108,13 @@ class PokeBattle_Battler
         end
       end
 
+      # Bulldozer
+      if user.ability == :BULLDOZER && basemove.category == :physical
+        if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
+          target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
+        end
+      end
+
       # Ability effects
       pbEffectsOnDealingDamage(basemove,user,target,damage,innardsOutHp)
 
@@ -5570,7 +5605,7 @@ class PokeBattle_Battler
         @battle.battlers[i].moldbroken = false
       end
     end
-    if user.ability == (:CORROSION) || user.ability == :TIDEPOOLTYRANT
+    if user.ability == (:CORROSION) || user.ability == :TIDEPOOLTYRANT || user.crested == :SWALOT
       for battlers in targets
         battlers.corroded = true
       end
@@ -5814,19 +5849,6 @@ class PokeBattle_Battler
               @battle.pbDisplay(_INTL("But there was no target left!",user.pbThis))
             else
               user.pbUseMoveSimple(move,-1,movetarget.index)
-            end
-          end
-          if(basemove.move!=:STOCKPILE && basemove.move!=:SPITUP &&
-            basemove.move!=:SWALLOW) && user.effects[:Stockpile] < 3
-            user.effects[:Stockpile]+=1
-            @battle.pbDisplay(_INTL("{1} stockpiled {2}!",user.pbThis,user.effects[:Stockpile]))
-            if user.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-              user.pbIncreaseStat(PBStats::DEFENSE,1,abilitymessage:false)
-              user.effects[:StockpileDef]+=1
-            end
-            if user.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-              user.pbIncreaseStat(PBStats::SPDEF,1,abilitymessage:false)
-              user.effects[:StockpileSpDef]+=1
             end
           end
         end
@@ -6281,7 +6303,7 @@ class PokeBattle_Battler
       [PBStats::ATTACK,3] =>   [:SPLASH],
       [PBStats::DEFENSE,1] =>   [:AQUARING,:BABYDOLLEYES,:BANEFULBUNKER,:BLOCK,:CHARM,:DEFENDORDER,:FAIRYLOCK,:FEATHERDANCE,
         :FLOWERSHIELD,:GRASSYTERRAIN,:GROWL,:HARDEN,:MATBLOCK,:NOBLEROAR,:PAINSPLIT,:PLAYNICE,:POISONGAS,
-        :POISONPOWDER,:QUICKGUARD,:REFLECT,:ROAR,:SPIDERWEB,:SPIKES,:SPIKYSHIELD,:STEALTHROCK,:STRENGTHSAP,
+        :POISONPOWDER,:QUICKGUARD,:REFLECT,:ROAR,:SPIDERWEB,:SPIKES,:SPIKYSHIELD,:STEALTHROCK,:STEELSURGE,:STRENGTHSAP,
         :TEARFULLOOK,:TICKLE,:TORMENT,:TOXIC,:TOXICSPIKES,:VENOMDRENCH,:WIDEGUARD,:WITHDRAW,:ARENITEWALL],
       [PBStats::SPATK,1] => [:CONFUSERAY,:ELECTRIFY,:EMBARGO,:FAKETEARS,:GEARUP,:GRAVITY,:GROWTH,:INSTRUCT,:IONDELUGE,
         :METALSOUND,:MINDREADER,:MIRACLEEYE,:NIGHTMARE,:PSYCHICTERRAIN,:REFLECTTYPE,:SIMPLEBEAM,:SOAK,:SWEETKISS,

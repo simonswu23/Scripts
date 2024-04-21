@@ -1830,6 +1830,12 @@ ABILHASH = {
 	:ID => 322,
 	:name => "Tidepool Tyrant",
 	:desc => "Big Pex."
+},
+
+:BULLDOZER => {
+	:ID => 323,
+	:name => "Bulldozer",
+	:desc => "The user's attacks destroy surrounding ground, drastically dropping their target's speed."
 }
 
 }

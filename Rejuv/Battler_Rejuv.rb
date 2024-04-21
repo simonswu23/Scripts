@@ -237,6 +237,9 @@ class PokeBattle_Battler
         when :COFAGRIGUS
           @spatk *=1.25
           @spdef *= 1.25
+        when :RUNERIGUS
+          @attack *=1.25
+          @defense *= 1.25
         when :ARIADOS
           @speed *= 1.5
         when :PHIONE

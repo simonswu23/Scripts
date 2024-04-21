@@ -325,10 +325,10 @@ class PokeBattle_Move
     if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:CHILLDRIVE) && !opp1.moldbroken
       return [opp2]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK)
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || opp1.ability == :BULLDOZER)
       return [opp1]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK)
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || opp1.ability == :BULLDOZER)
       return [opp2]
     end
     
@@ -604,7 +604,7 @@ class PokeBattle_Move
       mod1=2 if (otype1 == :FLYING) && (atype == :GROUND)
       mod2=2 if (otype2 == :FLYING) && (atype == :GROUND)
     end
-    if @move == :VENAMSKISS || @move == :CORROSIVEGAS
+    if @move == :VENAMSKISS || @move == :CORROSIVEGAS || attacker.crested == :SWALOT
       mod1=4 if (otype1 == :STEEL) && (atype == :POISON)
       mod2=4 if (otype2 == :STEEL) && (atype == :POISON)
     end
@@ -797,13 +797,14 @@ class PokeBattle_Move
     end
     if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB) &&  type == :WATER) || 
                                    (opponent.ability == :VOLTABSORB && type == :ELECTRIC))) ||
-                                    ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
+                                  ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
+                                  (opponent.ability == :BULLDOZER && type == :GROUND) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && type == :WATER) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && type == :ICE) ||
                                   ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && type == :WATER)
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:LUNARIDOL,:ICEBODY,:BULLDOZER].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -991,12 +992,13 @@ class PokeBattle_Move
     if ((opponent.ability == :DRYSKIN && !(opponent.moldbroken)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       (opponent.ability == :VOLTABSORB && !(opponent.moldbroken) && (type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC)))) ||
       (opponent.ability == :WATERABSORB && !(opponent.moldbroken) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
+      (opponent.ability == :BULLDOZER && !(opponent.moldbroken) && (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && (type == :ICE || (!secondtype.nil? && secondtype.include?(:ICE)))) ||
       ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER))))
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:BULLDOZER].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -1320,6 +1322,7 @@ class PokeBattle_Move
     return true if attacker.ability == :NOGUARD || opponent.ability == :NOGUARD || (attacker.ability == (:FAIRYAURA) && @battle.FE == :FAIRYTALE)
     return true if opponent.effects[:Telekinesis]>0
     return true if @function==0x0D && @battle.pbWeather== :HAIL # Blizzard
+    return true if @move == :MIRAGEBEAM && @battle.pbWeather== :SUNNYDAY
     return true if @move == :MOUNTAINGALE && @battle.pbWeather == :HAIL
     return true if @move == :HEATWAVE && @battle.pbWeather== :SUNNYDAY # Heat Wave
     return true if @move == :PRECIPICEBLADES && @battle.pbWeather ==:DESOLATELAND
@@ -1333,6 +1336,7 @@ class PokeBattle_Move
     return true if attacker.hasType?(:POISON) && @move == :TOXIC
     return true if attacker.hasType?(:ICE) && @move == :FLURRY
     return true if attacker.hasType?(:ELECTRIC) && @move == :THUNDERWAVE
+    return true if attacker.hasType?(:FIRE) && @move == :WILLOWISP
     return true if (@function==0x10 || @move == :BODYSLAM ||
                     @function==0x137 || @function==0x9B) &&
                     opponent.effects[:Minimize] # Flying Press, Stomp, DRush
@@ -2035,6 +2039,8 @@ class PokeBattle_Move
       end
     end
     atkmult*=0.5 if opponent.ability == :THICKFAT && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)
+    atkmult*=0.33 if opponent.ability == :LIGHTMETAL && (type == :GROUND) && !(opponent.moldbroken)
 
     ##### Calculate opponent's defense stat #####
     defense=opponent.defense
@@ -2262,6 +2268,7 @@ class PokeBattle_Move
     # STAB
     if (attacker.hasType?(type) && (!attacker.effects[:DesertsMark]) ||
         (attacker.ability == :STEELWORKER && type == :STEEL) ||
+        (attacker.ability == :BULLDOZER && type == :GROUND) ||
         (attacker.ability == :SOLARIDOL && type == :FIRE) || (attacker.ability == :SOLARIDOL && type == :PSYCHIC) || 
         (attacker.ability == :LUNARIDOL && type == :ICE) || (attacker.ability == :LUNARIDOL && type == :PSYCHIC) ||
         typecrest==true)
