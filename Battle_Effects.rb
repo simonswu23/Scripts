@@ -705,7 +705,7 @@ end
   def pbReduceStat(stat,increment,abilitymessage:true,statmessage:true, statdropper: nil, defiant_proc: true, mirrordrop: false)
 
     if (statdropper != nil && statdropper.crested == :THIEVUL)
-      increment = [6, increment + 1].min
+      increment = [6, increment * 2].min
     end
 
     # here we play uno reverse if we have Mirror Armor
@@ -750,7 +750,11 @@ end
       harsh = ""
       harsh = "harshly " if increment==2
       harsh = "dramatically " if increment>=3
-      stat_text = _INTL("{1}'s {2} {3}fell!",pbThis,pbGetStatName(stat),harsh)
+      if (abilitymessage && statdropper != nil)
+        stat_text = _INTL("{1}'s {2} cuts {3}'s {4}!",statdropper.pbThis,getAbilityName(statdropper.ability),pbThis,pbGetStatName(stat))
+      else
+        stat_text = _INTL("{1}'s {2} {3} fell!",pbThis,pbGetStatName(stat),harsh)
+      end
       @battle.pbDisplay(stat_text) if statmessage
 
       if statdropper != nil && statdropper.ability == :GRANDLARCENY

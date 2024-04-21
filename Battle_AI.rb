@@ -11919,9 +11919,10 @@ class PokeBattle_Move_FFF < PokeBattle_Move	#Fake move used by AI to determine d
 		@priority    = 0
 		@zmove       = false
 		@user        = user
-		@data				 = MoveData.new(@move,hash)
+		@data		 = MoveData.new(@move,hash)
 		# these attributes do need to be assigned but we also need the data seperately for reasons (idk do we?)
 		if @data
+			# @SWu how tf does this work
 			@function   = @data.function
       		@type       = @data.type
       		@category   = @data.category

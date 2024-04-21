@@ -1928,7 +1928,7 @@ class PokeBattle_Battler
         @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
       end
     end
-    # Unnerve, As One, Grand Larceny
+    # Unnerve, As One
     if (self.ability == :UNNERVE || self.ability == :ASONE) && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
@@ -5105,6 +5105,7 @@ class PokeBattle_Battler
         end
       end
 
+      # Grand Larceny
       if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
         if (user.item.nil?)
           itemname=getItemName(target.item)

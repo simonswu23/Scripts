@@ -2610,7 +2610,9 @@ class PokeBattle_Move
     # @SWu unnerfing Gale Wings
     pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING
     pri += 1 if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && @type==:BUG 
-    pri += 2 if (attacker.ability == :RUNAWAY || attacker.ability == :GRANDLARCENY) && (@move.function == 0x0EE || @move.function == 0x902 || @move.function == 0x13D || @move.function == 0x0ED)
+    
+    # @SWu this bugs out the AI for some reason (because it tries to calc damage using :FAKEMOVE but fakemove doesn't have a function code??? pls help @Rei)
+    # pri += 2 if (attacker.ability == :RUNAWAY || attacker.ability == :GRANDLARCENY) && (@move.function == 0x0EE || @move.function == 0x902 || @move.function == 0x13D || @move.function == 0x0ED)
     pri += 3 if attacker.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@function)
     pri -= 1 if @battle.FE == :DEEPEARTH && @move == :COREENFORCER
     return pri
