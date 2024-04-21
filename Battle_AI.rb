@@ -10013,7 +10013,6 @@ class PokeBattle_AI
 			when :VESPIQUEN 
 				mon.stages[PBStats::ATTACK]+=1 
 				mon.stages[PBStats::SPATK]+=1
-			when :THIEVUL then mon.stages[PBStats::SPATK]+=1
 		end
 		# Fairy Tale Abilities
 		if @battle.FE == :FAIRYTALE

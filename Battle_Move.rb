@@ -402,7 +402,7 @@ class PokeBattle_Move
     calcdefmult*=1.5 if opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL
     calcdefmult*=1.5 if opponent.ability == :MARVELSCALE && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0)) && !(opponent.moldbroken)
     calcdefmult*=1.5 if opponent.ability == :GRASSPELT && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
-    calcdefmult*=2.0 if opponent.ability == :FURCOAT && !(opponent.moldbroken)
+    calcdefmult*=2.0 if (opponent.ability == :FURCOAT || opponent.ability == :ADAMANTINEBODY) && !(opponent.moldbroken)
     if @battle.FE == :CLOUDS
       calcdefmult*=4.0 if opponent.ability == :FLUFFY && attacker.ability != :LONGREACH && !(opponent.moldbroken)
     else
@@ -2610,6 +2610,7 @@ class PokeBattle_Move
     # @SWu unnerfing Gale Wings
     pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING
     pri += 1 if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && @type==:BUG 
+    pri += 2 if (attacker.ability == :RUNAWAY || attacker.ability == :GRANDLARCENY) && (@move.function == 0x0EE || @move.function == 0x902 || @move.function == 0x13D || @move.function == 0x0ED)
     pri += 3 if attacker.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@function)
     pri -= 1 if @battle.FE == :DEEPEARTH && @move == :COREENFORCER
     return pri

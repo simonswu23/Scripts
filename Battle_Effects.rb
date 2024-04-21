@@ -703,6 +703,11 @@ end
   end
 
   def pbReduceStat(stat,increment,abilitymessage:true,statmessage:true, statdropper: nil, defiant_proc: true, mirrordrop: false)
+
+    if (statdropper != nil && statdropper.crested == :THIEVUL)
+      increment = [6, increment + 1].min
+    end
+
     # here we play uno reverse if we have Mirror Armor
     if (self.ability == :MIRRORARMOR) && !mirrordrop && !(self.moldbroken) && (statdropper != self)
       if !statdropper.nil?
@@ -748,6 +753,10 @@ end
       stat_text = _INTL("{1}'s {2} {3}fell!",pbThis,pbGetStatName(stat),harsh)
       @battle.pbDisplay(stat_text) if statmessage
 
+      if statdropper != nil && statdropper.ability == :GRANDLARCENY
+        statdropper.pbIncreaseStat(stat,increment,abilitymessage:abilitymessage,statmessage:statmessage)
+      end
+
       # Defiant/Competitive boost
       if defiant_proc
         if (self.ability == :DEFIANT) && pbCanIncreaseStatStage?(PBStats::ATTACK) && (statdropper.nil? || self.pbIsOpposing?(statdropper.index))
@@ -787,7 +796,7 @@ end
     return false
   end
 
-  def pbReduceStatStageOnEntry(opponent, ability)
+  def pbReduceStatStageOnEntryIntim(opponent)
     # Ways intimidate doesn't work
     return false if isFainted? && !(Rejuv && isbossmon && @shieldCount>0)
     return false if @effects[:Substitute]>0
@@ -811,7 +820,7 @@ end
     end
 
     # reduce stat only if you can
-    if ability == :INTIMIDATE && @battle.FE == :CROWD && pbCanReduceStatStage?(PBStats::DEFENSE,false)
+    if @battle.FE == :CROWD && pbCanReduceStatStage?(PBStats::DEFENSE,false)
       pbReduceStat(PBStats::DEFENSE,1,statmessage:false, statdropper: opponent, defiant_proc: false)
       oppabilityname=getAbilityName(opponent.ability)
       @battle.pbDisplay(_INTL("{1}'s {2} cuts {3}'s Defense!",opponent.pbThis, oppabilityname,pbThis(true))) if !(self.ability == :CONTRARY)
@@ -839,22 +848,12 @@ end
       end
     end
 
-    stat = PBStats::ATTACK
-    statText = "Attack"
-    if (ability == :PRESSURE)
-      stat = PBStats::SPATK
-      statText = "Special Attack"
-    elsif (ability == :UNNERVE)
-      stat = PBStats::SPEED
-      statText = "Speed"
-    end
-
     if pbCanReduceStatStage?(stat,false)
       pbReduceStat(stat,1,statmessage:false, statdropper: opponent, defiant_proc: false)
       # Battle message
       oppabilityname=getAbilityName(opponent.ability)
-      @battle.pbDisplay(_INTL("{1}'s {2} cuts {3}'s {4}!",opponent.pbThis, oppabilityname,pbThis(true),statText)) if !(self.ability == :CONTRARY)
-      @battle.pbDisplay(_INTL("{1}'s {2} boosts {3}'s {4}!",opponent.pbThis, oppabilityname,pbThis(true),statText)) if (self.ability == :CONTRARY)
+      @battle.pbDisplay(_INTL("{1}'s {2} cuts {3}'s Attack!",opponent.pbThis, oppabilityname,pbThis(true))) if !(self.ability == :CONTRARY)
+      @battle.pbDisplay(_INTL("{1}'s {2} boosts {3}'s Attack!",opponent.pbThis, oppabilityname,pbThis(true))) if (self.ability == :CONTRARY)
 
       if (self.ability == :RATTLED)
         pbIncreaseStat(PBStats::SPEED,1,statmessage:false)

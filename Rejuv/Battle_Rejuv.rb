@@ -57,16 +57,15 @@
         opposing=@battlers[index].pbOpposing1
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
           opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
         end
       end
       if !@battlers[index].pbOpposing2.isFainted?
         opposing=@battlers[index].pbOpposing2
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
           opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
         end
-      end
-      if @battlers[index].pbCanIncreaseStatStage?(PBStats::SPATK)
-        @battlers[index].pbIncreaseStat(PBStats::SPATK,1)
       end
     when :PROBOPASS
       @battlers[index].effects[:MagnetRise]=8

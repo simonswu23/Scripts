@@ -899,10 +899,10 @@ class PokeBattle_Battler
         else
           @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
         end
-        if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
+        if pbPartner.ability == :INTIMIDATE
           for i in @battle.battlers
             next if i.isFainted? || !pbIsOpposing?(i.index)
-            i.pbReduceStatStageOnEntry(pbPartner, pbPartner.ability)
+            i.pbReduceStatStageOnEntryIntim(pbPartner)
           end
         end
       end
@@ -1918,21 +1918,21 @@ class PokeBattle_Battler
     if self.ability == :INTIMIDATE && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-        @battle.battlers[i].pbReduceStatStageOnEntry(self, :INTIMIDATE)
+        @battle.battlers[i].pbReduceStatStageOnEntryIntim(self)
       end
     end
     # Pressure
     if self.ability == :PRESSURE && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-        @battle.battlers[i].pbReduceStatStageOnEntry(self, :PRESSURE)
+        @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
       end
     end
-    # Unnerve
-    if self.ability == :UNNERVE && onactive
+    # Unnerve, As One, Grand Larceny
+    if (self.ability == :UNNERVE || self.ability == :ASONE) && onactive
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
-        @battle.battlers[i].pbReduceStatStageOnEntry(self, :UNNERVE)
+        @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
       end
     end
     # Downdraft
@@ -4057,7 +4057,9 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4182,7 +4184,9 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4998,8 +5002,14 @@ class PokeBattle_Battler
           target.pbRecoverHP([1,((target.damagestate.hplost)/2).floor].max) if !target.isFainted?
           @battle.pbDisplay(_INTL("{1}'s crest causes {2} to take recoil damage and {3} to recover!",
               target.pbThis,user.pbThis(true),target.pbThis))
-          
         end
+      end
+      if target.ability == :ADAMANTINEBODY && basemove.category == :physical && basemove.contactMove? && !user.isFainted?
+            target.damagestate.calcdamage>0 && !target.damagestate.substitute && (user.ability != (:MAGICGUARD) && 
+            !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM))
+        @battle.scene.pbDamageAnimation(user,0)
+        user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
+        @battle.pbDisplay(_INTL("{2} was hurt by {1}'s Adamantine Body!", target.pbThis,user.pbThis(true),target.pbThis))
       end
       user.effects[:Tantrum]= (damage == -1)
       totaldamage += damage if damage && damage > 0
@@ -5092,6 +5102,25 @@ class PokeBattle_Battler
           target.stages[PBStats::ACCURACY] = 0
           target.stages[PBStats::EVASION]  = 0
           @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",target.pbThis))
+        end
+      end
+
+      if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+        if (user.item.nil?)
+          itemname=getItemName(target.item)
+          user.item=target.item
+          target.item=nil
+          if target.pokemon.corrosiveGas
+            target.pokemon.corrosiveGas=false
+            user.pokemon.corrosiveGas=true
+          end
+          target.effects[:ChoiceBand]=nil
+          @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
+        else
+          itemname=getItemName(target.item)
+          target.item=nil
+          target.pokemon.corrosiveGas=false
+          @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
         end
       end
 
