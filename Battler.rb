@@ -2139,6 +2139,11 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Attack!", pbThis,getAbilityName(ability)))
       end
     end
+    # Grand Larceny
+    if self.ability == :GRANDLARCENY && onactive
+      self.effects[:Snatch]=true
+      @battle.pbDisplay(_INTL("{1} waits for its foes to make a move...", pbThis))
+    end
     # Slow Start
     if self.ability == :SLOWSTART && onactive && !@battle.FE == :DEEPEARTH
       @battle.pbDisplay(_INTL("{1} can't get it going!",pbThis))
@@ -4057,14 +4062,13 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-          if (i.ability != :GRANDLARCENY)
-            i.effects[:Snatch]=false
-          end
+          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
+          # @SWu this is causing a bug so i'm taking it out
           userchoice=@battle.choices[user.index][1]
-          if target.ability == (:PRESSURE) && userchoice>=0
+          if target.ability == (:PRESSURE) && userchoice>=0 && user.ability != :GRANDLARCENY
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4184,9 +4188,7 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-          if (i.ability != :GRANDLARCENY)
-            i.effects[:Snatch]=false
-          end
+          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -5106,7 +5108,7 @@ class PokeBattle_Battler
       end
 
       # Grand Larceny
-      if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+      if user.ability == :GRANDLARCENY && basemove.contactMove? && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
         if (user.item.nil?)
           itemname=getItemName(target.item)
           user.item=target.item
@@ -5117,12 +5119,6 @@ class PokeBattle_Battler
           end
           target.effects[:ChoiceBand]=nil
           @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
-        else
-          itemname=getItemName(target.item)
-          target.item=nil
-          target.pokemon.corrosiveGas=false
-          @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
-        end
       end
 
       # Corrosion random status

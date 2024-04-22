@@ -6175,6 +6175,7 @@ MOVEHASH = {
 	:accuracy => 75,
 	:maxpp => 10,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user kisses the target with a sweet, angelic cuteness that causes confusion."
 },
@@ -6245,6 +6246,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 20,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user tickles the target into laughing, reducing its Attack and Defense stats."
 },

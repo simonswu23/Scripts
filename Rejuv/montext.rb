@@ -14296,7 +14296,7 @@ MONHASH = {
 		:dexnum => 212,
 		:Type1 => :BUG,
 		:Type2 => :STEEL,
-		:BaseStats => [70, 130, 100, 55, 80, 65],
+		:BaseStats => [70, 145, 125, 55, 80, 65],
 		:EVs => [0, 2, 0, 0, 0, 0],
 		:Abilities => [:SWARM, :TECHNICIAN],
 		:HiddenAbilities => :LIGHTMETAL,
@@ -14353,7 +14353,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [70, 150, 140, 65, 100, 75],
+		:BaseStats => [70, 175, 155, 65, 100, 75],
 		:Abilities => [:TECHNICIAN],
 		:BaseEXP => 210,
 		:Height => 20,
