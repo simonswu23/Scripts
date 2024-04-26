@@ -1408,7 +1408,32 @@ class PokeBattle_Move_02A < PokeBattle_Move
       @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbThis))
       return -1
     end
-    pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+    protectFlag = false
+    if (attacker.crested == :VESPIQUEN && @move == :DEFENDORDER) 
+      if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
+        attacker.effects[:ProtectRate]=0
+      end
+      priority = @battle.pbPriority
+      if (@battle.doublebattle && attacker == priority[3]) || (!@battle.doublebattle && attacker == priority[1])
+        attacker.effects[:ProtectRate]=0
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+      if @battle.pbRandom(65536)<(65536/(3**attacker.effects[:ProtectRate])).floor
+        attacker.effects[:Protect]=:Protect
+        attacker.effects[:ProtectRate]+=1
+        @battle.pbAnimation(@move,attacker,nil)
+        @battle.pbDisplay(_INTL("{1} protected itself!",attacker.pbThis))
+        protectFlag = true
+      else
+        attacker.effects[:ProtectRate]=0
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+    end
+    if (!protectFlag)
+      pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+    end
     boost_amount=1
     if ((@battle.FE == :MISTY || @battle.FE == :RAINBOW || @battle.FE == :HOLY ||
       @battle.FE == :STARLIGHT || @battle.FE == :NEWWORLD || @battle.FE == :PSYTERRAIN) &&
@@ -2304,6 +2329,15 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
       end
     end
+    if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
+      attacker.pbOwnSide.effects[:Steelsurge]=false
+      opponent.pbOwnSide.effects[:Steelsurge]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+      end
+    end
     if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
       attacker.pbOwnSide.effects[:ToxicSpikes]=0
       opponent.pbOwnSide.effects[:ToxicSpikes]=0
@@ -2342,6 +2376,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
     opponent.pbOwnSide.effects[:Safeguard] = 0
     opponent.pbOwnSide.effects[:Spikes] = 0
     opponent.pbOwnSide.effects[:StealthRock] = false
+    opponent.pbOwnSide.effects[:Steelsurge] = false
     opponent.pbOwnSide.effects[:ToxicSpikes] = 0
     opponent.pbOwnSide.effects[:StickyWeb] = false
     return true
@@ -3354,7 +3389,7 @@ class PokeBattle_Move_06C < PokeBattle_Move
     else
       hploss = (opponent.hp/2.0).floor
     end
-    return pbEffectFixedDamage(hploss,attacker,opponent,hitnum,alltargets,showanimation)
+    return pbEffectFixedDamage(hploss, attacker, opponent, hitnum, alltargets, showanimation)
   end
 
   def pbAdditionalEffect(attacker,opponent)
@@ -3362,9 +3397,9 @@ class PokeBattle_Move_06C < PokeBattle_Move
     if (@battle.state.effects[:ELECTERRAIN] > 0)
       return false if !opponent.pbCanParalyze?(false)
       opponent.pbParalyze(attacker)
-      @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+      @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!", opponent.pbThis))
     elsif (@battle.state.effects[:GRASSYTERRAIN] > 0)
-      if opponent.effects[:LeechSeed]>=0 || opponent.effects[:Substitute]>0
+      if opponent.effects[:LeechSeed] >= 0 || opponent.effects[:Substitute] > 0
         return false
       end
       if opponent.hasType?(:GRASS)
@@ -3375,27 +3410,28 @@ class PokeBattle_Move_06C < PokeBattle_Move
       opponent.effects[:LeechSeed]=attacker.index
       @battle.pbDisplay(_INTL("{1} was seeded!",opponent.pbThis))
     elsif (@battle.state.effects[:MISTYTERRAIN] > 0)
-      if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute
-        opponent.stages[PBStats::ATTACK]   = 0
-        opponent.stages[PBStats::DEFENSE]  = 0
-        opponent.stages[PBStats::SPEED]    = 0
-        opponent.stages[PBStats::SPATK]    = 0
-        opponent.stages[PBStats::SPDEF]    = 0
-        opponent.stages[PBStats::ACCURACY] = 0
-        opponent.stages[PBStats::EVASION]  = 0
-        @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",opponent.pbThis))
+      if opponent.damagestate.substitute
+        return false
       end
+      opponent.stages[PBStats::ATTACK]   = 0
+      opponent.stages[PBStats::DEFENSE]  = 0
+      opponent.stages[PBStats::SPEED]    = 0
+      opponent.stages[PBStats::SPATK]    = 0
+      opponent.stages[PBStats::SPDEF]    = 0
+      opponent.stages[PBStats::ACCURACY] = 0
+      opponent.stages[PBStats::EVASION]  = 0
+      @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",opponent.pbThis))
     elsif (@battle.state.effects[:PSYTERRAIN] > 0)
-      if opponent.effects[:HealBlock]>0
+      if opponent.effects[:HealBlock] > 0
         return false
       end
       if !@battle.pbCheckSideAbility(:AROMAVEIL,opponent).nil? && !(opponent.moldbroken)
         return false
       end
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.effects[:HealBlock]=5
+      opponent.effects[:HealBlock] = 5
       @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbThis))
-      return 0
+      return false
     end
     return true
   end
@@ -4863,7 +4899,7 @@ end
 ################################################################################
 class PokeBattle_Move_0AA < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -4872,7 +4908,9 @@ class PokeBattle_Move_0AA < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.pbRandom(65536)<(65536/(3**attacker.effects[:ProtectRate])).floor
+    baseRate = 3
+    baseRate = 2 if @move == :DETECT
+    if @battle.pbRandom(65536)<(65536/(baseRate**attacker.effects[:ProtectRate])).floor
       attacker.effects[:Protect]=:Protect
       attacker.effects[:ProtectRate]+=1
       @battle.pbAnimation(@move,attacker,nil)
@@ -4891,7 +4929,7 @@ end
 ################################################################################
 class PokeBattle_Move_0AB < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -4913,7 +4951,7 @@ end
 ################################################################################
 class PokeBattle_Move_0AC < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -6783,7 +6821,7 @@ end
 ################################################################################
 class PokeBattle_Move_0E8 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -7839,12 +7877,19 @@ class PokeBattle_Move_105 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    if !attacker.pbOpposingSide.effects[:StealthRock]
+    if @move == :STONEAXE && !attacker.pbOpposingSide.effects[:StealthRock]
       attacker.pbOpposingSide.effects[:StealthRock]=true
       if !@battle.pbIsOpposing?(attacker.index)
         @battle.pbDisplay(_INTL("Pointed stones float in the air around your foe's team!"))
       else
         @battle.pbDisplay(_INTL("Pointed stones float in the air around your team!"))
+      end
+    elsif @move == :STEELSURGE && !attacker.pbOpposingSide.effects[:Steelsurge]
+      attacker.pbOpposingSide.effects[:Steelsurge]=true
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("Metal debris floats in the air around your foe's team!"))
+      else
+        @battle.pbDisplay(_INTL("Metal debris floats in the air around your team!"))
       end
     end
     return true
@@ -8195,6 +8240,10 @@ class PokeBattle_Move_110 < PokeBattle_Move
         attacker.pbOwnSide.effects[:StealthRock]=false
         @battle.pbDisplay(_INTL("{1} blew away stealth rocks!",attacker.pbThis))
       end
+      if attacker.pbOwnSide.effects[:Steelsurge]
+        attacker.pbOwnSide.effects[:Steelsurge]=false
+        @battle.pbDisplay(_INTL("{1} blew away the steel debris!",attacker.pbThis))
+      end
       if attacker.pbOwnSide.effects[:Spikes]>0
         attacker.pbOwnSide.effects[:Spikes]=0
         @battle.pbDisplay(_INTL("{1} blew away Spikes!",attacker.pbThis))
@@ -8301,6 +8350,14 @@ class PokeBattle_Move_113 < PokeBattle_Move
     attacker.effects[:StockpileDef]=0
     attacker.effects[:StockpileSpDef]=0
     @battle.pbDisplay(_INTL("{1}'s stockpiled effect wore off!",attacker.pbThis))
+
+    if (attacker.crested == :SWALOT && !PBStuff::FIXEDABILITIES.include?(opponent.ability) && opponent.effects[:Substitute] <= 0 && !opponent.effects[:GastroAcid])
+      neutralgas = true if opponent.ability = :NEUTRALIZINGGAS
+      opponent.ability = nil  #Cancel out ability
+      opponent.effects[:GastroAcid]=true
+      opponent.effects[:Truant]=false
+      @battle.pbDisplay(_INTL("{1}'s Ability was suppressed!",opponent.pbThis))
+    end
     return ret
   end
 
@@ -8337,7 +8394,7 @@ class PokeBattle_Move_114 < PokeBattle_Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if @battle.FE == :WASTELAND && attacker.effects[:Stockpile]==3
+    if (@battle.FE == :WASTELAND && attacker.effects[:Stockpile]==3) || attacker.crested == :SWALOT
        t=attacker.status
       attacker.status=nil
       attacker.statusCount=0
@@ -8348,6 +8405,8 @@ class PokeBattle_Move_114 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was cured of its poisoning.",attacker.pbThis))
       elsif t== :PARALYSIS
         @battle.pbDisplay(_INTL("{1} was cured of its paralysis.",attacker.pbThis))
+      elsif t== :FROSTBITE
+        @battle.pbDisplay(_INTL("{1} was cured of its frostbite.",attacker.pbThis))
       end
     end
     pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
@@ -8371,6 +8430,22 @@ class PokeBattle_Move_114 < PokeBattle_Move
     attacker.effects[:StockpileDef]=0
     attacker.effects[:StockpileSpDef]=0
     @battle.pbDisplay(_INTL("{1}'s stockpiled effect wore off!",attacker.pbThis))
+
+    if (attacker.crested == :SWALOT)
+      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+      if attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
+        attacker.pbIncreaseStat(PBStats::DEFENSE,1,abilitymessage:false)
+        attacker.effects[:StockpileDef]+=1
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
+        attacker.pbIncreaseStat(PBStats::SPDEF,1,abilitymessage:false)
+        attacker.effects[:StockpileSpDef]+=1
+        showanim=false
+      end
+      @battle.pbDisplay(_INTL("{1}'s increased its defenses!",attacker.pbThis))
+    end
+
     return 0
   end
 end
@@ -8817,7 +8892,7 @@ end
 ################################################################################
 class PokeBattle_Move_133 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -8998,7 +9073,7 @@ end
 ################################################################################
 class PokeBattle_Move_140 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -9482,7 +9557,7 @@ end
 ################################################################################
 class PokeBattle_Move_149 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -9824,7 +9899,7 @@ end
 ################################################################################
 class PokeBattle_Move_15C < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority
@@ -10913,7 +10988,7 @@ end
 ################################################################################
 class PokeBattle_Move_188 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !PBStuff::RATESHARERS.include?(attacker.previousMove)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
     priority = @battle.pbPriority

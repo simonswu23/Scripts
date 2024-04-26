@@ -1351,6 +1351,7 @@ class PokeBattle_Battle
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
         pri += 1 if @choices[i][2].move == :SLEIGHRIDE && (@battle.pbWeather == :HAIL)
         pri += 1 if (@battlers[i].ability == :HIVEQUEEN || @battlers[i].pbPartner.ability == :HIVEQUEEN) && @choices[i][2].type==:BUG 
+        pri += 2 if (@battlers[i].ability == :RUNAWAY || @battlers[i].ability == :GRANDLARCENY) && (@choices[i][2].function == 0x0EE || @choices[i][2].function == 0x902 || @choices[i][2].function == 0x13D || @choices[i][2].function == 0x0ED)
         pri += 1 if @choices[i][2].move == :QUASH && @field.effect == :DIMENSIONAL
         pri += 1 if @choices[i][2].basedamage != 0 && @battlers[i].crested == :FERALIGATR && @battlers[i].turncount == 1 # Feraligatr Crest
         pri += 3 if @battlers[i].ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
@@ -3008,6 +3009,22 @@ class PokeBattle_Battle
               pbDisplay(_INTL("{1} was hurt by Stealth Rocks!",pkmn.pbThis))
             end
           end
+        end
+      end
+      if pkmn.pbOwnSide.effects[:Steelsurge]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+          atype = :STEEL
+          # @SWu to figure out alternate field interactions
+          eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
+          if @field.effect == :INVERSE
+            switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
+            eff = switcheff[eff]
+          end
+          if eff>0
+            @scene.pbDamageAnimation(pkmn,0)
+            pkmn.pbReduceHP([(pkmn.totalhp*eff/32).floor,1].max)
+          end
+          pbDisplay(_INTL("{1} was hurt by metal debris!",pkmn.pbThis))
         end
       end
       if pkmn.isFainted?
@@ -4766,7 +4783,7 @@ class PokeBattle_Battle
 
       # Gourmandize
       # @SWu how is ability suppression handled here?
-      if (i.ability == :GOURMANDIZE && i.effects[:Stockpile] < 3)
+      if ((i.ability == :GOURMANDIZE || i.crested == :SWALOT) && i.effects[:Stockpile] < 3)
         # @SWu figure out animation here
         # pbShowAnimation(:STOCKPILE,attacker,opponent,hitnum,alltargets,showanimation)
         i.effects[:Stockpile]+=1
@@ -4860,6 +4877,15 @@ class PokeBattle_Battle
               @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
             else
               @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+            end
+          end
+          if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
+            i.pbOwnSide.effects[:Steelsurge]=false
+            j.pbOwnSide.effects[:Steelsurge]=false
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The steel debris disappeared from around your opponent's team!"))
+            else
+              @battle.pbDisplay(_INTL("The steel debris disappeared from around your team!"))
             end
           end
           if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
@@ -5239,9 +5265,10 @@ class PokeBattle_Battle
         for j in priority
           next if j == i
           next if j.isFainted?
-          next if !pbIsOpposing?(j)
-          # next if j.status.nil?
-          hploss=(j.totalhp/8.0).floor
+          next if !i.pbIsOpposing?(j.index)
+          mult = 1
+          mult = 2 if !j.status.nil?
+          hploss=(j.totalhp/16.0 * mult).floor
           hploss= hploss * 2 if @field.effect == :WASTELAND
           pbCommonAnimation("LeechSeed",i,j)
           j.pbReduceHP(hploss,true)
@@ -5275,6 +5302,48 @@ class PokeBattle_Battle
           end
         end
       end
+      # Runerigus and Cofagrigus Crest
+      if i.crested == :RUNERIGUS || i.crested == :COFAGRIGUS
+        for j in priority
+          next if j == i
+          next if j.isFainted?
+          next if !i.pbIsOpposing?(j.index)
+          next if j.effects[:MeanLook]<0
+          hploss=(j.totalhp/16.0).floor
+          hploss= hploss * 2 if @field.effect == :WASTELAND
+          pbCommonAnimation("Curse",target=j)
+          j.pbReduceHP(hploss,true)
+          if j.ability == :LIQUIDOOZE
+            hploss= hploss * 2 if @field.effect == :MURKWATERSURFACE || @field.effect == :CORRUPTED || @field.effect == :WASTELAND
+            if Rejuv && @battle.FE == :GRASSY
+              hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
+            else
+              hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
+            end
+            hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
+            i.pbReduceHP(hploss,true)
+            pbDisplay(_INTL("{1} sucked up the liquid ooze!",i.pbThis))
+          else
+            if i.effects[:HealBlock]==0
+              if Rejuv && @battle.FE == :GRASSY
+                hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
+              else
+                hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
+              end
+              hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
+              i.pbRecoverHP(hploss,true)
+            end
+            pbDisplay(_INTL("{1}'s health was drained by {2}'s Crest!",i.pbThis,i.pbThis))
+          end
+          if j.isFainted?
+            return if !j.pbFaint
+          end
+          if i.isFainted?
+            return if !i.pbFaint
+          end
+        end
+      end
+      
       # Nightmare
       if i.effects[:Nightmare] && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
         if ((i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) || @battle.FE == :INFERNAL || i.pbOpposing1.ability == :WORLDOFNIGHTMARES || i.pbOpposing2.ability == :WORLDOFNIGHTMARES)
@@ -5683,6 +5752,20 @@ class PokeBattle_Battle
           for mon in [i, i.pbPartner]
             next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
             eff=PBTypes.twoTypeEff(:ROCK,mon.type1,mon.type2)
+            next if eff <=0
+            @scene.pbDamageAnimation(mon,0)
+            mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)
+          end
+        end
+
+        # Steelsurge
+        if i.pbOwnSide.effects[:Steelsurge]
+          pbDisplay(_INTL("The waste swallowed up the metal debris!"))
+          i.pbOwnSide.effects[:Steelsurge]=false
+          pbDisplay(_INTL("...Debris spewed out from the ground below!"))
+          for mon in [i, i.pbPartner]
+            next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
+            eff=PBTypes.twoTypeEff(:STEEL,mon.type1,mon.type2)
             next if eff <=0
             @scene.pbDamageAnimation(mon,0)
             mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)
@@ -6106,7 +6189,7 @@ class PokeBattle_Battle
       @battlers[i].effects[:RagePowder]=false
       @battlers[i].effects[:HelpingHand]=false
       @battlers[i].effects[:MagicCoat]=false
-      @battlers[i].effects[:Snatch]=false
+      @battlers[i].effects[:Snatch] = @battlers[i].ability == :GRANDLARCENY
       @battlers[i].effects[:Electrify]=false
       @battlers[i].effects[:Charge]-=1 if @battlers[i].effects[:Charge]>0
       @battlers[i].lastHPLost=0

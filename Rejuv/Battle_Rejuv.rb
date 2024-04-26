@@ -57,16 +57,15 @@
         opposing=@battlers[index].pbOpposing1
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
           opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
         end
       end
       if !@battlers[index].pbOpposing2.isFainted?
         opposing=@battlers[index].pbOpposing2
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
           opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
         end
-      end
-      if @battlers[index].pbCanIncreaseStatStage?(PBStats::SPATK)
-        @battlers[index].pbIncreaseStat(PBStats::SPATK,1)
       end
     when :PROBOPASS
       @battlers[index].effects[:MagnetRise]=8
@@ -92,12 +91,6 @@
     case @battlers[index].species
     when :FURRET
       attacker = @battlers[index]
-      sublife=[(attacker.totalhp/4.0).floor,1].max
-      if attacker.hp<=sublife
-        @battle.pbDisplay(_INTL("It was too weak to make a substitute!"))
-        return -1
-      end
-      attacker.pbReduceHP(sublife,false,false)
       attacker.effects[:UsingSubstituteRightNow]=true
       attacker.battle.scene.pbAnimation(:SUBSTITUTE,attacker,attacker,1)  #pbShowAnimation(@move,attacker,nil,hitnum,alltargets,true)
       attacker.effects[:UsingSubstituteRightNow]=false
@@ -122,8 +115,32 @@
         @battle.battlers[i].stages[PBStats::EVASION]    = 0
       end
       @battle.pbDisplay(_INTL("{1} cleared all stat changes!",battlers[index].pbThis))
+    when :SWALOT
+      attacker = @battlers[index]
+      attacker.effects[:Stockpile]+=3      
+      @battle.pbDisplay(_INTL("{1} stockpiled {2}!",attacker.pbThis,attacker.effects[:Stockpile]))
+      @battle.pbCommonAnimation("StatUp",attacker,nil)
+      attacker.pbIncreaseStat(PBStats::DEFENSE,3,abilitymessage:false)
+      attacker.pbIncreaseStat(PBStats::SPDEF,3,abilitymessage:false)
+      attacker.effects[:StockpileDef]+=3
+      attacker.effects[:StockpileSpDef]+=3
+    when :VOLCARONA
+      if @weather!=:SUNNYDAY
+        @weather=:SUNNYDAY
+        @weatherduration=-1
+        pbCommonAnimation("Sunny",nil,nil)
+        pbDisplay(_INTL("{1}'s crest intensified the sun's rays!",@battlers[index].pbThis))
+      end
+    when :HYPNO
+      attacker = @battlers[index]
+      for i in @battle.battlers
+        next if i.isFainted? || !pbIsOpposing?(i.index)
+        if (i.pbCanSleep?(true) && i.effects[:Yawn] == 0)
+          i.effects[:Yawn]=2
+        end
+      end
+      @battle.pbDisplay(_INTL("{1} made the opposing team drowsy!",attacker.pbThis))
     end
-  
   end
 
   def pbCanRun?(idxPokemon)

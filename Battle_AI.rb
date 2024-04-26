@@ -7374,7 +7374,7 @@ class PokeBattle_AI
 		healing += @battle.FE == :CORRUPTED ? 0.125 : 0.0625 if attacker.itemWorks? && (attacker.item == :BLACKSLUDGE && attacker.hasType?(:POISON))
 		healing += 0.0625 if attacker.itemWorks? && attacker.item == :LEFTOVERS 
 		healing += 0.0625 if attacker.crested == :INFERNAPE
-		healing += 0.0625 if attacker.crested == :GOTHITELLE && attacker.type1 == :PSYCHIC
+		healing += 0.125 if attacker.crested == :GOTHITELLE && attacker.type1 == :PSYCHIC
 		healing += 0.0625 if attacker.crested == :VESPIQUEN && attacker.effects[:VespiCrest] == false
 		healing += (attacker.pbEnemyFaintedPokemonCount*0.05) if attacker.crested == :SPIRITOMB
 		healing += 0.0625 if attacker.ability == :RAINDISH && @battle.pbWeather== :RAINDANCE
@@ -10013,7 +10013,6 @@ class PokeBattle_AI
 			when :VESPIQUEN 
 				mon.stages[PBStats::ATTACK]+=1 
 				mon.stages[PBStats::SPATK]+=1
-			when :THIEVUL then mon.stages[PBStats::SPATK]+=1
 		end
 		# Fairy Tale Abilities
 		if @battle.FE == :FAIRYTALE
@@ -11920,9 +11919,10 @@ class PokeBattle_Move_FFF < PokeBattle_Move	#Fake move used by AI to determine d
 		@priority    = 0
 		@zmove       = false
 		@user        = user
-		@data				 = MoveData.new(@move,hash)
+		@data		 = MoveData.new(@move,hash)
 		# these attributes do need to be assigned but we also need the data seperately for reasons (idk do we?)
 		if @data
+			# @SWu how tf does this work
 			@function   = @data.function
       		@type       = @data.type
       		@category   = @data.category

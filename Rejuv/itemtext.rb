@@ -10123,5 +10123,14 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:RUNERIGUSCREST => {
+	:ID => 2009,
+	:name => "Runerigus Crest",
+	:desc => "Entombs the attacker and lowers their offenses.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
 
 }

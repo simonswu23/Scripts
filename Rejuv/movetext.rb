@@ -6175,6 +6175,7 @@ MOVEHASH = {
 	:accuracy => 75,
 	:maxpp => 10,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user kisses the target with a sweet, angelic cuteness that causes confusion."
 },
@@ -6245,6 +6246,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 20,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user tickles the target into laughing, reducing its Attack and Defense stats."
 },
@@ -13888,7 +13890,7 @@ MOVEHASH = {
 	:function => 0x310,
 	:type => :ICE,
 	:category => :physical,
-	:basedamage => 70,
+	:basedamage => 75,
 	:accuracy => 100,
 	:maxpp => 20,
 	:target => :SingleNonUser,
@@ -14076,14 +14078,30 @@ MOVEHASH = {
 	:function => 0x013,
 	:type => :PSYCHIC,
 	:category => :special,
-	:basedamage => 100,
-	:accuracy => 100,
+	:basedamage => 125,
+	:accuracy => 75,
 	:maxpp => 15,
 	:effect => 20,
 	:target => :SingleNonUser,
 	:kingrock => true,
 	:beammove => true,
 	:desc => "The user attacks with a shimmering beam of light. It may also confuse the target."
+},
+
+:STEELSURGE => {
+	:ID => 882,
+	:name => "Steelsurge",
+	:function => 0x105,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 90,
+	:accuracy => 90,
+	:maxpp => 15,
+	:effect => 100,
+	:target => :AllOpposing,
+  	:contact => :true,
+  	:kingrock => true,
+  	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
 },
 
 }

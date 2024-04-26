@@ -1830,6 +1830,24 @@ ABILHASH = {
 	:ID => 322,
 	:name => "Tidepool Tyrant",
 	:desc => "Big Pex."
+},
+
+:BULLDOZER => {
+	:ID => 323,
+	:name => "Bulldozer",
+	:desc => "The user's attacks destroy surrounding ground, drastically dropping their target's speed."
+},
+
+:ADAMANTINEBODY => {
+	:ID => 323,
+	:name => "Adamantine Body",
+	:desc => "The user is covered in a dense plate of armor, doubling its defense and harming attackers in return."
+},
+
+:GRANDLARCENY => {
+	:ID => 324,
+	:name => "Grand Larceny",
+	:desc => "The steals items, moves, and stats from the foe. It is an expert at getting away."
 }
 
 }

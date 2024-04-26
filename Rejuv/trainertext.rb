@@ -1,7 +1,6 @@
 TEAMARRAY = [{
 :teamid => ["SWu",:LEADER_KETA,0],
 :items => [:SILVCREST,:SUPERPOTION],
-:ace => "sighs about it",
 =begin
 :trainereffect => { # in party order
 	:effectmode => :Party, #effect mode switches how the effects are applied (:Party = on party index; :Fainted = first sendout after this number of pokemon are fainted)
@@ -35,16 +34,16 @@ TEAMARRAY = [{
 },
 =end
 :mons => [{
-	:species => :BANETTE,
-	:level => 63,
+	:species => :BLISSEY,
+	:level => 95,
 	:item => :SITRUSBERRY,
-	:moves => [:FLAMECHARGE],
-	:ability => :INSOMNIA,
+	:moves => [:ADAMANTINEBODY],
+	:ability => :,
 	:gender => "M",
 	:shiny => true,
 	:nature => :ADAMANT,
 	:iv => 31,
-	:ev => [0, 252, 0, 4, 252, 0]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 ]},
 {
 :teamid => ["Aevis",:TRAINER_AEVIS,9],
@@ -35925,7 +35924,7 @@ TEAMARRAY = [{
 	:nature => :ADAMANT,
 	:happiness => 255,
 	:iv => 31,
-	:ev => [252, 252, 0, 0, 0, 0]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :OVERQWIL,
 	:level => 87,

@@ -39,7 +39,7 @@ PokeBattle_Battler.class_eval{
     atkmult=(atkmult*1.5).round if self.hasWorkingItem(:CHOICEBAND)
     atkmult=(atkmult*1.5).round if self.ability == (:QUEENLYMAJESTY) && (@battle.FE==:CHESS || @battle.FE==:FAIRYTALE)
     atkmult=(atkmult*1.5).round if self.ability == (:LONGREACH) && (@battle.FE==:MOUNTAIN || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:SKY)
-    atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) ||  self.ability == (:TIDEPOOLTYRANT)) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
+    atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) || self.ability == (:TIDEPOOLTYRANT) || self.crested == :SWALOT) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
     atkmult=(atkmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::ATTACK    
     atk=(atk*atkmult*1.0/0x1000).round
     return atk
@@ -364,6 +364,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[:Spikes])) if pkmn.pbOwnSide.effects[:Spikes]>0
   report.push(_INTL("Toxic Spikes: {1} layers",pkmn.pbOwnSide.effects[:ToxicSpikes])) if pkmn.pbOwnSide.effects[:ToxicSpikes]>0
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[:StealthRock]
+  report.push(_INTL("Steelsurge active")) if pkmn.pbOwnSide.effects[:Steelsurge]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[:StickyWeb]
   report.push()
   report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : getAbilityName(shownmon.ability)))
