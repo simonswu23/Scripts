@@ -761,7 +761,6 @@ ItemHandlers::UseOnPokemon.add(:REVIVALHERB,proc{|item,pokemon,scene|
    end
 })
 
-### @SWu's Item Handlers Here ###
 ItemHandlers::UseOnPokemon.add(:POISONPOTION,proc{|item,pokemon,scene|
    if pokemon.hp<=0 || pokemon.status==:POISON
      scene.pbDisplay(_INTL("It won't have any effect."))
@@ -3181,7 +3180,6 @@ ItemHandlers::BattleUseOnPokemon.add(:YELLOWFLUTE,proc{|item,pokemon,battler,sce
 
 ItemHandlers::BattleUseOnPokemon.copy(:YELLOWFLUTE,:PERSIMBERRY)
 
-### @SWu's items here ###
 
 #===============================================================================
 # BattleUseOnBattler handlers

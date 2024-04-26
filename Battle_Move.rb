@@ -290,10 +290,10 @@ class PokeBattle_Move
       return [opp1]
     end
     # immunity via immunity ability?
-    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE)))
+    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN,:DETRITOVORE].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE)))
       return [opp1]
     end
-    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN].include?(opp1.ability) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:DOUSEDRIVE)))
+    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN,:DETRITOVORE].include?(opp1.ability) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:DOUSEDRIVE)))
       return [opp2]
     end
     if (darttype = :ELECTRIC || fieldsecondtype.include?(:ELECTRIC)) && (([:MOTORDRIVE,:VOLTABSORB,:LIGHTNINGROD].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:SHOCKDRIVE)))
@@ -302,34 +302,35 @@ class PokeBattle_Move
     if (darttype = :ELECTRIC || fieldsecondtype.include?(:ELECTRIC)) && (([:MOTORDRIVE,:VOLTABSORB,:LIGHTNINGROD].include?(opp1.ability) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:SHOCKDRIVE)))
       return [opp2]
     end
-    # @SWu: Need to update with heatproof, solar idol here
-    if (darttype = :FIRE || fieldsecondtype.include?(:FIRE)) && ((((opp1.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || (opp1.ability == :MAGMAARMOR && [:VOLCANICTOP,:DRAGONSDEN,:INFERNAL].include?(@battle.FE))) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:BURNDRIVE)) || opp1.crested == :DRUDDIGON)
+    if (darttype = :FIRE || fieldsecondtype.include?(:FIRE)) && (((opp1.ability == :HEATPROOF || (opp1.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || (opp1.ability == :MAGMAARMOR && [:VOLCANICTOP,:DRAGONSDEN,:INFERNAL].include?(@battle.FE))) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:BURNDRIVE)) || opp1.crested == :DRUDDIGON || opp1.crested == :VOLCARONA)
       return [opp2]
     end
-    if (darttype = :FIRE || fieldsecondtype.include?(:FIRE)) && ((((opp2.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || (opp2.ability == :MAGMAARMOR && [:VOLCANICTOP,:DRAGONSDEN,:INFERNAL].include?(@battle.FE))) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE)) || opp2.crested == :DRUDDIGON)
+    if (darttype = :FIRE || fieldsecondtype.include?(:FIRE)) && (((opp2.ability == :HEATPROOF || (opp2.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || (opp2.ability == :MAGMAARMOR && [:VOLCANICTOP,:DRAGONSDEN,:INFERNAL].include?(@battle.FE))) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE)) || opp2.crested == :DRUDDIGON || opp1.crested == :VOLCARONA)
       return [opp1]
     end
-    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp1.ability == :SAPSIPPER && !opp1.moldbroken) || opp1.crested == :WHISCASH || opp1.crested == :GASTRODON)
+    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && (((opp1.ability == :SAPSIPPER) && !opp1.moldbroken) || opp1.crested == :WHISCASH || opp1.crested == :GASTRODON)
       return [opp2]
     end
-    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && ((opp2.ability == :SAPSIPPER && !opp2.moldbroken) || opp2.crested == :WHISCASH || opp2.crested == :GASTRODON)
+    if (darttype = :GRASS || fieldsecondtype.include?(:GRASS)) && (((opp2.ability == :SAPSIPPER) && !opp2.moldbroken) || opp2.crested == :WHISCASH || opp2.crested == :GASTRODON)
       return [opp1]
     end
-    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && (opp1.ability == :PASTELVEIL && !opp1.moldbroken)
-      return [opp2]
-    end
-    # @SWu: Need to update with lunar idol + ice body here
-    if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE) && !opp2.moldbroken
+    if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && (opp2.ability == :ICEBODY && !opp2.moldbroken) || (@battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE) && !opp2.moldbroken)
       return [opp1]
     end
-    if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:CHILLDRIVE) && !opp1.moldbroken
+    if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && (opp1.ability == :ICEBODY && !opp1.moldbroken) || (@battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:CHILLDRIVE) && !opp1.moldbroken)
       return [opp2]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || opp1.ability == :BULLDOZER)
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || ((opp2.ability == :BULLDOZER || opp2.ability == :DETRITOVORE) && !opp2.moldbroken))
       return [opp1]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || opp1.ability == :BULLDOZER)
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || ((opp1.ability == :BULLDOZER || opp1.ability == :DETRITOVORE) && !opp1.moldbroken))
       return [opp2]
+    end
+    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && ((opp1.ability == :DETRITOVORE) && !opp1.moldbroken)
+      return [opp2]
+    end
+    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && ((opp2.ability == :DETRITOVORE) && !opp2.moldbroken)
+      return [opp1]
     end
     
     # is dragon darts being called by a status move on a mon with prankster and is either target dark type?
@@ -591,12 +592,12 @@ class PokeBattle_Move
     end
     if !opponent.moldbroken
       if (atype == :FIRE && opponent.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || 
-        (atype == :GRASS && opponent.ability == :SAPSIPPER) ||
-        (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN)) ||
+        (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
+        (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN || opponent.ability == :DETRITOVORE)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && opponent.ability == :LEVITATE && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
-        (atype == :GROUND && (opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN)) ||
-        (atype == :POISON && opponent.ability == :PASTELVEIL)
+        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
+        (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
       end
     end
@@ -720,7 +721,7 @@ class PokeBattle_Move
   end
 
   def pbStatusMoveAbsorption(type,attacker,opponent)
-    if opponent.ability == :SAPSIPPER && !(opponent.moldbroken) && type == :GRASS
+    if (opponent.ability == :SAPSIPPER) && !(opponent.moldbroken) && type == :GRASS
       if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
         opponent.pbIncreaseStatBasic(PBStats::ATTACK,1)
         @battle.pbCommonAnimation("StatUp",opponent,nil)
@@ -795,16 +796,17 @@ class PokeBattle_Move
       end
       return 0
     end
-    if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB) &&  type == :WATER) || 
+    if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB || opponent.ability == :DETRITOVORE) &&  type == :WATER) || 
                                    (opponent.ability == :VOLTABSORB && type == :ELECTRIC))) ||
                                   ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
-                                  (opponent.ability == :BULLDOZER && type == :GROUND) ||
+                                  ((opponent.ability == :BULLDOZER || opponent.ability == :DETRITOVORE) && type == :GROUND) ||
+                                  (opponent.ability == :DETRITOVORE && type == :POISON)
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && type == :WATER) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && type == :ICE) ||
                                   ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && type == :WATER)
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:LUNARIDOL,:ICEBODY,:BULLDOZER].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:LUNARIDOL,:ICEBODY,:BULLDOZER,:DETRITOVORE].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -989,16 +991,20 @@ class PokeBattle_Move
       end
       return 0
     end
+    # @SWu Ice Body not fully implemented
     if ((opponent.ability == :DRYSKIN && !(opponent.moldbroken)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       (opponent.ability == :VOLTABSORB && !(opponent.moldbroken) && (type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC)))) ||
       (opponent.ability == :WATERABSORB && !(opponent.moldbroken) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
+      (opponent.ability == :DETRITOVORE && !(opponent.moldbroken) && 
+                                                                  (type == :WATER || type == :GROUND || type == :POISON || 
+                                                                  (!secondtype.nil? && secondtype.include?(:WATER)) || (!secondtype.nil? && secondtype.include?(:GROUND)) || (!secondtype.nil? && secondtype.include?(:POISON)))) ||
       (opponent.ability == :BULLDOZER && !(opponent.moldbroken) && (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && (type == :ICE || (!secondtype.nil? && secondtype.include?(:ICE)))) ||
       ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER))))
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:BULLDOZER].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:BULLDOZER,:DETRITOVORE].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -1154,6 +1160,9 @@ class PokeBattle_Move
         end
       when :HYDREIGON
         typemod /= 8 if type == :FAIRY
+      when :GOODRA
+        typemod /= 2 if [:FAIRY, :GRASS, :POISON, :BUG, :FIGHTING].include?(type)
+        typemod *= 2 if [:GROUND, :PSYCHIC].include?(type)
       when :CHERRIM
         typemod /= 4 if type == :FIRE
       when :GOTHITELLE
@@ -1606,8 +1615,7 @@ class PokeBattle_Move
       if $cache.items[attacker.item].checkFlag?(:typeboost) == type
         basemult*=1.2
         if $cache.items[attacker.item].checkFlag?(:gem)
-          #@basemult*=1.0833 #gems are 1.3; 1.2 * 1.0833 = 1.3
-          # @SWu buffing gems to 1.5
+          # buffing gems to 1.5
           basemult *= 1.25
           attacker.takegem=true
           @battle.pbDisplay(_INTL("The {1} strengthened {2}'s power!",getItemName(attacker.item),self.name))
@@ -2044,9 +2052,10 @@ class PokeBattle_Move
     atkmult*=0.5 if opponent.ability == :THICKFAT && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
 
     atkmult*=0.5 if opponent.ability == :THICKFAT && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
-    atkmult*=1.5 if attacker.crested == :DARKRAI
+    atkmult*=1.5 if attacker.crested == :DARKRAI && opponent.status==:SLEEP
     atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)
     atkmult*=0.33 if opponent.ability == :LIGHTMETAL && (type == :GROUND) && !(opponent.moldbroken)
+
     ##### Calculate opponent's defense stat #####
     defense=opponent.defense
     defstage=opponent.stages[PBStats::DEFENSE]+6
@@ -2072,7 +2081,6 @@ class PokeBattle_Move
     if @battle.pbWeather== :SANDSTORM && opponent.hasType?(:ROCK) && applysandstorm
       defense=(defense*1.5).round
     end
-    # @SWu buffing hail
     if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL)
       defense=(defense*1.5).round
     end
@@ -2301,6 +2309,9 @@ class PokeBattle_Move
       if attacker.crested == :CHERRIM && type == :FIRE
         damage*=1.5
       end
+      if attacker.crested == :GOODRA && type == :POISON
+        damage*=1.5
+      end
     end
     # Type effectiveness
     typemod=pbTypeModMessages(type,attacker,opponent)
@@ -2455,8 +2466,6 @@ class PokeBattle_Move
     elsif opponent.effects[:Disguise] && (!attacker || attacker.index!=opponent.index) &&
       opponent.effects[:Substitute]<=0 && opponent.damagestate.typemod!=0 && !opponent.moldbroken
       opponent.pbBreakDisguise
-      # @SWu unnerfing disguise
-      # opponent.pbReduceHP((opponent.totalhp/8.0).floor)
       @battle.pbDisplay(_INTL("{1}'s Disguise was busted!",opponent.name))
       opponent.effects[:Disguise]=false
       damage=0
@@ -2583,7 +2592,6 @@ class PokeBattle_Move
     damage=pbCalcDamage(attacker,opponent,hitnum: hitnum)
     
     damage *= 1.5 if attacker.effects[:MeFirst]
-    # @SWu unnerfing parental bond
     damage /= 2 if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
     damage /= 4 if hitnum > 0 && attacker.effects[:HydreigonCrest] && pbNumHits(attacker)==1
     damage *= 0.3 if hitnum == 1 && attacker.effects[:TyphBond] && pbNumHits(attacker)==1
@@ -2612,7 +2620,6 @@ class PokeBattle_Move
     pri += 1 if @battle.FE == :CHESS && attacker.pokemon && attacker.pokemon.piece == :KING
     pri += 1 if attacker.crested == :FERALIGATR && @basedamage != 0 && attacker.turncount == 1 # Feraligatr Crest
     pri += 1 if attacker.ability == :PRANKSTER && @basedamage==0 && attacker.effects[:TwoTurnAttack] == 0 # Is status move
-    # @SWu unnerfing Gale Wings
     pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING
     pri += 1 if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && @type==:BUG 
     

@@ -1125,7 +1125,6 @@ ABILHASH = {
 	:ID => 180,
 	:name => "Parental Bond",
 	:desc => "Parent and child attack together...",
-	# @SWu unnerfing parental bond
 	:fullDesc => "Each attack deals an additional 50% damage and rolls effects separately, except for Secret Power."
 },
 
@@ -1848,6 +1847,12 @@ ABILHASH = {
 	:ID => 324,
 	:name => "Grand Larceny",
 	:desc => "The steals items, moves, and stats from the foe. It is an expert at getting away."
+},
+
+:DETRITOVORE => {
+	:ID => 325,
+	:name => "Detritivore",
+	:desc => "Ground, water, and poison type attacks restore hp instead of dealing damage."
 }
 
 }

@@ -3065,7 +3065,6 @@ FIELDEFFECTS = {
 		100 => [:SING],
 	},
 	:moveMessages => {
-		# @SWu check for typo here?
 		"Face melting!" => [:ACID,:ACIDSPRAY,:APPLEACID],
 		"Rock and roll!" => [:ROLLOUT],
 		"An amazing drumsolo!" => [:DRUMBEATING],

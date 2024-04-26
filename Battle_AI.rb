@@ -1805,7 +1805,6 @@ class PokeBattle_AI
 				statarray = [0,0,0,0,4,0,0] if @mondata.skill >= BESTSKILL && @move.move == :SCARYFACE && @battle.FE == :HAUNTED
 				miniscore = oppstatdrop(statarray)
 			when 0x4e # Captivate
-				# @SWu buffing captivate
 				if (((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
 					miniscore = 0
 				else
@@ -2135,7 +2134,6 @@ class PokeBattle_AI
 			when 0xaa # Protect, Detect
 				miniscore = protectcode()
 			when 0xab # Quick Guard
-				# @SWu unnerfing Gale Wings
 				if (@opponent.ability == :GALEWINGS && (true || @battle.FE == :SKY)) || (@opponent.ability == :PRANKSTER && (!@attacker.hasType?(:DARK) || @battle.FE == :BEWITCHED)) || checkAIpriority()
 					miniscore = specialprotectcode()
 				else
@@ -3313,7 +3311,6 @@ class PokeBattle_AI
 		miniscore*=0.2 if @opponent.ability == :TOXICBOOST || @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET
 		miniscore*=0.1 if @opponent.ability == :POISONHEAL || @opponent.crested == :ZANGOOSE || @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
-		# @SWu buffing aqua ring
 		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=1.1 if (@opponent.ability == :STURDY || (@battle.FE == :CHESS && @opponent.pokemon.piece==:PAWN) || (@battle.FE == :COLOSSEUM && @opponent.ability == :STALWART)) && @move.basedamage>0
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.status.nil? && !@attacker.hasType?(:POISON) && !@attacker.hasType?(:STEEL)
@@ -3346,7 +3343,6 @@ class PokeBattle_AI
 		miniscore*=0.5 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.2 if @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
-		# @SWu buffing aqua ring
 		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanParalyze?(false)
 		miniscore*=1.2 if @mondata.roles.include?(:PHYSICALWALL) || @mondata.roles.include?(:SPECIALWALL) || @mondata.roles.include?(:PIVOT)
@@ -3387,7 +3383,6 @@ class PokeBattle_AI
 		miniscore*=0.7 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.1 if @opponent.ability == :GUTS || @opponent.ability == :FLAREBOOST
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
-		# @SWu buffing aqua ring
 		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanBurn?(false)
 		miniscore*=0.5 if @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
@@ -3436,7 +3431,6 @@ class PokeBattle_AI
 		miniscore*=0.7 if @opponent.ability == :MARVELSCALE
 		miniscore*=0.1 if @opponent.ability == :GUTS 
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN
-		# @SWu buffing aqua ring
 		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.5 if @opponent.ability == :SYNCHRONIZE && @attacker.pbCanPetrify?(false)
 		miniscore*=0.5 if @opponent.ability == :MAGICGUARD || (@opponent.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
@@ -3507,7 +3501,6 @@ class PokeBattle_AI
 	end
 
 	def attractcode
-		# @SWu buffing attract
 		return 0 if (@opponent.effects[:Attract]>=0 || ((@opponent.ability == :OBLIVIOUS || @opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker)))
 		miniscore=1.2
 		miniscore*=0.7 if @attacker.ability == :CUTECHARM
@@ -3576,7 +3569,6 @@ class PokeBattle_AI
 			miniscore*=0.7 if @opponent.ability == :TOXICBOOST
 		end
 		miniscore*=0.7 if @opponent.ability == :SHEDSKIN || @opponent.ability == :NATURALCURE || @opponent.ability == :GUTS || @opponent.ability == :QUICKFEET || @opponent.ability == :MARVELSCALE
-		# @SWu buffing aqua ring
 		miniscore*=0.2 if @opponent.effects[:AQUARING]
 		miniscore*=0.7 if checkAImoves([:FACADE])
 		miniscore*=1.3 if checkAImoves([:HEX])
@@ -5357,7 +5349,6 @@ class PokeBattle_AI
 			miniscore*=1.3 if @attacker.pbHasMove?(:SLEEPTALK)
 			miniscore*=1.2 if @attacker.pbHasMove?(:SNORE)
 			miniscore*=1.1 if @attacker.ability == :SHEDSKIN || @attacker.ability == :EARLYBIRD
-			# @SWu buffing aqua ring
 			miniscore*=1.5 if @attacker.effects[:AQUARING]
 			miniscore*=0.8 if @battle.doublebattle
 		else
@@ -5870,7 +5861,6 @@ class PokeBattle_AI
 		miniscore*=1.3 if (@mondata.attitemworks && @attacker.item == :ICYROCK) || [:ICY,:SNOWYMOUNTAIN,:FROZENDIMENSION,:CLOUDS,:SKY].include?(@battle.FE)
 		miniscore*=1.3 if @battle.pbWeather!=0 && @battle.pbWeather!=:HAIL
 		miniscore*= (@attacker.hasType?(:ICE)) ? 5 : 0.7
-		# @SWu buffing hail
 		miniscore*=1.5 if @attacker.hasType?(:ICE)
 		if @attacker.ability == :SLUSHRUSH || @attacker.crested == :EMPOLEON || (@attacker.crested == :CASTFORM && @attacker.form == 3)
 			miniscore*=2
@@ -6344,7 +6334,6 @@ class PokeBattle_AI
 		miniscore*=6 if @opponent.ability == :COMATOSE
 		miniscore*=6 if @initial_scores.length>0 && hasbadmoves(25)
 		miniscore*=0.5 if @opponent.ability == :SHEDSKIN || @opponent.ability == :EARLYBIRD
-		# @SWu buffing aqua ring
 		miniscore*=0.1 if @opponent.effects[:AQUARING]
 		if PBStuff::TRAPPINGABILITIESAI.include?(@attacker.ability) || (@attacker.ability == :MAGNETPULL && @opponent.hasType?(:STEEL))  || @opponent.effects[:MeanLook]>=0 || @opponent.pbNonActivePokemonCount==0
 			miniscore*=1.3
@@ -7199,7 +7188,6 @@ class PokeBattle_AI
 			pri = battlermove.priority if !battlermove.zmove
 			pri = pri.nil? ? 0 : pri
 			pri += 1 if battler.ability == :PRANKSTER && battlermove.basedamage==0 # Is status move
-			# @SWu unnerfing Gale Wings
 			pri += 1 if battler.ability == :GALEWINGS && battlermove.type==:FLYING && ((true) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.pbWeather == :STRONGWINDS))
 			pri += 1 if @battle.FE == :CHESS && battler.pokemon && battler.pokemon.piece == :KING
 			pri += 1 if battlermove.move == :GRASSYGLIDE && (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0)
@@ -8354,7 +8342,6 @@ class PokeBattle_AI
 				itemscore*=0.5 if @attacker.pbHasMove?(:REFRESH) || @attacker.pbHasMove?(:REST) || @attacker.pbHasMove?(:PURIFY)
 				itemscore*=0.2 if @attacker.ability == :NATURALCURE && partynumber>1
 				itemscore*=0.3 if @attacker.ability == :SHEDSKIN
-				# @SWu buffing aqua ring
 				itemscore*=0.1 if @opponent.effects[:AQUARING]
 				
 			end
@@ -8957,7 +8944,6 @@ class PokeBattle_AI
 						abilityscore+=50 if !pbAIfaster?(nil,nil,i,@opponent) && !@opponent.hasType?(:DARK)
 						abilityscore+=50 if (@opponent.pbPartner.hp > 0 && !pbAIfaster?(nil,nil,i,@opponent.pbPartner) && !@opponent.pbPartner.hasType?(:DARK))
 					when :GALEWINGS
-						# @SWu unnerfing Gale Wings
 						abilityscore+=50 if !pbAIfaster?(nil,nil,i,@opponent) && true
 						abilityscore+=50 if @opponent.pbPartner.hp > 0 && !pbAIfaster?(nil,nil,i,@opponent.pbPartner) && i.hp==i.totalhp && !@attacker.pbOwnSide.effects[:StealthRock]
 					when :BULLETPROOF
@@ -10301,7 +10287,6 @@ class PokeBattle_AI
 		end
 		return 0 if move.zmove && ((opponent.effects[:Disguise] || (opponent.effects[:IceFace] && (move.pbIsPhysical? || @battle.FE == :FROZENDIMENSION))) && !moldBreakerCheck(opponent))
 		return basedamage if (0x6A..0x73).include?(move.function) || [0xD4,0xE1].include?(move.function) #fixed damage function codes (sonicboom, etc)
-		# @SWu unnerfing parental bond
 		basedamage*=1.5 if (attacker.effects[:ParentalBond] || attacker.effects[:TyphBond]) && move.pbNumHits(attacker)==1
 		basedamage*=4 if attacker.crested == :LEDIAN && move.punchMove?
 		if attacker.crested == :CINCCINO && !move.pbIsMultiHit
@@ -11083,7 +11068,6 @@ class PokeBattle_AI
 			if @battle.pbWeather== :SANDSTORM
 				defense=(defense*1.5).round if opponent.hasType?(:ROCK) && applysandstorm
 			end
-			# @SWu buffing hail
 			# Hail weather
 			if @battle.pbWeather== :HAIL
 				defense=(defense*1.5).round if opponent.hasType?(:ICE) && !applysandstorm
@@ -11922,7 +11906,7 @@ class PokeBattle_Move_FFF < PokeBattle_Move	#Fake move used by AI to determine d
 		@data		 = MoveData.new(@move,hash)
 		# these attributes do need to be assigned but we also need the data seperately for reasons (idk do we?)
 		if @data
-			# @SWu how tf does this work
+			# @SWu how tf does this work @ +1 priority on switching attacks (Run Away)
 			@function   = @data.function
       		@type       = @data.type
       		@category   = @data.category

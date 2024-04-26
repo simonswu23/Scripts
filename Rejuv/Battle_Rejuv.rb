@@ -84,6 +84,13 @@
         pbCommonAnimation("Poison",@battlers[index],nil)
         pbDisplay(_INTL("{1} was poisoned by its {2}!",@battlers[index].pbThis,getItemName(@battlers[index].item)))
       end
+    when :GOODRA
+      if @battlers[index].status!=:POISON
+        @battlers[index].status=:POISON
+        @battlers[index].statusCount=1
+        pbCommonAnimation("Poison",@battlers[index],nil)
+        pbDisplay(_INTL("{1} was poisoned by its {2}!",@battlers[index].pbThis,getItemName(@battlers[index].item)))
+      end
     end
   end
 

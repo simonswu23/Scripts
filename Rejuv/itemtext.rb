@@ -10133,4 +10133,14 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:GOODRACREST => {
+	:ID => 2010,
+	:name => "Goodra Crest",
+	:desc => "Sloopy goop gooner goopdra.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+}
+
 }

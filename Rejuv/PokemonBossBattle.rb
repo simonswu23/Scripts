@@ -79,7 +79,6 @@ class PokeBattle_Move
     elsif opponent.effects[:Disguise] && (!attacker || attacker.index!=opponent.index) &&
       opponent.effects[:Substitute]<=0 && opponent.damagestate.typemod!=0 && !opponent.moldbroken
       opponent.pbBreakDisguise
-      # @SWu unnerfing disguise
       # opponent.pbReduceHP((opponent.totalhp/8.0).floor)
       @battle.pbDisplay(_INTL("{1}'s Disguise was busted!",opponent.name))
       opponent.effects[:Disguise]=false

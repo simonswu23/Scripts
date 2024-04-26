@@ -1679,7 +1679,7 @@ Events.onStepTakenTransferPossible+=proc {|sender,e|
   if $PokemonGlobal.stepcount % 4 == 0 && POISONINFIELD && $game_switches[:Overworld_Poison_Password] != true
     flashed=false
     for i in $Trainer.party
-      if i.status== :POISON && i.hp>0 && !i.isEgg? && !(i.ability == :POISONHEAL) && !(i.ability == :MAGICGUARD) && !(i.species == :ZANGOOSE && i.item == :ZANGCREST)
+      if i.status== :POISON && i.hp>0 && !i.isEgg? && !(i.ability == :POISONHEAL) && !(i.ability == :MAGICGUARD) && !(i.species == :ZANGOOSE && i.item == :ZANGCREST) && !(i.species == :GOODRA && i.item == :GOODRACREST)
         if defined?(POISON_ANIMATION_ID) && !flashed
           #$scene.spriteset.addUserAnimation(20,$game_player.x,$game_player.y,true) if $scene.is_a?(Scene_Map)
           $game_player.animation_id = POISON_ANIMATION_ID

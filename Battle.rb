@@ -1346,7 +1346,6 @@ class PokeBattle_Battle
         pri -= 1 if @battle.FE == :DEEPEARTH && @choices[i][2].move == :COREENFORCER
         pri += 1 if @field.effect == :CHESS && @battlers[i].pokemon && @battlers[i].pokemon.piece == :KING
         pri += 1 if @battlers[i].ability == :PRANKSTER && @choices[i][2].basedamage==0 && @battlers[i].effects[:TwoTurnAttack] == 0 # Is status move
-        # @SWu unnerfing Gale Wings
         pri += 1 if @battlers[i].ability == :GALEWINGS && @choices[i][2].type==:FLYING
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
         pri += 1 if @choices[i][2].move == :SLEIGHRIDE && (@battle.pbWeather == :HAIL)
@@ -3050,7 +3049,7 @@ class PokeBattle_Battle
       # Corrosive Field Entry
       if @field.effect == :CORROSIVE
         if !(pkmn.ability == :MAGICGUARD || pkmn.ability == :POISONHEAL || pkmn.ability == :IMMUNITY || pkmn.ability == :WONDERGUARD || 
-            pkmn.ability == :TOXICBOOST || pkmn.ability == :PASTELVEIL) && !pkmn.isAirborne? && !pkmn.hasType?(:POISON) && !pkmn.hasType?(:STEEL) && pkmn.crested != :ZANGOOSE && !(pkmn.isbossmon && pkmn.immunities[:fieldEffectDamage].include?(@field.effect))
+            pkmn.ability == :TOXICBOOST || pkmn.ability == :PASTELVEIL) && !pkmn.isAirborne? && !pkmn.hasType?(:POISON) && !pkmn.hasType?(:STEEL) && pkmn.crested != :ZANGOOSE && pkm.crested != :GOODRA && !(pkmn.isbossmon && pkmn.immunities[:fieldEffectDamage].include?(@field.effect))
           atype = :POISON
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
           if eff>0
@@ -4155,7 +4154,7 @@ class PokeBattle_Battle
               return if !i.pbFaint
             end
           end
-          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE) && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
+          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
             pbCommonAnimation("Poison",i,nil)
             i.pbRecoverHP((i.totalhp/8.0).floor,true)
             pbDisplay(_INTL("{1} was healed by poison!",i.pbThis))
@@ -4166,7 +4165,7 @@ class PokeBattle_Battle
             endmessage=true
             i.pbPoison(i)
           end
-          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE) && i.effects[:HealBlock]==0 && i.hp<i.totalhp
+          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && i.effects[:HealBlock]==0 && i.hp<i.totalhp
             pbCommonAnimation("Poison",i,nil)
             i.pbRecoverHP((i.totalhp/8.0).floor,true)
             pbDisplay(_INTL("{1} was healed by poison!",i.pbThis))
@@ -4259,14 +4258,14 @@ class PokeBattle_Battle
             pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
           end
         when :WASTELAND # Wasteland
-          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE) && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
+          if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
             pbCommonAnimation("Poison",i,nil)
             i.pbRecoverHP((i.totalhp/8.0).floor,true)
             pbDisplay(_INTL("{1} was healed by poison!",i.pbThis))
           end
         when :WATERSURFACE # Water Surface
           next if i.hp<=0
-          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN) && i.effects[:HealBlock]==0 && !i.isAirborne?
+          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN || i.ability == :DETRITOVORE) && i.effects[:HealBlock]==0 && !i.isAirborne?
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed some of the water!",i.pbThis)) if hpgain>0
@@ -4277,7 +4276,7 @@ class PokeBattle_Battle
           end
         when :UNDERWATER
           next if i.hp<=0
-          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN) && i.effects[:HealBlock]==0
+          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN || i.ability == :DETRITOVORE) && i.effects[:HealBlock]==0
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed some of the water!",i.pbThis)) if hpgain>0
@@ -4316,7 +4315,7 @@ class PokeBattle_Battle
           if i.isFainted?
             return if !i.pbFaint
           end
-          if i.hasType?(:POISON) && (i.ability == :DRYSKIN || i.ability == :WATERABSORB) || (i.ability == :POISONHEAL || i.crested == :ZANGOOSE)  && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
+          if i.hasType?(:POISON) && (i.ability == :DRYSKIN || i.ability == :WATERABSORB || i.ability == :DETRITOVORE) || (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA)  && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
             pbCommonAnimation("Poison",i,nil)
             i.pbRecoverHP((i.totalhp/8.0).floor,true)
             pbDisplay(_INTL("{1} was healed by the poisoned water!",i.pbThis))
@@ -4757,10 +4756,8 @@ class PokeBattle_Battle
         end
       end
     end
-    # @SWu buff Meganium Crest
     for i in priority
       next if i.isFainted?
-      # @SWu buff Meganium Crest
       if i.crested == :MEGANIUM
         party=@battle.pbParty(i.index)
         for j in 0...party.length
@@ -4808,9 +4805,7 @@ class PokeBattle_Battle
         # @SWu figure out animation here
         # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
         
-        #figure out how to lower evasion
         for j in priority
-          # @SWu this is bugged when the mega corviknight is on the other side
           next if (i.index % 2 == j.index % 2) || j.isFainted?
           j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:i)
           if i.pbOpposingSide.effects[:Reflect]>0
@@ -5072,7 +5067,6 @@ class PokeBattle_Battle
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1}'s Aqua Ring restored its HP a little!",i.pbThis)) if hpgain>0
         end
-        # @SWu buffing aqua ring
         if !i.status.nil?
           pbDisplay(_INTL("{1}'s {2} was cured by Aqua Ring!",i.pbThis,i.status.downcase))
           i.status=nil
@@ -5202,8 +5196,7 @@ class PokeBattle_Battle
       end
       # Poison/Bad poison
       if i.status== :POISON && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !(i.ability == :GUTS && @battle.FE == :CROWD)
-        # @SWu: Gastro crest not working currently (idk why not)
-        if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE)
+        if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA)
           if i.effects[:HealBlock]==0
             if i.hp<i.totalhp
               pbCommonAnimation("Poison",i,nil)
@@ -5932,7 +5925,7 @@ class PokeBattle_Battle
         end
       end
       #sleepycorro
-      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !(i.ability == :POISONHEAL || i.crested == :ZANGOOSE) && i.ability != :TOXICBOOST &&
+      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !(i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && i.ability != :TOXICBOOST &&
       i.ability != :WONDERGUARD && !i.isAirborne? && !i.hasType?(:STEEL) && !i.hasType?(:POISON) && @field.effect == :CORROSIVE
         hploss=i.pbReduceHP((i.totalhp/16.0).floor,true)
         pbDisplay(_INTL("{1} is seared by the corrosion!",i.pbThis)) if hploss>0

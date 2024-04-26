@@ -560,7 +560,6 @@ end
       @battle.pbDisplay(_INTL("But it failed!")) if showMessages
       return false
     end
-    # @SWu buffing attract
     if ability == (:OBLIVIOUS) && !(self.moldbroken) 
       @battle.pbDisplay(_INTL("{1}'s {2} prevents infatuation!",pbThis,
         getAbilityName(self.ability))) if showMessages

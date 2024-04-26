@@ -579,7 +579,6 @@ MOVEHASH = {
 	:type => :DARK,
 	:category => :status,
 	:basedamage => 0,
-	# @SWu unnerf
 	:accuracy => 80,
 	:maxpp => 10,
 	:target => :AllOpposing,
@@ -11567,8 +11566,6 @@ MOVEHASH = {
 	:maxpp => 10,
 	:target => :User,
 	:snatchable => true,
-
-	# @SWu buffed prio to +4
 	:priority => 4,
   	:nonmirror => true,
 	:desc => "The user swiftly withdraws into its steel shell, sharply boosting its Defense stat."
@@ -13805,8 +13802,6 @@ MOVEHASH = {
 	:kingrock => true,
 	:desc => "Quickly strikes the target up to three times, each hit increasing in power."
 },
-
-# @SWu's Moves here:
 
 :ULTRAMEGADEATH2 => {
 	:ID => 900,

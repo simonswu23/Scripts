@@ -302,6 +302,8 @@ class PokeBattle_Battler
           end
         when :DARKRAI
           @speed *= 1.2
+        when :GOODRA
+          @spdef *= 1.5
         end 
       end
 

@@ -878,7 +878,7 @@ class PokeBattle_Battler
     return false if hasType?(:STEEL) || hasType?(:POISON) 
     return false if [:POISONHEAL, :MAGICGUARD, :WONDERGUARD, :TOXICBOOST, :IMMUNITY, :PASTELVEIL].include?(@ability)
     return false if Rejuv && @ability == :SURGESURFER
-    return false if self.crested == :ZANGOOSE
+    return false if self.crested == :ZANGOOSE || self.crested == :GOODRA
     if self.isbossmon 
       return false if self.immunities[:fieldEffectDamage].include?(@battle.FE)
     end

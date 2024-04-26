@@ -754,8 +754,6 @@ class PokeBattle_Move_80E < PokeBattle_Move
 end
 
 
-### BEGINNING OF @SWU'S MOVES ###
-
 ################################################################################
 # Hammer mode lowers opponent's Def and SpDef 
 # Cannon mode lowers opponent's Atk and SpAtk (Ultra Mega Death Hammer/Cannon)
@@ -904,7 +902,6 @@ class PokeBattle_Move_902 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    # @SWu double check if this triggers for all targets
     if opponent.pbCanReduceStatStage?(PBStats::ACCURACY,false)
       opponent.pbReduceStat(PBStats::ACCURACY,1,abilitymessage:false, statdropper: attacker)
     end
@@ -960,7 +957,6 @@ class PokeBattle_Move_903 < PokeBattle_Move
         for i in 0...party.length
           next if activepkmn.include?(i) || i == attacker
           next if !party[i] || party[i].isEgg?
-          # @SWu this is still bugged + need to figure out how to fix
           party[i].healHp(((party[i].totalhp+1)/16).floor);
         end
         @battle.pbDisplay(_INTL("{1} healed its teammates!",attacker.pbThis))

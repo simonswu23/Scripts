@@ -288,7 +288,7 @@ class PokeBattle_Move_005 < PokeBattle_Move
       (@move == :SLUDGEWAVE) || (@move == :SLUDGE)) &&
      ((!opponent.hasType?(:POISON) && !opponent.hasType?(:STEEL)) || opponent.corroded) &&
      !(opponent.ability == :TOXICBOOST) &&
-     !(opponent.ability == :POISONHEAL) && !(opponent.crested == :ZANGOOSE)
+     !(opponent.ability == :POISONHEAL) && !(opponent.crested == :ZANGOOSE) && !(opponent.crested == :GOODRA)
      (!(opponent.ability == :IMMUNITY) && !(opponent.moldbroken))
       rnd=@battle.pbRandom(4)
       case rnd
@@ -2083,7 +2083,6 @@ class PokeBattle_Move_044 < PokeBattle_Move
     if opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
       statchange = 1
       statchange = 2 if (Rejuv && ((@battle.FE == :ELECTERRAIN && @move == :ELECTROWEB) || (@battle.FE == :SWAMP && @move == :MUDSHOT)))
-      # @SWu Glaciate Buff
       statchange = 12 if @move == :GLACIATE
       opponent.pbReduceStat(PBStats::SPEED,statchange,abilitymessage:false, statdropper: attacker)
     end
@@ -2178,7 +2177,7 @@ class PokeBattle_Move_047 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     if @battle.FE == :WASTELAND && (@move == :OCTAZOOKA) && 
       ((!opponent.hasType?(:POISON) && !opponent.hasType?(:STEEL)) || opponent.corroded) &&
-      opponent.ability != :TOXICBOOST && opponent.ability != :POISONHEAL && opponent.crested != :ZANGOOSE
+      opponent.ability != :TOXICBOOST && opponent.ability != :POISONHEAL && opponent.crested != :ZANGOOSE && (opponent.crested != :GOODRA)
       (opponent.ability != :IMMUNITY && !(opponent.moldbroken))
       rnd=@battle.pbRandom(5)
       case rnd
@@ -2518,7 +2517,6 @@ class PokeBattle_Move_04E < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     return -1 if !opponent.pbCanReduceStatStage?(PBStats::SPATK,true)
-    # @SWu buffing the shit out of this move
     if opponent.ability == :OBLIVIOUS && !(opponent.moldbroken)
       @battle.pbDisplay(_INTL("{1}'s {2} prevents romance!",opponent.pbThis,
          getAbilityName(opponent.ability)))
@@ -3710,7 +3708,6 @@ class PokeBattle_Move_079 < PokeBattle_UnimplementedMove
       damage *= 1.5
     end
     if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
-      # @SWu unnerfing parental bond
       damage /= 2
     end
     if hitnum > 0 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
@@ -3746,7 +3743,6 @@ class PokeBattle_Move_07A < PokeBattle_UnimplementedMove
     if attacker.effects[:MeFirst]
       damage *= 1.5
     end
-    # @SWu unnerfing parental bond
     if hitnum == 1 && attacker.effects[:ParentalBond] &&
       pbNumHits(attacker)==1
       damage /= 2
@@ -8653,7 +8649,6 @@ class PokeBattle_Move_11A < PokeBattle_Move
       opponent.pbReduceStat(PBStats::SPDEF,2,abilitymessage:false, statdropper: attacker) if opponent.pbCanReduceStatStage?(PBStats::SPDEF,false)
     end
 
-    # @SWu -- added trapping effect here
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.effects[:MeanLook]=attacker.index
     @battle.pbDisplay(_INTL("{1} can't escape now!",opponent.pbThis))
@@ -10949,8 +10944,6 @@ class PokeBattle_Move_187 < PokeBattle_Move
     hpgain2=((attacker.pbPartner.totalhp+1)/4).floor
     hpgain2=((attacker.pbPartner.totalhp+1)/2).floor if @battle.FE == :HOLY
     
-    # @SWu update: Buff this attack in singles or if partner cannot heal
-
     if attacker.hp != attacker.totalhp
       if (attacker.pbPartner.hp == attacker.pbPartner.totalhp || attacker.pbPartner.isFainted?)
         attacker.pbRecoverHP(hpgain1,true)
@@ -11885,7 +11878,7 @@ class PokeBattle_Move_800 < PokeBattle_Move
     if @battle.FE == :WASTELAND &&
      ((!opponent.hasType?(:POISON) && !opponent.hasType?(:STEEL)) || opponent.corroded) &&
      !(opponent.ability == :TOXICBOOST) &&
-     !(opponent.ability == :POISONHEAL) && opponent.crested != :ZANGOOSE
+     !(opponent.ability == :POISONHEAL) && opponent.crested != :ZANGOOSE && opponent.crested != :GOODRA
      (!(opponent.ability == :IMMUNITY) && !(opponent.moldbroken))
       rnd=@battle.pbRandom(4)
       case rnd
