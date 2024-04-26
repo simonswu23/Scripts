@@ -283,11 +283,11 @@ class PokeBattle_Battler
           @attack *= 1.2
           @spatk *= 1.2
         when :CRYOGONAL
-          @spdef *= 1.2
-          @attack += @spdef * 0.1
-          @defense += @spdef * 0.1
-          @spatk += @spdef * 0.1
-          @speed += @spdef * 0.1
+          @spdef *= 2
+          @attack += @spdef * 0.25
+          @defense += @spdef * 0.25
+          @spatk += @spdef * 0.25
+          @speed += @spdef * 0.25
         when :ZOROARK
           blacklist = PBStuff::ABILITYBLACKLIST - [:STANCECHANGE,:TRACE]
           party = @battle.pbPartySingleOwner(@index)
@@ -297,6 +297,8 @@ class PokeBattle_Battler
               @ability = party[party.length-1].ability if !blacklist.include?(party[party.length-1].ability)
             end
           end
+        when :DARKRAI
+          @speed *= 1.2
         end 
       end
 

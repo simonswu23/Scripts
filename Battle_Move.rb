@@ -1366,6 +1366,9 @@ class PokeBattle_Move
     if [:HYPNO,:STANTLER,:WYRDEER].include?(attacker.crested)
       accuracy *= 1.5
     end
+    if attacker.crested == :DARKRAI
+      accuracy *= 1.2
+    end
     if attacker.hasWorkingItem(:ZOOMLENS) && attacker.speed < opponent.speed
       accuracy*=1.2
     end
@@ -2026,7 +2029,9 @@ class PokeBattle_Move
         when :SKILLLINK then atkmult*=1.2 if (@battle.FE == :COLOSSEUM && (@function == 0xC0 || @function == 0x307 || (attacker.crested == :CINCCINO && !pbIsMultiHit))) #0xC0: 2-5 hits; 0x307: Scale Shot
       end
     end
+
     atkmult*=0.5 if opponent.ability == :THICKFAT && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=1.5 if attacker.crested == :DARKRAI
 
     ##### Calculate opponent's defense stat #####
     defense=opponent.defense

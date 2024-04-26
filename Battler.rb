@@ -4373,7 +4373,7 @@ class PokeBattle_Battler
       return true
     end
     # TODO: "Before Protect" applies to Counter/Mirror Coat
-    if basemove.function==0xDE && ((target.status!=:SLEEP && (target.ability != (:COMATOSE) || @battle.FE == :ELECTERRAIN) && user.ability!=:WORLDOFNIGHTMARES) || user.effects[:HealBlock]!=0)  # Dream Eater
+    if basemove.function==0xDE && ((target.status!=:SLEEP && (target.ability != (:COMATOSE) || @battle.FE == :ELECTERRAIN) && (user.ability!=:WORLDOFNIGHTMARES || user.crestd != :DARKRAI)) || user.effects[:HealBlock]!=0)  # Dream Eater
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end

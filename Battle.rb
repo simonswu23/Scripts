@@ -1591,8 +1591,13 @@ class PokeBattle_Battle
       opp=opp1 if opp1.ability == :SHADOWTAG
       opp=opp2 if opp2.ability == :SHADOWTAG
     end
+    if (thispkmn.status == :SLEEP || thispkmn.ability == :COMATOSE)
+      opp=opp1 if opp1.crested == :DARKRAI && opp.ability == :BADDREAMS
+      opp=opp2 if opp2.crested == :DARKRAI && opp.ability == :BADDREAMS
+    end
     if opp
       abilityname=getAbilityName(opp.ability)
+      abilityname="Darkrai Crest" if opp.ability == :BADDREAMS
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -5895,9 +5900,10 @@ class PokeBattle_Battle
     # Bad Dreams
     if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
       if i.pbOpposing1.ability == (:BADDREAMS) || i.pbOpposing2.ability == (:BADDREAMS)
+        crested = i.pbOpposing1.crested == :DARKRAI || i.pbOpposing2.crested == :DARKRAI
         hpdrain=(i.totalhp/8.0).floor
         hpdrain=(i.totalhp/6.0).floor if @battle.FE == :DARKNESS2
-        hpdrain=(i.totalhp/4.0).floor if @battle.FE == :INFERNAL || @battle.FE == :DARKNESS3
+        hpdrain=(i.totalhp/4.0).floor if @battle.FE == :INFERNAL || @battle.FE == :DARKNESS3 || crested
         hploss=i.pbReduceHP(hpdrain,true)
         pbDisplay(_INTL("{1} is having a bad dream!",i.pbThis)) if hploss>0
       end

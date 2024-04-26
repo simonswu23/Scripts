@@ -10113,5 +10113,15 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:DARKRAICREST => {
+	:ID => 2008,
+	:name => "Darkrai Crest",
+	:desc => "Darkrai creams sleeping targets.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 
 }

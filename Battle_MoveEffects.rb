@@ -6545,6 +6545,7 @@ class PokeBattle_Move_0DE < PokeBattle_Move
         hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
       end
       hpgain=(hpgain*1.3).floor if attacker.crested == :SHIINOTIC
+      hpgain=(hpgain*2).floor if attacker.crested == :DARKRAI
       attacker.pbRecoverHP(hpgain,true)
       @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
     end
@@ -8157,7 +8158,7 @@ end
 ################################################################################
 class PokeBattle_Move_10F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if ((opponent.status!=:SLEEP && @battle.FE != :INFERNAL && attacker.ability != :WORLDOFNIGHTMARES) && 
+    if ((opponent.status!=:SLEEP && @battle.FE != :INFERNAL && (attacker.ability != :WORLDOFNIGHTMARES || attacker.crested == :DARKRAI)) && 
       (attacker.ability != :COMATOSE || @battle.FE == :ELECTERRAIN)) ||
        opponent.effects[:Nightmare] || opponent.effects[:Substitute]>0
       @battle.pbDisplay(_INTL("But it failed!"))
@@ -8165,7 +8166,7 @@ class PokeBattle_Move_10F < PokeBattle_Move
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.effects[:Nightmare]=true
-    opponent.effects[:MeanLook]=attacker.index if attacker.ability == :WORLDOFNIGHTMARES
+    opponent.effects[:MeanLook]=attacker.index if (attacker.ability == :WORLDOFNIGHTMARES || attacker.crested == :DARKRAI)
     @battle.pbDisplay(_INTL("{1} began having a nightmare!",opponent.pbThis))
     return 0
   end
