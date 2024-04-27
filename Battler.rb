@@ -4038,7 +4038,9 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4163,7 +4165,9 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -5080,6 +5084,26 @@ class PokeBattle_Battler
           target.stages[PBStats::ACCURACY] = 0
           target.stages[PBStats::EVASION]  = 0
           @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",target.pbThis))
+        end
+      end
+
+      # Grand Larceny
+      if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+        if (user.item.nil?)
+          itemname=getItemName(target.item)
+          user.item=target.item
+          target.item=nil
+          if target.pokemon.corrosiveGas
+            target.pokemon.corrosiveGas=false
+            user.pokemon.corrosiveGas=true
+          end
+          target.effects[:ChoiceBand]=nil
+          @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
+        else
+          itemname=getItemName(target.item)
+          target.item=nil
+          target.pokemon.corrosiveGas=false
+          @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
         end
       end
 

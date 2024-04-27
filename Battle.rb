@@ -6182,7 +6182,10 @@ class PokeBattle_Battle
       @battlers[i].effects[:RagePowder]=false
       @battlers[i].effects[:HelpingHand]=false
       @battlers[i].effects[:MagicCoat]=false
-      @battlers[i].effects[:Snatch] = @battlers[i].ability == :GRANDLARCENY
+      @battlers[i].effects[:Snatch]=false
+      if @battlers[i].ability == :GRANDLARCENY
+        @battlers[i].effects[:Snatch]=true
+      end
       @battlers[i].effects[:Electrify]=false
       @battlers[i].effects[:Charge]-=1 if @battlers[i].effects[:Charge]>0
       @battlers[i].lastHPLost=0
