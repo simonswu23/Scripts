@@ -10141,6 +10141,16 @@ ITEMHASH = {
 	:crest => true,
 	:noUseInBattle => true,
 	:noUse => true,
+},
+
+:CACTURNECREST => {
+	:ID => 2011,
+	:name => "Cacturne Crest",
+	:desc => "It's High Noon...",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
 }
 
 }

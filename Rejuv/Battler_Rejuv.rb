@@ -405,6 +405,18 @@ class PokeBattle_Battler
                 i.pbReduceStatStageOnEntryIntim(pbPartner)
               end
             end
+            if pbPartner.ability == :PRESSURE
+              for i in 0...4
+                next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+                @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+              end
+            end
+            if pbPartner.ability == :UNNERVE || pbPartner.ability == :ASONE
+              for i in 0...4
+                next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+                @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
+              end
+            end
           end
         end
         for i in @battle.battlers

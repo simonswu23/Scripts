@@ -1592,12 +1592,12 @@ class PokeBattle_Battle
       opp=opp2 if opp2.ability == :SHADOWTAG
     end
     if (thispkmn.status == :SLEEP || thispkmn.ability == :COMATOSE)
-      opp=opp1 if opp1.crested == :DARKRAI && opp.ability == :BADDREAMS
-      opp=opp2 if opp2.crested == :DARKRAI && opp.ability == :BADDREAMS
+      opp=opp1 if opp1.crested == :DARKRAI
+      opp=opp2 if opp2.crested == :DARKRAI
     end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname="Darkrai Crest" if opp.ability == :BADDREAMS
+      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false

@@ -14001,7 +14001,7 @@ MONHASH = {
 		:dexnum => 208,
 		:Type1 => :STEEL,
 		:Type2 => :GROUND,
-		:BaseStats => [75, 85, 200, 55, 65, 30],
+		:BaseStats => [95, 85, 200, 55, 65, 30],
 		:EVs => [0, 0, 2, 0, 0, 0],
 		:Abilities => [:ROCKHEAD, :STURDY],
 		:HiddenAbilities => :SHEERFORCE,
@@ -14061,7 +14061,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [75, 125, 230, 55, 95, 30],
+		:BaseStats => [95, 135, 230, 55, 95, 20],
 		:Abilities => [:ADAMANTINEBODY],
 		:BaseEXP => 214,
 		:Height => 105,
@@ -14295,7 +14295,7 @@ MONHASH = {
 		:dexnum => 212,
 		:Type1 => :BUG,
 		:Type2 => :STEEL,
-		:BaseStats => [70, 145, 125, 55, 80, 65],
+		:BaseStats => [70, 145, 125, 75, 80, 65],
 		:EVs => [0, 2, 0, 0, 0, 0],
 		:Abilities => [:SWARM, :TECHNICIAN],
 		:HiddenAbilities => :LIGHTMETAL,
@@ -14352,7 +14352,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [70, 175, 155, 65, 100, 75],
+		:BaseStats => [70, 175, 155, 85, 100, 75],
 		:Abilities => [:TECHNICIAN],
 		:BaseEXP => 210,
 		:Height => 20,

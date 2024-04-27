@@ -899,12 +899,25 @@ class PokeBattle_Battler
         else
           @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
         end
-        if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
+        if pbPartner.ability == :INTIMIDATE
           for i in @battle.battlers
             next if i.isFainted? || !pbIsOpposing?(i.index)
-            i.pbReduceStatStageOnEntryIntim(pbPartner, pbPartner.ability)
+            i.pbReduceStatStageOnEntryIntim(pbPartner)
           end
         end
+        if pbPartner.ability == :PRESSURE
+          for i in @battle.battlers
+            next if i.isFainted? || !pbIsOpposing?(i.index)
+            i.pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+          end
+        end
+        if pbPartner.ability == :UNNERVE || pbPartner.ability == :ASONE
+          for i in @battle.battlers
+            next if i.isFainted? || !pbIsOpposing?(i.index)
+            i.pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
+          end
+        end
+        
       end
     end
     for i in @battle.battlers
@@ -1918,6 +1931,20 @@ class PokeBattle_Battler
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
         @battle.battlers[i].pbReduceStatStageOnEntryIntim(self)
+      end
+    end
+    # Pressure
+    if self.ability == :PRESSURE && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+      end
+    end
+    # Unnerve, As One
+    if (self.ability == :UNNERVE || self.ability == :ASONE) && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
       end
     end
     # Downdraft
@@ -4943,6 +4970,16 @@ class PokeBattle_Battler
       end
       # Special Move Effects are applied here
       damage = basemove.pbEffect(user,target,i,alltargets,showanimation)
+
+      # Adamantine Body
+      if target.ability == :ADAMANTINEBODY && !user.isFainted? && basemove.contactMove?
+        if target.damagestate.calcdamage>0 && !target.damagestate.substitute && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+          user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
+          user.pbReduceHP((user.totalhp/8.0).floor)
+          @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
+        end
+      end
+
       # Bastiodon Crest
       if target.crested == :BASTIODON
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute &&
