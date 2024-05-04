@@ -171,7 +171,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [80, 100, 123, 122, 120, 80],
+		:BaseStats => [80, 90, 128, 127, 145, 60],
 		:Abilities => [:THICKFAT],
 		:BaseEXP => 281,
 		:Height => 24,
@@ -559,15 +559,15 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [79, 103, 120, 135, 115, 78],
+		:BaseStats => [79, 83, 120, 155, 115, 78],
 		:Abilities => [:MEGALAUNCHER],
 		:BaseEXP => 284,
 		:Weight => 1011,
 	},
 
 	"Giga Form" => {
-		:BaseStats => [79, 103, 130, 105, 135, 78],
-		:Abilities => [:RAINDISH],
+		:BaseStats => [79, 83, 130, 135, 135, 68],
+		:Abilities => [:MASSIVESHELL],
 		:Height => 250,
 		:Weight => 2216,
 	},

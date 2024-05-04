@@ -304,6 +304,9 @@ class PokeBattle_Battler
           @speed *= 1.2
         when :GOODRA
           @spdef *= 1.5
+        when :CACTURNE
+          @attack *= 1.3
+          @spatk *= 1.3
         end 
       end
 

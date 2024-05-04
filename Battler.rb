@@ -19,6 +19,7 @@ class PokeBattle_Battler
   attr_accessor :species
   attr_accessor :type1
   attr_accessor :type2
+  # @SWu for harmony orb, need to figure out how to overload equality method for ability
   attr_accessor :ability
   attr_accessor :gender
   attr_accessor :attack
@@ -4661,6 +4662,24 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} switched to Attack Stance!",pbThis))
       end
     end
+
+    if (self.crested == :CACTURNE)
+      cacturne_first = true
+      for i in @battle.battlers
+        next if i.isFainted? || !pbIsOpposing?(i.index)
+        if (i.hasMovedThisRound?)
+          cacturne_first = false;
+        end
+      end
+
+      if cacturne_first && (!self.pbTooHigh?(PBStats::ATTACK) || !self.pbTooHigh?(PBStats::SPATK)) && basemove.category != :status
+        @battle.pbCommonAnimation("StatUp",self,nil)
+        self.pbIncreaseStatBasic(PBStats::ATTACK,1)
+        self.pbIncreaseStatBasic(PBStats::SPATK,1)
+        @battle.pbDisplay(_INTL("{1}'s crest raised its offenses!",self.pbThis))
+      end
+    end
+
      # Stance Change moved from here to end of method to match Gen VII mechanics.
     # TODO: If being Sky Dropped, return false
     # TODO: Gravity prevents airborne-based moves here
@@ -6313,6 +6332,7 @@ class PokeBattle_Battler
 # Z Status Effect check
 ################################################################################
 
+  # @SWu need to do this for all status moves we add eventually
   def pbZStatus(move,attacker)
     z_effect_hash = pbHashForwardizer({
       [PBStats::ATTACK,1] => [:BULKUP,:HONECLAWS,:HOWL,:LASERFOCUS,:LEER,:MEDITATE,:ODORSLEUTH,:POWERTRICK,:ROTOTILLER,:SCREECH,:SHARPEN,

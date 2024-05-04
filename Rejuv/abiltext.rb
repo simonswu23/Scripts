@@ -1853,6 +1853,25 @@ ABILHASH = {
 	:ID => 325,
 	:name => "Detritivore",
 	:desc => "Ground, water, and poison type attacks restore hp instead of dealing damage."
-}
+},
+
+:MASSIVESHELL => {
+	:ID => 326,
+	:name => "Massive Shell",
+	:desc => "User takes reduced damage when its HP is over half."
+	# @SWu update this to be like disguise effect (broken once per game if hp falls under half)
+},
+
+:BADOMEN => {
+	:ID => 327,
+	:name => "Bad Omen",
+	:desc => "User forsees a dark attack upon switching into battle."
+},
+
+:REPLENISH => {
+	:ID => 328,
+	:name => "Replenish",
+	:desc => "User restores health when HP drops under half."
+},
 
 }
