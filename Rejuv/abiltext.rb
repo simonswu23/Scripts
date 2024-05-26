@@ -1855,18 +1855,35 @@ ABILHASH = {
 	:desc => "Ground, water, and poison type attacks restore hp instead of dealing damage."
 },
 
-# @ unfinished implementation
-:GRAVPULL => {
+:MASSIVESHELL => {
 	:ID => 326,
+	:name => "Massive Shell",
+	:desc => "User takes reduced damage when its HP is over half."
+	# @SWu update this to be like disguise effect (broken once per game if hp falls under half)
+},
+
+:BADOMEN => {
+	:ID => 327,
+	:name => "Bad Omen",
+	:desc => "User forsees a dark attack upon switching into battle."
+},
+
+:REPLENISH => {
+	:ID => 328,
+	:name => "Replenish",
+	:desc => "User restores health when HP drops under half."
+},
+
+:GRAVPULL => {
+	:ID => 329,
 	:name => "Gravitational Pull",
 	:desc => "Summons strong gravity field while active, preventing lighter foes frome escaping."
 },
 
-# @ unfinished implementation
 :GRAVFLUX => {
-	:ID => 327,
+	:ID => 330,
 	:name => "Gravitational Flux",
 	:desc => "Summons gravity upon entering battle. The user is immune to these effects."
-}
+},
 
 }

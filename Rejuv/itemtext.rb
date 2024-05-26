@@ -10141,6 +10141,27 @@ ITEMHASH = {
 	:crest => true,
 	:noUseInBattle => true,
 	:noUse => true,
-}
+},
+
+:CACTURNECREST => {
+	:ID => 2011,
+	:name => "Cacturne Crest",
+	:desc => "It's High Noon...",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+# @SWu idk how to implement this, seems like it's gonna be hell
+:HARMONYORB => {
+	:ID => 2012,
+	:name => "Harmony Orb",
+	:desc => "An item to be held by a Pokémon. It has access to all its possible abilities in battle.",
+	:price => 999,
+	:noUseInBattle => true,
+	:noUse => true,
+	:battlehold => true,
+},
 
 }

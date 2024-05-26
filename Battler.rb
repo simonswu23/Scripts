@@ -19,6 +19,7 @@ class PokeBattle_Battler
   attr_accessor :species
   attr_accessor :type1
   attr_accessor :type2
+  # @SWu for harmony orb, need to figure out how to overload equality method for ability
   attr_accessor :ability
   attr_accessor :gender
   attr_accessor :attack
@@ -908,13 +909,25 @@ class PokeBattle_Battler
         else
           @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
         end
-        # @SWu this is still buggy -- fix
-        if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
+        if pbPartner.ability == :INTIMIDATE
           for i in @battle.battlers
             next if i.isFainted? || !pbIsOpposing?(i.index)
-            i.pbReduceStatStageOnEntryIntim(pbPartner, pbPartner.ability)
+            i.pbReduceStatStageOnEntryIntim(pbPartner)
           end
         end
+        if pbPartner.ability == :PRESSURE
+          for i in @battle.battlers
+            next if i.isFainted? || !pbIsOpposing?(i.index)
+            i.pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+          end
+        end
+        if pbPartner.ability == :UNNERVE || pbPartner.ability == :ASONE
+          for i in @battle.battlers
+            next if i.isFainted? || !pbIsOpposing?(i.index)
+            i.pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
+          end
+        end
+        
       end
     end
     for i in @battle.battlers
@@ -1951,6 +1964,20 @@ class PokeBattle_Battler
       for i in 0...4
         next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
         @battle.battlers[i].pbReduceStatStageOnEntryIntim(self)
+      end
+    end
+    # Pressure
+    if self.ability == :PRESSURE && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+      end
+    end
+    # Unnerve, As One
+    if (self.ability == :UNNERVE || self.ability == :ASONE) && onactive
+      for i in 0...4
+        next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+        @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
       end
     end
     # Downdraft
@@ -4044,7 +4071,9 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4169,7 +4198,9 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-          i.effects[:Snatch]=false
+          if (i.ability != :GRANDLARCENY)
+            i.effects[:Snatch]=false
+          end
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4663,6 +4694,24 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} switched to Attack Stance!",pbThis))
       end
     end
+
+    if (self.crested == :CACTURNE)
+      cacturne_first = true
+      for i in @battle.battlers
+        next if i.isFainted? || !pbIsOpposing?(i.index)
+        if (i.hasMovedThisRound?)
+          cacturne_first = false;
+        end
+      end
+
+      if cacturne_first && (!self.pbTooHigh?(PBStats::ATTACK) || !self.pbTooHigh?(PBStats::SPATK)) && basemove.category != :status
+        @battle.pbCommonAnimation("StatUp",self,nil)
+        self.pbIncreaseStatBasic(PBStats::ATTACK,1)
+        self.pbIncreaseStatBasic(PBStats::SPATK,1)
+        @battle.pbDisplay(_INTL("{1}'s crest raised its offenses!",self.pbThis))
+      end
+    end
+
      # Stance Change moved from here to end of method to match Gen VII mechanics.
     # TODO: If being Sky Dropped, return false
     # TODO: Gravity prevents airborne-based moves here
@@ -4976,6 +5025,16 @@ class PokeBattle_Battler
       end
       # Special Move Effects are applied here
       damage = basemove.pbEffect(user,target,i,alltargets,showanimation)
+
+      # Adamantine Body
+      if target.ability == :ADAMANTINEBODY && !user.isFainted? && basemove.contactMove?
+        if target.damagestate.calcdamage>0 && !target.damagestate.substitute && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+          user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
+          user.pbReduceHP((user.totalhp/8.0).floor)
+          @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
+        end
+      end
+
       # Bastiodon Crest
       if target.crested == :BASTIODON
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute &&
@@ -5076,6 +5135,26 @@ class PokeBattle_Battler
           target.stages[PBStats::ACCURACY] = 0
           target.stages[PBStats::EVASION]  = 0
           @battle.pbDisplay(_INTL("{1}'s stat changes were removed!",target.pbThis))
+        end
+      end
+
+      # Grand Larceny
+      if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+        if (user.item.nil?)
+          itemname=getItemName(target.item)
+          user.item=target.item
+          target.item=nil
+          if target.pokemon.corrosiveGas
+            target.pokemon.corrosiveGas=false
+            user.pokemon.corrosiveGas=true
+          end
+          target.effects[:ChoiceBand]=nil
+          @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
+        else
+          itemname=getItemName(target.item)
+          target.item=nil
+          target.pokemon.corrosiveGas=false
+          @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
         end
       end
 
@@ -6285,6 +6364,7 @@ class PokeBattle_Battler
 # Z Status Effect check
 ################################################################################
 
+  # @SWu need to do this for all status moves we add eventually
   def pbZStatus(move,attacker)
     z_effect_hash = pbHashForwardizer({
       [PBStats::ATTACK,1] => [:BULKUP,:HONECLAWS,:HOWL,:LASERFOCUS,:LEER,:MEDITATE,:ODORSLEUTH,:POWERTRICK,:ROTOTILLER,:SCREECH,:SHARPEN,

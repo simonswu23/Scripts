@@ -37,6 +37,7 @@ def mainFunctionDebug #:nodoc:
     desolationCheckRemoteVersion() if Desolation && $DEBUG != true
     puts (Time.now - $boottime)
     $scene = pbCallTitle
+    $testing = true
     while $scene != nil
       $scene.main
     end

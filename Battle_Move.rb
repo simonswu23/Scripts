@@ -2137,10 +2137,6 @@ class PokeBattle_Move
     if opponent.hasWorkingItem(:METALPOWDER) && (opponent.pokemon.species == :DITTO) && !opponent.effects[:Transform] && pbIsPhysical?(type)
       defmult*=2.0
     end
-    
-    if opponent.crested == :VESPIQUEN
-      defmult*=1.5
-    end
 
     #General damage modifiers
     damage = 1.0
@@ -2349,6 +2345,7 @@ class PokeBattle_Move
     secondtypes = self.getSecondaryType(attacker)
     finalmult*=0.5 if opponent.effects[:Shelter] && @battle.FE != :INDOOR && (type == @battle.field.mimicry || !secondtypes.nil? && secondtypes.include?(@battle.field.mimicry))
     finalmult*=0.5 if ((opponent.ability == :MULTISCALE && !(opponent.moldbroken)) && opponent.hp==opponent.totalhp)
+    finalmult*=0.5 if ((opponent.ability == :MASSIVESHELL && !(opponent.moldbroken)) && opponent.hp>=(opponent.totalhp/2).floor)
     finalmult*=0.5 if opponent.ability == :SHADOWSHIELD && (opponent.hp==opponent.totalhp || @battle.FE == :DIMENSIONAL)
     finalmult*=0.33 if opponent.ability == :SHADOWSHIELD && (opponent.hp==opponent.totalhp && (@battle.FE == :DARKNESS2 || @battle.FE == :DARKNESS3 ))
     finalmult*=2.0 if attacker.ability == :TINTEDLENS && opponent.damagestate.typemod<4

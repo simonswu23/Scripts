@@ -1602,7 +1602,7 @@ class PokeBattle_Battle
     end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname="Darkrai Crest" if opp.ability == :BADDREAMS
+      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -6187,7 +6187,10 @@ class PokeBattle_Battle
       @battlers[i].effects[:RagePowder]=false
       @battlers[i].effects[:HelpingHand]=false
       @battlers[i].effects[:MagicCoat]=false
-      @battlers[i].effects[:Snatch] = @battlers[i].ability == :GRANDLARCENY
+      @battlers[i].effects[:Snatch]=false
+      if @battlers[i].ability == :GRANDLARCENY
+        @battlers[i].effects[:Snatch]=true
+      end
       @battlers[i].effects[:Electrify]=false
       @battlers[i].effects[:Charge]-=1 if @battlers[i].effects[:Charge]>0
       @battlers[i].lastHPLost=0

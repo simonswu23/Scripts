@@ -304,6 +304,9 @@ class PokeBattle_Battler
           @speed *= 1.2
         when :GOODRA
           @spdef *= 1.5
+        when :CACTURNE
+          @attack *= 1.3
+          @spatk *= 1.3
         end 
       end
 
@@ -403,6 +406,18 @@ class PokeBattle_Battler
               for i in @battle.battlers
                 next if i.isFainted? || !pbIsOpposing?(i.index)
                 i.pbReduceStatStageOnEntryIntim(pbPartner)
+              end
+            end
+            if pbPartner.ability == :PRESSURE
+              for i in 0...4
+                next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+                @battle.battlers[i].pbReduceStat(PBStats::SPATK,1,abilitymessage:true, statdropper: self)
+              end
+            end
+            if pbPartner.ability == :UNNERVE || pbPartner.ability == :ASONE
+              for i in 0...4
+                next if !pbIsOpposing?(i) || @battle.battlers[i].isFainted?
+                @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
               end
             end
           end

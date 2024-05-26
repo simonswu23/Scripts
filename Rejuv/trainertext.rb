@@ -54763,6 +54763,9 @@ TEAMARRAY = [{
 	:moves => [:SUPERSONIC,:BITE,:UPROAR,:STOMP],
 	:ability => :SOUNDPROOF,
 }]},
+
+# @SWu End of Trainers in Debug
+
 {
 :teamid => ["Sim",:COOLGUY,0],
 :defeat => "You think you're the best?",
