@@ -142,7 +142,7 @@ end
 ################################################################################
 class PokeBattle_Move_001 < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0 if @move == :SPLASH
+    return @battle.state.effects[:Gravity]!=0 if @move == :SPLASH && attacker.ability != :GRAVFLUX
     return false
   end
 
@@ -3665,7 +3665,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
        $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCE)    # Sky Drop
       return basedmg*2
     elsif opponent.hasType?(:FLYING) || opponent.ability == :LEVITATE || opponent.effects[:MagnetRise]>0 || opponent.effects[:Telekinesis]>0 ||
-          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
+          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX
       return basedmg*2
     end
     return basedmg
@@ -3674,11 +3674,11 @@ class PokeBattle_Move_078 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       !opponent.effects[:Roost]
+       !opponent.effects[:Roost] && !(opponent.ability == :GRAVFLUX && @battle.state.effects[:Gravity] != 0)
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -5790,7 +5790,7 @@ end
 ################################################################################
 class PokeBattle_Move_0C9 < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
   end
 
   def pbTwoTurnAttack(attacker,checking=false)
@@ -5811,7 +5811,7 @@ class PokeBattle_Move_0C9 < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if @battle.state.effects[:Gravity]!=0
+    if @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
       @battle.pbDisplay(_INTL("But it failed!"))
       attacker.effects[:TwoTurnAttack] = 0
       return -1
@@ -5917,7 +5917,7 @@ end
 ################################################################################
 class PokeBattle_Move_0CC < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
   end
 
   def pbTwoTurnAttack(attacker,checking=false)
@@ -5938,7 +5938,7 @@ class PokeBattle_Move_0CC < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if @battle.state.effects[:Gravity]!=0
+    if @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
       @battle.pbDisplay(_INTL("But it failed!"))
       attacker.effects[:TwoTurnAttack] = 0
       return -1
@@ -6049,7 +6049,7 @@ class PokeBattle_Move_0CE < PokeBattle_Move
       attacker.effects[:SkyDroppee] = nil
       return -1
     end
-    if @battle.state.effects[:Gravity]!=0
+    if @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
       @battle.pbDisplay(_INTL("But it failed!"))
       attacker.effects[:TwoTurnAttack] = 0
       attacker.effects[:SkyDroppee] = nil
@@ -8091,7 +8091,7 @@ end
 ################################################################################
 class PokeBattle_Move_10B < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
   end
 end
 
@@ -8550,15 +8550,20 @@ class PokeBattle_Move_118 < PokeBattle_Move
   
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     if @battle.FE == :DEEPEARTH
+      if (opponent.ability == :GRAVFLUX)
+        @battle.pbDisplay(_INTL("It doesn't affect {1}...", opponent.pbThis))
+        return -1
+      end
       hploss = (opponent.hp/2.0).floor
       return pbEffectFixedDamage(hploss,attacker,opponent,hitnum,alltargets,showanimation)
     end
-    if @battle.state.effects[:Gravity]!=0 
+    if @battle.state.effects[:Gravity]!=0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     @battle.state.effects[:Gravity]=5
+    # @Swu flag1
     @battle.state.effects[:Gravity]=8 if attacker.hasWorkingItem(:AMPLIFIELDROCK)
     @battle.state.effects[:Gravity]=8 if @battle.FE == :PSYTERRAIN
     if @battle.FE == :DIMENSIONAL
@@ -8595,7 +8600,7 @@ end
 ################################################################################
 class PokeBattle_Move_119 < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return (@battle.state.effects[:Gravity])!=0 if @battle.FE != :DEEPEARTH
+    return (@battle.state.effects[:Gravity])!=0 if @battle.FE != :DEEPEARTH && attacker.ability != :GRAVFLUX
     return false
   end
 
@@ -8630,7 +8635,7 @@ end
 ################################################################################
 class PokeBattle_Move_11A < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && opponent.ability != :GRAVFLUX
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
@@ -8671,11 +8676,11 @@ class PokeBattle_Move_11C < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       !opponent.effects[:Roost]
+      !opponent.effects[:Roost] && !(opponent.ability == :GRAVFLUX && @battle.state.effects[:Gravity] != 0)
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || oppomnent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -8970,7 +8975,7 @@ end
 ################################################################################
 class PokeBattle_Move_137 < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
   end
 
   def pbAdditionalEffect(attacker,opponent)
@@ -11845,7 +11850,7 @@ end
 ################################################################################
 class PokeBattle_Move_506 < PokeBattle_Move
   def pbMoveFailed(attacker,opponent)
-    return @battle.state.effects[:Gravity]!=0
+    return @battle.state.effects[:Gravity]!=0 && attacker.ability != :GRAVFLUX
   end
 
   def pbAdditionalEffect(attacker,opponent)

@@ -34,16 +34,25 @@ TEAMARRAY = [{
 },
 =end
 :mons => [{
-	:species => :DARKRAI,
+	:species => :GENGAR,
 	:level => 95,
-	:item => :DARKRAICREST,
-	:moves => [:DARKVOID],
-	:ability => :UNNERVE,
-	:gender => "M",
-	:shiny => true,
+	:item => :CHERISHBALL,
+	:moves => [:SPLASH],
+	:ability => :GRAVPULL,
+	:form => 2,
 	:nature => :TIMID,
 	:iv => 31,
 	:ev => [0, 252, 0, 4, 252, 252]},
+	{
+	:species => :ORBEETLE,
+	:level => 95,
+	:item => :CHERISHBALL,
+	:moves => [:SPLASH],
+	:ability => :GRAVFLUX,
+	:form => 1,
+	:nature => :TIMID,
+	:iv => 31,
+	:ev => [0, 252, 0, 4, 252, 252]}
 ]},
 {
 :teamid => ["Aevis",:TRAINER_AEVIS,9],

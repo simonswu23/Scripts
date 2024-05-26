@@ -1552,13 +1552,17 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
     end
-    if thispkmn.hasType?(:GHOST) && (@field.effect != :DIMENSIONAL || !(thispkmn.pbOpposing1.ability == :SHADOWTAG || thispkmn.pbOpposing2.ability == :SHADOWTAG))
+
+    opp1=thispkmn.pbOpposing1
+    opp2=thispkmn.pbOpposing2
+    opp=nil
+    if thispkmn.hasType?(:GHOST) && (@field.effect != :DIMENSIONAL || !(opp1.ability == :SHADOWTAG || opp2.ability == :SHADOWTAG) )
       return true
     end
     if thispkmn.hasWorkingItem(:SHEDSHELL)
       return true
     end
-    if @field.effect == :INFERNAL && thispkmn.status ==:SLEEP && (thispkmn.pbOpposing1.ability == (:BADDREAMS) || thispkmn.pbOpposing2.ability == (:BADDREAMS))
+    if @field.effect == :INFERNAL && thispkmn.status ==:SLEEP && (opp1.ability == (:BADDREAMS) || opp2.ability == (:BADDREAMS))
       pbDisplayPaused(_INTL("{1}'s terrible dreams prevent it from being switched out!",thispkmn.pbThis)) if showMessages 
       return false
     end
@@ -1576,9 +1580,6 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} can't be switched out due to Embargo!",thispkmn.pbThis)) if showMessages
       return false
     end
-    opp1=thispkmn.pbOpposing1
-    opp2=thispkmn.pbOpposing2
-    opp=nil
     if thispkmn.hasType?(:STEEL)
       opp=opp1 if opp1.ability == :MAGNETPULL
       opp=opp2 if opp2.ability == :MAGNETPULL
@@ -1591,9 +1592,13 @@ class PokeBattle_Battle
       opp=opp1 if opp1.ability == :SHADOWTAG
       opp=opp2 if opp2.ability == :SHADOWTAG
     end
+    if @battle.state.effects[:Gravity] == -1
+      opp = opp1 if opp1.ability == :GRAVPULL && thispkmn.weight < opp1.weight
+      opp = opp2 if opp2.ability == :GRAVPULL && thispkmn.weight < opp2.weight
+    end
     if (thispkmn.status == :SLEEP || thispkmn.ability == :COMATOSE)
-      opp=opp1 if opp1.crested == :DARKRAI && opp.ability == :BADDREAMS
-      opp=opp2 if opp2.crested == :DARKRAI && opp.ability == :BADDREAMS
+      opp=opp1 if opp1.crested == :DARKRAI && opp1.ability == :BADDREAMS
+      opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
     end
     if opp
       abilityname=getAbilityName(opp.ability)

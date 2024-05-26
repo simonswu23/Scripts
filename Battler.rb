@@ -746,7 +746,8 @@ class PokeBattle_Battler
     return false if @effects[:Ingrain]
     return false if @effects[:SmackDown]
     return true if [:MAGNETPULL,:CONTRARY,:UNAWARE,:OBLIVIOUS].include?(self.ability) && @battle.FE == :DEEPEARTH
-    return false if @battle.state.effects[:Gravity]!=0
+    return true if self.ability == :GRAVFLUX
+    return false if @battle.state.effects[:Gravity]!=0 && self.ability != :GRAVFLUX
     return true if self.hasType?(:FLYING) && @effects[:Roost]==false
     return true if self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL
     return true if self.hasWorkingItem(:AIRBALLOON)
@@ -791,6 +792,14 @@ class PokeBattle_Battler
     if self.pbOwnSide.effects[:Tailwind]>0
       speed=speed*2
     end
+    
+    # @SWu 
+  
+    if @battle.state.effects[:Gravity] != 0
+      speed *= [1, self.weight/2000.0].min
+      speed *= [1, 2000.0/self.weight].max if self.ability == :GRAVFLUX
+    end
+
     case self.ability
       when :SWIFTSWIM
         speed*=2 if @battle.pbWeather== :RAINDANCE && !self.hasWorkingItem(:UTILITYUMBRELLA) || [:WATERSURFACE,:UNDERWATER,:MURKWATERSURFACE].include?(@battle.FE)
@@ -899,6 +908,7 @@ class PokeBattle_Battler
         else
           @battle.pbDisplay(_INTL("{1} received {2}'s {3}!",pbPartner.pbThis,pbThis,abilityname))
         end
+        # @SWu this is still buggy -- fix
         if pbPartner.ability == :INTIMIDATE || pbPartner.ability == :UNNERVE || pbPartner.ability == :PRESSURE
           for i in @battle.battlers
             next if i.isFainted? || !pbIsOpposing?(i.index)
@@ -1578,6 +1588,16 @@ class PokeBattle_Battler
       end
     end
 
+
+    # @Grav Pull
+    if @battle.state.effects[:Gravity] == -1 && @battle.FE != :DEEPEARTH
+      if !@battle.pbCheckGlobalAbility(:GRAVPULL)
+        @battle.state.effects[:Gravity] = 0
+        @battle.pbDisplay(_INTL("The intense gravitational pull disappeared!"))
+      end
+    end
+
+
     # END OF PRIMAL WEATHER DEACTIVATION TESTS
     if !@battle.pbCheckGlobalAbility(:DARKSURGE) && (@battle.FE==:DARKNESS1 || @battle.FE==:DARKNESS2 || @battle.FE==:DARKNESS3)
       if @battle.field.duration>0
@@ -1853,6 +1873,19 @@ class PokeBattle_Battler
       end
     end 
     #### END OF WEATHER ABILITIES
+
+    if (self.ability == :GRAVPULL && @battle.state.effects[:Gravity]==0)
+      @battle.state.effects[:Gravity]=-1
+      @battle.pbDisplay(_INTL("{1}'s Gravitational Pull strengthened gravity!", pbThis))
+    end
+
+    if self.ability == :GRAVFLUX && onactive && @battle.state.effects[:Gravity]==0
+      @battle.state.effects[:Gravity]=5
+      @battle.state.effects[:Gravity]=8 if self.hasWorkingItem(:AMPLIFIELDROCK)
+      @battle.state.effects[:Gravity]=8 if @battle.FE == :PSYTERRAIN
+      @battle.pbDisplay(_INTL("{1}'s Gravitational Flux strengthened gravity!", pbThis))
+    end
+
     if onactive
       case self.ability
         when :AIRLOCK, :CLOUDNINE then @battle.pbDisplay(_INTL("The effects of the weather disappeared."))
@@ -2440,7 +2473,7 @@ class PokeBattle_Battler
               pbThis,getAbilityName(ability)))
         end     
       end
-      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL) && onactive
+      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL || self.ability == :HIVEQUEEN || self.ability == :GRAVFLUX) && onactive
         if !pbTooHigh?(PBStats::SPEED)
           pbIncreaseStatBasic(PBStats::SPEED,1)
           @battle.pbCommonAnimation("StatUp",self,nil)
@@ -2544,7 +2577,7 @@ class PokeBattle_Battler
       if (self.ability == :MAGNETPULL) && onactive
         @battle.pbDisplay(_INTL("The strong magnetism causes {1} to float!",self.pbThis)) 
       end
-      if (self.ability == :UNAWARE || self.ability == :OBLIVIOUS) && onactive
+      if (self.ability == :UNAWARE || self.ability == :OBLIVIOUS || self.ability == :GRAVFLUX) && onactive
         @battle.pbDisplay(_INTL("{1} fails to notice the intense gravity...",self.pbThis)) 
       end
       if (self.ability == :CONTRARY) && onactive
@@ -4517,7 +4550,7 @@ class PokeBattle_Battler
       typemod=basemove.fieldTypeChange(user,target,typemod)
       typemod=basemove.overlayTypeChange(user,target,typemod)
       if (type == :GROUND) && target.isAirborne? && !target.hasWorkingItem(:RINGTARGET) && @battle.FE != :CAVE && basemove.move != :THOUSANDARROWS && basemove.move != :DESERTSMARK
-        if ([:LEVITATE,:SOLARIDOL,:LUNARIDOL].include?(target.ability) || (@battle.FE == :DEEPEARTH && [:UNAWARE,:OBLIVIOUS,:MAGNETPULL,:CONTRARY].include?(target.ability))) && !(target.moldbroken)
+        if ([:LEVITATE,:SOLARIDOL,:LUNARIDOL,:HIVEQUEEN,:GRAVFLUX].include?(target.ability) || (@battle.FE == :DEEPEARTH && [:UNAWARE,:OBLIVIOUS,:MAGNETPULL,:CONTRARY,:GRAVFLUX].include?(target.ability))) && !(target.moldbroken)
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with {2}!",target.pbThis,getAbilityName(target.ability)))
           return false
         end

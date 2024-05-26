@@ -1853,6 +1853,20 @@ ABILHASH = {
 	:ID => 325,
 	:name => "Detritivore",
 	:desc => "Ground, water, and poison type attacks restore hp instead of dealing damage."
+},
+
+# @ unfinished implementation
+:GRAVPULL => {
+	:ID => 326,
+	:name => "Gravitational Pull",
+	:desc => "Summons strong gravity field while active, preventing lighter foes frome escaping."
+},
+
+# @ unfinished implementation
+:GRAVFLUX => {
+	:ID => 327,
+	:name => "Gravitational Flux",
+	:desc => "Summons gravity upon entering battle. The user is immune to these effects."
 }
 
 }

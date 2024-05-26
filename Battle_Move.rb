@@ -595,7 +595,7 @@ class PokeBattle_Move
         (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN || opponent.ability == :DETRITOVORE)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
         (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
         (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
@@ -1358,7 +1358,7 @@ class PokeBattle_Move
     accstage=0 if opponent.ability == :UNAWARE && !(opponent.moldbroken)
     accuracy=(accstage>=0) ? (accstage+3)*100.0/3 : 300.0/(3-accstage)
     evastage=opponent.stages[PBStats::EVASION]
-    evastage-=2 if @battle.state.effects[:Gravity]!=0
+    evastage-=2 if @battle.state.effects[:Gravity]!=0 && opponent.ability != :GRAVFLUX
     evastage=-6 if evastage<-6
     evastage=0 if opponent.effects[:Foresight] || opponent.effects[:MiracleEye] || @function==0xA9 || # Chip Away
                   attacker.ability == :UNAWARE && !(opponent.moldbroken)

@@ -6597,10 +6597,12 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [60, 150, 100, 65, 115, 110],
-		:Abilities => [:CURSEDBODY],
+		:Type1 => :GHOST,
+		:Type2 => :DARK,
+		:BaseStats => [60, 65, 100, 150, 115, 110],
+		:Abilities => [:GRAVPULL],
 		:Height => 200,
-		:Weight => 611,
+		:Weight => 1222,
 	},
 
 	:OnCreation => {},
@@ -52689,7 +52691,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [60, 75, 130, 95, 140, 105],
-		:Abilities => [:PRANKSTER],
+		:Abilities => [:GRAVFLUX],
 		:Height => 140,
 		:Weight => 899
 	},

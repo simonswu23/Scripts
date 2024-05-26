@@ -7129,7 +7129,7 @@ class PokeBattle_AI
 		accstage=0 if opponent.ability == :UNAWARE && !moldBreakerCheck(attacker)
 		accuracy=(accstage>=0) ? (accstage+3)*100.0/3 : 300.0/(3-accstage)
 		evastage=opponent.stages[PBStats::EVASION]
-		evastage-=2 if @battle.state.effects[:Gravity]!=0
+		evastage-=2 if @battle.state.effects[:Gravity]!=0 && opponent.ability != :GRAVFLUX
 		evastage=-6 if evastage<-6
 		evastage=0 if opponent.effects[:Foresight] || opponent.effects[:MiracleEye] || move.function==0xA9 || attacker.ability == :UNAWARE && !moldBreakerCheck(opponent)
 		evasion=(evastage>=0) ? (evastage+3)*100.0/3 : 300.0/(3-evastage)
