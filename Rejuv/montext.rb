@@ -179,7 +179,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 82, 108, 150, 125, 80],
+		:BaseStats => [80, 122, 83, 145, 115, 80],
 		:Abilities => [:CHLOROPHYLL],
 		:Height => 240,
 		:Weight => 2216,
@@ -31310,7 +31310,7 @@ MONHASH = {
 	},
 
 	"Origin Forme" => {
-		:BaseStats => [100, 100, 120, 150, 120, 90],
+		:BaseStats => [100, 120, 150, 200, 120, 90],
 		:Height => 70,
 		:Weight => 8500,
 	},
@@ -31364,7 +31364,7 @@ MONHASH = {
 	},
 
 	"Origin Forme" => {
-		:BaseStats => [90, 100, 100, 150, 120, 120],
+		:BaseStats => [90, 150, 120, 180, 120, 120],
 		:Height => 63,
 		:Weight => 6600,
 	},
@@ -31480,7 +31480,7 @@ MONHASH = {
 		:dexnum => 487,
 		:Type1 => :GHOST,
 		:Type2 => :DRAGON,
-		:BaseStats => [150, 100, 120, 100, 120, 90],
+		:BaseStats => [150, 100, 130, 100, 130, 90],
 		:EVs => [3, 0, 0, 0, 0, 0],
 		:Abilities => [:PRESSURE, :TELEPATHY],
 		:GrowthRate => :Slow,
@@ -31520,8 +31520,8 @@ MONHASH = {
 	},
 
 	"Origin Forme" => {
-		:BaseStats => [150, 120, 100, 120, 100, 90],
-		:Abilities => [:LEVITATE],
+		:BaseStats => [150, 150, 100, 150, 100, 150],
+		:Abilities => [:GRAVFLUX],
 		:Height => 69,
 		:Weight => 6500,
 	},
@@ -52805,14 +52805,14 @@ MONHASH = {
 		:BattlerAltitude => 0,
 	},
 
-	"Alpha Form" => {
+	"Ace (Alice)" => {
 		:name => "Thievul",
 		:dexnum => 828,
 		:Type1 => :DARK,
 		:Type2 => :POISON,
 		:BaseStats => [70, 108, 58, 137, 107, 115],
 		:EVs => [0, 0, 0, 0, 2, 0],
-		:Abilities => [:GRANDLARCENY],
+		:Abilities => [:JOKER],
 		:GrowthRate => :Fast,
 		:GenderRatio => :FemHalf,
 		:BaseEXP => 159,

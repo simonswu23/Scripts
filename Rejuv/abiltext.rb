@@ -1843,9 +1843,9 @@ ABILHASH = {
 	:desc => "The user is covered in a dense plate of armor, doubling its defense and harming attackers in return."
 },
 
-:GRANDLARCENY => {
+:JOKER => {
 	:ID => 324,
-	:name => "Grand Larceny",
+	:name => "Joker",
 	:desc => "The steals items, moves, and stats from the foe. It is an expert at getting away."
 },
 

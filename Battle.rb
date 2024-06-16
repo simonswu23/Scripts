@@ -1350,7 +1350,7 @@ class PokeBattle_Battle
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
         pri += 1 if @choices[i][2].move == :SLEIGHRIDE && (@battle.pbWeather == :HAIL)
         pri += 1 if (@battlers[i].ability == :HIVEQUEEN || @battlers[i].pbPartner.ability == :HIVEQUEEN) && @choices[i][2].type==:BUG 
-        pri += 2 if (@battlers[i].ability == :RUNAWAY || @battlers[i].ability == :GRANDLARCENY) && (@choices[i][2].function == 0x0EE || @choices[i][2].function == 0x902 || @choices[i][2].function == 0x13D || @choices[i][2].function == 0x0ED)
+        pri += 2 if (@battlers[i].ability == :RUNAWAY || @battlers[i].ability == :JOKER) && (@choices[i][2].function == 0x0EE || @choices[i][2].function == 0x902 || @choices[i][2].function == 0x13D || @choices[i][2].function == 0x0ED)
         pri += 1 if @choices[i][2].move == :QUASH && @field.effect == :DIMENSIONAL
         pri += 1 if @choices[i][2].basedamage != 0 && @battlers[i].crested == :FERALIGATR && @battlers[i].turncount == 1 # Feraligatr Crest
         pri += 3 if @battlers[i].ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
@@ -6188,7 +6188,7 @@ class PokeBattle_Battle
       @battlers[i].effects[:HelpingHand]=false
       @battlers[i].effects[:MagicCoat]=false
       @battlers[i].effects[:Snatch]=false
-      if @battlers[i].ability == :GRANDLARCENY
+      if @battlers[i].ability == :JOKER
         @battlers[i].effects[:Snatch]=true
       end
       @battlers[i].effects[:Electrify]=false

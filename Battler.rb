@@ -4071,7 +4071,7 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-          if (i.ability != :GRANDLARCENY)
+          if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
           target=user
@@ -4198,7 +4198,7 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-          if (i.ability != :GRANDLARCENY)
+          if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
           target=user
@@ -5139,7 +5139,7 @@ class PokeBattle_Battler
       end
 
       # Grand Larceny
-      if user.ability == :GRANDLARCENY && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+      if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
         if (user.item.nil?)
           itemname=getItemName(target.item)
           user.item=target.item

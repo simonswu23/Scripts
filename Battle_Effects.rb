@@ -756,7 +756,7 @@ end
       end
       @battle.pbDisplay(stat_text) if statmessage
 
-      if statdropper != nil && statdropper.ability == :GRANDLARCENY
+      if statdropper != nil && statdropper.ability == :JOKER
         statdropper.pbIncreaseStat(stat,increment,abilitymessage:abilitymessage,statmessage:statmessage)
       end
 
