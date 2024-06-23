@@ -2186,7 +2186,7 @@ class PokeBattle_Battler
       end
     end
     # Grand Larceny
-    if self.ability == :GRANDLARCENY && onactive
+    if self.ability == :JOKER && onactive
       self.effects[:Snatch]=true
       @battle.pbDisplay(_INTL("{1} waits for its foes to make a move...", pbThis))
     end
@@ -4108,19 +4108,15 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
-<<<<<<< Updated upstream
           if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
-=======
-          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
->>>>>>> Stashed changes
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
           # @SWu this is causing a bug so i'm taking it out
           userchoice=@battle.choices[user.index][1]
-          if target.ability == (:PRESSURE) && userchoice>=0 && user.ability != :GRANDLARCENY
+          if target.ability == (:PRESSURE) && userchoice>=0 && user.ability != :JOKER
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4240,13 +4236,9 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
-<<<<<<< Updated upstream
           if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
-=======
-          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
->>>>>>> Stashed changes
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -5194,11 +5186,7 @@ class PokeBattle_Battler
       end
 
       # Grand Larceny
-<<<<<<< Updated upstream
       if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
-=======
-      if user.ability == :GRANDLARCENY && basemove.contactMove? && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
->>>>>>> Stashed changes
         if (user.item.nil?)
           itemname=getItemName(target.item)
           user.item=target.item
@@ -5209,15 +5197,12 @@ class PokeBattle_Battler
           end
           target.effects[:ChoiceBand]=nil
           @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
-<<<<<<< Updated upstream
         else
           itemname=getItemName(target.item)
           target.item=nil
           target.pokemon.corrosiveGas=false
           @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
         end
-=======
->>>>>>> Stashed changes
       end
 
       # Corrosion random status
