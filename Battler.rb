@@ -762,7 +762,7 @@ class PokeBattle_Battler
   end
 
   def nullsWater?
-    return [:WATERABSORB,:STORMDRAIN,:DRYSKIN,:DETRITOVORE].include?(@ability) || pbPartner.ability == :STORMDRAIN
+    return [:WATERABSORB,:STORMDRAIN,:DRYSKIN].include?(@ability) || pbPartner.ability == :STORMDRAIN
   end
 
   def nullsFire?
@@ -1765,7 +1765,7 @@ class PokeBattle_Battler
       end
     end
 
-    if ((ability == :DROUGHT && onactive) || self.crested == :VOLCARONA) && @battle.weather!=:SUNNYDAY
+    if (ability == :DROUGHT && onactive) && @battle.weather!=:SUNNYDAY
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1788,9 +1788,10 @@ class PokeBattle_Battler
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:HEATROCK) ||
           @battle.FE == :DESERT || @battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VOLCARONA
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true
         @battle.pbCommonAnimation("Sunny",nil,nil)
-        @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,getAbilityName(ability)))
+        sunTrigger = getAbilityName(ability)
+        @battle.pbDisplay(_INTL("{1}'s {2} intensified the sun's rays!",pbThis,sunTrigger))
 
         if @battle.FE == :DARKCRYSTALCAVERN
           @battle.setField(:CRYSTALCAVERN,@battle.weatherduration)
@@ -2053,6 +2054,15 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
           end
         end
+        if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
+          i.pbOwnSide.effects[:Steelsurge]=false
+          j.pbOwnSide.effects[:Steelsurge]=false
+          if !@battle.pbIsOpposing?(i.index)
+            @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+          else
+            @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+          end
+        end
         if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
           i.pbOwnSide.effects[:ToxicSpikes]=0
           j.pbOwnSide.effects[:ToxicSpikes]=0
@@ -2077,6 +2087,7 @@ class PokeBattle_Battler
     if Rejuv
       rejuvAbilities(onactive)
     end
+    # @SWu's abilities here for ease of reading
     # Resonance
     if self.ability == :RESONANCE && onactive && self.pbOwnSide.effects[:AuroraVeil] <= 0
       # Animations are fucked right now -- fix later
@@ -2173,6 +2184,11 @@ class PokeBattle_Battler
         pbIncreaseStatBasic(PBStats::ATTACK,1)
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Attack!", pbThis,getAbilityName(ability)))
       end
+    end
+    # Grand Larceny
+    if self.ability == :GRANDLARCENY && onactive
+      self.effects[:Snatch]=true
+      @battle.pbDisplay(_INTL("{1} waits for its foes to make a move...", pbThis))
     end
     # Slow Start
     if self.ability == :SLOWSTART && onactive && !@battle.FE == :DEEPEARTH
@@ -3205,6 +3221,27 @@ class PokeBattle_Battler
       end
     end
     if damage>0
+      if target.crested == :COFAGRIGUS
+        if (user.effects[:MeanLook]<0)
+          user.effects[:MeanLook]=target.index
+          @battle.pbDisplay(_INTL("{1} can't escape now!",user.pbThis))
+        end
+        if (!user.effects[:Curse])
+          user.effects[:Curse]=true
+          @battle.pbDisplay(_INTL("{1} laid a curse on {2}!",target.pbThis,user.pbThis))
+        end
+      end
+      if target.crested == :RUNERIGUS
+        if (user.effects[:MeanLook]<0)
+          user.effects[:MeanLook]=target.index
+          @battle.pbDisplay(_INTL("{1} can't escape now!",user.pbThis))
+        end
+        if (user.pbCanReduceStatStage?(PBStats::ATTACK,true) || user.pbCanReduceStatStage?(PBStats::SPATK,true))
+          user.pbReduceStat(PBStats::ATTACK,2,abilitymessage:false, statdropper: target)
+          user.pbReduceStat(PBStats::SPATK,2,abilitymessage:false, statdropper: target)
+          @battle.pbDisplay(_INTL("{1} reduced {2}'s offenses!",target.pbThis,user.pbThis))
+        end
+      end
       if target.effects[:ShellTrap] && move.pbIsPhysical?(movetype)
         target.effects[:ShellTrap]=false
       end
@@ -3746,7 +3783,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
     end
     if hpcure && self.crested == :GOTHITELLE && self.hasType?(:PSYCHIC) && self.hp!=self.totalhp
-      pbRecoverHP((self.totalhp/16).floor,true)
+      pbRecoverHP((self.totalhp/8).floor,true)
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP!",pbThis,itemname))
     end
     if hpcure && self.crested == :TOXAPEX && self.hp!=self.totalhp
@@ -4071,14 +4108,19 @@ class PokeBattle_Battler
               i.pbIncreaseStat(stat,2)
             end
           end
+<<<<<<< Updated upstream
           if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
+=======
+          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
+>>>>>>> Stashed changes
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
+          # @SWu this is causing a bug so i'm taking it out
           userchoice=@battle.choices[user.index][1]
-          if target.ability == (:PRESSURE) && userchoice>=0
+          if target.ability == (:PRESSURE) && userchoice>=0 && user.ability != :GRANDLARCENY
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4198,9 +4240,13 @@ class PokeBattle_Battler
       for i in priority
         if i.effects[:Snatch]
           @battle.pbDisplay(_INTL("{1} Snatched {2}'s move!",i.pbThis,user.pbThis(true)))
+<<<<<<< Updated upstream
           if (i.ability != :JOKER)
             i.effects[:Snatch]=false
           end
+=======
+          i.effects[:Snatch]=false if i.ability != :GRANDLARCENY
+>>>>>>> Stashed changes
           target=user
           user=i
           # Snatch's PP is reduced if old user has Pressure
@@ -4422,7 +4468,7 @@ class PokeBattle_Battler
       return true
     end
     # TODO: "Before Protect" applies to Counter/Mirror Coat
-    if basemove.function==0xDE && ((target.status!=:SLEEP && (target.ability != (:COMATOSE) || @battle.FE == :ELECTERRAIN) && (user.ability!=:WORLDOFNIGHTMARES) &&  (user.crested != :DARKRAI)) || user.effects[:HealBlock]!=0)  # Dream Eater
+    if basemove.function==0xDE && ((target.status!=:SLEEP && (target.ability != (:COMATOSE) || @battle.FE == :ELECTERRAIN) && (user.ability!=:WORLDOFNIGHTMARES || user.crestd != :DARKRAI)) || user.effects[:HealBlock]!=0)  # Dream Eater
       @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
       return false
     end
@@ -4611,6 +4657,7 @@ class PokeBattle_Battler
         return false
       end
     end
+    # @SWu I finally found it
     if basemove.basedamage==0 #Status move type absorb abilities
       type=basemove.pbType(user)
       if basemove.pbStatusMoveAbsorption(type,user,target)==0
@@ -5043,8 +5090,14 @@ class PokeBattle_Battler
           target.pbRecoverHP([1,((target.damagestate.hplost)/2).floor].max) if !target.isFainted?
           @battle.pbDisplay(_INTL("{1}'s crest causes {2} to take recoil damage and {3} to recover!",
               target.pbThis,user.pbThis(true),target.pbThis))
-          
         end
+      end
+      if target.ability == :ADAMANTINEBODY && basemove.category == :physical && basemove.contactMove? && !user.isFainted?
+            target.damagestate.calcdamage>0 && !target.damagestate.substitute && (user.ability != (:MAGICGUARD) && 
+            !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM))
+        @battle.scene.pbDamageAnimation(user,0)
+        user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
+        @battle.pbDisplay(_INTL("{2} was hurt by {1}'s Adamantine Body!", target.pbThis,user.pbThis(true),target.pbThis))
       end
       user.effects[:Tantrum]= (damage == -1)
       totaldamage += damage if damage && damage > 0
@@ -5080,6 +5133,8 @@ class PokeBattle_Battler
         addleffect=100 if basemove.move == :SOLARFLARE && @battle.weather == :SUNNYDAY
         addleffect=100 if basemove.move == :MIRAGEBEAM && @battle.weather == :SUNNYDAY
 
+        # @SWu buff Ledian Crest
+        #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
 
         addleffect=100 if user.ability == :SILVERSCALES && (PBFields::WINDMOVES.include?(basemove.move) || PBFields::WINDRIDERMOVES.include?(basemove.move))
 
@@ -5139,7 +5194,11 @@ class PokeBattle_Battler
       end
 
       # Grand Larceny
+<<<<<<< Updated upstream
       if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+=======
+      if user.ability == :GRANDLARCENY && basemove.contactMove? && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+>>>>>>> Stashed changes
         if (user.item.nil?)
           itemname=getItemName(target.item)
           user.item=target.item
@@ -5150,12 +5209,15 @@ class PokeBattle_Battler
           end
           target.effects[:ChoiceBand]=nil
           @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
+<<<<<<< Updated upstream
         else
           itemname=getItemName(target.item)
           target.item=nil
           target.pokemon.corrosiveGas=false
           @battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
         end
+=======
+>>>>>>> Stashed changes
       end
 
       # Corrosion random status
@@ -5168,6 +5230,13 @@ class PokeBattle_Battler
             when 3 then target.pbFreeze           if target.pbCanFreeze?(false)
             when 4 then target.pbFrostbite           if target.pbCanFrostbite?(false)
           end
+        end
+      end
+
+      # Bulldozer
+      if user.ability == :BULLDOZER && basemove.category == :physical
+        if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
+          target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
         end
       end
 
@@ -5661,7 +5730,7 @@ class PokeBattle_Battler
         @battle.battlers[i].moldbroken = false
       end
     end
-    if user.ability == (:CORROSION) || user.ability == :TIDEPOOLTYRANT
+    if user.ability == (:CORROSION) || user.ability == :TIDEPOOLTYRANT || user.crested == :SWALOT
       for battlers in targets
         battlers.corroded = true
       end
@@ -5905,19 +5974,6 @@ class PokeBattle_Battler
               @battle.pbDisplay(_INTL("But there was no target left!",user.pbThis))
             else
               user.pbUseMoveSimple(move,-1,movetarget.index)
-            end
-          end
-          if(basemove.move!=:STOCKPILE && basemove.move!=:SPITUP &&
-            basemove.move!=:SWALLOW) && user.effects[:Stockpile] < 3
-            user.effects[:Stockpile]+=1
-            @battle.pbDisplay(_INTL("{1} stockpiled {2}!",user.pbThis,user.effects[:Stockpile]))
-            if user.pbCanIncreaseStatStage?(PBStats::DEFENSE,false)
-              user.pbIncreaseStat(PBStats::DEFENSE,1,abilitymessage:false)
-              user.effects[:StockpileDef]+=1
-            end
-            if user.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-              user.pbIncreaseStat(PBStats::SPDEF,1,abilitymessage:false)
-              user.effects[:StockpileSpDef]+=1
             end
           end
         end
@@ -6373,7 +6429,7 @@ class PokeBattle_Battler
       [PBStats::ATTACK,3] =>   [:SPLASH],
       [PBStats::DEFENSE,1] =>   [:AQUARING,:BABYDOLLEYES,:BANEFULBUNKER,:BLOCK,:CHARM,:DEFENDORDER,:FAIRYLOCK,:FEATHERDANCE,
         :FLOWERSHIELD,:GRASSYTERRAIN,:GROWL,:HARDEN,:MATBLOCK,:NOBLEROAR,:PAINSPLIT,:PLAYNICE,:POISONGAS,
-        :POISONPOWDER,:QUICKGUARD,:REFLECT,:ROAR,:SPIDERWEB,:SPIKES,:SPIKYSHIELD,:STEALTHROCK,:STRENGTHSAP,
+        :POISONPOWDER,:QUICKGUARD,:REFLECT,:ROAR,:SPIDERWEB,:SPIKES,:SPIKYSHIELD,:STEALTHROCK,:STEELSURGE,:STRENGTHSAP,
         :TEARFULLOOK,:TICKLE,:TORMENT,:TOXIC,:TOXICSPIKES,:VENOMDRENCH,:WIDEGUARD,:WITHDRAW,:ARENITEWALL],
       [PBStats::SPATK,1] => [:CONFUSERAY,:ELECTRIFY,:EMBARGO,:FAKETEARS,:GEARUP,:GRAVITY,:GROWTH,:INSTRUCT,:IONDELUGE,
         :METALSOUND,:MINDREADER,:MIRACLEEYE,:NIGHTMARE,:PSYCHICTERRAIN,:REFLECTTYPE,:SIMPLEBEAM,:SOAK,:SWEETKISS,
