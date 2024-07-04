@@ -875,6 +875,8 @@ class PokeBattle_Battler
     if @battle.FE == :BACKALLEY && !(amt >= @totalhp) && !(caller_locations.any? {|string| string.to_s.include?("pbEnemyUseItem")})
       amt= (amt*0.67).floor
     end
+    if (pbCheckSideAbility(:HEALER, self))
+      amt = amt*2
     if self.hp+amt>@totalhp
       amt=@totalhp-self.hp
     elsif amt<=0 && self.hp!=@totalhp
@@ -5029,7 +5031,7 @@ class PokeBattle_Battler
       # Adamantine Body
       if target.ability == :ADAMANTINEBODY && !user.isFainted? && basemove.contactMove?
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
-          user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
+          user.pbReduceHP([1,((target.damagestate.hplost)).floor].max)
           user.pbReduceHP((user.totalhp/8.0).floor)
           @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
         end
