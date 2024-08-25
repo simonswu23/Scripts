@@ -21,7 +21,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("Amulet Coin prevents {1} from being inflicted by status on Dragon's Den!",pbThis)) if showMessages
       return false
     end
-    if (self.ability == :LEAFGUARD && ((@battle.pbWeather== :SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)) ||
+    if (self.ability == :LEAFGUARD && ((@battle.pbWeather== :SUNNYDAY) ||
       @battle.FE == :FOREST || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,2,5) || (Rejuv && @battle.FE == :GRASSY) || @battle.state.effects[:GRASSY] > 0)) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by Leaf Guard!",pbThis)) if showMessages
       return false
@@ -367,7 +367,7 @@ class PokeBattle_Battler
     return false if isFainted? && !(Rejuv && isbossmon && @shieldCount>0)
     return false if !pbCanStatus?(showMessages)
     return false if self.hasType?(:ICE)
-    return false if @battle.pbWeather==:SUNNYDAY && !hasWorkingItem(:UTILITYUMBRELLA)
+    return false if @battle.pbWeather==:SUNNYDAY
     return false if self.ability == :MAGMAARMOR && !(self.moldbroken) && @battle.FE != :FROZENDIMENSION
     return false if @battle.FE == :VOLCANIC    
     return true

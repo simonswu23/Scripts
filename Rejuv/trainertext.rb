@@ -33,20 +33,21 @@ TEAMARRAY = [{
 	},
 },
 =end
-:mons => [{
-	:species => :GENGAR,
-	:level => 95,
-	:item => :CHERISHBALL,
-	:moves => [:SPLASH],
-	:ability => :GRAVPULL,
-	:form => 2,
-	:nature => :TIMID,
-	:iv => 31,
-	:ev => [0, 252, 0, 4, 252, 252]},
+:mons => [
+	# {
+	# :species => :GENGAR,
+	# :level => 95,
+	# :item => :CHERISHBALL,
+	# :moves => [:SPLASH],
+	# :ability => :SHIELDDUST,
+	# :form => 2,
+	# :nature => :TIMID,
+	# :iv => 31,
+	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
 	:species => :ORBEETLE,
 	:level => 95,
-	:item => :CHERISHBALL,
+	:item => :UTILITYUMBRELLA,
 	:moves => [:SPLASH],
 	:ability => :GRAVFLUX,
 	:form => 1,

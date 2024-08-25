@@ -1361,7 +1361,7 @@ class PokeBattle_Move_028 < PokeBattle_Move
       return -1
     end
     pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
-    increment=(@battle.weather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)) ? 2 : 1
+    increment=(@battle.weather== :SUNNYDAY) ? 2 : 1
     if (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN)) # Grassy/Forest/Flower Garden Field
       increment = 2
       increment = 3 if @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,3,5)
@@ -4016,7 +4016,7 @@ class PokeBattle_Move_087 < PokeBattle_Move
   def pbType(attacker,type=@type)
     weather=@battle.pbWeather
     type=(:NORMAL) || 0
-    if !attacker.hasWorkingItem(:UTILITYUMBRELLA)
+    if True
       type=((:WATER) || type) if weather== :RAINDANCE
       type=((:ROCK) || type) if weather== :SANDSTORM
       type=((:ICE)  || type) if weather== :HAIL
@@ -5592,7 +5592,7 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
   def pbTwoTurnAttack(attacker,checking=false)
     @immediate=false
     if attacker.effects[:TwoTurnAttack]==0
-      @immediate=true if (@battle.pbWeather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
+      @immediate=true if (@battle.pbWeather== :SUNNYDAY)
       @immediate=true if @battle.FE == :RAINBOW
       @immediate=true if (attacker.crested == :CLAYDOL && @move == :SOLARBEAM)
       @immediate=true if (attacker.crested == :CHERRIM)
@@ -6428,9 +6428,9 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
     elsif @battle.FE == :DARKNESS3 && @move != :MOONLIGHT
       hpgain=(attacker.totalhp/8.0).floor
     else
-      if (@battle.pbWeather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA))
+      if (@battle.pbWeather== :SUNNYDAY)
         hpgain=(attacker.totalhp*2/3.0).floor
-      elsif (@battle.pbWeather!=0 && !attacker.hasWorkingItem(:UTILITYUMBRELLA) && !(attacker.crested == :CHERRIM))
+      elsif (@battle.pbWeather!=0 && !(attacker.crested == :CHERRIM))
         hpgain=(attacker.totalhp/4.0).floor
       else
         hpgain=(attacker.totalhp/2.0).floor
@@ -7383,7 +7383,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
     end
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
-       (opponent.ability != :SHIELDDUST || opponent.moldbroken)
+       (opponent.ability != :SHIELDDUST || opponent.moldbroken) && !opponent.hasType?(:BUG)
       if @item.pbGetPocket(attacker.item) ==5
         @battle.pbDisplay(_INTL("{1} ate the {2}!",opponent.pbThis,getItemName(attacker.item)))
         opponent.pbUseBerry(attacker.item,true)
@@ -10582,7 +10582,7 @@ class PokeBattle_Move_176 < PokeBattle_Move
       spatkmult *= 1.5 if attacker.ability == :FLAREBOOST && (attacker.status== :BURN || @battle.FE == :BURNING || @battle.FE == :VOLCANIC || @battle.FE == :INFERNAL) &&  @battle.FE != :FROZENDIMENSION
       spatkmult *= 1.5 if attacker.ability == :MINUS && (attacker.pbPartner.ability == :PLUS || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
       spatkmult *= 1.5 if attacker.ability == :PLUS && (attacker.pbPartner.ability == :MINUS || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
-      spatkmult *= 1.5 if attacker.ability == :SOLARPOWER && (@battle.pbWeather== :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)) &&  @battle.FE != :FROZENDIMENSION
+      spatkmult *= 1.5 if attacker.ability == :SOLARPOWER && (@battle.pbWeather== :SUNNYDAY) &&  @battle.FE != :FROZENDIMENSION
       spatkmult *= 1.3 if attacker.pbPartner.ability == :BATTERY
       spatkmult *= 2 if attacker.ability == :PUREPOWER && @battle.FE == :PSYTERRAIN
     end

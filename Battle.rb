@@ -4503,27 +4503,27 @@ class PokeBattle_Battle
             @field.permanent_condition = proc {|battle| battle.FE != :CRYSTALCAVERN}
             pbDisplay(_INTL("The sun lit up the crystal cavern!"))
           end
-          if pbWeather == :SUNNYDAY
-            for i in priority
-              next if i.isFainted?
-              if i.ability == :SOLARPOWER && @field.effect != :FROZENDIMENSION
-                pbDisplay(_INTL("{1} was hurt by the sunlight!",i.pbThis))
-                @scene.pbDamageAnimation(i,0)
-                i.pbReduceHP((i.totalhp/8.0).floor)
-                if i.isFainted?
-                  return if !i.pbFaint
-                end
-              end
-              if Rejuv && @field.effect == :DESERT && (i.hasType?(:GRASS) || i.hasType?(:WATER)) && !(i.ability == :SOLARPOWER || i.ability == :CHLOROPHYLL)
-                pbDisplay(_INTL("{1} was hurt by the sunlight!",i.pbThis))
-                @scene.pbDamageAnimation(i,0)
-                i.pbReduceHP((i.totalhp/8.0).floor)
-                if i.isFainted?
-                  return if !i.pbFaint
-                end
-              end
-            end
-          end
+          # if pbWeather == :SUNNYDAY
+          #   for i in priority
+          #     next if i.isFainted?
+          #     if i.ability == :SOLARPOWER && @field.effect != :FROZENDIMENSION
+          #       pbDisplay(_INTL("{1} was hurt by the sunlight!",i.pbThis))
+          #       @scene.pbDamageAnimation(i,0)
+          #       i.pbReduceHP((i.totalhp/8.0).floor)
+          #       if i.isFainted?
+          #         return if !i.pbFaint
+          #       end
+          #     end
+          #     if Rejuv && @field.effect == :DESERT && (i.hasType?(:GRASS) || i.hasType?(:WATER)) && !(i.ability == :SOLARPOWER || i.ability == :CHLOROPHYLL)
+          #       pbDisplay(_INTL("{1} was hurt by the sunlight!",i.pbThis))
+          #       @scene.pbDamageAnimation(i,0)
+          #       i.pbReduceHP((i.totalhp/8.0).floor)
+          #       if i.isFainted?
+          #         return if !i.pbFaint
+          #       end
+          #     end
+          #   end
+          # end
         end
       when :RAINDANCE
         @weatherduration=@weatherduration-1 if @weatherduration>0
@@ -4778,7 +4778,7 @@ class PokeBattle_Battle
           pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0    
       end
       # Rain Dish
-      if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)))&& i.effects[:HealBlock]==0
+      if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE))&& i.effects[:HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
@@ -4911,7 +4911,7 @@ class PokeBattle_Battle
 
       # Dry Skin
       if (i.ability == :DRYSKIN)
-        if (pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) && i.effects[:HealBlock]==0
+        if (pbWeather== :RAINDANCE) && i.effects[:HealBlock]==0
           hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
           pbDisplay(_INTL("{1}'s Dry Skin was healed by the rain!",i.pbThis)) if hpgain>0
         elsif (pbWeather== :SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA))
@@ -5012,7 +5012,7 @@ class PokeBattle_Battle
         end
       end
       # Hydration
-      if i.ability == :HYDRATION && ((pbWeather== :RAINDANCE && !i.hasWorkingItem(:UTILITYUMBRELLA)) || @field.effect == :WATERSURFACE || @field.effect == :UNDERWATER)
+      if i.ability == :HYDRATION && ((pbWeather== :RAINDANCE) || @field.effect == :WATERSURFACE || @field.effect == :UNDERWATER)
         if !i.status.nil?
           pbDisplay(_INTL("{1}'s Hydration cured its {2} problem!",i.pbThis,i.status.downcase))
           i.status=nil
@@ -6006,7 +6006,7 @@ class PokeBattle_Battle
     end
     # Harvest
     if i.ability == :HARVEST && i.item.nil? && i.pokemon.itemRecycle #if an item was recycled, check
-      if pbIsBerry?(i.pokemon.itemRecycle) && (pbRandom(100)>50 || (pbWeather== :SUNNYDAY && !i.hasWorkingItem(:UTILITYUMBRELLA)) ||
+      if pbIsBerry?(i.pokemon.itemRecycle) && (pbRandom(100)>50 || (pbWeather== :SUNNYDAY) ||
          @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,2,5) || (Rejuv && @battle.FE == :GRASSY))
         i.item=i.pokemon.itemRecycle
         i.pokemon.itemInitial=i.pokemon.itemRecycle
