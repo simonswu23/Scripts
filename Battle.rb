@@ -4783,9 +4783,9 @@ class PokeBattle_Battle
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
 
-      # Gourmandize
+      # REPLENISH
       # @SWu how is ability suppression handled here?
-      if ((i.ability == :GOURMANDIZE || i.crested == :SWALOT) && i.effects[:Stockpile] < 3)
+      if ((i.ability == :REPLENISH || i.crested == :SWALOT) && i.effects[:Stockpile] < 3)
         # @SWu figure out animation here
         # pbShowAnimation(:STOCKPILE,attacker,opponent,hitnum,alltargets,showanimation)
         i.effects[:Stockpile]+=1

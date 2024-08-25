@@ -6619,7 +6619,7 @@ MONHASH = {
 		:dexnum => 95,
 		:Type1 => :ROCK,
 		:Type2 => :GROUND,
-		:BaseStats => [35, 45, 160, 30, 45, 70],
+		:BaseStats => [70, 70, 160, 30, 45, 70],
 		:EVs => [0, 0, 1, 0, 0, 0],
 		:Abilities => [:ROCKHEAD, :STURDY],
 		:HiddenAbilities => :WEAKARMOR,
@@ -9920,7 +9920,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [160, 150, 95, 55, 160, 20],
-		:Abilities => [:GOURMANDIZE],
+		:Abilities => [:REPLENISH],
 		:Height => 350,
 		:Weight => 100141,
 	},
@@ -14003,7 +14003,7 @@ MONHASH = {
 		:dexnum => 208,
 		:Type1 => :STEEL,
 		:Type2 => :GROUND,
-		:BaseStats => [95, 85, 200, 55, 65, 30],
+		:BaseStats => [115, 105, 200, 55, 65, 30],
 		:EVs => [0, 0, 2, 0, 0, 0],
 		:Abilities => [:ROCKHEAD, :STURDY],
 		:HiddenAbilities => :SHEERFORCE,
@@ -14063,7 +14063,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [95, 135, 230, 55, 95, 20],
+		:BaseStats => [115, 135, 250, 55, 95, 20],
 		:Abilities => [:ADAMANTINEBODY],
 		:BaseEXP => 214,
 		:Height => 105,
@@ -14354,7 +14354,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [70, 175, 155, 85, 100, 75],
+		:BaseStats => [70, 175, 145, 105, 100, 65],
 		:Abilities => [:TECHNICIAN],
 		:BaseEXP => 210,
 		:Height => 20,
@@ -19791,7 +19791,7 @@ MONHASH = {
 		:dexnum => 302,
 		:Type1 => :DARK,
 		:Type2 => :GHOST,
-		:BaseStats => [50, 75, 75, 65, 65, 50],
+		:BaseStats => [50, 75, 105, 65, 95, 50],
 		:EVs => [0, 1, 1, 0, 0, 0],
 		:Abilities => [:KEENEYE, :STALL],
 		:HiddenAbilities => :PRANKSTER,
@@ -19843,7 +19843,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [50, 85, 125, 85, 115, 20],
+		:BaseStats => [50, 85, 155, 85, 145, 20],
 		:Abilities => [:MAGICBOUNCE],
 		:BaseEXP => 168,
 		:Height => 5,
@@ -19863,7 +19863,7 @@ MONHASH = {
 		:dexnum => 303,
 		:Type1 => :STEEL,
 		:Type2 => :FAIRY,
-		:BaseStats => [50, 85, 85, 55, 55, 50],
+		:BaseStats => [50, 115, 115, 55, 55, 50],
 		:EVs => [0, 1, 1, 0, 0, 0],
 		:Abilities => [:HYPERCUTTER, :INTIMIDATE],
 		:HiddenAbilities => :SHEERFORCE,
@@ -19914,7 +19914,7 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [50, 105, 125, 55, 95, 50],
+		:BaseStats => [50, 125, 140, 65, 95, 65],
 		:Abilities => [:HUGEPOWER],
 		:BaseEXP => 168,
 		:Height => 10,

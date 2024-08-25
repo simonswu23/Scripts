@@ -6605,6 +6605,9 @@ class PokeBattle_Move_0DF < PokeBattle_Move
     if (attacker.ability == :MEGALAUNCHER)
       hpgain=((opponent.totalhp+1)/1.33).floor
     end
+    if (attacker.ability == :HEALER) 
+      hpgain=opponent.totalhp
+    end
     opponent.pbRecoverHP(hpgain,true)
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",opponent.pbThis))
     return 0

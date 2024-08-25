@@ -1789,9 +1789,9 @@ ABILHASH = {
 	:desc => "Summons Aqua Ring for the user upon switching into battle."
 },
 
-:GOURMANDIZE => {
+:REPLENISH => {
 	:ID => 316,
-	:name => "Gourmandize",
+	:name => "Replenish",
 	:desc => "The user gains a stockpile at the end of each turn."
 },
 
