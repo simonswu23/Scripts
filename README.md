@@ -22,10 +22,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 ## Pokemon
   - Meganium
     - added Fairy typing
+    - base stat buffs: 80, 92, 110, 83, 110, 80
+    - ability: leaf guard -> pastel veil
       
   - Serperior
     - added Dragon typing
-    - can learn Draco Meteor
+    - base stat buffs: 75, 95, 95, 95, 95, 113
       
   - Goodra line
     - added Poison Heal as ability for Goomy, Sliggoo, and Goodra
@@ -39,7 +41,49 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - added Flash Fire as ability for Larvesta and Volcarona
     - added Run Away and Gale Wings asa bility for Larvesta (Aevian) and Volcarona (Aevian)
    
-    - ## Abilities
+  - Absol
+    - added Fairy typing to Mega Absol
+   
+  - Snorlax
+    - learns slack off at lvl 80
+    - base stat buffs: 160, 150, 95, 55, 160, 20
+    - giga ability: Replenish
+   
+  - Lapras
+    - base stat buffs: 130, 95, 100, 95, 105, 60
+    - ability: water absorb -> hydro veil
+    - aevian base stat buffs: 135, 105, 90, 95, 95, 60
+    - giga base stat buffs: 130, 125, 130, 125, 120, 45
+    - giga ability: Resonance
+   
+  - Gardevoir
+    - mega base stat buffs: 68, 85, 65, 165, 135, 100
+    - mega ability: pixilate -> fairy aura
+   
+  - Cacturne
+    - base stat buffs: 80, 130, 60, 130, 60, 55
+    - ability: quick draw
+   
+  - Phione
+    - ability: hydration -> hydro veil
+   
+  - Manaphy
+    - ability: hydration -> hydro veil
+   
+  - Vanilluxe Line
+    - learns flurry at level 24
+    - learns Sundae upon evloving into vanilluxe
+    - Vanilluxe learns glaciate at level 80
+   
+  - Toxapex
+    - learns chilling water at level 58
+    - learns sea breeze at level 68
+   
+  - Hatterene
+    - learns smite at level 70
+      
+   
+## Abilities
 
 ### Updates
 - Gale Wings
@@ -70,12 +114,17 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Hydro Veil
   - Summons Aqua ring on entry
 
+- Replenish
+  - Gains +1 stockpile at the end of each turn
+  - TODO: if the user's HP drops below half, consume all stockpile stacks to restore HP
+
 ## Items
 
 ### Updates
 - Meganium Crest
   - Heals ALL friendly pokemon (including party pokemon) at the end of each turn
   - extends screens by 3 turns
+  - damage reduction from x0.8 -> x0.75
  
 - Ledian Crest
   - Reverting nerf (can hit 4 times, each hit can trigger side effects)
@@ -86,6 +135,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 ### New Items
 - Poison Potion
   - new item, applies (regular) poison to the target
+ 
+- Hydreigon Crest
+  - Resists fairy attacks, user's dark type attacks are SE against Fairy
+  - 2 heads attack target again, each with x0.25 power
 
 ## Attacks
 
@@ -432,7 +485,14 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Burning Jealousy
   - 100% chance to burn any  target with increased stats
  
-- 
+- Attack Order
+  - prio +1
+
+- Defend Order
+  - prio +1
+
+- Heal Order
+  - prio +1
   
 ### New Attacks
 
@@ -535,6 +595,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 # TODO:
 - Incomplete Implementation:
   - Gastrodon Crest
+ 
+- Need Animations for most new attacks
     
 - Massive AI overhaul: integrate everything above EXCEPT the following:
   - Gastrodon Crest Attempt
