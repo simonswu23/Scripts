@@ -5138,7 +5138,7 @@ class PokeBattle_Battler
         end
       end
 
-      # Grand Larceny
+      # Joker
       if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
         if (user.item.nil?)
           itemname=getItemName(target.item)
