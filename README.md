@@ -5,7 +5,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Rename your old Scripts folder to something else (e.g. Scripts-Old)
 - Copy this folder into the same directory
 
-# Changelog (8/25/24)
 ## General
   - Aqua Ring
     - also cures the user's status at the end of each turn
@@ -39,6 +38,54 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Volcarona Line
     - added Flash Fire as ability for Larvesta and Volcarona
     - added Run Away and Gale Wings asa bility for Larvesta (Aevian) and Volcarona (Aevian)
+   
+    - ## Abilities
+
+### Updates
+- Gale Wings
+  - Reverting Nerf
+    
+- Parental Bond
+  - Reverting Nerf
+ 
+- Disguise
+  - Reverting Nerf
+    
+- Pastel Veil
+  - Protects all allies from Poison type attacks
+
+- Heatproof
+  - Immunity to fire attacks
+ 
+- Magma Armor
+  - Protects against frostbite
+ 
+     
+ 
+### New Abilities
+
+- Resonance
+  - Summons Aurora Veil (successfully)
+ 
+- Hydro Veil
+  - Summons Aqua ring on entry
+
+## Items
+
+### Updates
+- Meganium Crest
+  - Heals ALL friendly pokemon (including party pokemon) at the end of each turn
+  - extends screens by 3 turns
+ 
+- Ledian Crest
+  - Reverting nerf (can hit 4 times, each hit can trigger side effects)
+ 
+- Genesect Drives
+  - Grants Genesect STAB boosts on respective Drive types
+
+### New Items
+- Poison Potion
+  - new item, applies (regular) poison to the target
 
 ## Attacks
 
@@ -119,7 +166,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     
 - Heat Wave
   - BP 95 -> 100
-  - +10 BP and accuracy in the Sun
+  - x1.3 damage and cannot miss in Sun
     
 - Inferno
   - BP 100 -> 120
@@ -156,7 +203,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - SelfDestruct
   - BP 200 -> 400
   - typing matches user's primary type
-  - (check) damage category matches user's higher attacking stat
     
 - Judgement
   - BP 100 -> 120
@@ -266,6 +312,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     
 - False Surrender
   - BP 80 -> 85
+  - hits through protect
     
 - Dual Wingbeat
   - BP 40 -> 45
@@ -301,10 +348,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Springtide Storm
   - acc 80 -> 85
   - effect -> 50
-  - (inflicts infatuation and torment? on foes)
+  - inflicts infatuation and torment, 100% accuracy and effect chance in sun
     
 - Mountain Gale
   - BP 100 -> 120
+  - 100% accuracy in hail
     
 - Bitter Malice
   - BP 75 -> 95
@@ -314,22 +362,80 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Bleakwind Storm
   - acc 80 -> 85
   - effect -> 50
-  - ()
+  - inflicts frostbite, 100% accuracy and effect chance in hail
  
 - Wildbolt Storm
   - acc 80 -> 85
   - effect -> 50
-  - ()
+  - inflicts paralysis, 100% accuracy and effect chance in rain
  
 - Sandsear Storm
   - acc 80 -> 85
   - effect -> 50
-  - ()
+  - inflicts burn, 100% accuracy and effect chance in sandstorm
  
 - Slash and Burn
   - effect chance 10 -> 25
+ 
+- Air Cutter
+  - x1.5 damage when inflicting critical hits
+ 
+- Heat Stamp
+  - inflicts infatuation upon flinch
+ 
+- Glaciate
+  - lowers target speed by -12
+ 
+- Nature's Madness
+  - additional effects based on terrain:
+    - electric: paralyis
+    - grassy: leech seed
+    - misty: clear stats
+    - psychic: heal block
+   
+- Crush Grip
+  - starting bp of 200
+ 
+- Take Heart
+  - additionally restores user's hp by 1/4
+ 
+- Barbed Web
+  - additionally sets up a layer of sticky web
+ 
+- Lunar Blessing
+  - restores 33% HP
+ 
+- Jungle Healing
+  - restores 33% HP
+ 
+- Natural Gift
+  - no longer consumes berry after use
+
+- Trump Card
+  - power boost, scales from 50 -> 250
+ 
+- Memento
+  - drastically lowers targets attack and special attack stats
+ 
+- Venom Drench
+  - hits all foes
+  - can hit non-poisoned targets
+  - stat drops doubled on poisoned targets
+ 
+- Sparkling Aria
+  - no damage reduction in Sun
+ 
+- Life Dew
+  - heals 50% hp in singles
+  - heals 50% in doubles if there's only one healable target
+ 
+- Burning Jealousy
+  - 100% chance to burn any  target with increased stats
+ 
+- 
   
 ### New Attacks
+
 - Flurry
   - Ice
   - Status
@@ -424,36 +530,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - bp: 90
   - acc: 110
   - Single Target
-  - summosn light screen
- 
-- 
- 
-
-## Abilities
-
-### Updates
-- Gale Wings
-  - Reverting Nerf
-    
-- Parental Bond
-  - Reverting Nerf
-    
-- Pastel Veil
-  - Protects all allies from Poison type attacks
-  -   
- 
-### New Abilities
-
-## Items
-
-### Updates
-- Meganium Crest
-  - Heals ALL friendly pokemon (including party pokemon) at the end of each turn
-  - extends screens by 3 turns
-
-### New Items
-- Poison Potion
-  - new item, applies (regular) poison to the target
+  - summons light screen
 
 # TODO:
 - Incomplete Implementation:
@@ -467,3 +544,4 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Hail Buff
   - Attract + Captivate Buff
   - Lite Frostbite logic (recognizes it as a status condition)
+  - nullsPoison (Pastel Veil)
