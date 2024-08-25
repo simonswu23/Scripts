@@ -877,6 +877,7 @@ class PokeBattle_Battler
     end
     if (pbCheckSideAbility(:HEALER, self))
       amt = amt*2
+    end
     if self.hp+amt>@totalhp
       amt=@totalhp-self.hp
     elsif amt<=0 && self.hp!=@totalhp
