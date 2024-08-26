@@ -962,6 +962,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Z-Status Hash updates for all new status moves
 
+- Wonder Room Fix
+
+- Smart Damage Category double-check
+
 - Dragon Darts Targeting
   - Heatproof
   - Lunar Idol
