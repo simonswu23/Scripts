@@ -11,6 +11,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
       
   - Hail
     - grants ice types a x1.5 defense boost
+   
+  - Misty Terrain
+    - grants fairy types a x1.5 special defense boost
       
   - Frostbite
     - halves special attack of afflicted pokemon
@@ -20,67 +23,162 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Crests no longer form locked
 
 ## Pokemon
-  - Meganium
-    - added Fairy typing
-    - base stat buffs: 80, 92, 110, 83, 110, 80
-    - ability: leaf guard -> pastel veil
-      
-  - Serperior
-    - added Dragon typing
-    - base stat buffs: 75, 95, 95, 95, 95, 113
-      
-  - Goodra line
-    - added Poison Heal as ability for Goomy, Sliggoo, and Goodra
-    - added Regenerator as ability for Sliggoo (Hisui) and Goodra (Hisui)
-      
-  - Mamoswine Line
-    - added Ice Body as ability for Swinub and Piloswine
-    - added Slush Rush as ability for Mamoswine
-      
-  - Volcarona Line
-    - added Flash Fire as ability for Larvesta and Volcarona
-    - added Run Away and Gale Wings asa bility for Larvesta (Aevian) and Volcarona (Aevian)
+
+### Pokemon Changes
+
+- Meganium
+  - added Fairy typing
+  - base stat buffs: 80, 92, 110, 83, 110, 80
+  - ability: Leaf Guard -> Pastel Veil
+    
+- Serperior
+  - added Dragon typing
+  - base stat buffs: 75, 95, 95, 95, 95, 113
+    
+- Goodra line
+  - added Poison Heal as ability for Goomy, Sliggoo, and Goodra
+  - added Regenerator as ability for Sliggoo (Hisui) and Goodra (Hisui)
+    
+- Mamoswine Line
+  - added Ice Body as ability for Swinub and Piloswine
+  - added Slush Rush as ability for Mamoswine
+    
+- Volcarona Line
+  - added Flash Fire as ability for Larvesta and Volcarona
+  - added Run Away and Gale Wings asa bility for Larvesta (Aevian) and Volcarona (Aevian)
+ 
+- Absol
+  - added Fairy typing to Mega Absol
+ 
+- Snorlax
+  - learns Slack Off at lvl 80
+  - base stat buffs: 160, 150, 95, 55, 160, 20
+  - giga ability: Replenish
+ 
+- Lapras
+  - base stat buffs: 130, 95, 100, 95, 105, 60
+  - ability: Water Absorb -> Hydro Veil
+  - aevian base stat buffs: 135, 105, 90, 95, 95, 60
+  - giga base stat buffs: 130, 125, 130, 125, 120, 45
+  - giga ability: Resonance
+ 
+- Gardevoir
+  - mega base stat buffs: 68, 85, 65, 165, 135, 100
+  - mega ability: Pixilate -> Fairy Aura
+ 
+- Cacturne
+  - base stat buffs: 80, 130, 60, 130, 60, 55
+  - ability: Quick Draw
+ 
+- Phione
+  - ability: Hydration -> Hydro Veil
+ 
+- Manaphy
+  - ability: Hydration -> Hydro Veil
+ 
+- Vanilluxe Line
+  - learns Flurry at level 24
+  - learns Sundae upon evloving into Vanilluxe
+  - Vanilluxe learns Glaciate at level 80
+ 
+- Toxapex
+  - learns Chilling Water at level 58
+  - learns Sea Breeze at level 68
+ 
+- Hatterene
+  - learns Smite at level 70
+ 
+- Venusaur
+  - giga base stat buffs: 80, 82, 108, 150, 125, 80
+ 
+- Cherrim
+  - learns Fairy Wind at level 0
+  - learns Weather Ball at level 22
+  - learns Play Rough at level 57
+  - learns Moonblast at level 65
+  - learns Solar Blade at level 75
+  - learns Blossom Storm at level 80
+  - sunshine form base stat buffs: 70, 110, 70, 97, 118, 85
+ 
+- Cinderace
+  - giga base stat buffs: 80, 155, 82, 82, 82, 149
+ 
+- Corviknight
+  - giga ability: Mirror Armor -> Downdraft
+ 
+- Alcremie
+  - giga base stat buffs: 65, 60, 105, 150, 161, 54
+  - giga ability: Aroma Veil -> Finale
+ 
+- Butterfree
+  - base stat buffs: 60, 55, 60, 95, 85, 80
+  - giga base stat buffs: 60, 25, 70, 145, 115, 120
+  - giga ability: Tinted Lens -> Silver Scales
+  - learns Hurricane at level 50
+  - learns Spring Breeze at level 60
+  - learns Rainbow Scales at level 68
+ 
+- Beedrill
+  - base stat buffs: 65, 100, 50, 45, 80, 95
+  - mega base stat buffs: 65, 155, 65, 15, 90, 145
+  - learns Needle Pierce at level 50
+ 
+- Swampert
+  - ability: Damp -> Regenerator
+ 
+- Eternatus
+  - ability: Pressure -> Levitate
+ 
+- Vesiquen
+  - added Queenly Majesty as ability
+ 
+- Golisopod Line:
+  - added Adaptability as ability for Wimpod, Golisopod
+ 
+- Steelix
+  - mega ability: Sand Force -> Adamantine Body
+ 
+- Thievul Line
+  - added Unnerve as ability for Nickit, Thievul
+  - base stat buff (Thievul): 70, 58, 58, 97, 107, 105
+  - learns Tickle at level 1 (Nickit, Thievul)
+  - learns Charm at level 0 (Thievul)
+ 
+- Scizor
+  - base stat buff: 70, 145, 125, 55, 80, 65
+  - mega base stat buff: 70, 175, 155, 65, 100, 75
    
-  - Absol
-    - added Fairy typing to Mega Absol
-   
-  - Snorlax
-    - learns slack off at lvl 80
-    - base stat buffs: 160, 150, 95, 55, 160, 20
-    - giga ability: Replenish
-   
-  - Lapras
-    - base stat buffs: 130, 95, 100, 95, 105, 60
-    - ability: water absorb -> hydro veil
-    - aevian base stat buffs: 135, 105, 90, 95, 95, 60
-    - giga base stat buffs: 130, 125, 130, 125, 120, 45
-    - giga ability: Resonance
-   
-  - Gardevoir
-    - mega base stat buffs: 68, 85, 65, 165, 135, 100
-    - mega ability: pixilate -> fairy aura
-   
-  - Cacturne
-    - base stat buffs: 80, 130, 60, 130, 60, 55
-    - ability: quick draw
-   
-  - Phione
-    - ability: hydration -> hydro veil
-   
-  - Manaphy
-    - ability: hydration -> hydro veil
-   
-  - Vanilluxe Line
-    - learns flurry at level 24
-    - learns Sundae upon evloving into vanilluxe
-    - Vanilluxe learns glaciate at level 80
-   
-  - Toxapex
-    - learns chilling water at level 58
-    - learns sea breeze at level 68
-   
-  - Hatterene
-    - learns smite at level 70
+### New Pokemon
+- Alpha Larvesta
+  - Bug/Fire
+  - BST: 55, 105, 75, 70, 75, 80
+  - Ability: Drought
+  - Notable LUM: Sacred Fire
+
+- Alpha Volcarona
+  - Bug/Fire
+  - BST: 85, 110, 85, 145, 125, 110
+  - Ability: Solar Idol
+  - Notable LUM: Quiver Dance, Victory Dance, Petal Dance, Solar Flare, Fiery Dance, Flare Blitz, Earth Power, Mirage Beam, BLossom Storm
+ 
+- Alpha Vespiquen
+  - Bug/Steel
+  - BST: 70, 100, 152, 80, 132, 40
+  - Ability: Hive Queen
+  - Notable LUM: Rage Powder, Shield Bash, Defend Order, Attack Order, Heal Order, Captivate, Spring Breeze
+ 
+- Alpha Toxapex
+  - Poison/Water
+  - BST: 50, 93, 182, 83, 162, 25
+  - Ability: Tidepool Tyrant
+  - Notable LUM: Baneful Bunker, Barb Berrage, Chilling Water, Sea Breeze
+  - TODO: salt cure, mortal spin in future
+ 
+- Thievul (Signature - Alice)
+  - Dark/Poison
+  - BST: 70, 108, 58, 137, 107, 115
+  - Ability: Joker
+  - Notable LUM: Charm, Growl, Leer, Fake Tears, Baby Doll Eyes, Snarl, Fake Out, Acid Spray, Parting Shot, Captivate, Night Daze, Venom Drench, Toxic Thread, Sweet Scent
       
    
 ## Abilities
@@ -104,19 +202,75 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Magma Armor
   - Protects against frostbite
  
-     
+- Liquid Voice
+  - gives sound based moves a x1.3 boost in power
+ 
+- Solar Idol
+  - x1.5 attack boost in sun, levitate, boosts fire and psychic attacks
+ 
+- Lunar Idol
+  - x1.5 special attack boost in hail, levitate, x1.5 defense in hail and does not take hail damage, boosts ice and psychic attacks
+  - (check) remove indefinite hail, ice hp restore effect
+ 
+- -ate/-ite/-ize abilities:
+  - revert to x1.3 power boost
+ 
+- Pressure
+  - lowers foes special attack on entry
+ 
+- Unnerve
+  - lower foes speed on entry
+ 
+- Corrosion
+  - poison type attacks can hit steel types not-very-effectively
+ 
+- Light Metal
+  - halves damage from ground attacks
+ 
+- Heavy Metal
+  - halves damage from fighting attacks
+ 
+- Run Away
+  - prio +1 to switching moves
  
 ### New Abilities
 
 - Resonance
-  - Summons Aurora Veil (successfully)
+  - summons Aurora Veil (successfully)
  
 - Hydro Veil
-  - Summons Aqua ring on entry
+  - summons Aqua ring on entry
 
 - Replenish
-  - Gains +1 stockpile at the end of each turn
+  - gains +1 stockpile at the end of each turn
   - TODO: if the user's HP drops below half, consume all stockpile stacks to restore HP
+ 
+- Downdraft
+  - clears hazards and screens at the end of each turn
+  - (check) on entry trigger
+  - TODO: also clear terrain
+ 
+- Finale
+  - restores 1/4 hp to allies after using each attack
+ 
+- Silver Scales
+  - takes 1/2 damage from moves with side effect chances, 100% chance to trigger side effect chances of wind moves
+ 
+- Hive Queen
+  - prio +1 to all friendly bug attacks, queenly majesty, friendly bug attacks x1.5 power
+ 
+- Tidepool Tyrant
+  - merciless, regenerator, water attacks clear stat changes and poison moves destroy items
+ 
+- Bulldozer
+  - restores HP when hit by ground attacks, x1.5 power to ground attacks, drastically lowers grounded foes speed after using a physical attack
+  - (check) -- not fully tested iirc
+ 
+- Adamantine Body
+  - doubles defense, returns 50% of damage dealt from direct contact physical attacks
+ 
+- Joker
+  - permanent snatch effect, +1 prio to switch moves, steals/destroys items when making contact, steals the stat drops it inflicts
 
 ## Items
 
@@ -131,6 +285,63 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Genesect Drives
   - Grants Genesect STAB boosts on respective Drive types
+ 
+- Cincinno Crest
+  - Reverting nerf (side effects can trigger on each hit)s
+ 
+- Shiinotic Crest
+  - Drains 1/16th from all foes at the end of each turn, 1/8 if they have a status condition
+ 
+- Cherrim Crest
+  - gains fire STAB
+  - doubles speed in the sunlight
+  - resist fire type attacks
+  - boosts sun-based attacks:
+    - growth: +3 to attack and special attack
+    - weather ball: x4 power, fire type
+    - solar blade / solar beam: no charge, always works + never loses power
+    - synthesis / morning sun / moonlight: always restores
+ 
+- Soul Dew
+  - x1.5 special attack and special defense if holder is latias or latios
+ 
+- Ariados Crest
+  - always crits if this pokemon is moving before the targets
+  - extra x1.5 boost in power if crit
+ 
+- Vespiquen Crest
+  - switches between defense and attack form
+  - grants the user levitate
+  - attack order: inflicts infestation on targets
+  - heal order: restores HP and cures status for all friendly allies
+  - defend order: protects user
+ 
+- Gothitelle Crest
+  - 1/8 hp restoration at the end of each turn
+  - x1.5 special defense
+  - in psychic form, no longer is weak to ghost/dark and is immune to psychic
+  - in dark form, no longer is weak to dark
+ 
+- Swalot Crest
+  - gains +3 stockpile on entry
+  - gains +1 stockpile at the end of each turn
+  - spit up: + gastro acid effect
+  - swallow: + refresh, +1 def and spdef after used successfully
+  - can poison steel, swalot's poison attacks SE against steel
+ 
+- Cofagrigus Crest
+  - 25% boost to special attack and special defense
+  - Traps and curses attacker on hit
+  - Drains 1/16th hp from trapped foes at the end of each turn
+ 
+- Runerigus Crest
+  - 25% boost to attack and defense
+  - Traps and harshly lowers attackers offensive stats on hit
+  - Drains 1/16th hp from trapped foes at the end of each turn
+ 
+- Thievul Crest
+  - no longer raises special attack on entry
+  - all stat drops this pokemon inflicts are doubled
 
 ### New Items
 - Poison Potion
@@ -139,6 +350,20 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Hydreigon Crest
   - Resists fairy attacks, user's dark type attacks are SE against Fairy
   - 2 heads attack target again, each with x0.25 power
+ 
+- Volcarona Crest
+  - Flash Fire, summons indefinite sun on entry, burns any foe that comes into contact
+ 
+- Toxapex Crest
+  - restores 1/10 hp at the end of each turn, corrosion, clears all stat changes on entry
+ 
+- Darkrai Crest
+  - sleeping foes are trapped
+  - nightmare and dream eater work on awake targets
+  - dream eater restores 100% hp dealt
+  - nightmare traps targets
+  - bad dreams damage buffed to 1/4
+  - darkrai inflicts x1.5 damage on sleeping targets
 
 ## Attacks
 
@@ -476,7 +701,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - stat drops doubled on poisoned targets
  
 - Sparkling Aria
-  - no damage reduction in Sun
+  - x1.3 damage boost in the sun instead of power reduction
  
 - Life Dew
   - heals 50% hp in singles
@@ -486,14 +711,29 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - 100% chance to burn any  target with increased stats
  
 - Attack Order
-  - prio +1
+  - BP 90 -> 100
+  - target: AllOpposing
+  - breaks protect
 
 - Defend Order
   - prio +1
-
-- Heal Order
-  - prio +1
-  
+ 
+- Solar Flare
+  - 100% effect chance in the Sun
+ 
+- Will-o-Wisp
+  - never misses when used by fire type
+ 
+- Thunder Wave
+  - never misses when used by electric type
+ 
+- Tickle
+  - contact
+ 
+- Sweet Kiss
+  - contact
+ 
+    
 ### New Attacks
 
 - Flurry
@@ -522,7 +762,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Sleigh Ride
   - Ice
   - Physical
-  - bp: 70
+  - bp: 75
   - acc: 100
   - Single Target
   - +1 Priority in Hail
@@ -586,17 +826,82 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Glizy Glow
   - Psychic
-  - special
+  - Special
   - bp: 90
   - acc: 110
   - Single Target
   - summons light screen
+ 
+- Blossom Storm
+  - Fairy
+  - Physical
+  - bp: 140
+  - acc: 100
+  - All Foes
+  - lowers user's attack and special defense after each use
+ 
+- Mirage Beam
+  - Psychic
+  - Special
+  - bp: 125
+  - acc: 75
+  - Single Target
+  - 20% chance to confuse the target, 100% chance and never misses in sun
+ 
+- Rainbow Scales
+  - Bug
+  - Special
+  - bp: 120
+  - acc: 85
+  - All Foes
+  - Ignores resistances
+ 
+- Spring Breeze
+  - Bug
+  - Special
+  - bp: 80
+  - acc: 100
+  - All Foes
+  - 30% chance to inflict poison, paralysis, or sleep on the targets
+ 
+- Needle Pierce
+  - Bug
+  - Physical
+  - bp: 130
+  - acc: 90
+  - Single Target
+  - Ignores defense modifiers and resistances (TODO: incomplete)
+ 
+- Steelsurge
+  - Steel
+  - Physical
+  - bp: 90
+  - acc: 90
+  - All Foes
+  - Sets up steelsurge entry hazard on opposing side
 
 # TODO:
+
+- Wishlist
+  - Embargo
+    - affects the whole opposing team
+    - TODO: implement
+   
+  - Terrains: x1.3 boost to x1.5 boost
+    
 - Incomplete Implementation:
   - Gastrodon Crest
  
-- Need Animations for most new attacks
+- Need Animations for almost all new attacks
+
+- New FE integration of almost all new mechanics
+
+- Dragon Darts Targeting
+  - Heatproof
+  - Lunar Idol
+  - Levitaters (Solar/Lunar Idol, Vespiquen Crest)
+  - Bulldozer
+  - Detritovore
     
 - Massive AI overhaul: integrate everything above EXCEPT the following:
   - Gastrodon Crest Attempt
@@ -607,3 +912,4 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Attract + Captivate Buff
   - Lite Frostbite logic (recognizes it as a status condition)
   - nullsPoison (Pastel Veil)
+  - Gothitelle crest healing
