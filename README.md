@@ -22,6 +22,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
       
   - Crests no longer form locked
 
+  - Gravity
+    - speed is decreased porportional to how light pokemon are
+
 ## Pokemon
 
 ### Pokemon Changes
@@ -36,7 +39,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 75, 95, 95, 95, 95, 113
     
 - Goodra line
-  - added Poison Heal as ability for Goomy, Sliggoo, and Goodra
+  - added Detritivore as ability for Goomy, Sliggoo, and Goodra
   - added Regenerator as ability for Sliggoo (Hisui) and Goodra (Hisui)
     
 - Mamoswine Line
@@ -89,7 +92,13 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - learns Smite at level 70
  
 - Venusaur
+  - mega base stat buffs: 80, 95, 128, 127, 140, 55
   - giga base stat buffs: 80, 82, 108, 150, 125, 80
+ 
+- Blastoise
+  - mega base stat buffs: 79, 83, 120, 155, 115, 78
+  - giga base stat buffs: 83, 130, 135, 135, 68
+  - giga abilty: Rain Dish -> Massive SHell
  
 - Cherrim
   - learns Fairy Wind at level 0
@@ -135,18 +144,37 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Golisopod Line:
   - added Adaptability as ability for Wimpod, Golisopod
  
-- Steelix
+- Steelix line buff
+  - onix base stat buffs: 70, 70, 160, 30, 45, 70
+  - steelix base stat buffs: 115, 85, 200, 55, 65, 30
+  - mega base stat buffs: 115, 135, 230, 55, 95, 20
   - mega ability: Sand Force -> Adamantine Body
  
 - Thievul Line
   - added Unnerve as ability for Nickit, Thievul
-  - base stat buff (Thievul): 70, 58, 58, 97, 107, 105
+  - base stat buffs (Thievul): 70, 58, 58, 97, 107, 105
   - learns Tickle at level 1 (Nickit, Thievul)
   - learns Charm at level 0 (Thievul)
  
 - Scizor
-  - base stat buff: 70, 145, 125, 55, 80, 65
-  - mega base stat buff: 70, 175, 155, 65, 100, 75
+  - base stat buffs: 70, 145, 125, 75, 80, 65
+  - mega base stat buffs: 70, 175, 145, 105, 100, 65
+ 
+- Gengar
+  - giga base stat buffs: 60, 65, 100, 150, 115, 110
+  - changed giga Gengar typing to Ghost/Dark
+  - giga ability: Cursed Body -> Gravitational Pull
+ 
+- Orbeetle
+  - giga ability: Prankster -> Gravitational Flux
+ 
+- Sableye
+  - base stat buffs: 50, 75, 105, 65, 95, 50
+  - mega base stat buffs: 50, 85, 155, 85, 145, 20
+
+- Mawile
+  - base stat buffs: 50, 115, 115, 55, 55, 50
+  - mega base stat buffs: 50, 125, 140, 65, 95, 65
    
 ### New Pokemon
 - Alpha Larvesta
@@ -217,9 +245,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Pressure
   - lowers foes special attack on entry
+  - (check)
  
 - Unnerve
   - lower foes speed on entry
+  - (check)
  
 - Corrosion
   - poison type attacks can hit steel types not-very-effectively
@@ -271,10 +301,33 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Joker
   - permanent snatch effect, +1 prio to switch moves, steals/destroys items when making contact, steals the stat drops it inflicts
+  - (check) if item get stolen/destroyed only when using contact attack
+ 
+- Detritovore
+  - ground, water, and poison attacks restore HP instead of dealing damage
+  - (check) include in def nullsWater?
+ 
+- Massive Shell
+  - halves incoming damage if user's HP is over half
+ 
+- Gravitational Pull
+  - summons gravity while the user is active, foes who are lighter than the user cannot switch
+
+- Gravitational Flux
+  - summons gravity for 5 turns on entry, user is immune to gravity effects (is airborne, no evasion lowering, can use anti-gravity attacks) and inversely gains speed in gravity
+
 
 ## Items
 
 ### Updates
+
+- Utility Umbrella
+  - reduces holder's incoming damage when boosted by sun/rain, and ignores holder's outgoing damage reductions in sun/rain (no longer negatively harms user)
+  - (check) reducing incoming damage when boosted by sun/rain
+
+- Soul Dew
+  - x1.5 special attack and special defense if holder is latias or latios
+ 
 - Meganium Crest
   - Heals ALL friendly pokemon (including party pokemon) at the end of each turn
   - extends screens by 3 turns
@@ -301,9 +354,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - weather ball: x4 power, fire type
     - solar blade / solar beam: no charge, always works + never loses power
     - synthesis / morning sun / moonlight: always restores
- 
-- Soul Dew
-  - x1.5 special attack and special defense if holder is latias or latios
  
 - Ariados Crest
   - always crits if this pokemon is moving before the targets
@@ -342,10 +392,18 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Thievul Crest
   - no longer raises special attack on entry
   - all stat drops this pokemon inflicts are doubled
+ 
+- Cacturne Crest
+  - raises attack and special attack by 1 if attacking before the target
+  - x1.3 boost to offenses
 
 ### New Items
 - Poison Potion
-  - new item, applies (regular) poison to the target
+  - applies (regular) poison to the target
+ 
+- Harmony Orb
+  - hard coded: activates all possible abilities of holder in battle
+  - TODO: not fully implemented, might need to override ability equality
  
 - Hydreigon Crest
   - Resists fairy attacks, user's dark type attacks are SE against Fairy
@@ -364,6 +422,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - nightmare traps targets
   - bad dreams damage buffed to 1/4
   - darkrai inflicts x1.5 damage on sleeping targets
+ 
+- Goodra Crest
+  - poisons user on entry (regardless of typing)
+    - (check) works on hisuian goodra
+  - poison heal effect
+  - gains poison resistances and weaknesses and STAB
 
 ## Attacks
 
@@ -658,7 +722,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Air Cutter
   - x1.5 damage when inflicting critical hits
  
-- Heat Stamp
+- Heart Stamp
   - inflicts infatuation upon flinch
  
 - Glaciate
@@ -824,7 +888,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   -   Single Target
   -   summons reflect
  
-- Glizy Glow
+- Glitzy Glow
   - Psychic
   - Special
   - bp: 90
@@ -896,10 +960,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - New FE integration of almost all new mechanics
 
+- Z-Status Hash updates for all new status moves
+
 - Dragon Darts Targeting
   - Heatproof
   - Lunar Idol
-  - Levitaters (Solar/Lunar Idol, Vespiquen Crest)
+  - Levitaters (Solar/Lunar Idol, Vespiquen Crest, Gravitational Flux)
   - Bulldozer
   - Detritovore
     
