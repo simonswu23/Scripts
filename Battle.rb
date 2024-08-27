@@ -1600,9 +1600,13 @@ class PokeBattle_Battle
       opp=opp1 if opp1.crested == :DARKRAI && opp1.ability == :BADDREAMS
       opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
     end
+    if (thispkmn.stages[PBStats::EVASION] < 0)
+      opp=opp1 if opp1.crested == :VANILLUXE
+      opp=opp2 if opp2.crested == :VANILLUXE
+    end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI
+      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI || opp1.crested == :VANILLUXE || opp2.crested == :VANILLUXE
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -4777,6 +4781,19 @@ class PokeBattle_Battle
           hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
           pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0    
       end
+
+      # Vanilluxe Crest
+
+      if i.crested == :VANILLUXE
+        pbAnimation(:SWEETSCENT,i,nil)
+        @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
+        for j in priority
+          next if (i.index % 2 == j.index % 2) || j.isFainted?
+          j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:i)
+        end
+      end
+
+
       # Rain Dish
       if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE))&& i.effects[:HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)

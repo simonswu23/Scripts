@@ -701,7 +701,7 @@ end
     @effects[:LashOut] = true
   end
 
-  def pbReduceStat(stat,increment,abilitymessage:true,statmessage:true, statdropper: nil, defiant_proc: true, mirrordrop: false)
+  def pbReduceStat(stat,increment,abilitymessage:true,statmessage:true, statdropper: nil, defiant_proc: true, mirrordrop: false, crest: false)
 
     if (statdropper != nil && statdropper.crested == :THIEVUL)
       increment = [6, increment * 2].min
@@ -750,7 +750,11 @@ end
       harsh = "harshly " if increment==2
       harsh = "dramatically " if increment>=3
       if (abilitymessage && statdropper != nil)
-        stat_text = _INTL("{1}'s {2} cuts {3}'s {4}!",statdropper.pbThis,getAbilityName(statdropper.ability),pbThis,pbGetStatName(stat))
+        if crest
+          stat_text = _INTL("{1}'s crest cuts {2}'s {3}!",statdropper.pbThis,pbThis,pbGetStatName(stat))
+        else
+          stat_text = _INTL("{1}'s {2} cuts {3}'s {4}!",statdropper.pbThis,getAbilityName(statdropper.ability),pbThis,pbGetStatName(stat))
+        end 
       else
         stat_text = _INTL("{1}'s {2} {3} fell!",pbThis,pbGetStatName(stat),harsh)
       end

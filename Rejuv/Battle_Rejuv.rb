@@ -56,15 +56,13 @@
       if !@battlers[index].pbOpposing1.isFainted?
         opposing=@battlers[index].pbOpposing1
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
-          opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
-          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index], crest:true)
         end
       end
       if !@battlers[index].pbOpposing2.isFainted?
         opposing=@battlers[index].pbOpposing2
         if opposing.pbCanReduceStatStage?(PBStats::SPATK)
-          opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index])
-          opposing.pbReduceStat(PBStats::SPEED,1,statdropper: @battlers[index])
+          opposing.pbReduceStat(PBStats::SPATK,1,statdropper: @battlers[index], crest:true)
         end
       end
     when :PROBOPASS
@@ -103,6 +101,21 @@
         @battle.weatherduration=8 if @battle.FE == :SKY
         @battle.pbCommonAnimation("Wind",nil,nil)
         @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
+      end
+    when :VANILLUXE
+      pbAnimation(:SWEETSCENT,@battlers[index],nil)
+      @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
+      if !@battlers[index].pbOpposing1.isFainted?
+        opposing=@battlers[index].pbOpposing1
+        if opposing.pbCanReduceStatStage?(PBStats::EVASION)
+          opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest: true)
+        end
+      end
+      if !@battlers[index].pbOpposing2.isFainted?
+        opposing=@battlers[index].pbOpposing2
+        if opposing.pbCanReduceStatStage?(PBStats::EVASION)
+          opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest:true)
+        end
       end
     end
   end

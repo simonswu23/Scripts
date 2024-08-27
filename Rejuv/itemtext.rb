@@ -10174,4 +10174,14 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:VANILLUXECREST => {
+	:ID => 2014,
+	:name => "Vanilluxe Crest",
+	:desc => "Ice Cream Sunday",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

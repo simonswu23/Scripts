@@ -400,6 +400,7 @@ class PokeBattle_Move
     # aaaand Defense
     calcdefmult = 1.0       
     calcdefmult*=1.5 if (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL) && @battle.pbWeather == :HAIL
+    calcdefmult*=2 if opponent.crested == :VANILLUXE && @battle.pbWeather == :HAIL
     calcdefmult*=1.5 if opponent.ability == :MARVELSCALE && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0)) && !(opponent.moldbroken)
     calcdefmult*=1.5 if opponent.ability == :GRASSPELT && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
     calcdefmult*=2.0 if (opponent.ability == :FURCOAT || opponent.ability == :ADAMANTINEBODY) && !(opponent.moldbroken)
@@ -865,6 +866,12 @@ class PokeBattle_Move
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
         end
+      when :VANILLUXE
+        if type == :FIRE && @battle.weather == :HAIL
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
       when :SKUNTANK
         if type == :GROUND
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -1053,6 +1060,12 @@ class PokeBattle_Move
         end
       when :LUMINEON
         if type == :GROUND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
+      when :VANILLUXE
+        if type == :FIRE
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
@@ -2110,6 +2123,11 @@ class PokeBattle_Move
     if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL)
       defense=(defense*1.5).round
     end
+
+    if @battle.pbWeather== :HAIL && opponent.crested == :VANILLUXE
+      defense=(defense*2).round
+    end
+
     defmult=1.0
     defmult*=0.5 if @battle.FE == :GLITCH && @function==0xE0
     defmult*=0.5 if attacker.crested == :ELECTRODE && pbHitsPhysicalStat?(type)
@@ -2277,6 +2295,8 @@ class PokeBattle_Move
         damage*=1.5 if @battle.weather == :RAINDANCE && !opponent.hasWorkingItem(:UTILITYUMBRELLA)
         damage*=0.5 if @battle.weather == :SUNNYDAY && !attacker.hasWorkingItem(:UTILITYUMBRELLA)
         damage*=2 if attacker.ability == :WATERBUBBLE
+      when :ICE
+        damage*=1.5 if @battle.weather == :HAIL && attacker.crested == :VANILLUXE
     end
     # Critical hits
     if opponent.damagestate.critical

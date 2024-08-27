@@ -875,7 +875,7 @@ class PokeBattle_Battler
     if @battle.FE == :BACKALLEY && !(amt >= @totalhp) && !(caller_locations.any? {|string| string.to_s.include?("pbEnemyUseItem")})
       amt= (amt*0.67).floor
     end
-    if (pbCheckSideAbility(:HEALER, self))
+    if (@battle.pbCheckSideAbility(:HEALER, self))
       amt = amt*2
     end
     if self.hp+amt>@totalhp
@@ -1806,7 +1806,7 @@ class PokeBattle_Battler
       @battle.weatherduration=-1
     end
 
-    if (ability == :SNOWWARNING || ability == :LUNARIDOL) && onactive && @battle.weather!=:HAIL
+    if (ability == :SNOWWARNING) && onactive && @battle.weather!=:HAIL
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1826,7 +1826,7 @@ class PokeBattle_Battler
         @battle.weather=:HAIL
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:ICYROCK) || @battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :FROZENDIMENSION || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || ability == :LUNARIDOL
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VANILLUXE
         @battle.pbCommonAnimation("Hail",nil,nil)
         @battle.pbDisplay(_INTL("{1}'s {2} made it hail!",pbThis,getAbilityName(ability)))
         for facemon in @battle.battlers

@@ -13833,7 +13833,7 @@ MONHASH = {
 		:EggSteps => 5355,
 		:preevo => {
 			:species => :PINECO,
-			:form => 0S
+			:form => 0
 		},
 		:Moveset => [
 			[0,:MIRRORSHOT],
@@ -29650,7 +29650,7 @@ MONHASH = {
 			[1,:SOAK],
 			[1,:GUST],
 			[1,:POUND],
-			[1,:WATERGUN],
+			[1,:WHIRLPOOL],
 			[1,:ATTRACT],
 			[1,:SIGNALBEAM],
 			[6,:WATERGUN],
@@ -29661,7 +29661,7 @@ MONHASH = {
 			[26,:CAPTIVATE],
 			[29,:SAFEGUARD],
 			[35,:AQUARING],
-			[42,:WHIRLPOOL],
+			[42,:OCEANBREEZE],
 			[48,:UTURN],
 			[53,:BOUNCE],
 			[59,:SILVERWIND],

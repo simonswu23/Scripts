@@ -276,6 +276,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Run Away
   - prio +1 to switching moves
+
+- Healer
+  - Friendly HP restoration is doubled
  
 ### New Abilities
 
@@ -448,6 +451,13 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - immune to ground
   - immune to side effects
   - flying/bug stab
+
+- Vanilluxe Crest
+  - hail lasts indefinitely
+  - extra x2 defense in the hail
+  - ice attacks x1.5 power in hail
+  - immune to fire in hail
+  - on entry + at the end of each turn, lower all foes evasion by 1. Foes with lowered evasion cannot switch
 
 ## Attacks
 
