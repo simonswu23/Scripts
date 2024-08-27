@@ -69,9 +69,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - mega base stat buffs: 68, 85, 65, 165, 135, 100
   - mega ability: Pixilate -> Fairy Aura
  
-- Cacturne
-  - base stat buffs: 80, 130, 60, 130, 60, 55
-  - ability: Quick Draw
+- Cacturne line
+  - Cacnea ability: Quick Draw
+  - Cacturne base stat buffs: 80, 130, 60, 130, 60, 55
+  - Cacturne ability: Quick Draw
  
 - Manaphy
   - ability: Hydration -> Hydro Veil
@@ -573,7 +574,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - BP 250 -> 500
     
 - SelfDestruct
-  - BP 200 -> 400
+  - BP 200 -> 300
   - typing matches user's primary type
     
 - Judgement
@@ -1010,6 +1011,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Hail Buff
   - Attract + Captivate Buff
   - Lite Frostbite logic (recognizes it as a status condition)
-  - nullsPoison (Pastel Veil)
+  - nullsPoison (Pastel Veil) // Pastel Veil still has a LOT of todos
   - Gothitelle crest healing + STAB
   - Lumineon crest STAB
+  - Detritovore, Heatproof

@@ -158,7 +158,7 @@ HEALFUNCTIONS =[0xD5,0xD6,0xD7,0xD8,0xD9,0xDD,0xDE,0xDF,0xE3,0xE4,0x114,0x139,0x
 
 ###--------------------------------------RATESHARERS------------------------------------------------------------###
 RATESHARERS = [:PROTECT, :DETECT,:QUICKGUARD, :WIDEGUARD, :ENDURE,
-  :KINGSSHIELD, :SPIKYSHIELD, :BANEFULBUNKER, :CRAFTYSHIELD, :OBSTRUCT]
+  :KINGSSHIELD, :SPIKYSHIELD, :BANEFULBUNKER, :CRAFTYSHIELD, :OBSTRUCT, :SHELTER]
 
 ###--------------------------------------INVULEFFECTS-----------------------------------------------------------###
 INVULEFFECTS = [:Protect, :Endure,:Obstruct, :KingsShield, :SpikyShield, :MatBlock]

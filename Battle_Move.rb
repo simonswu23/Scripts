@@ -290,10 +290,10 @@ class PokeBattle_Move
       return [opp1]
     end
     # immunity via immunity ability?
-    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN,:DETRITOVORE].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE)))
+    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE)))
       return [opp1]
     end
-    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN,:DETRITOVORE].include?(opp1.ability) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:DOUSEDRIVE)))
+    if (darttype = :WATER || fieldsecondtype.include?(:WATER)) && (([:DRYSKIN,:WATERABSORB,:STORMDRAIN].include?(opp1.ability) && !opp1.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:DOUSEDRIVE)))
       return [opp2]
     end
     if (darttype = :ELECTRIC || fieldsecondtype.include?(:ELECTRIC)) && (([:MOTORDRIVE,:VOLTABSORB,:LIGHTNINGROD].include?(opp2.ability) && !opp2.moldbroken) || (Rejuv && @battle.FE == :GLITCH && opp2.species == :GENESECT && opp2.hasWorkingItem(:SHOCKDRIVE)))
@@ -595,7 +595,7 @@ class PokeBattle_Move
     if !opponent.moldbroken
       if (atype == :FIRE && opponent.ability == :FLASHFIRE && @battle.FE != :FROZENDIMENSION) || 
         (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
-        (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN || opponent.ability == :DETRITOVORE)) ||
+        (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
         (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
         (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
@@ -798,7 +798,7 @@ class PokeBattle_Move
       end
       return 0
     end
-    if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB || opponent.ability == :DETRITOVORE) &&  type == :WATER) || 
+    if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB) &&  type == :WATER) || 
                                    (opponent.ability == :VOLTABSORB && type == :ELECTRIC))) ||
                                   ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
                                   ((opponent.ability == :BULLDOZER || opponent.ability == :DETRITOVORE) && type == :GROUND) ||
@@ -1024,7 +1024,7 @@ class PokeBattle_Move
       ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER))))
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:BULLDOZER,:DETRITOVORE].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:DETRITOVORE].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end

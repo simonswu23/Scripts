@@ -515,7 +515,8 @@ class PokeBattle_AI
 							(move.pbType(battler) == :WATER && (battler.pbPartner.ability == :WATERABSORB || battler.pbPartner.ability == :STORMDRAIN || battler.pbPartner.ability == :DRYSKIN)) ||
 							(move.pbType(battler) == :GRASS && (battler.pbPartner.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON)) ||
 							(move.pbType(battler) == :ELECTRIC && (battler.pbPartner.ability == :VOLTABSORB || battler.pbPartner.ability == :LIGHTNINGROD || battler.pbPartner.ability == :MOTORDRIVE)) ||
-							(move.pbType(battler) == :GROUND && battler.pbPartner.crested == :SKUNTANK)
+							(move.pbType(battler) == :GROUND && (battler.pbPartner.crested == :SKUNTANK) || battler.pbPartner.ability == :DETRITOVORE) ||
+							(move.pbType(battler) == :POISON && battler.pbPartner.ability == :DETRITOVORE)
 						scoremult*=2
 					elsif battler.pbPartner.hp > 0 && (battler.pbPartner.hp.to_f > 0.1* battler.pbPartner.totalhp || pbAIfaster?(move,nil,battler,battler.pbPartner)) && !(!@battle.pbOwnedByPlayer?(battler.index) && battler.name=="Spacea")
 						scoremult = [(1-2*mondata.scorearray[pi][moveindex]/100.0), 0].max # multiplier to control how much to arbitrarily care about hitting partner; lower cares more
@@ -6131,9 +6132,12 @@ class PokeBattle_AI
 			when :FLASHFIRE
 				miniscore*=3 if @move.pbType(@attacker)==:FIRE && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:FIRE && PBTypes.twoTypeEff((:FIRE),@opponent.type1,@opponent.type2)>4
-			when :LEVITATE, :LUNARIDOL, :SOLARIDOL
+			when :LEVITATE, :LUNARIDOL, :SOLARIDOL, :DETRITOVORE
 				miniscore*=3 if @move.pbType(@attacker)==:GROUND && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:GROUND && PBTypes.twoTypeEff((:GROUND),@opponent.type1,@opponent.type2)>4
+			when :DETRITOVORE, :PASTELVEIL
+				miniscore*=3 if @move.pbType(@attacker)==:POISON && damcount==1
+				miniscore*=2 if @move.pbType(@attacker)==:POISON && PBTypes.twoTypeEff((:POISON),@opponent.type1,@opponent.type2)>4
 			when :WONDERGUARD
 				miniscore*=5
 			when :SOUNDPROOF
@@ -6920,8 +6924,10 @@ class PokeBattle_AI
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:ELECTRIC ||bestmove2.pbType(@attacker.pbOpposing2) ==:ELECTRIC
 		elsif @opponent.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GRASS
-		elsif battler.pbPartner.crested == :SKUNTANK
-			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GROUND
+		elsif battler.pbPartner.crested == :SKUNTANK || @opponent.ability == :DETRITOVORE
+			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GROUND || bestmove2.pbType(@attacker.pbOpposing2) ==:GROUND
+		elsif @opponent.ability == :DETRITOVORE
+			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:POISON || bestmove2.pbType(@attacker.pbOpposing2) ==:POISON
 		end
 		miniscore*=2 if (bestmove1.contactMove? || bestmove2.contactMove?) && checkAImoves([:KINGSSHIELD, :BANEFULBUNKER, :SPIKYSHIELD])
 		miniscore*=2 if checkAImoves([:COUNTER, :METALBURST, :MIRRORCOAT])
@@ -7412,6 +7418,7 @@ class PokeBattle_AI
 				when :FLASHFIRE 						then return -1 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))
 				when :MAGMAARMOR 						then return 0 if (type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))) && (@battle.FE == :DRAGONSDEN || @battle.FE == :INFERNAL || @battle.FE == :VOLCANICTOP)
 				when :TELEPATHY 						then return 0 if  move.basedamage>0 && opponent.index == attacker.pbPartner.index
+				when :DETRITOVORE						then return -1 if type == :GROUND || type == :POISON
 			end
 		end
 		case opponent.crested
@@ -7688,6 +7695,20 @@ class PokeBattle_AI
 				if attacker.moves.any? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :FIRE}
 					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :FIRE}
 					abilityscore*=2 if pbTypeModNoMessages(firemove.pbType(attacker),attacker,opponent,firemove)>4
+				end
+			when :DETRITOVORE
+				for i in attacker.moves
+					next if i.nil?
+					groundmove=i if i.pbType(attacker)==:GROUND
+					poisonmove=i if i.pbType(attacker)==:POISON
+				end
+				if attacker.moves.any? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GROUND}
+					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GROUND}
+					abilityscore*=2 if pbTypeModNoMessages(groundmove.pbType(attacker),attacker,opponent,groundmove)>4
+				end
+				if attacker.moves.any? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GRPOISONOUND}
+					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :POISON}
+					abilityscore*=2 if pbTypeModNoMessages(poisonmove.pbType(attacker),attacker,opponent,poisonmove)>4
 				end
 			when :LEVITATE, :LUNARIDOL, :SOLARIDOL
 				for i in attacker.moves
@@ -8894,7 +8915,7 @@ class PokeBattle_AI
 						end
 					when :TRACE 
 						if [:WATERABSORB,:VOLTABSORB,:STORMDRAIN,:MOTORDRIVE,:FLASHFIRE,:LEVITATE,:LUNARIDOL,:SOLARIDOL,:LIGHTNINGROD,
-							:SAPSIPPER,:DRYSKIN,:SLUSHRUSH,:SANDRUSH,:SWIFTSWIM,:CHLOROPHYLL,:SPEEDBOOST,
+							:SAPSIPPER,:DRYSKIN,:SLUSHRUSH,:SANDRUSH,:SWIFTSWIM,:CHLOROPHYLL,:SPEEDBOOST,:DETRITOVORE,
 							:WONDERGUARD,:PRANKSTER].include?(@opponent.ability) || 
 							(pbAIfaster?() && ((@opponent.ability == :ADAPTABILITY) || (@opponent.ability == :DOWNLOAD) || (@opponent.ability == :PROTEAN) || (@opponent.ability == :LIBERO))) || 
 							(@opponent.attack>@opponent.spatk && (@opponent.ability == :INTIMIDATE)) || (@opponent.ability == :UNAWARE) || (i.hp==i.totalhp && ((@opponent.ability == :MULTISCALE) || (@opponent.ability == :SHADOWSHIELD)))
@@ -10734,7 +10755,7 @@ class PokeBattle_AI
 				# Heatproof
 				if opponent.ability == :HEATPROOF
 					if type == :FIRE
-						basedamage=(basedamage*0.5).round
+						basedamage=0
 					end
 				# Dry Skin
 				elsif opponent.ability == :DRYSKIN

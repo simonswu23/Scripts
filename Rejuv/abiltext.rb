@@ -1852,7 +1852,7 @@ ABILHASH = {
 :DETRITOVORE => {
 	:ID => 325,
 	:name => "Detritivore",
-	:desc => "Ground, water, and poison type attacks restore hp instead of dealing damage."
+	:desc => "Ground and poison type attacks restore hp instead of dealing damage."
 },
 
 :MASSIVESHELL => {

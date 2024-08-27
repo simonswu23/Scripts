@@ -4285,7 +4285,7 @@ class PokeBattle_Battle
           end
         when :UNDERWATER
           next if i.hp<=0
-          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN || i.ability == :DETRITOVORE) && i.effects[:HealBlock]==0
+          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN) && i.effects[:HealBlock]==0
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed some of the water!",i.pbThis)) if hpgain>0

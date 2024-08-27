@@ -13898,12 +13898,7 @@ MONHASH = {
 			:form => 1
 		},
 		:Moveset => [
-			[0,:HEAVYSLAM],
-			[0,:STICKYWEB],
-			[1,:HEAVYSLAM],
-			[1,:ZAPCANNON],
-			[1,:MAGNETRISE],
-			[1,:TOXICSPIKES],
+			[0,:TOXICSPIKES],
 			[1,:TACKLE],
 			[1,:SHELTER],
 			[1,:EXPLOSION],
@@ -21709,7 +21704,7 @@ MONHASH = {
 		:Type1 => :GRASS,
 		:BaseStats => [50, 85, 40, 85, 40, 35],
 		:EVs => [0, 0, 0, 1, 0, 0],
-		:Abilities => [:SANDVEIL, :WATERABSORB],
+		:Abilities => [:SANDVEIL, :WATERABSORB, :QUICKDRAW],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :FemHalf,
 		:BaseEXP => 67,

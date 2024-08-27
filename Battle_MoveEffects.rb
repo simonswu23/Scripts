@@ -4912,7 +4912,7 @@ class PokeBattle_Move_0AA < PokeBattle_Move
     baseRate = 3
     baseRate = 2 if @move == :DETECT
     if @battle.pbRandom(65536)<(65536/(baseRate**attacker.effects[:ProtectRate])).floor
-      if Rejuv && @move==:SHELTER && attacker.effects[:Shelter]==false
+      if Rejuv && @move==:SHELTER
         if (([:CORROSIVE,:CORROSIVEMIST,:MURKWATERSURFACE,:FAIRYTALE].include?(@battle.FE) || @battle.ProgressiveFieldCheck(PBFields::CONCERT)) && (@move == :ACIDARMOR)) || # Corro Fields
           (@battle.FE == :FACTORY && (@move == :IRONDEFENSE))
            ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,abilitymessage:false)

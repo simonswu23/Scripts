@@ -4676,7 +4676,7 @@ class PokeBattle_Battler
     end
 
     if (basemove.pbType(user) == :FIRE && target.ability == :HEATPROOF)
-      @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbThis,getAbilityName(target.ability)))
+      @battle.pbDisplay(_INTL("{1}'s {2} protected it from the attack!", target.pbThis,getAbilityName(target.ability)))
       return false
     end
 
