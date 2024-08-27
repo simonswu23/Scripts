@@ -1549,7 +1549,7 @@ class PokeBattle_Move_02E < PokeBattle_Move
 end
 
 ################################################################################
-# Increases the user's Defense by 2 stages. (Iron Defense, Acid Armor, Barrier, Diamond Storm, Shelter)
+# Increases the user's Defense by 2 stages. (Iron Defense, Acid Armor, Barrier, Diamond Storm)
 ################################################################################
 class PokeBattle_Move_02F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
@@ -1561,10 +1561,6 @@ class PokeBattle_Move_02F < PokeBattle_Move
       ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,abilitymessage:false)
     else
       ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,abilitymessage:false)
-    end
-    if Rejuv && @move==:SHELTER && attacker.effects[:Shelter]==false
-      attacker.effects[:Shelter]=true
-      @battle.pbDisplay(_INTL("{1} is sheltering itself from the surrounding!",attacker.pbThis))
     end
     return ret ? 0 : -1
   end
@@ -1579,11 +1575,7 @@ class PokeBattle_Move_02F < PokeBattle_Move
   # Replacement animation till a proper one is made
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return if !showanimation
-    if id == :SHELTER
-      @battle.pbAnimation(:WITHDRAW,attacker,opponent,hitnum)
-    else
-      @battle.pbAnimation(id,attacker,opponent,hitnum)
-    end
+    @battle.pbAnimation(id,attacker,opponent,hitnum)
   end
 end
 
@@ -2355,10 +2347,22 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
       end
     end
+
+    if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+      @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+      @battle.state.effects[:PSYTERRAIN] = 0
+      @battle.state.effects[:GRASSY] = 0
+      @battle.state.effects[:ELECTERRAIN] = 0
+      @battle.state.effects[:MISTY] = 0
+      @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
+    end
+
    ####
     return 0
   end
 
+  # @SWu idk what this is for -- magic bounce?
+  # might need to re-work if we want to re-use this as a side effect
   def pbAdditionalEffect(attacker,opponent)
     if opponent.pbCanReduceStatStage?(PBStats::EVASION,false)
       if @battle.FE == :CLOUDS
@@ -3665,7 +3669,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
        $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCE)    # Sky Drop
       return basedmg*2
     elsif opponent.hasType?(:FLYING) || opponent.ability == :LEVITATE || opponent.effects[:MagnetRise]>0 || opponent.effects[:Telekinesis]>0 ||
-          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX
+          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX
       return basedmg*2
     end
     return basedmg
@@ -3678,7 +3682,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -3710,7 +3714,8 @@ class PokeBattle_Move_079 < PokeBattle_UnimplementedMove
     if hitnum == 1 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
       damage /= 2
     end
-    if hitnum > 0 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+    # ???
+    if hitnum > 0 && attacker.effects[:HydreigonCrest] && pbNumHits(attacker)==1
       damage /= 4
     end
     if opponent.damagestate.typemod!=0
@@ -3747,7 +3752,7 @@ class PokeBattle_Move_07A < PokeBattle_UnimplementedMove
       pbNumHits(attacker)==1
       damage /= 2
     end
-    if hitnum > 0 && attacker.effects[:ParentalBond] && pbNumHits(attacker)==1
+    if hitnum > 0 && attacker.effects[:HydreigonCrest] && pbNumHits(attacker)==1
       damage /= 4
     end
     if opponent.damagestate.typemod!=0
@@ -4907,9 +4912,23 @@ class PokeBattle_Move_0AA < PokeBattle_Move
     baseRate = 3
     baseRate = 2 if @move == :DETECT
     if @battle.pbRandom(65536)<(65536/(baseRate**attacker.effects[:ProtectRate])).floor
+      if Rejuv && @move==:SHELTER && attacker.effects[:Shelter]==false
+        if (([:CORROSIVE,:CORROSIVEMIST,:MURKWATERSURFACE,:FAIRYTALE].include?(@battle.FE) || @battle.ProgressiveFieldCheck(PBFields::CONCERT)) && (@move == :ACIDARMOR)) || # Corro Fields
+          (@battle.FE == :FACTORY && (@move == :IRONDEFENSE))
+           ret=attacker.pbIncreaseStat(PBStats::DEFENSE,3,abilitymessage:false)
+        else
+           ret=attacker.pbIncreaseStat(PBStats::DEFENSE,2,abilitymessage:false)
+        end
+        attacker.effects[:Shelter]=true
+        @battle.pbDisplay(_INTL("{1} is sheltering itself from the surrounding!",attacker.pbThis))
+      end
       attacker.effects[:Protect]=:Protect
       attacker.effects[:ProtectRate]+=1
-      @battle.pbAnimation(@move,attacker,nil)
+      if (@move==:SHELTER)
+        @battle.pbAnimation(:WITHDRAW,attacker,opponent,hitnum)
+      else
+        @battle.pbAnimation(@move,attacker,nil)
+      end
       @battle.pbDisplay(_INTL("{1} protected itself!",attacker.pbThis))
       return 0
     else
@@ -6428,9 +6447,9 @@ class PokeBattle_Move_0D8 < PokeBattle_Move
     elsif @battle.FE == :DARKNESS3 && @move != :MOONLIGHT
       hpgain=(attacker.totalhp/8.0).floor
     else
-      if (@battle.pbWeather== :SUNNYDAY)
+      if (@battle.pbWeather== :SUNNYDAY) || (attacker.crested == :CHERRIM)
         hpgain=(attacker.totalhp*2/3.0).floor
-      elsif (@battle.pbWeather!=0 && !(attacker.crested == :CHERRIM))
+      elsif (@battle.pbWeather!=0)
         hpgain=(attacker.totalhp/4.0).floor
       else
         hpgain=(attacker.totalhp/2.0).floor
@@ -8683,7 +8702,7 @@ class PokeBattle_Move_11C < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || oppomnent.ability == :GRAVFLUX
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || oppomnent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -11526,8 +11545,8 @@ class PokeBattle_Move_317 < PokeBattle_Move
 end
 
 ###############################################################################
-# The user restores 1/4 of its maximum HP, rounded half up. If there is an 
-# adjacent ally, the user restores 1/4 of both its and its ally's maximum HP, 
+# The user restores 1/3 of its maximum HP, rounded half up. If there is an 
+# adjacent ally, the user restores 1/3 of both its and its ally's maximum HP, 
 # rounded up. Also heals status conditions. (Jungle Healing / Lunar Blessing) 
 ################################################################################
 class PokeBattle_Move_318 < PokeBattle_Move
@@ -11550,8 +11569,8 @@ class PokeBattle_Move_318 < PokeBattle_Move
       pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation) if !didsomething
       didsomething=true
       showanim=true
-      recoveramount = (i.totalhp/2.0).round
-      recoveramount = (i.totalhp/4.0*3).round if @move == :LUNARBLESSING && (@battle.FE == :STARLIGHT || @battle.FE == :NEWWORLD) 
+      recoveramount = (i.totalhp/3.0).round
+      recoveramount = (i.totalhp/3.0*2).round if @move == :LUNARBLESSING && (@battle.FE == :STARLIGHT || @battle.FE == :NEWWORLD) 
       i.pbRecoverHP(recoveramount,true)
       @battle.pbDisplay(_INTL("{1}'s HP was restored.",i.pbThis))
     end

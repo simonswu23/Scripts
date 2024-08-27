@@ -399,9 +399,7 @@ class PokeBattle_Move
     calcdefensestage=opponent.stages[PBStats::DEFENSE]+6
     # aaaand Defense
     calcdefmult = 1.0       
-    calcdefmult*=1.5 if @battle.FE == :SNOWYMOUNTAIN && opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL        
-    calcdefmult*=1.5 if @battle.FE == :ICY && opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL
-    calcdefmult*=1.5 if opponent.hasType?(:ICE) && @battle.pbWeather == :HAIL
+    calcdefmult*=1.5 if (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL) && @battle.pbWeather == :HAIL
     calcdefmult*=1.5 if opponent.ability == :MARVELSCALE && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0)) && !(opponent.moldbroken)
     calcdefmult*=1.5 if opponent.ability == :GRASSPELT && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
     calcdefmult*=2.0 if (opponent.ability == :FURCOAT || opponent.ability == :ADAMANTINEBODY) && !(opponent.moldbroken)
@@ -598,7 +596,7 @@ class PokeBattle_Move
         (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN || opponent.ability == :DETRITOVORE)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :HIVEQUEEN || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
         (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
         (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
@@ -1171,7 +1169,7 @@ class PokeBattle_Move
       when :GOTHITELLE
         if (opponent.type1 == :PSYCHIC)
           typemod /= 2 if (type == :DARK || type == :GHOST)
-          typemod = 9 if type == :PSYCHIC
+          typemod = 0 if type == :PSYCHIC
         elsif (opponent.type1 == :DARK)
           typemod /= 2 if (type == :FIGHTING)
         end
@@ -1337,8 +1335,8 @@ class PokeBattle_Move
     return true if @move == :MIRAGEBEAM && @battle.pbWeather== :SUNNYDAY
     return true if @move == :MOUNTAINGALE && @battle.pbWeather == :HAIL
     return true if @move == :HEATWAVE && @battle.pbWeather== :SUNNYDAY # Heat Wave
-    return true if @move == :PRECIPICEBLADES && @battle.pbWeather ==:DESOLATELAND
-    return true if @move == :ORIGINPULSE && @battle.pbWeather ==:PRIMORDIALSEA
+    return true if @move == :PRECIPICEBLADES && (@battle.pbWeather ==:SUNNYDAY || @battle.pbWeather ==:DESOLATELAND)
+    return true if @move == :ORIGINPULSE && (@battle.pbWeather ==:RAINDANCE || @battle.pbWeather ==:PRIMORDIALSEA)
     return true if @move == :SPRINGTIDESTORM && @battle.pbWeather ==:SUNNYDAY
     return true if @move == :WILDBOLTSTORM && @battle.pbWeather ==:RAINDANCE
     return true if @move == :SANDSEARSTORM && @battle.pbWeather ==:SANDSTORM
@@ -1617,8 +1615,8 @@ class PokeBattle_Move
       if $cache.items[attacker.item].checkFlag?(:typeboost) == type
         basemult*=1.2
         if $cache.items[attacker.item].checkFlag?(:gem)
-          # buffing gems to 1.5
-          basemult *= 1.5
+          # @SWu buffing gems to 1.5 (1.2 x 1.25 = 1.5)
+          basemult *= 1.25
           attacker.takegem=true
           @battle.pbDisplay(_INTL("The {1} strengthened {2}'s power!",getItemName(attacker.item),self.name))
         end
@@ -2081,6 +2079,10 @@ class PokeBattle_Move
     if @battle.pbWeather== :SANDSTORM && opponent.hasType?(:ROCK) && applysandstorm
       defense=(defense*1.5).round
     end
+    if @battle.state.effects[:MISTY] > 0 && opponent.hasType?(:FAIRY) && applysandstorm
+      defense=(defense*1.5).round
+    end
+
     if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL)
       defense=(defense*1.5).round
     end

@@ -2519,7 +2519,7 @@ class PokeBattle_Battler
               pbThis,getAbilityName(ability)))
         end     
       end
-      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL || self.ability == :HIVEQUEEN || self.ability == :GRAVFLUX) && onactive
+      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL || self.crested == :VESPIQUEN || self.ability == :GRAVFLUX) && onactive
         if !pbTooHigh?(PBStats::SPEED)
           pbIncreaseStatBasic(PBStats::SPEED,1)
           @battle.pbCommonAnimation("StatUp",self,nil)
@@ -4622,7 +4622,7 @@ class PokeBattle_Battler
       typemod=basemove.fieldTypeChange(user,target,typemod)
       typemod=basemove.overlayTypeChange(user,target,typemod)
       if (type == :GROUND) && target.isAirborne? && !target.hasWorkingItem(:RINGTARGET) && @battle.FE != :CAVE && basemove.move != :THOUSANDARROWS && basemove.move != :DESERTSMARK
-        if ([:LEVITATE,:SOLARIDOL,:LUNARIDOL,:HIVEQUEEN,:GRAVFLUX].include?(target.ability) || (@battle.FE == :DEEPEARTH && [:UNAWARE,:OBLIVIOUS,:MAGNETPULL,:CONTRARY,:GRAVFLUX].include?(target.ability))) && !(target.moldbroken)
+        if ([:LEVITATE,:SOLARIDOL,:LUNARIDOL,:GRAVFLUX].include?(target.ability) || (@battle.FE == :DEEPEARTH && [:UNAWARE,:OBLIVIOUS,:MAGNETPULL,:CONTRARY,:GRAVFLUX].include?(target.ability))) && !(target.moldbroken)
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with {2}!",target.pbThis,getAbilityName(target.ability)))
           return false
         end
@@ -4637,6 +4637,10 @@ class PokeBattle_Battler
         if target.effects[:Telekinesis]>0
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Telekinesis!",target.pbThis))
           return false
+        end
+        if target.crested == :VESPIQUEN
+          @battle.pbDisplay(_INTL("{1}'s crest makes Ground moves miss!",target.pbThis))
+          return false 
         end
       end
       if target.ability == (:WONDERGUARD) && typemod<=4 && !(target.moldbroken)
@@ -5118,6 +5122,11 @@ class PokeBattle_Battler
         addleffect=basemove.effect
         addleffect=20 if basemove.move == :OMINOUSWIND && @battle.FE == :HAUNTED
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
+        addleffect*=2 if @move == :SPRINGTIDESTORM && @battle.pbWeather ==:SUNNYDAY
+        addleffect*=2 if @move == :WILDBOLTSTORM && @battle.pbWeather ==:RAINDANCE
+        addleffect*=2 if @move == :SANDSEARSTORM && @battle.pbWeather ==:SANDSTORM
+        addleffect*=2 if @move == :BLEAKWINDSTORM && @battle.pbWeather ==:HAIL
+
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
         addleffect=100 if basemove.move == :MIRRORSHOT && @battle.FE == :MIRROR
         addleffect=100 if basemove.move == :STRANGESTEAM && @battle.FE == :FAIRYTALE

@@ -1789,10 +1789,10 @@ ABILHASH = {
 	:desc => "Summons Aqua Ring for the user upon switching into battle."
 },
 
-:REPLENISH => {
+:FREE => {
 	:ID => 316,
-	:name => "Replenish",
-	:desc => "The user gains a stockpile at the end of each turn."
+	:name => "",
+	:desc => ""
 },
 
 :DOWNDRAFT => {
@@ -1871,7 +1871,7 @@ ABILHASH = {
 :REPLENISH => {
 	:ID => 328,
 	:name => "Replenish",
-	:desc => "User restores health when HP drops under half."
+	:desc => "User gains a stockpile at the end of each turn. If the user's health drops below half, it consumes all stockpiles to restore HP."
 },
 
 :GRAVPULL => {

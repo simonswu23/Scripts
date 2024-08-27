@@ -341,7 +341,7 @@ MOVEHASH = {
 	:basedamage => 95,
 	:accuracy => 100,
 	:maxpp => 10,
-	:effect => 100,
+	:effect => 50,
 	:target => :SingleNonUser,
 	:kingrock => true,
 	:desc => "The user lets loose a black shock wave. It may also lower the target's accuracy."
@@ -804,11 +804,11 @@ MOVEHASH = {
 :SPACIALREND => {
 	:ID => 55,
 	:name => "Spacial Rend",
-	:function => 0x049,
+	:function => 0x908,
 	:type => :DRAGON,
 	:category => :special,
 	:basedamage => 100,
-	:accuracy => 95,
+	:accuracy => 0,
 	:maxpp => 5,
 	:target => :SingleNonUser,
 	:kingrock => true,
@@ -6174,6 +6174,7 @@ MOVEHASH = {
 	:accuracy => 75,
 	:maxpp => 10,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user kisses the target with a sweet, angelic cuteness that causes confusion."
 },
@@ -6244,6 +6245,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 20,
 	:target => :SingleNonUser,
+	:contact => true,
 	:magiccoat => true,
 	:desc => "The user tickles the target into laughing, reducing its Attack and Defense stats."
 },
@@ -6466,7 +6468,7 @@ MOVEHASH = {
 	:basedamage => 65,
 	:accuracy => 100,
 	:maxpp => 25,
-	:effect => 20,
+	:effect => 30,
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
@@ -8380,7 +8382,7 @@ MOVEHASH = {
 	:function => 0x0A5,
 	:type => :FAIRY,
 	:category => :special,
-	:basedamage => 60,
+	:basedamage => 40,
 	:accuracy => 0,
 	:maxpp => 15,
 	:target => :AllOpposing,
@@ -11125,7 +11127,7 @@ MOVEHASH = {
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
-	:desc => "The user attacks while destroying the terrain. This move fails when the ground hasn't turned into a terrain."
+	:desc => "The user attacks while destroying the terrain. This move doubles in power when a terrain is active."
 
 },
 
@@ -11556,7 +11558,7 @@ MOVEHASH = {
 :SHELTER => {
 	:ID => 879,
 	:name => "Shelter",
-	:function => 0x02F,
+	:function => 0x0AA,
 	:type => :STEEL,
 	:category => :status,
 	:basedamage => 0,
@@ -11794,7 +11796,7 @@ MOVEHASH = {
 	:basedamage => 95,
 	:accuracy => 100,
 	:maxpp => 10,
-	:effect => 30,
+	:effect => 50,
 	:target => :SingleNonUser,
 	:kingrock => true,
 	:desc => "The user attacks the target with spine-chilling resentment. This also has a chance to inflict frostbite."
@@ -13931,7 +13933,7 @@ MOVEHASH = {
 	:function => 0x050,
 	:type => :WATER,
 	:category => :special,
-	:basedamage => 80,
+	:basedamage => 75,
 	:accuracy => 100,
 	:maxpp => 15,
 	:effect => 100,
@@ -14060,7 +14062,7 @@ MOVEHASH = {
 	:accuracy => 90,
 	:maxpp => 10,
 	:effect => 30,
-	:target => :AllOpposing,
+	:target => :SingleNonUser,
 	# @SWu todo: finish defense modifier implementations
 	:desc => "INCOMPLETE IMPLEMENTATION: Stabs the target with a huge needle, piercing through defenses and resistances."
 },
@@ -14095,6 +14097,21 @@ MOVEHASH = {
   	:contact => :true,
   	:kingrock => true,
   	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
+},
+
+:COCOONBASH => {
+	:ID => 902,
+	:name => "Cocoon Bash",
+	:function => 0x184,
+	:type => :BUG,
+	:category => :physical,
+	:basedamage => 90,
+	:accuracy => 100,
+	:maxpp => 10,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "The user attacks by slamming its hardened body into the target. The higher the user's Defense, the more damage it can inflict."
 },
 
 }

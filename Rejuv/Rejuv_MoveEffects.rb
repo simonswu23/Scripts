@@ -1073,3 +1073,148 @@ class PokeBattle_Move_907 < PokeBattle_Move
   end
 
 end
+
+###############################################################################
+# Clears Hazards, Screens, Terrain, Weather + Breaks through Sub and Protect (Hyperspace Hole)
+###############################################################################
+class PokeBattle_Move_908 < PokeBattle_Move
+  def pbAccuracyCheck(attacker,opponent)
+    return true
+  end
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    opponent.effects[:ProtectNegation]=true if ret>0
+    if opponent.pbPartner && !opponent.pbPartner.isFainted? && !opponent.pbPartner.effects[:Protect]
+      opponent.pbPartner.effects[:ProtectNegation]=true
+    elsif opponent.pbPartner.effects[:Protect] && opponent.pbOwnSide.protectActive?
+      opponent.pbOwnSide.effects[:CraftyShield]=false
+      opponent.pbOwnSide.effects[:WideGuard]=false
+      opponent.pbOwnSide.effects[:QuickGuard]=false
+      opponent.pbOwnSide.effects[:MatBlock]=false
+    end
+    if attacker.pbOpposingSide.effects[:Reflect]>0
+      attacker.pbOpposingSide.effects[:Reflect]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team's Reflect wore off!"))
+      else
+          @battle.pbDisplay(_INTL("Your team's Reflect wore off!"))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:LightScreen]>0
+      attacker.pbOpposingSide.effects[:LightScreen]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team's Light Screen wore off!"))
+      else
+        @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:AuroraVeil]>0
+      attacker.pbOpposingSide.effects[:AuroraVeil]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team's Aurora Veil wore off!"))
+      else
+        @battle.pbDisplay(_INTL("Your team's Aurora Veil wore off!"))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:AreniteWall]>0
+      attacker.pbOpposingSide.effects[:AreniteWall]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team's Arenite Wall wore off!"))
+      else
+        @battle.pbDisplay(_INTL("Your team's Arenite Wall wore off!"))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:Mist]>0 || opponent.pbOwnSide.effects[:Mist]>0
+      opponent.pbOwnSide.effects[:Mist]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team is no longer protected by Mist."))
+      else
+        @battle.pbDisplay(_INTL("Your team is no longer protected by Mist."))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:Safeguard]>0 || opponent.pbOwnSide.effects[:Safeguard]>0
+      opponent.pbOwnSide.effects[:Safeguard]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team is no longer protected by Safeguard."))
+      else
+        @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
+      end
+    end
+    if attacker.pbOwnSide.effects[:Spikes]>0 || opponent.pbOwnSide.effects[:Spikes]>0
+      attacker.pbOwnSide.effects[:Spikes]=0
+      opponent.pbOwnSide.effects[:Spikes]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+      else
+        @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+      end
+    end
+    if attacker.pbOwnSide.effects[:StealthRock] || opponent.pbOwnSide.effects[:StealthRock]
+      attacker.pbOwnSide.effects[:StealthRock]=false
+      opponent.pbOwnSide.effects[:StealthRock]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+      end
+    end
+    if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
+      attacker.pbOwnSide.effects[:Steelsurge]=false
+      opponent.pbOwnSide.effects[:Steelsurge]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+      end
+    end
+    if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
+      attacker.pbOwnSide.effects[:ToxicSpikes]=0
+      opponent.pbOwnSide.effects[:ToxicSpikes]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+      else
+        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+      end
+    end
+    if attacker.pbOwnSide.effects[:StickyWeb] || opponent.pbOwnSide.effects[:StickyWeb]
+      attacker.pbOwnSide.effects[:StickyWeb]=false
+      opponent.pbOwnSide.effects[:StickyWeb]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+      else
+        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+      end
+    end
+
+    # @SWu: To Fix
+    
+    # if @battle.pbWeather!=0
+    #   @battle.state.effects[:HarshSunlight] = false
+    #   @battle.state.effects[:HeavyRain] = false
+    #   @battle.state.effects[:Hail] = false
+    #   @battle.state.effects[:Sandstorm] = false
+    #   @weather=0
+    #   @weatherduration=0
+    #   @battle.pbDisplay(_INTL("The weather was cleared!"))
+    # end
+
+    # if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+    #     @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+    #   @battle.state.effects[:PSYTERRAIN] = 0
+    #   @battle.state.effects[:GRASSY] = 0
+    #   @battle.state.effects[:ELECTERRAIN] = 0
+    #   @battle.state.effects[:MISTY] = 0
+    #   @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
+    # end
+
+    # if @battle.state.effects[:MagicRoom] > 0 || @battle.state.effects[:WonderRoom] > 0 || @battle.trickroom > 0
+    #   @battle.state.effects[:MagicRoom] = 0
+    #   @battle.state.effects[:WonderRoom] = 0
+    #   @battle.trickroom = 0
+    #   @battle.pbDisplay(_INTL("The room effects returned to normal!"))
+    # end
+
+    return ret
+  end
+end

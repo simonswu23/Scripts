@@ -207,6 +207,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - BST: 70, 108, 58, 137, 107, 115
   - Ability: Joker
   - Notable LUM: Charm, Growl, Leer, Fake Tears, Baby Doll Eyes, Snarl, Fake Out, Acid Spray, Parting Shot, Captivate, Night Daze, Venom Drench, Toxic Thread, Sweet Scent
+
+- Alpha Forretress
+  - Bug/Steel
+  - BST: 75, 100, 200, 60, 130, 20
+  - Ability: Heatproof
+  - Notable LUM: Barbed Web, Rapid Spin, Shield Bash, Cocoon Bash, Steelsurge
       
    
 ## Abilities
@@ -680,8 +686,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - corrodes foes Items
     
 - Shelter
-  - prio +4
-  - (check) also protects the user this turn
+  - prio +4, also protects the user this turn
     
 - Mystical Power
   - BP 70 -> 80
