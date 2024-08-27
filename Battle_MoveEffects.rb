@@ -3669,7 +3669,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
        $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCE)    # Sky Drop
       return basedmg*2
     elsif opponent.hasType?(:FLYING) || opponent.ability == :LEVITATE || opponent.effects[:MagnetRise]>0 || opponent.effects[:Telekinesis]>0 ||
-          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX
+          opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX
       return basedmg*2
     end
     return basedmg
@@ -3682,7 +3682,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :LUMINEON || opponent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -8702,7 +8702,7 @@ class PokeBattle_Move_11C < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || oppomnent.ability == :GRAVFLUX
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.crested == :LUMINEON || oppomnent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce

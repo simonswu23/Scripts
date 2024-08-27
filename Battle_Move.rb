@@ -596,7 +596,7 @@ class PokeBattle_Move
         (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN || opponent.ability == :DETRITOVORE)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
         (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
         (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
@@ -853,6 +853,18 @@ class PokeBattle_Move
     end
     # Immunity Crests
     case opponent.crested
+      when :VESPIQUEN
+        if type == :GROUND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
+      when :LUMINEON
+        if type == :GROUND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
       when :SKUNTANK
         if type == :GROUND
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -1033,6 +1045,18 @@ class PokeBattle_Move
     end
     # Immunity Crests
     case opponent.crested
+      when :VESPIQUEN
+        if type == :GROUND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
+      when :LUMINEON
+        if type == :GROUND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
       when :SKUNTANK
         if (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -2270,6 +2294,11 @@ class PokeBattle_Move
       when :SIMISEAR then typecrest = true if type == :WATER
       when :SIMIPOUR then typecrest = true if type == :GRASS
       when :SIMISAGE then typecrest = true if type == :FIRE
+      when :LUMINEON then typecrest = true if type == :BUG || type == :FLYING
+      when :GOTHITELLE then typecrest = true if type == :PSYCHIC || type == :DARK
+      when :REUNICLUS then typecrest = true if type == :FIGHTING
+      when :CHERRIM then typecrest = true if type == :FIRE
+      when :GOODRA then tyepcrest = true if type == :POISON
       when :ZOROARK
         party = @battle.pbPartySingleOwner(attacker.index)
         party=party.find_all {|item| item && !item.egg? && item.hp>0 }
@@ -2304,12 +2333,6 @@ class PokeBattle_Move
         elsif (type == :FIRE && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE))
           damage*=1.5
         end
-      end
-      if attacker.crested == :CHERRIM && type == :FIRE
-        damage*=1.5
-      end
-      if attacker.crested == :GOODRA && type == :POISON
-        damage*=1.5
       end
     end
     # Type effectiveness

@@ -2519,7 +2519,7 @@ class PokeBattle_Battler
               pbThis,getAbilityName(ability)))
         end     
       end
-      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL || self.crested == :VESPIQUEN || self.ability == :GRAVFLUX) && onactive
+      if (self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL || self.crested == :VESPIQUEN || self.crested == :LUMINEON || self.ability == :GRAVFLUX) && onactive
         if !pbTooHigh?(PBStats::SPEED)
           pbIncreaseStatBasic(PBStats::SPEED,1)
           @battle.pbCommonAnimation("StatUp",self,nil)
@@ -4638,10 +4638,11 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Telekinesis!",target.pbThis))
           return false
         end
-        if target.crested == :VESPIQUEN
-          @battle.pbDisplay(_INTL("{1}'s crest makes Ground moves miss!",target.pbThis))
-          return false 
-        end
+        # handled elsewhere
+        # if target.crested == :VESPIQUEN
+        #   @battle.pbDisplay(_INTL("{1}'s crest makes Ground moves miss!",target.pbThis))
+        #   return false 
+        # end
       end
       if target.ability == (:WONDERGUARD) && typemod<=4 && !(target.moldbroken)
         @battle.pbDisplay(_INTL("{1} avoided damage with Wonder Guard!",target.pbThis))
@@ -5118,7 +5119,7 @@ class PokeBattle_Battler
       @battle.pbJudgeCheckpoint(user,basemove)
 
       # Additional effect
-      if !basemove.zmove && target.damagestate.calcdamage>0 && (!target.hasType?(:BUG) && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function))) && user.ability != (:SHEERFORCE)
+      if !basemove.zmove && target.damagestate.calcdamage>0 && (!target.hasType?(:BUG) && (!target.crested == :LUMINEON) && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function))) && user.ability != (:SHEERFORCE)
         addleffect=basemove.effect
         addleffect=20 if basemove.move == :OMINOUSWIND && @battle.FE == :HAUNTED
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW

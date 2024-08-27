@@ -73,9 +73,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 80, 130, 60, 130, 60, 55
   - ability: Quick Draw
  
-- Phione
-  - ability: Hydration -> Hydro Veil
- 
 - Manaphy
   - ability: Hydration -> Hydro Veil
  
@@ -175,6 +172,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Mawile
   - base stat buffs: 50, 115, 115, 55, 55, 50
   - mega base stat buffs: 50, 125, 140, 65, 95, 65
+
+- Lumineon
+  - base stat buffs: 69, 69, 76, 99, 116, 91
+  - learns quiver dance upon evo and at lvl 1
+  - learns signal beam at lvl 1
    
 ### New Pokemon
 - Alpha Larvesta
@@ -213,6 +215,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - BST: 75, 100, 200, 60, 130, 20
   - Ability: Heatproof
   - Notable LUM: Barbed Web, Rapid Spin, Shield Bash, Cocoon Bash, Steelsurge
+
+- Alpha Lumineon
+  - Water/Fairy
+  - BST:  69, 69, 86, 129, 146, 121
+  - Ability: Multiscale
+  - Notable LUM: Quiver Dance, Tail Glow, Dazzling GLeam, Hurricane, Ocean Breeze, Spring Breeze, Rainbow Scales
       
    
 ## Abilities
@@ -434,6 +442,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - (check) works on hisuian goodra
   - poison heal effect
   - gains poison resistances and weaknesses and STAB
+
+- Lumineon Crest
+  - extends tailwind by 4 turns on entry
+  - immune to ground
+  - immune to side effects
+  - flying/bug stab
 
 ## Attacks
 
@@ -974,7 +988,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Dragon Darts Targeting
   - Heatproof
   - Lunar Idol
-  - Levitaters (Solar/Lunar Idol, Vespiquen Crest, Gravitational Flux)
+  - Levitaters (Solar/Lunar Idol, Vespiquen Crest, Lumineon Crest Gravitational Flux)
   - Bulldozer
   - Detritovore
     
@@ -987,4 +1001,5 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Attract + Captivate Buff
   - Lite Frostbite logic (recognizes it as a status condition)
   - nullsPoison (Pastel Veil)
-  - Gothitelle crest healing
+  - Gothitelle crest healing + STAB
+  - Lumineon crest STAB

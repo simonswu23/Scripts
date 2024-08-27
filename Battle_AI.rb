@@ -11223,6 +11223,7 @@ class PokeBattle_AI
       		when :SIMISEAR then typecrest = true if type == :WATER
       		when :SIMIPOUR then typecrest = true if type == :GRASS
       		when :SIMISAGE then typecrest = true if type == :FIRE
+					when :LUMINEON then typecrest = true if type == :BUG || type == :FLYING
 			when :GOTHITELLE then typecrest = true if type == :PSYCHIC || type == :DARK
 			when :REUNICLUS then typecrest = true if type == :PSYCHIC || type == :FIGHTING
 			when :ZOROARK

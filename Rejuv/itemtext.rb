@@ -10164,4 +10164,14 @@ ITEMHASH = {
 	:battlehold => true,
 },
 
+:LUMINEONCREST => {
+	:ID => 2013,
+	:name => "Lumineon Crest",
+	:desc => "Rainbow Fish Redux",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

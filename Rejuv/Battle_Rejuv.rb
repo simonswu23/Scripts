@@ -91,6 +91,19 @@
         pbCommonAnimation("Poison",@battlers[index],nil)
         pbDisplay(_INTL("{1} was poisoned by its {2}!",@battlers[index].pbThis,getItemName(@battlers[index].item)))
       end
+    when :LUMINEON
+      pbAnimation(:TAILWIND,@battlers[index],nil)
+      @battlers[index].pbOwnSide.effects[:Tailwind]+=4
+      @battlers[index].pbOwnSide.effects[:Tailwind]+=6 if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP || @battle.FE == :CLOUDS)
+      @battlers[index].pbOwnSide.effects[:Tailwind]+=8 if @battle.FE == :SKY
+      @battle.pbDisplay(_INTL("The tailwind blew from behind your team!"))
+      if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP || @battle.FE == :SKY) && !@battle.state.effects[:HeavyRain] && !@battle.state.effects[:HarshSunlight]
+        @battle.weather=:STRONGWINDS
+        @battle.weatherduration=6
+        @battle.weatherduration=8 if @battle.FE == :SKY
+        @battle.pbCommonAnimation("Wind",nil,nil)
+        @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
+      end
     end
   end
 

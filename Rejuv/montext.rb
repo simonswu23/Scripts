@@ -13833,7 +13833,7 @@ MONHASH = {
 		:EggSteps => 5355,
 		:preevo => {
 			:species => :PINECO,
-			:form => 0
+			:form => 0S
 		},
 		:Moveset => [
 			[0,:MIRRORSHOT],
@@ -13895,7 +13895,7 @@ MONHASH = {
 		:EggSteps => 5355,
 		:preevo => {
 			:species => :PINECO,
-			:form => 0
+			:form => 1
 		},
 		:Moveset => [
 			[0,:HEAVYSLAM],
@@ -29630,7 +29630,7 @@ MONHASH = {
 		:name => "Lumineon",
 		:dexnum => 457,
 		:Type1 => :WATER,
-		:BaseStats => [69, 69, 76, 69, 86, 91],
+		:BaseStats => [69, 69, 76, 99, 116, 91],
 		:EVs => [0, 0, 0, 0, 0, 2],
 		:Abilities => [:SWIFTSWIM, :STORMDRAIN],
 		:HiddenAbilities => :WATERVEIL,
@@ -29645,11 +29645,14 @@ MONHASH = {
 			:form => 0
 		},
 		:Moveset => [
+			[0,:QUIVERDANCE],
+			[1,:QUIVERDANCE],
 			[1,:SOAK],
 			[1,:GUST],
 			[1,:POUND],
 			[1,:WATERGUN],
 			[1,:ATTRACT],
+			[1,:SIGNALBEAM],
 			[6,:WATERGUN],
 			[10,:ATTRACT],
 			[13,:RAINDANCE],
@@ -29663,6 +29666,58 @@ MONHASH = {
 			[53,:BOUNCE],
 			[59,:SILVERWIND],
 			[66,:SOAK]],
+		:compatiblemoves => [:AGILITY,:AIRCUTTER,:AIRSLASH,:AQUATAIL,:BLIZZARD,:BOUNCE,:BRINE,:CHARM,:DEFOG,:DIVE,:FAKETEARS,:FLASH,:FLIPTURN,:GIGAIMPACT,:HAIL,:HURRICANE,:HYPERBEAM,:ICEBEAM,:ICYWIND,:MUDDYWATER,:OMINOUSWIND,:PAYBACK,:PSYCHUP,:RAINDANCE,:SAFEGUARD,:SCALD,:SIGNALBEAM,:SKITTERSMACK,:SURF,:SWIFT,:TAILWIND,:TWISTER,:UTURN,:WATERFALL,:WATERPULSE,:WHIRLPOOL,
+			#Rejuv only moves
+			:DELUGE],
+		:moveexceptions => [],
+		:shadowmoves => [:SHADOWWAVE,:SHADOWSKY,:SHADOWSHED],
+		:Color => "Blue",
+		:EggGroups => [:Water2],
+		:Height => 12,
+		:Weight => 240,
+		:kind => "Neon",
+		:dexentry => "It lives on the deep-sea floor. It attracts prey by flashing the patterns on its four tail fins.",
+		:BattlerPlayerY => 16,
+		:BattlerEnemyY => 13,
+		:BattlerAltitude => 12,
+	},
+
+	"Alpha Form" => {
+		:name => "Lumineon",
+		:dexnum => 457,
+		:Type1 => :WATER,
+		:Type2 => :FAIRY,
+		:BaseStats => [69, 69, 86, 129, 146, 121],
+		:EVs => [0, 0, 0, 0, 0, 2],
+		:Abilities => [:MULTISCALE],
+		:GrowthRate => :Erratic,
+		:GenderRatio => :FemHalf,
+		:BaseEXP => 161,
+		:CatchRate => 75,
+		:Happiness => 70,
+		:EggSteps => 5355,
+		:Moveset => [
+			[1,:SOAK],
+			[1,:QUIVERDANCE],
+			[1,:TAILGLOW],
+			[1,:HURRICANE],
+			[1,:FAIRYWIND],
+			[1,:WATERGUN],
+			[1,:ATTRACT],
+			[6,:WATERGUN],
+			[10,:ATTRACT],
+			[13,:RAINDANCE],
+			[17,:SILVERWIND],
+			[22,:WATERPULSE],
+			[26,:CAPTIVATE],
+			[29,:SAFEGUARD],
+			[35,:AQUARING],
+			[42,:DAZZLINGGLEAM],
+			[48,:UTURN],
+			[53,:HURRICANE],
+			[59,:OCEANBREEZE],
+			[59,:SPRINGBREEZE],
+			[66,:RAINBOWSCALES]],
 		:compatiblemoves => [:AGILITY,:AIRCUTTER,:AIRSLASH,:AQUATAIL,:BLIZZARD,:BOUNCE,:BRINE,:CHARM,:DEFOG,:DIVE,:FAKETEARS,:FLASH,:FLIPTURN,:GIGAIMPACT,:HAIL,:HURRICANE,:HYPERBEAM,:ICEBEAM,:ICYWIND,:MUDDYWATER,:OMINOUSWIND,:PAYBACK,:PSYCHUP,:RAINDANCE,:SAFEGUARD,:SCALD,:SIGNALBEAM,:SKITTERSMACK,:SURF,:SWIFT,:TAILWIND,:TWISTER,:UTURN,:WATERFALL,:WATERPULSE,:WHIRLPOOL,
 			#Rejuv only moves
 			:DELUGE],
@@ -31647,7 +31702,7 @@ MONHASH = {
 		:Type1 => :WATER,
 		:BaseStats => [80, 80, 80, 80, 80, 80],
 		:EVs => [1, 0, 0, 0, 0, 0],
-		:Abilities => [:HYDROVEIL],
+		:Abilities => [:HYDRATION],
 		:GrowthRate => :Slow,
 		:GenderRatio => :Genderless,
 		:BaseEXP => 216,
@@ -47982,10 +48037,6 @@ MONHASH = {
 		:CatchRate => 75,
 		:Happiness => 70,
 		:EggSteps => 5120,
-		:preevo => {
-			:species => :MAREANIE,
-			:form => 0
-		},
 		:Moveset => [
 			[0,:BANEFULBUNKER],
 			[0,:BARBBARRAGE],
