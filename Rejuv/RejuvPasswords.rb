@@ -229,7 +229,7 @@ def addPassword(entrytext)
   
   def pbTogglePassword(password, isGameStart=false)
     password_string=password.downcase()
-    if !isGameStart && ['fullivs','easyhms','nohms','hmitems','notmxneeded','freemegaz','shinycharm','earlyshiny','freeexpall','freeremotepc','hello eizen.','mintyfresh','mintpack','powerpack'].include?(password_string) && checkPasswordActivation(password_string)
+    if !isGameStart && ['fullivs','easyhms','nohms','hmitems','notmxneeded','freemegaz','shinycharm','earlyshiny','freeexpall','freeremotepc','hello eizen.','mintyfresh','mintpack','powerpack',"icecream"].include?(password_string) && checkPasswordActivation(password_string)
       Kernel.pbMessage(_INTL('This password cannot be disabled anymore.'))
       return false
     end
@@ -339,6 +339,9 @@ def addPassword(entrytext)
         $PokemonBag.pbStoreItem(item,quantity)
       }
       Kernel.pbMessage('\PN received a package of EV-training gear.')
+    elsif ['icecream']
+      # @SWu figuring out game switches here
+      $game_switches[2000] = true
     end
     #pbMonoRandEvents
     return true

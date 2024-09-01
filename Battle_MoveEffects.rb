@@ -276,13 +276,33 @@ class PokeBattle_Move_005 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    if @move == :BARBEDWEB && !attacker.pbOpposingSide.effects[:StickyWeb]
-      attacker.pbOpposingSide.effects[:StickyWeb]=true
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("A sticky web has been laid out beneath your foe's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("A sticky web has been laid out beneath your team's feet!"))
-    end
+    if @move == :BARBEDWEB 
+      if (!attacker.pbOpposingSide.effects[:StickyWeb])
+        attacker.pbOpposingSide.effects[:StickyWeb]=true
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("A sticky web has been laid out beneath your foe's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("A sticky web has been laid out beneath your team's feet!"))
+        end
+      elsif(attacker.pbOpposingSide.effects[:Spikes] < 3)
+        attacker.pbOpposingSide.effects[:Spikes]+= 1
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("Spikes were scattered around your foe's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("Spikes were scattered around your team's feet!"))
+        end
+      end
+      if (@battle.pbRandom(5) < 1) 
+        return false if !opponent.pbCanPoison?(false)
+        if [:BACKALLEY,:CITY].include?(@battle.FE) && @move == :SMOG
+          opponent.pbPoison(attacker,true)
+          @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
+        else
+          opponent.pbPoison(attacker)
+          @battle.pbDisplay(_INTL("{1} was poisoned!",opponent.pbThis))
+        end
+        return true
+      end
     end
     if @battle.FE == :WASTELAND && ((@move == :GUNKSHOT) || (@move == :SLUDGEBOMB) || 
       (@move == :SLUDGEWAVE) || (@move == :SLUDGE)) &&

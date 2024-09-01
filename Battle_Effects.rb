@@ -855,8 +855,8 @@ end
       end
     end
 
-    if pbCanReduceStatStage?(stat,false)
-      pbReduceStat(stat,1,statmessage:false, statdropper: opponent, defiant_proc: false)
+    if pbCanReduceStatStage?(PBStats::ATTACK,false)
+      pbReduceStat(PBStats::ATTACK,1,statmessage:false, statdropper: opponent, defiant_proc: false)
       # Battle message
       oppabilityname=getAbilityName(opponent.ability)
       @battle.pbDisplay(_INTL("{1}'s {2} cuts {3}'s Attack!",opponent.pbThis, oppabilityname,pbThis(true))) if !(self.ability == :CONTRARY)

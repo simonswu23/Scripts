@@ -5119,14 +5119,16 @@ class PokeBattle_Battler
       @battle.pbJudgeCheckpoint(user,basemove)
 
       # Additional effect
-      if !basemove.zmove && target.damagestate.calcdamage>0 && (!target.hasType?(:BUG) && (!target.crested == :LUMINEON) && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function))) && user.ability != (:SHEERFORCE)
+      if !basemove.zmove && target.damagestate.calcdamage>0 && !target.hasType?(:BUG) && (target.crested != :LUMINEON) && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function)) && user.ability != (:SHEERFORCE)
         addleffect=basemove.effect
         addleffect=20 if basemove.move == :OMINOUSWIND && @battle.FE == :HAUNTED
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
-        addleffect*=2 if @move == :SPRINGTIDESTORM && @battle.pbWeather ==:SUNNYDAY
-        addleffect*=2 if @move == :WILDBOLTSTORM && @battle.pbWeather ==:RAINDANCE
-        addleffect*=2 if @move == :SANDSEARSTORM && @battle.pbWeather ==:SANDSTORM
-        addleffect*=2 if @move == :BLEAKWINDSTORM && @battle.pbWeather ==:HAIL
+        addleffect*=2 if @move == :SPRINGTIDESTORM && @battle.pbWeather == :SUNNYDAY
+        addleffect*=2 if @move == :WILDBOLTSTORM && @battle.pbWeather == :RAINDANCE
+        addleffect*=2 if @move == :SANDSEARSTORM && @battle.pbWeather == :SANDSTORM
+        addleffect*=2 if @move == :BLEAKWINDSTORM && @battle.pbWeather == :HAIL
+        addleffect*=2 if @move == :AURORABEAM && @battle.pbWeather == :HAIL
+        addleffect*=2 if @move == :FAIRYWIND && @battle.FE == :MISTY
 
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
         addleffect=100 if basemove.move == :MIRRORSHOT && @battle.FE == :MIRROR
@@ -5138,8 +5140,6 @@ class PokeBattle_Battler
         addleffect=100 if basemove.move == :SOLARFLARE && @battle.weather == :SUNNYDAY
         addleffect=100 if basemove.move == :MIRAGEBEAM && @battle.weather == :SUNNYDAY
 
-        # @SWu buff Ledian Crest
-        #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
 
         addleffect=100 if user.ability == :SILVERSCALES && (PBFields::WINDMOVES.include?(basemove.move) || PBFields::WINDRIDERMOVES.include?(basemove.move))
 
@@ -5151,7 +5151,6 @@ class PokeBattle_Battler
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
 
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
-        #addleffect=0 if (user.crested == :LEDIAN && i>1) || (user.crested == :CINCCINO && i>1)
         if @battle.pbRandom(100)<addleffect
           basemove.pbSecondAdditionalEffect(user,target)
         end
@@ -5183,7 +5182,7 @@ class PokeBattle_Battler
       # Tidepool Tyrant
       if user.ability == :TIDEPOOLTYRANT
         if (basemove.type == :POISON && !(target.pokemon.corrosiveGas || target.ability == (:STICKYHOLD) || 
-          @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?))
+          @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?) && target.damagestate.calcdamage>0 && !target.damagestate.substitute)
           target.pokemon.corrosiveGas = true
           @battle.pbDisplay(_INTL("{1} corroded {2}'s {3}!",user.pbThis,target.pbThis(true),getItemName(target.item)))
         elsif (basemove.type == :WATER && target.damagestate.calcdamage>0 && !target.damagestate.substitute)
@@ -5199,7 +5198,7 @@ class PokeBattle_Battler
       end
 
       # Joker
-      if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?)
+      if user.ability == :JOKER && !(target.ability == (:STICKYHOLD) || @battle.pbIsUnlosableItem(target,target.item) || target.item.nil?) && target.damagestate.calcdamage>0 && !target.damagestate.substitute && basemove.contactMove?
         if (user.item.nil?)
           itemname=getItemName(target.item)
           user.item=target.item

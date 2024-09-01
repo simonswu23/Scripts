@@ -29,10 +29,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 ### Pokemon Changes
 
-- Meganium
+- Meganium line
   - added Fairy typing
-  - base stat buffs: 80, 92, 110, 83, 110, 80
-  - ability: Leaf Guard -> Pastel Veil
+  - base stat buffs: 80, 82, 110, 83, 110, 80
+  - ability: Leaf Guard -> Pastel Veil for Chikorita, Bayleef, Meganium
+  - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
     
 - Serperior
   - added Dragon typing
@@ -62,7 +63,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 130, 95, 100, 95, 105, 60
   - ability: Water Absorb -> Hydro Veil
   - aevian base stat buffs: 135, 105, 90, 95, 95, 60
-  - giga base stat buffs: 130, 125, 130, 125, 120, 45
+  - giga base stat buffs: 150, 115, 130, 125, 110, 45
   - giga ability: Resonance
  
 - Gardevoir
@@ -178,6 +179,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 69, 69, 76, 99, 116, 91
   - learns quiver dance upon evo and at lvl 1
   - learns signal beam at lvl 1
+
+- Alcremie
+  - base stat buffs: 65, 60, 75, 115, 136, 64
+  - giga base stat buffs: 130, 60, 85, 150, 161, 24
+  - learns chain drain at lvl 68
    
 ### New Pokemon
 - Alpha Larvesta
@@ -215,13 +221,13 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Bug/Steel
   - BST: 75, 100, 200, 60, 130, 20
   - Ability: Heatproof
-  - Notable LUM: Barbed Web, Rapid Spin, Shield Bash, Cocoon Bash, Steelsurge
+  - Notable LUM: Barbed Web, Rapid Spin, Shield Bash, Cocoon Bash, Steelsurge, Metal Burst, 
 
 - Alpha Lumineon
   - Water/Fairy
   - BST:  69, 69, 86, 129, 146, 121
   - Ability: Multiscale
-  - Notable LUM: Quiver Dance, Tail Glow, Dazzling GLeam, Hurricane, Ocean Breeze, Spring Breeze, Rainbow Scales
+  - Notable LUM: Quiver Dance, Tail Glow, Dazzling GLeam, Hurricane, Sea Breeze, Spring Breeze, Rainbow Scales
       
    
 ## Abilities
@@ -406,14 +412,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - 25% boost to attack and defense
   - Traps and harshly lowers attackers offensive stats on hit
   - Drains 1/16th hp from trapped foes at the end of each turn
- 
+
 - Thievul Crest
   - no longer raises special attack on entry
   - all stat drops this pokemon inflicts are doubled
- 
-- Cacturne Crest
-  - raises attack and special attack by 1 if attacking before the target
-  - x1.3 boost to offenses
 
 ### New Items
 - Poison Potion
@@ -459,6 +461,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - ice attacks x1.5 power in hail
   - immune to fire in hail
   - on entry + at the end of each turn, lower all foes evasion by 1. Foes with lowered evasion cannot switch
+ 
+- Cacturne Crest
+  - raises attack and special attack by 1 if attacking before the target
+  - x1.3 boost to offenses
 
 ## Attacks
 
@@ -633,7 +639,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     
 - Fairy Wind
   - BP 40 -> 60
-  - 10% chance to omniboost
+  - 10% chance to omniboost, chance doubled in Misty Terrain
     
 - Land's Wrath
   - knocks off target(s) items, x1.3 power boost when knocking off
@@ -772,7 +778,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - additionally restores user's hp by 1/4
  
 - Barbed Web
-  - additionally sets up a layer of sticky web
+  - sets up layer of sticky web first
+  - if sticky web is set up, sets up spikes
+  - 20% chance to poison
  
 - Lunar Blessing
   - restores 33% HP
@@ -826,7 +834,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Sweet Kiss
   - contact
- 
+
+- Aurora Beam
+  - 10% omniboost effect
+  - chance doubled in Hail
     
 ### New Attacks
 
@@ -974,7 +985,66 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - All Foes
   - Sets up steelsurge entry hazard on opposing side
 
+# Battles
+- Valarie (Gym)
+  - Overqwil
+    - Item: Poison Barb
+    - Ability: Swift Swim
+    - Moves: 
+      - Barb Barrage
+      - Waterfall
+      - Crunch
+      - Destiny Bond
+    - Other:
+  - Lanturn
+    - Item: Elemental Seed
+    - Ability: Volt Absorb
+    - Moves: 
+      - Whirlpool
+      - Thunderbolt
+      - Hidden Power Grass
+      - Ice Beam
+    - Other:
+  - Barraskewda
+    - Item: Muscle Band
+    - Ability: Swift Swim
+    - Moves: 
+      - Waterfall
+      - Close Combat
+      - Poison Jab
+      - Flip Turn
+    - Other:
+  - Whiscash
+    - Item:
+    - Ability:
+    - Moves: 
+      - Rest
+      - Bounce
+      - Dragon Dance
+      - Waterfall
+    - Other:
+  - Lapras
+    - Item: Laprasite
+    - Ability: Hydro Veil
+    - Moves: 
+      - Freeze Dry
+      - Thunderbolt
+      - Surf
+      - Rest
+    - Other:
+  - Primarina
+    - Item: Wacan Berry
+    - Ability: *Swift Swim
+    - Moves: 
+      - Moonblast
+      - Surf
+      - Psychic
+      - Energy Ball
+    - Other:
+
 # TODO:
+
+- Fix Additional Effect Implementations (shield dust / bug types with moves like Ceaseless Edge)
 
 - Wishlist
   - Embargo

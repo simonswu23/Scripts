@@ -3661,7 +3661,7 @@ MOVEHASH = {
 :AURORABEAM => {
 	:ID => 246,
 	:name => "Aurora Beam",
-	:function => 0x042,
+	:function => 0x02D,
 	:type => :ICE,
 	:category => :special,
 	:basedamage => 65,
@@ -3670,7 +3670,7 @@ MOVEHASH = {
 	:effect => 10,
 	:target => :SingleNonUser,
 	:beammove => true,
-	:desc => "The target is hit by a colored ray. This may lower the target's Atk stat."
+	:desc => "The target is hit by a colored ray. It may raise all the user's stats."
 },
 
 :GLACIATE => {
@@ -12027,11 +12027,11 @@ MOVEHASH = {
 	:basedamage => 70,
 	:accuracy => 100,
 	:maxpp => 10,
-	:effect => 30,
+	:effect => 100,
 	:target => :AllOpposing,
 	:kingrock => true,
 	:highcrit => true,
-	:desc => "The user spreads spiked silk which may inflict Poison."
+	:desc => "The user spreads spiked silk at the target."
 },
 
 :COLDTRUTH => {
