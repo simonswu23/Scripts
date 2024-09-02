@@ -116,7 +116,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Alcremie
   - giga base stat buffs: 65, 60, 105, 150, 161, 54
-  - giga ability: Aroma Veil -> Finale
+  - giga ability: Aroma Veil -> Confection
+  - learns Chain Drain, Finale
  
 - Butterfree
   - base stat buffs: 60, 55, 60, 95, 85, 80
@@ -303,9 +304,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - clears hazards and screens at the end of each turn
   - (check) on entry trigger
   - TODO: also clear terrain
- 
-- Finale
-  - restores 1/4 hp to allies after using each attack
+
+- Confection
+  - lowers all foes evasion by 1 at the end of each turn
+  - foes with lowered evasion cannot switch, and their attack scales with evasion drops
  
 - Silver Scales
   - takes 1/2 damage from moves with side effect chances, 100% chance to trigger side effect chances of wind moves
@@ -460,7 +462,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - extra x2 defense in the hail
   - ice attacks x1.5 power in hail
   - immune to fire in hail
-  - on entry + at the end of each turn, lower all foes evasion by 1. Foes with lowered evasion cannot switch
+  - on entry, lower all foes evasion by 1. Foes with lowered evasion cannot switch
  
 - Cacturne Crest
   - raises attack and special attack by 1 if attacking before the target
@@ -985,6 +987,14 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - All Foes
   - Sets up steelsurge entry hazard on opposing side
 
+- Finale
+  - Fairy
+  - Special
+  - bp: 100
+  - acc: 80
+  - All Foes
+  - For each foe hit, restores all allies HP by 1/6
+
 # Battles
 - Valarie (Gym)
   - Overqwil
@@ -1002,7 +1012,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - Moves: 
       - Whirlpool
       - Thunderbolt
-      - Hidden Power Grass
+      - Rest
       - Ice Beam
     - Other:
   - Barraskewda
@@ -1010,7 +1020,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - Ability: Swift Swim
     - Moves: 
       - Waterfall
-      - Close Combat
+      - Psychic Fangs
       - Poison Jab
       - Flip Turn
     - Other:

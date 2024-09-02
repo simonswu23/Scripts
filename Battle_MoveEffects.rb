@@ -11575,6 +11575,18 @@ class PokeBattle_Move_318 < PokeBattle_Move
   end
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    if (@move == :FINALE)
+      ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+      for i in [attacker,attacker.pbPartner]
+        next if !i || i.isFainted?
+        pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+        showanim=true
+        recoveramount = (i.totalhp/6.0).round
+        i.pbRecoverHP(recoveramount,true)
+      end
+      return ret
+    end
+
     didsomething=false
     fullHP=false
     healstatus=false

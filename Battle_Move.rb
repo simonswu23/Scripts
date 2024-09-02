@@ -2397,7 +2397,8 @@ class PokeBattle_Move
     finalmult*=2.0 if attacker.ability == :TINTEDLENS && opponent.damagestate.typemod<4
     finalmult*=2.0 if attacker.ability == :EXECUTION && (opponent.hp <= (opponent.totalhp/2).floor)
     finalmult*=0.75 if opponent.pbPartner.ability == :FRIENDGUARD && !(opponent.moldbroken)
-    finalmult*=0.5 if (opponent.ability == :PASTELVEIL || opponent.pbPartner.ability == :PASTELVEIL) && @type == :POISON && (@battle.FE == :MISTY || @battle.FE == :RAINBOW || (@battle.state.effects[:MISTY] > 0))
+    # @SWu don't need anymore, Pastel Veil grants poison immunity now?
+    # finalmult*=0.5 if (opponent.ability == :PASTELVEIL || opponent.pbPartner.ability == :PASTELVEIL) && @type == :POISON && (@battle.FE == :MISTY || @battle.FE == :RAINBOW || (@battle.state.effects[:MISTY] > 0))
     if @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,3,5)
       if (opponent.pbPartner.ability == :FLOWERVEIL && opponent.hasType?(:GRASS)) || (opponent.ability == :FLOWERVEIL && !(opponent.moldbroken))
         finalmult*=0.5
@@ -2459,6 +2460,12 @@ class PokeBattle_Move
       multiplier += 1.0
       finalmult=(finalmult*multiplier)
     end
+    
+    if opponent.ability == :CONFECTION && !(opponent.moldbroken) && attacker.stages[PBStats::EVASION] < 0
+      evadrops = -1 * attacker.stages[PBStats::EVASION]
+      finalmult *= 3/(3 + evadrops)
+    end
+
     if @zmove
       if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] || 
         opponent.effects[:KingsShield] || opponent.effects[:Obstruct] ||

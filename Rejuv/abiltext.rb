@@ -1886,4 +1886,10 @@ ABILHASH = {
 	:desc => "Summons gravity upon entering battle. The user is immune to these effects."
 },
 
+:CONFECTION => {
+	:ID => 331,
+	:name => "Confection",
+	:desc => "Entrances foes with sweet smell, lowering their attack with evasion."
+}
+
 }

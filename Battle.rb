@@ -1601,8 +1601,8 @@ class PokeBattle_Battle
       opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
     end
     if (thispkmn.stages[PBStats::EVASION] < 0)
-      opp=opp1 if opp1.crested == :VANILLUXE
-      opp=opp2 if opp2.crested == :VANILLUXE
+      opp=opp1 if opp1.crested == :VANILLUXE || opp1.ability == :CONFECTION
+      opp=opp2 if opp2.crested == :VANILLUXE || opp2.ability == :CONFECTION
     end
     if opp
       abilityname=getAbilityName(opp.ability)
@@ -4776,6 +4776,7 @@ class PokeBattle_Battle
         end
         pbDisplay(_INTL("The Meganium Crest restored the team's HP a little!",i.pbThis(true)))
       end
+
       # Meganium + Meganium Crest
       if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
           hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
@@ -4784,7 +4785,7 @@ class PokeBattle_Battle
 
       # Vanilluxe Crest
 
-      if i.crested == :VANILLUXE
+      if i.ability == :CONFECTION
         pbAnimation(:SWEETSCENT,i,nil)
         @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
         for j in priority

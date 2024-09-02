@@ -14114,4 +14114,19 @@ MOVEHASH = {
 	:desc => "The user attacks by slamming its hardened body into the target. The higher the user's Defense, the more damage it can inflict."
 },
 
+:FINALE => {
+	:ID => 903,
+	:name => "Finale",
+	:function => 0x318,
+	:type => :FAIRY,
+	:category => :special,
+	:basedamage => 100,
+	:accuracy => 80,
+	:maxpp => 15,
+	:target => :AllOpposing,
+	:healingmove => true,
+  	:kingrock => true,
+  	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little."
+},
+
 }

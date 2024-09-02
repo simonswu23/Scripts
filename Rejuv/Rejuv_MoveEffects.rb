@@ -1075,7 +1075,7 @@ class PokeBattle_Move_907 < PokeBattle_Move
 end
 
 ###############################################################################
-# Clears Hazards, Screens, Terrain, Weather + Breaks through Sub and Protect (Hyperspace Hole)
+# Clears Hazards, Screens, Terrain, Weather + Breaks through Sub and Protect (Spacial Rend)
 ###############################################################################
 class PokeBattle_Move_908 < PokeBattle_Move
   def pbAccuracyCheck(attacker,opponent)
