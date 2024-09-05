@@ -10184,4 +10184,14 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:BRONZONGCREST => {
+	:ID => 2015,
+	:name => "Bronzong Crest",
+	:desc => "v13 Brozong Noises",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

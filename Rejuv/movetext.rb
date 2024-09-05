@@ -14086,17 +14086,15 @@ MOVEHASH = {
 :STEELSURGE => {
 	:ID => 882,
 	:name => "Steelsurge",
-	:function => 0x105,
+	:function => 0x909,
 	:type => :STEEL,
 	:category => :physical,
 	:basedamage => 90,
 	:accuracy => 90,
 	:maxpp => 15,
-	:effect => 100,
 	:target => :AllOpposing,
-  	:contact => :true,
-  	:kingrock => true,
-  	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
+	:kingrock => true,
+	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
 },
 
 :COCOONBASH => {
@@ -14127,6 +14125,21 @@ MOVEHASH = {
 	:healingmove => true,
   	:kingrock => true,
   	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little."
+},
+
+:PSYCHICNOISE => {
+	:ID => 904,
+	:name => "Psychic Noise",
+	:function => 0x0BB,
+	:type => :PSYCHIC,
+	:category => :special,
+	:basedamage => 70,
+	:accuracy => 100,
+	:maxpp => 15,
+	:target => :SingleNonUser,
+	:effect => 100,
+	:kingrock => true,
+	:desc => "The user attacks the target with a strange noise, preventing them from healing for two turns."
 },
 
 }

@@ -5383,6 +5383,7 @@ end
 ################################################################################
 class PokeBattle_Move_0BB < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     if opponent.effects[:HealBlock]>0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
@@ -5391,11 +5392,21 @@ class PokeBattle_Move_0BB < PokeBattle_Move
       @battle.pbDisplay(_INTL("The Aroma Veil protects #{opponent.pbThis} from being blocked!"))
       return -1
     end
-    pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+    pbShowAnimation(:PSYBEAM,attacker,opponent,hitnum,alltargets,showanimation)
     opponent.effects[:HealBlock]=5
     @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbThis))
     return 0
   end
+
+  def pbAdditionalEffect(attacker,opponent)
+    if opponent.effects[:HealBlock]>0
+      return false
+    end
+    opponent.effects[:HealBlock]=2
+    @battle.pbDisplay(_INTL("{1} was prevented from healing!",opponent.pbThis))
+    return true
+  end
+
 end
 
 ################################################################################
@@ -7921,13 +7932,6 @@ class PokeBattle_Move_105 < PokeBattle_Move
         @battle.pbDisplay(_INTL("Pointed stones float in the air around your foe's team!"))
       else
         @battle.pbDisplay(_INTL("Pointed stones float in the air around your team!"))
-      end
-    elsif @move == :STEELSURGE && !attacker.pbOpposingSide.effects[:Steelsurge]
-      attacker.pbOpposingSide.effects[:Steelsurge]=true
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("Metal debris floats in the air around your foe's team!"))
-      else
-        @battle.pbDisplay(_INTL("Metal debris floats in the air around your team!"))
       end
     end
     return true

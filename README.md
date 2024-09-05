@@ -110,6 +110,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Cinderace
   - giga base stat buffs: 80, 155, 82, 82, 82, 149
+  - learns Grassy Glide at level 50
  
 - Corviknight
   - giga ability: Mirror Armor -> Downdraft
@@ -287,6 +288,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Healer
   - Friendly HP restoration is doubled
+
+- Hydration
+  - x1.5 special defense boost in Rain
+  
+- Leaf Guard
+  - x1.5 defense boost in Sun
  
 ### New Abilities
 
@@ -397,6 +404,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - x1.5 special defense
   - in psychic form, no longer is weak to ghost/dark and is immune to psychic
   - in dark form, no longer is weak to dark
+  - TODO: double check crest functionality as intended (not fully tested)
  
 - Swalot Crest
   - gains +3 stockpile on entry
@@ -419,6 +427,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - no longer raises special attack on entry
   - all stat drops this pokemon inflicts are doubled
 
+- Bronzong Crest
+  - special attack and special defense is always the higher of the two
+  - swaps defense and special defense (including stat boosts)
+  - restores 1/16th hp at the end of each turn
+  - TODO: levitate? (too powerful?)
+
 ### New Items
 - Poison Potion
   - applies (regular) poison to the target
@@ -435,7 +449,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Flash Fire, summons indefinite sun on entry, burns any foe that comes into contact
  
 - Toxapex Crest
-  - restores 1/10 hp at the end of each turn, corrosion, clears all stat changes on entry
+  - restores 1/16 hp at the end of each turn, corrosion, clears all stat changes on entry
  
 - Darkrai Crest
   - sleeping foes are trapped
@@ -467,6 +481,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Cacturne Crest
   - raises attack and special attack by 1 if attacking before the target
   - x1.3 boost to offenses
+
+- Bronzong Crest
+  - restores 1/16th hp at the end of each turn
+  - swaps defense and special defense stats
+  - combines special attack and special defense stats to be the higher of the two
+  - TOOD: update smart damage category
 
 ## Attacks
 
@@ -994,6 +1014,14 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - acc: 80
   - All Foes
   - For each foe hit, restores all allies HP by 1/6
+
+- Psychic Noise
+  - Psychic
+  - Special
+  - bp: 70
+  - acc: 100
+  - Single Target
+  - Inflicts Heal Block for 2 turns
 
 # Battles
 - Valarie (Gym)
