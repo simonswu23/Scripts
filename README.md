@@ -25,6 +25,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Gravity
     - speed is decreased porportional to how light pokemon are
 
+  - Embargp
+    - affects the whole opposing team for five turns (instead of per battler)
+
 ## Pokemon
 
 ### Pokemon Changes
@@ -294,6 +297,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   
 - Leaf Guard
   - x1.5 defense boost in Sun
+
+- Frisk
+  - Suppresses foes abilities for five turns on entry (applies old frisk effect on battlers)
  
 ### New Abilities
 
@@ -1087,6 +1093,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Wishlist
   - Embargo
     - affects the whole opposing team
+    - (complete 9/6)
     - TODO: implement
    
   - Terrains: x1.3 boost to x1.5 boost
