@@ -382,6 +382,7 @@ class PokeBattle_Move
     # end attack boosts
     calcattack=(attacker.attack*1.0*(stagemul[calcattackstage]/stagediv[calcattackstage])*calcatkmult).floor
     calcspatkstage=attacker.stages[PBStats::SPATK]+6
+    calcspatkstage=[calcspatkstage,attacker.stages[PBStats::SPDEF]+6].max if attacker.crested == :BRONZONG
     # same for special attack
     calcspatkmult=1.0
     calcspatkmult *= 1.5 if attacker.hasWorkingItem(:CHOICESPECS)
@@ -1905,6 +1906,10 @@ class PokeBattle_Move
       when 0x184 # Body Press
         atk=attacker.defense
         atkstage=attacker.stages[PBStats::DEFENSE]+6
+        if (attacker.crested == :BRONZONG)
+          atk=attacker.spdef
+          atkstage=attacker.stages[PBStats::SPDEF]+6
+        end
       when 0x905 #Skitter smack
         atk=attacker.speed
         atkstage=attacker.stages[PBStats::SPEED]+6
@@ -1912,6 +1917,10 @@ class PokeBattle_Move
         # @SWu I'm pretty sure this doesn't scale with an assault vest item as a modifier (need to update)
         atk=attacker.spdef
         atkstage=attacker.stages[PBStats::SPDEF]+6
+        if (attacker.crested == :BRONZONG)
+          atk=attacker.defense
+          atkstage=attacker.stages[PBStats::DEFENSE]+6
+        end
       else
         atk=attacker.attack
         atkstage=attacker.stages[PBStats::ATTACK]+6
@@ -1923,7 +1932,7 @@ class PokeBattle_Move
         atk=opponent.spatk
         atkstage=opponent.stages[PBStats::SPATK]+6
       end
-      if @battle.FE == :GLITCH
+      if @battle.FE == :GLITCH || attacker.crested == :BRONZONG
 				atk = attacker.getSpecialStat(opponent.ability == :UNAWARE)
 				atkstage = 6 #getspecialstat handles unaware
 			end
@@ -2094,6 +2103,7 @@ class PokeBattle_Move
     ##### Calculate opponent's defense stat #####
     defense=opponent.defense
     defstage=opponent.stages[PBStats::DEFENSE]+6
+    defstage=opponent.stages[PBStats::SPDEF]+6 if opponent.crested == :BRONZONG
     # TODO: Wonder Room should apply around here
     # @ghostDango @SWu TODO:
     
@@ -2101,13 +2111,17 @@ class PokeBattle_Move
     if pbHitsSpecialStat?(type)
       defense=opponent.spdef
       defstage=opponent.stages[PBStats::SPDEF]+6
-      applysandstorm=true
-      if @battle.FE == :GLITCH
+      defstage=opponent.stages[PBStats::DEFENSE]+6 if opponent.crested == :BRONZONG
+
+      applysandstorm=true if opponent.crested != :BRONZONG
+
+      if @battle.FE == :GLITCH || opponent.crested == :BRONZONG
         defense = opponent.getSpecialStat(attacker.ability == :UNAWARE)
         defstage = 6 # getspecialstat handles unaware
         applysandstorm=false # getSpecialStat handles sandstorm
       end
     end
+
     if attacker.ability != :UNAWARE
       defstage=6 if @function==0xA9 # Chip Away (ignore stat stages)
       defstage=6 if opponent.damagestate.critical && defstage>6
@@ -2119,13 +2133,21 @@ class PokeBattle_Move
     if @battle.state.effects[:MISTY] > 0 && opponent.hasType?(:FAIRY) && applysandstorm
       defense=(defense*1.5).round
     end
-
-    if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL)
+    if @battle.pbWeather== :RAINDANCE && (opponent.ability == :HYDRATION) && applysandstorm
       defense=(defense*1.5).round
     end
 
-    if @battle.pbWeather== :HAIL && opponent.crested == :VANILLUXE
+
+    if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL) && !applysandstorm
+      defense=(defense*1.5).round
+    end
+
+    if @battle.pbWeather== :HAIL && opponent.crested == :VANILLUXE && !applysandstorm
       defense=(defense*2).round
+    end
+
+    if @battle.pbWeather== :SUNNYDAY && (opponent.ability == :LEAFGUARD) && !applysandstorm
+      defense=(defense*1.5).round
     end
 
     defmult=1.0
@@ -2141,6 +2163,7 @@ class PokeBattle_Move
       when :MARVELSCALE then defmult*=1.5 if (pbIsPhysical?(type) && (!opponent.status.nil? || ([:MISTY,:RAINBOW,:FAIRYTALE,:DRAGONSDEN,:STARLIGHT].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0))) && !(opponent.moldbroken)
       when :GRASSPELT then defmult*=1.5 if pbIsPhysical?(type) && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0) # Grassy Field
       when :FURCOAT then defmult*=2.0 if pbIsPhysical?(type) && !(opponent.moldbroken)
+      when :ADAMANTINEBODY then defmult*=2.0 if pbIsPhysical?(type) && !(opponent.moldbroken)
       when :PUNKROCK then defmult*=2.0 if isSoundBased? && !(opponent.moldbroken)
       when :QUARKDRIVE then defmult*=1.3 if (opponent.effects[:Quarkdrive][0] == PBStats::DEFENSE && pbIsPhysical?(type)) || (opponent.effects[:Quarkdrive][0] == PBStats::SPDEF && pbIsSpecial?(type))
       when :SHIELDDUST then defmult*=2 if effect > 0

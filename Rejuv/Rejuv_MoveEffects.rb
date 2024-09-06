@@ -1217,4 +1217,50 @@ class PokeBattle_Move_908 < PokeBattle_Move
 
     return ret
   end
+
+# ################################################################################
+# # Template
+# ################################################################################
+# class PokeBattle_Move_NUM < PokeBattle_Move
+
+#   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+#     return 0
+#   end
+
+#   def pbAdditionalEffect(attacker,opponent)
+#     return true
+#   end
+
+#   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+#     return if !showanimation
+#     @battle.pbAnimation(:MOVENAME,attacker,opponent,hitnum)
+#   end
+
+# end
+
+################################################################################
+# Steelsurge
+################################################################################
+class PokeBattle_Move_909 < PokeBattle_Move
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if (!attacker.pbOpposingSide.effects[:Steelsurge])
+      attacker.pbOpposingSide.effects[:Steelsurge]=true
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("Metal debris floats in the air around your foe's team!"))
+      else
+        @battle.pbDisplay(_INTL("Metal debris floats in the air around your team!"))
+      end
+    end
+    return 0
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    @battle.pbAnimation(:STEELBEAM,attacker,opponent,hitnum)
+  end
+
+end
+
 end

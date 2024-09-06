@@ -307,6 +307,10 @@ class PokeBattle_Battler
         when :CACTURNE
           @attack *= 1.3
           @spatk *= 1.3
+        when :BRONZONG
+          defense = @defense
+          @defense = @spdef
+          @spdef = defense
         end 
       end
 

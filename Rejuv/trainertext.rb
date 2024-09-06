@@ -45,15 +45,15 @@ TEAMARRAY = [{
 	# :iv => 31,
 	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
-	:species => :VANILLUXE,
+	:species => :TOGETIC,
 	:level => 15,
 	:item => :AIRBALLOON,
 	:moves => [:SPLASH],
 	:ability => :SNOWWARNING,
 	:form => 1,
-	:nature => :TIMID,
+	:nature => :SERIOUS,
 	:iv => 31,
-	:ev => [0, 252, 0, 4, 252, 252]}
+	:ev => [252, 252, 252, 252, 252, 252]}
 ]},
 {
 :teamid => ["Aevis",:TRAINER_AEVIS,9],
