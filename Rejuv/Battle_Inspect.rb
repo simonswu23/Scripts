@@ -350,6 +350,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Safeguard: {1} turns",pkmn.pbOwnSide.effects[:Safeguard])) if pkmn.pbOwnSide.effects[:Safeguard]>0
   report.push(_INTL("Lucky Chant: {1} turns",pkmn.pbOwnSide.effects[:LuckyChant])) if pkmn.pbOwnSide.effects[:LuckyChant]>0
   report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[:Mist])) if pkmn.pbOwnSide.effects[:Mist]>0 
+  report.push(_INTL("Embargo: {1} turns",pkmn.pbOwnSide.effects[:Embargo])) if pkmn.pbOwnSide.effects[:Embargo]>0 
   #report.push(_INTL("Altered Field: {1} turns",@battle.state.effects[:Terrain])) if @battle.state.effects[:Terrain]>0
   #report.push(_INTL("Messed up Field: {1} turns",@battle.state.effects[:Splintered])) if @battle.state.effects[:Splintered]>0  
   report.push(_INTL("Electric Terrain: {1} turns",@battle.state.effects[:ELECTERRAIN])) if @battle.state.effects[:ELECTERRAIN]>0  

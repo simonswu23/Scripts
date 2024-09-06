@@ -47,7 +47,7 @@ TEAMARRAY = [{
 	{
 	:species => :VANILLUXE,
 	:level => 15,
-	:item => :VANILLUXECREST,
+	:item => :AIRBALLOON,
 	:moves => [:SPLASH],
 	:ability => :SNOWWARNING,
 	:form => 1,

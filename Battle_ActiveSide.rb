@@ -12,6 +12,7 @@ class Battle_Side
     @effects[:Mist]        = 0
     @effects[:Safeguard]   = 0
     @effects[:Tailwind]    = 0
+    @effects[:Embargo]     = 0
     #is either active or it's not
     @effects[:WideGuard]   = false
     @effects[:QuickGuard]  = false

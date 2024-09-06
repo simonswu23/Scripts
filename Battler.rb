@@ -726,6 +726,7 @@ class PokeBattle_Battler
     return false if @item.nil?
     return true if @crested
     return false if @effects[:Embargo]>0
+    return false if self.pbOwnSide.effects[:Embargo]>0
     return false if @battle.state.effects[:MagicRoom]>0
     return false if self.ability == :KLUTZ
     return false if @pokemon.corrosiveGas
@@ -736,6 +737,7 @@ class PokeBattle_Battler
     return false if self.isFainted? if !ignorefainted
     return false if @item.nil?
     return false if @effects[:Embargo]>0
+    return false if self.pbOwnSide.effects[:Embargo]>0
     return false if @battle.state.effects[:MagicRoom]>0
     return false if self.ability == :KLUTZ
     return false if @pokemon.corrosiveGas
@@ -2859,7 +2861,8 @@ class PokeBattle_Battler
       end
       for i in items
         itemname=getItemName(i.item)
-        @battle.pbDisplay(_INTL("{1} frisked {2} and found its {3}!",pbThis,i.pbThis(true),itemname)) if @battle.pbOwnedByPlayer?(@index)
+        @battle.pbDisplay(_INTL("{1} frisked {2} and suppressed its {3}!",pbThis,i.pbThis(true),itemname)) if @battle.pbOwnedByPlayer?(@index)
+        i.effects[:Embargo]=5
         if @battle.FE == :BACKALLEY
           if (i.effects[:Substitute]==0) && (i.ability != :STICKYHOLD || i.moldbroken) && self.item.nil?
             if !@battle.pbIsUnlosableItem(i,i.item) && !@battle.pbIsUnlosableItem(self,i.item)

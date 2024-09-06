@@ -7331,7 +7331,7 @@ class PokeBattle_Move_0F4 < PokeBattle_Move
         opponent.item=nil
         opponent.pokemon.itemInitial=nil if opponent.pokemon.itemInitial==item
         @battle.pbDisplay(_INTL("{1} stole and ate its target's {2}!",attacker.pbThis,itemname))
-        if attacker.ability != :KLUTZ && attacker.effects[:Embargo]==0
+        if attacker.ability != :KLUTZ && attacker.effects[:Embargo]==0 && attacker.pbOwnSide.effects[:Embargo] == 0
            attacker.pbUseBerry(item,true)
           # Get berry's effect here
         end
@@ -7398,7 +7398,7 @@ class PokeBattle_Move_0F7 < PokeBattle_Move
                    @battle.pbIsUnlosableItem(attacker,attacker.item) ||
                    pbIsPokeBall?(attacker.item) ||
                    attacker.ability == :KLUTZ ||
-                   attacker.effects[:Embargo]>0
+                   attacker.effects[:Embargo]>0 || attacker.pbOwnSide.effects[:Embargo] > 0
     return false if PBStuff::FLINGDAMAGE[attacker.item]
     return false if !attacker.item.nil? && pbIsBerry?(attacker.item)
     return true
@@ -7485,13 +7485,17 @@ end
 ################################################################################
 class PokeBattle_Move_0F8 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if opponent.effects[:Embargo]>0
+    # if opponent.effects[:Embargo]>0
+    
+    if attacker.pbOpposingSide.effects[:Embargo] > 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-    opponent.effects[:Embargo]=5
-    @battle.pbDisplay(_INTL("{1} can't use items anymore!",opponent.pbThis))
+    # opponent.effects[:Embargo]=5
+    attacker.pbOpposingSide.effects[:Embargo] = 5
+    #@battle.pbDisplay(_INTL("{1} can't use items anymore!",opponent.pbThis))
+    @battle.pbDisplay(_INTL("The opposing team can't use items anymore!"))
     return 0
   end
 end

@@ -595,9 +595,9 @@ MOVEHASH = {
 	:basedamage => 0,
 	:accuracy => 100,
 	:maxpp => 15,
-	:target => :SingleNonUser,
+	:target => :OppositeSide,
 	:magiccoat => true,
-	:desc => "It prevents the target from using any items."
+	:desc => "It prevents the foes from using any items."
 },
 
 :FAKETEARS => {

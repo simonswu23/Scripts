@@ -1576,7 +1576,7 @@ class PokeBattle_Battle
       return false
     end
     # Embargo
-    if @field.effect == :DIMENSIONAL && thispkmn.effects[:Embargo]>0
+    if @field.effect == :DIMENSIONAL && (thispkmn.effects[:Embargo]>0 || thispkmn.pbOwnSide.effects[:Embargo] > 0)
       pbDisplayPaused(_INTL("{1} can't be switched out due to Embargo!",thispkmn.pbThis)) if showMessages
       return false
     end
@@ -5546,7 +5546,7 @@ class PokeBattle_Battle
       end
     end
     # Embargo
-    # @SWu todo: change embargo to have an effect on the whole team side
+    # @SWu todo: change embargo to have an effect on the whole team side (done)
     for i in priority
       next if i.isFainted?
       if i.effects[:Embargo]>0
@@ -5636,6 +5636,12 @@ class PokeBattle_Battle
       next if sides[i].effects[:Mist] == 0
       sides[i].effects[:Mist]-=1
       pbDisplay(_INTL("#{texts[i]} team's Mist faded!")) if sides[i].effects[:Mist]==0
+    end
+    # Embargo
+    for i in 0...2
+      next if sides[i].effects[:Embargo] == 0
+      sides[i].effects[:Embargo]-=1
+      pbDisplay(_INTL("#{texts[i]} team's Embargo was lifted.")) if sides[i].effects[:Embargo]==0
     end
     # Tailwind
     for i in 0...2
