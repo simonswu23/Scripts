@@ -27,6 +27,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
   - Embargo
     - affects the whole opposing team for five turns (instead of per battler)
+  
+  - Bug types immune to side effect chances
+    - TODO: change this into a password instead
 
 ## Pokemon
 
@@ -300,6 +303,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Frisk
   - Suppresses foes abilities for five turns on entry (applies old frisk effect on battlers)
+
+- Shield Dust
+  - Also halves incoming damage from attacks with side effect chances
  
 ### New Abilities
 
@@ -319,7 +325,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - TODO: also clear terrain
 
 - Confection
-  - lowers all foes evasion by 1 at the end of each turn
+  - lowers all foes evasion by 2 on entry and at the end of each turn
   - foes with lowered evasion cannot switch, and their attack scales with evasion drops
  
 - Silver Scales
@@ -345,6 +351,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Detritovore
   - ground, water, and poison attacks restore HP instead of dealing damage
   - (check) include in def nullsWater?
+  - TODO: change to (restores HP to full and cures allwhen another pokemon faints)
  
 - Massive Shell
   - halves incoming damage if user's HP is over half
@@ -1086,9 +1093,20 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
       - Energy Ball
     - Other:
 
+# Passwords
+  - icecream
+    - grants free Vanillish with Sleigh Ride in Oceana
+    - grants free Vanilluxe Crest in Oceana
+
 # TODO:
 
 - Fix Additional Effect Implementations (shield dust / bug types with moves like Ceaseless Edge)
+
+- Passwords:
+  - Better Bugs
+    - Bug types immune to side effect chances
+    - Bug resists Fairy
+    - Fairy weak to Bug
 
 - Wishlist
   - Embargo
