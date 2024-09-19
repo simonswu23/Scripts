@@ -2861,8 +2861,8 @@ class PokeBattle_Scene
     else
       cw.setIndex(0)
     end
-    cw.megaButton=0 unless @battle.megaEvolution[(@battle.pbIsOpposing?(index)) ? 1 : 0][@battle.pbGetOwnerIndex(index)] == index && @battle.battlers[index].hasMega?
-    cw.megaButton=1 if (@battle.pbCanMegaEvolve?(index) && !@battle.pbCanZMove?(index))
+    cw.megaButton=0 unless @battle.megaEvolution[(@battle.pbIsOpposing?(index)) ? 1 : 0][@battle.pbGetOwnerIndex(index)] == index && (@battle.battlers[index].hasMega? || @battle.battlers[index].hasGiga?)
+    cw.megaButton=1 if ((@battle.pbCanMegaEvolve?(index) || @battle.pbCanGigaEvolve?(index)) && !@battle.pbCanZMove?(index))
     cw.ultraButton=0
     cw.ultraButton=1 if @battle.pbCanUltraBurst?(index)
     cw.zButton=0
@@ -2922,17 +2922,28 @@ class PokeBattle_Scene
             pbPlayDecisionSE()
           end
         end
-          if @battle.pbCanUltraBurst?(index)
-            if cw.ultraButton==2
-              @battle.pbUnRegisterUltraBurst(index)
-              cw.ultraButton=1
-              pbPlayCancelSE()
-            else
-              @battle.pbRegisterUltraBurst(index)
-              cw.ultraButton=2
-              pbPlayDecisionSE()
-            end
+        if @battle.pbCanGigaEvolve?(index)
+          if cw.megaButton==2
+            @battle.pbUnRegisterGigaEvolution(index)
+            cw.megaButton=1
+            pbPlayCancelSE()
+          else
+            @battle.pbRegisterGigaEvolution(index)
+            cw.megaButton=2
+            pbPlayDecisionSE()
           end
+        end
+        if @battle.pbCanUltraBurst?(index)
+          if cw.ultraButton==2
+            @battle.pbUnRegisterUltraBurst(index)
+            cw.ultraButton=1
+            pbPlayCancelSE()
+          else
+            @battle.pbRegisterUltraBurst(index)
+            cw.ultraButton=2
+            pbPlayDecisionSE()
+          end
+        end
         if @battle.pbCanZMove?(index)  # Use Z Move
           if cw.zButton==2
             @battle.pbUnRegisterZMove(index)

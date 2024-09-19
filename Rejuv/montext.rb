@@ -190,8 +190,8 @@ MONHASH = {
 	:DefaultForm => 0,
 	:MegaForm => {
 		:VENUSAURITE => 1,
-		:VENUSAURITEG => 2,
 	},
+	:GigaForm => 2,
 },
 
 :CHARMANDER => {
@@ -387,11 +387,11 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
+  :MegaForm => {
 		:CHARIZARDITEX => 1,
 		:CHARIZARDITEY => 2,
-		:CHARIZARDITEG => 3,
 	},
+	:GigaForm => 3, 
 },
 
 :SQUIRTLE => {
@@ -579,8 +579,8 @@ MONHASH = {
 	:DefaultForm => 0,
 	:MegaForm => {
 		:BLASTOISINITE => 1,
-		:BLASTOISINITEG => 2,
 	},
+	:GigaForm => 2,
 },
 
 :CATERPIE => {
@@ -734,9 +734,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:BUTTERFREENITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :WEEDLE => {
@@ -1580,9 +1578,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-	:MegaForm => {
-		:PIKACHUNITE => 1,
-	},
+	:GigaForm => 1,
 },
 
 :RAICHU => {
@@ -3561,9 +3557,7 @@ MONHASH = {
  	},
 
  	:DefaultForm => 0,
-	:MegaForm => {
-		:MEOWTHITE => 3,
-	},
+	:GigaForm => 3,
 },
 
 :PERSIAN => {
@@ -4639,9 +4633,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:MACHAMPITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :BELLSPROUT => {
@@ -6618,8 +6610,8 @@ MONHASH = {
 	:DefaultForm => 0,
 	:MegaForm => {
 		:GENGARITE => 1,
-		:GENGARITEG => 2,
 	},
+	:GigaForm => 2,
 },
 
 :ONIX => {
@@ -6930,9 +6922,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:KINGLERITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :VOLTORB => {
@@ -9217,9 +9207,7 @@ MONHASH = {
 		end
 		},
 	:DefaultForm => 0,
-	:MegaForm => {
-        :LAPRASITE => 2
-	},
+	:GigaForm => 2,
 },
 
 :DITTO => {
@@ -9940,9 +9928,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:SNORLAXITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :ARTICUNO => {
@@ -36848,9 +36834,7 @@ MONHASH = {
 	:OnCreation => {},
 	:DefaultForm => 0,
 	:RiftForm => 2,
-    :MegaForm => {
-        :GARBODORITE => 1
-    },
+	:GigaForm => 1,
 },
 
 :ZORUA => {
@@ -51912,9 +51896,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:MELMETALITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :GROOKEY => {
@@ -52080,9 +52062,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:RILLABOOMITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :SCORBUNNY => {
@@ -52247,9 +52227,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:CINDERACITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :SOBBLE => {
@@ -52413,9 +52391,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:INTELEONITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :SKWOVET => {
@@ -52686,9 +52662,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:CORVIKNITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :BLIPBUG => {
@@ -52839,9 +52813,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:ORBEETLENITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :NICKIT => {
@@ -53319,9 +53291,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:DREDNAWTITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :YAMPER => {
@@ -53583,9 +53553,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:COALOSSALITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :APPLIN => {
@@ -53692,9 +53660,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:FLAPPLETITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :APPLETUN => {
@@ -53759,9 +53725,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:APPLETUNITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :SILICOBRA => {
@@ -53872,9 +53836,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:SANDACONDITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :CRAMORANT => {
@@ -54219,9 +54181,7 @@ MONHASH = {
 		end
 		},
 	:DefaultForm => [0,1],
-    :MegaForm => {
-        :TOXTRICITITE => 3,
-    },
+    :GigaForm => 3,
 },
 
 :SIZZLIPEDE => {
@@ -54336,9 +54296,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:CENTISKORCHITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :CLOBBOPUS => {
@@ -54700,9 +54658,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:HATTERENITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :IMPIDIMP => {
@@ -54878,9 +54834,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:GRIMMSNARLITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :OBSTAGOON => {
@@ -55341,9 +55295,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:ALCREMITE => 1
-	},
+  :GigaForm => 1,
 },
 
 :FALINKS => {
@@ -55876,9 +55828,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:COPPERAJITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :DRACOZOLT => {
@@ -56125,9 +56075,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => 0,
-  	:MegaForm => {
-		:DURALUDONITE => 1
-	},
+  	:GigaForm => 1,
 },
 
 :DREEPY => {
@@ -56602,7 +56550,7 @@ MONHASH = {
 
 	:OnCreation => {},
 	:DefaultForm => [0,1],
-  	:MegaForm => {
+  	:GigaForm => {
 		:URSHIFITE => {
 				0 => 2,
 				1 => 3,

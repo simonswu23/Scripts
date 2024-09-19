@@ -45,7 +45,7 @@ TEAMARRAY = [{
 	# :iv => 31,
 	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
-	:species => :CORVIKNIGHT,
+	:species => :MUNCHLAX,
 	:level => 100,
 	:item => :LEFTOVERS,
 	:moves => [:DEFOG],

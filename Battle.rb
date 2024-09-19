@@ -2200,6 +2200,17 @@ class PokeBattle_Battle
     return true
   end
 
+  def pbCanGigaEvolve?(index)
+    return false if $game_switches[:No_Mega_Evolution]==true
+    return false if !@battlers[index].hasGiga?
+    return false if !pbHasMegaRing(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    return true if @gigaEvolution[side][owner]==-1
+    return false if @gigaEvolution[side][owner]!=index
+    return true
+  end
+
   def pbCanMegaEvolveAI?(i,index)
     return false if $game_switches[:No_Mega_Evolution]==true
     if i.class==PokeBattle_Battler
@@ -2214,6 +2225,19 @@ class PokeBattle_Battle
     return true
   end
 
+  def pbCanGigaEvolveAI?(i,index)
+    return false if $game_switches[:No_Mega_Evolution]==true
+    if i.class==PokeBattle_Battler
+      return false if !i.pokemon.hasGigaForm?
+    else
+      return false if !i.hasGigaForm?
+    end
+    return false if !pbHasMegaRing(index)
+    side=1
+    owner=pbGetOwnerIndex(index)
+    return false if @gigaEvolution[side][owner]!=-1
+    return true
+  end
 
   def pbRegisterMegaEvolution(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
@@ -2225,6 +2249,18 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=-1
+  end
+
+  def pbRegisterGigaEvolution(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=index
+  end
+
+  def pbUnRegisterGigaEvolution(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=-1
   end
 
   def pbMegaEvolve(index)
@@ -2284,6 +2320,55 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=-2
+
+    # Re-update ability of mega-evolved mon
+    @battlers[index].pbAbilitiesOnSwitchIn(true)
+  end
+
+
+  # GIGA EVO BELOW
+
+  def pbGigaEvolve(index)
+    # Things that disallow giga-evolution
+    return if !@battlers[index] || !@battlers[index].pokemon
+    return if !(@battlers[index].hasGiga? rescue false)
+    # can keep isMega below
+    return if (@battlers[index].isMega? rescue true)
+
+    # Battle message start
+    if @battlers[index].issossmon
+      ownername = @battlers[index].pbPartner.isbossmon ? @battlers[index].pbPartner.name : @battlers[index].name
+    elsif @battlers[index].isbossmon
+      ownername = @battlers[index].name
+    else
+      ownername=pbGetOwner(index).fullname
+      ownername=pbGetOwner(index).name if pbBelongsToPlayer?(index)
+    end
+
+    pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s {4}!", @battlers[index].pbThis,getItemName(@battlers[index].item), ownername,pbGetMegaRingName(index)))
+  
+    # Animation
+    pbCommonAnimation("MegaEvolution",@battlers[index],nil)
+
+    # Update battler
+    @battlers[index].pokemon.makeGiga
+    @battlers[index].form=@battlers[index].pokemon.form
+    @battlers[index].backupability = @battlers[index].pokemon.ability
+    @battlers[index].pbUpdate(true)
+    @scene.pbChangePokemon(@battlers[index],@battlers[index].pokemon) if @battlers[index].effects[:Substitute]==0
+
+    # Battle message finish
+    formname = $cache.pkmn[@battlers[index].pokemon.species].forms[@battlers[index].form]
+    if formname.include?("Form")
+      formname = formname.split("Form")[0].strip
+    end
+    meganame = formname + " " + getMonName(@battlers[index].pokemon.species)
+    pbDisplay(_INTL("{1} Giga Evolved into {2}!",@battlers[index].pbThis,meganame))
+
+    # Remember trainer has mega-evolved
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=-2
 
     # Re-update ability of mega-evolved mon
     @battlers[index].pbAbilitiesOnSwitchIn(true)
