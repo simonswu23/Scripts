@@ -40,7 +40,7 @@ TYPEHASH = {
 :BUG => {
 	:name => "Bug",
 	:weaknesses => [:FLYING,:ROCK,:FIRE,:SHADOW],
-	:resistances => [:FIGHTING,:GROUND,:GRASS, :FAIRY]
+	:resistances => [:FIGHTING,:GROUND,:GRASS]
 },
 
 :GHOST => {
@@ -122,7 +122,7 @@ TYPEHASH = {
 :FAIRY => {
 	:name => "Fairy",
 	:weaknesses => [:POISON,:STEEL],
-	:resistances => [:FIGHTING,:DARK,:SHADOW],
+	:resistances => [:FIGHTING,:DARK,:BUG,:SHADOW],
 	:immunities => [:DRAGON],
 	:specialtype => true
 },

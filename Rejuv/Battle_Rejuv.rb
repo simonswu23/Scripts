@@ -102,21 +102,21 @@
         @battle.pbCommonAnimation("Wind",nil,nil)
         @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
       end
-    when :VANILLUXE
-      pbAnimation(:SWEETSCENT,@battlers[index],nil)
-      @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
-      if !@battlers[index].pbOpposing1.isFainted?
-        opposing=@battlers[index].pbOpposing1
-        if opposing.pbCanReduceStatStage?(PBStats::EVASION)
-          opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest: true)
-        end
-      end
-      if !@battlers[index].pbOpposing2.isFainted?
-        opposing=@battlers[index].pbOpposing2
-        if opposing.pbCanReduceStatStage?(PBStats::EVASION)
-          opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest:true)
-        end
-      end
+    # when :VANILLUXE
+    #   pbAnimation(:SWEETSCENT,@battlers[index],nil)
+    #   @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
+    #   if !@battlers[index].pbOpposing1.isFainted?
+    #     opposing=@battlers[index].pbOpposing1
+    #     if opposing.pbCanReduceStatStage?(PBStats::EVASION)
+    #       opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest: true)
+    #     end
+    #   end
+    #   if !@battlers[index].pbOpposing2.isFainted?
+    #     opposing=@battlers[index].pbOpposing2
+    #     if opposing.pbCanReduceStatStage?(PBStats::EVASION)
+    #       opposing.pbReduceStat(PBStats::EVASION,1,statdropper: @battlers[index], crest:true)
+    #     end
+    #   end
     end
   end
 

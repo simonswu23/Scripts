@@ -1986,13 +1986,25 @@ class PokeBattle_Battler
         @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
       end
     end
+    # Confection
+    if self.ability == :CONFECTION && onactive
+      for index in 0...4
+        next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
+        i = self
+        j = @battle.battlers[index]
+        @battle.pbAnimation(:SWEETSCENT, i, j, 0);
+        j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:self)
+      end
+    end
     # Downdraft
     if self.ability == :DOWNDRAFT && onactive
       for index in 0...4
         next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
         i = self
         j = @battle.battlers[index]
-        j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:self)
+
+        @battle.pbAnimation(:DEFOG, i, j, 0);
+
         if i.pbOpposingSide.effects[:Reflect]>0
           i.pbOpposingSide.effects[:Reflect]=0
           if !@battle.pbIsOpposing?(i.index)
@@ -2087,6 +2099,7 @@ class PokeBattle_Battler
           end
         end
       end
+      @battle.pbDisplay(_INTL("{1}'s Downdraft is exerting pressure!",pbThis))
     end
 
     if Rejuv
@@ -4122,7 +4135,7 @@ class PokeBattle_Battler
           # Snatch's PP is reduced if old user has Pressure
           # @SWu this is causing a bug so i'm taking it out
           userchoice=@battle.choices[user.index][1]
-          if target.ability == (:PRESSURE) && userchoice>=0 && user.ability != :JOKER
+          if (target.ability == (:PRESSURE) || target.ability == (:DONWDRAFT)) && userchoice>=0 && user.ability != :JOKER
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4230,7 +4243,7 @@ class PokeBattle_Battler
       end
     end
     # TODO: Pressure here is incorrect if Magic Coat redirects target
-    if target.ability == (:PRESSURE)
+    if target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT
       pressuredmove = (basemove.zmove && !user.zmoves.nil? && user.zmoves.include?(basemove)) ? user.moves[user.zmoves.index(basemove)] : basemove
       pbReducePP(pressuredmove) # Reduce PP
       if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4249,7 +4262,7 @@ class PokeBattle_Battler
           user=i
           # Snatch's PP is reduced if old user has Pressure
           userchoice=@battle.choices[user.index][1]
-          if target.ability == (:PRESSURE) && userchoice>=0
+          if (target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT) && userchoice>=0
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4278,7 +4291,7 @@ class PokeBattle_Battler
 
       # Magic Coat's PP is reduced if old user has Pressure
       userchoice=@battle.choices[user.index][1]
-      if target.ability == (:PRESSURE) && userchoice>=0
+      if (target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT) && userchoice>=0
         pressuremove=user.moves[userchoice]
         pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
         if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH

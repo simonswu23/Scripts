@@ -2,7 +2,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 # Instructions
 - Please make sure you have the correct version before proceeding
-- Rename your old Scripts folder to something else (e.g. Scripts-Old)
+- Rename your existing Scripts folder (e.g. Scripts-Old)
 - Copy this folder into the same directory
 
 ## General
@@ -25,7 +25,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Gravity
     - speed is decreased porportional to how light pokemon are
 
-  - Embargp
+  - Embargo
     - affects the whole opposing team for five turns (instead of per battler)
 
 ## Pokemon

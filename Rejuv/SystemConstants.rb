@@ -379,6 +379,7 @@ PickupRare=[
     "nopenny" => :Penniless_Mode,
     "fullevs" => :Only_Pulse_2,
     "noitems" => :No_Items_Password,
+
     #"nuzlocke" => :Nuzlocke_Mode, "locke" => :Nuzlocke_Mode, "permadeath" => :Nuzlocke_Mode,
     "moneybags" => :Moneybags, "richboy" => :Moneybags, "doublemoney" => :Moneybags,
     "fullivs" => :Full_IVs, "31ivs" => :Full_IVs, "allivs" => :Full_IVs, "mischievous" => :Full_IVs,
@@ -400,6 +401,10 @@ PickupRare=[
     "9494" => 1706, 
     "terajuma" => 1708,
     "hello eizen." => 1763,
+
+    # SWu
+    "icecream" => 2000,
+    "betterbugs" => :Better_Bugs,
  }
 
  BULK_PASSWORDS = {

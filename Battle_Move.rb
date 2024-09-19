@@ -1235,6 +1235,13 @@ class PokeBattle_Move
       end
     end
 
+    # Make Bugs Better (TODO)
+    # @battle.pbDisplay(_INTL("BREAK: {1}",$game_switches[:Better_Bugs]))
+    # if ($game_switches[:Better_Bugs])
+    #   typemod *= 4 if type == :BUG && opponent.hasType?(:FAIRY)
+    #   typemod /= 2 if type == :FAIRY && opponent.hasType?(:BUG)
+    # end
+
     # Field Effect second type changes 
     typemod=fieldTypeChange(attacker,opponent,typemod,false)
     typemod=overlayTypeChange(attacker,opponent,typemod,false)

@@ -1601,12 +1601,12 @@ class PokeBattle_Battle
       opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
     end
     if (thispkmn.stages[PBStats::EVASION] < 0)
-      opp=opp1 if opp1.crested == :VANILLUXE || opp1.ability == :CONFECTION
-      opp=opp2 if opp2.crested == :VANILLUXE || opp2.ability == :CONFECTION
+      opp=opp1 if opp1.ability == :CONFECTION
+      opp=opp2 if opp2.ability == :CONFECTION
     end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI || opp1.crested == :VANILLUXE || opp2.crested == :VANILLUXE
+      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -4783,14 +4783,12 @@ class PokeBattle_Battle
           pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0    
       end
 
-      # Vanilluxe Crest
-
+      # Confection
       if i.ability == :CONFECTION
-        pbAnimation(:SWEETSCENT,i,nil)
-        @battle.pbDisplay(_INTL("A saccharine scent wafts across the battle!"))
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
-          j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:i)
+          @battle.pbAnimation(:SWEETSCENT, i, j, 0);
+          j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:i)
         end
       end
 
@@ -4827,10 +4825,16 @@ class PokeBattle_Battle
       if (i.ability == :DOWNDRAFT)
         # @SWu figure out animation here
         # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-        
+
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
-          j.pbReduceStat(PBStats::EVASION,1,abilitymessage:false, statdropper:i)
+
+          @battle.pbAnimation(:DEFOG, i, j, 0);
+          for move in j.moves
+            j.pbSetPP(move,move.pp-1) if move.pp>0
+          end
+          @battle.pbDisplay(_INTL("{1}'s Downdraft lowered the pp of {2}'s moves!", i.pbThis, j.pbThis))
+
           if i.pbOpposingSide.effects[:Reflect]>0
             i.pbOpposingSide.effects[:Reflect]=0
             if !@battle.pbIsOpposing?(i.index)
