@@ -749,7 +749,7 @@ class PokeBattle_Pokemon
 
   def isMega?
     v = $cache.pkmn[@species].formData.dig(:MegaForm)
-    v = $cache.pkmn[@species].formData.dig(:GigaForm)
+    v = $cache.pkmn[@species].formData.dig(:GigaForm) if (Rejuv && !v)
     v = $cache.pkmn[@species].formData.dig(:PulseForm) if (Reborn && !v)
     v = $cache.pkmn[@species].formData.dig(:RiftForm) if (Rejuv && !v)
     # @SWu: Do urshifu below

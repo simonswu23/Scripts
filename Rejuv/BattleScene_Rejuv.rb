@@ -1462,7 +1462,7 @@ def pbFightMenu(index)
   cw.ultraButton=0
   cw.ultraButton=1 if @battle.pbCanUltraBurst?(index)
   cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
-  cw.megaButton=1 if (@battle.pbCanGigaEvolve?(index))
+  cw.megaButton=1 if @battle.pbCanGigaEvolve?(index)
   cw.zButton=0
   cw.zButton=1 if @battle.pbCanZMove?(index)
   pbSelectBattler(index)
@@ -1509,7 +1509,7 @@ def pbFightMenu(index)
         @lastmove[index]=ret   
         return ret
       end          
-    elsif Input.trigger?(Input::X)   # Use Giga Evolution 
+    elsif Input.trigger?(Input::X)  
       if (@battle.pbCanMegaEvolve?(index)) && !pbIsZCrystal?(battler.item)
         if cw.megaButton==2
           @battle.pbUnRegisterMegaEvolution(index)
@@ -1520,8 +1520,7 @@ def pbFightMenu(index)
           cw.megaButton=2
           pbPlayDecisionSE()
         end
-      end
-      if @battle.pbCanGigaEvolve?(index) && !pbIsZCrystal?(battler.item)
+      elsif @battle.pbCanGigaEvolve?(index)
         if cw.megaButton==2
           @battle.pbUnRegisterGigaEvolution(index)
           cw.megaButton=1
