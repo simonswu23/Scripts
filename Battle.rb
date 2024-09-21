@@ -358,23 +358,28 @@ class PokeBattle_Battle
     @megaEvolution   = []
     @ultraBurst      = []
     @zMove           = []
+    @gigaEvolution   = []
     if @player.is_a?(Array)
       @megaEvolution[0]=[-1]*@player.length
       @ultraBurst[0]   =[-1]*@player.length
       @zMove[0]        =[-1]*@player.length
+      @gigaEvolution[0]=[-1]*@player.length
     else
       @megaEvolution[0]=[-1]
       @ultraBurst[0]   =[-1]
       @zMove[0]        =[-1] 
+      @gigaEvolution[0]=[-1]
     end
     if @opponent.is_a?(Array)
       @megaEvolution[1]=[-1]*@opponent.length
       @ultraBurst[1]   =[-1]*@opponent.length
       @zMove[1]        =[-1]*@opponent.length
+      @gigaEvolution[1]=[-1]*@opponent.length
     else
       @megaEvolution[1]=[-1]
       @ultraBurst[1]   =[-1]
       @zMove[1]        =[-1]
+      @gigaEvolution[1]=[-1]
     end
     @amuletcoin      = false
     @switchedOut     = []
@@ -1630,6 +1635,9 @@ class PokeBattle_Battle
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
     end
+    if @gigaEvolution[side][owner]==idxPokemon
+      @gigaEvolution[side][owner]=-1
+    end
     return true
   end
 
@@ -1950,6 +1958,9 @@ class PokeBattle_Battle
     end
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
+    end
+    if @gigaEvolution[side][owner]==idxPokemon
+      @gigaEvolution[side][owner]=-1
     end
     return true
   end
@@ -2345,7 +2356,8 @@ class PokeBattle_Battle
       ownername=pbGetOwner(index).name if pbBelongsToPlayer?(index)
     end
 
-    pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s {4}!", @battlers[index].pbThis,getItemName(@battlers[index].item), ownername,pbGetMegaRingName(index)))
+    # @SWu add the specific GMax stone here
+    pbDisplay(_INTL("{1}'s is reacting to {3}'s {4}!", @battlers[index].pbThis, ownername,pbGetMegaRingName(index)))
   
     # Animation
     pbCommonAnimation("MegaEvolution",@battlers[index],nil)
@@ -3707,6 +3719,12 @@ class PokeBattle_Battle
     for i in 0...@megaEvolution[1].length
       @megaEvolution[1][i]=-1 if @megaEvolution[1][i]>=0
     end
+    for i in 0...@gigaEvolution[0].length
+      @gigaEvolution[0][i]=-1 if @gigaEvolution[0][i]>=0
+    end
+    for i in 0...@gigaEvolution[1].length
+      @gigaEvolution[1][i]=-1 if @gigaEvolution[1][i]>=0
+    end
     for i in 0...@ultraBurst[0].length
       @ultraBurst[0][i]=-1 if @ultraBurst[0][i]>=0
     end
@@ -3744,6 +3762,9 @@ class PokeBattle_Battle
                   owner=pbGetOwnerIndex(i)
                   if @megaEvolution[side][owner]==i
                     @megaEvolution[side][owner]=-1
+                  end
+                  if @gigaEvolution[side][owner]==i
+                    @gigaEvolution[side][owner]=-1
                   end
                   if @ultraBurst[side][owner]==i
                     @ultraBurst[side][owner]=-1
@@ -3818,6 +3839,9 @@ class PokeBattle_Battle
               if @megaEvolution[side][owner]==i
                 @megaEvolution[side][owner]=-1
               end
+              if @gigaEvolution[side][owner]==i
+                @gigaEvolution[side][owner]=-1
+              end
               if @ultraBurst[side][owner]==i
                 @ultraBurst[side][owner]=-1
               end
@@ -3835,6 +3859,9 @@ class PokeBattle_Battle
             if @megaEvolution[side][owner]==i
               @megaEvolution[side][owner]=-1
             end
+            if @gigaEvolution[side][owner]==i
+              @gigaEvolution[side][owner]=-1
+            end
             if @ultraBurst[side][owner]==i
               @ultraBurst[side][owner]=-1
             end
@@ -3845,6 +3872,8 @@ class PokeBattle_Battle
           elsif cmd==-1   # Go back to first battler's choice
             @megaEvolution[0][0]=-1 if @megaEvolution[0][0]>=0
             @megaEvolution[1][0]=-1 if @megaEvolution[1][0]>=0
+            @gigaEvolution[0][0]=-1 if @gigaEvolution[0][0]>=0
+            @gigaEvolution[1][0]=-1 if @gigaEvolution[1][0]>=0
             @ultraBurst[0][0]=-1 if @ultraBurst[0][0]>=0
             @ultraBurst[1][0]=-1 if @ultraBurst[1][0]>=0
             @zMove[0][0]=-1 if @zMove[0][0]>=0
@@ -3984,6 +4013,15 @@ class PokeBattle_Battle
         pbMegaEvolve(i.index)
       end
     end
+    # Giga Evolution
+    for i in priority
+      next if @choices[i.index][0]!=1
+      side=(pbIsOpposing?(i.index)) ? 1 : 0
+      owner=pbGetOwnerIndex(i.index)
+      if @gigaEvolution[side][owner]==i.index
+        pbGigaEvolve(i.index)
+      end
+    end
     # Ultra Burst
     for i in priority
       next if @choices[i.index][0]!=1
@@ -4085,6 +4123,9 @@ class PokeBattle_Battle
       owner=pbGetOwnerIndex(pursuiter.index)
       if @megaEvolution[side][owner]==pursuiter.index
         pbMegaEvolve(pursuiter.index)
+      end
+      if @gigaEvolution[side][owner]==pursuiter.index
+        pbGigaEvolve(pursuiter.index)
       end
       if @ultraBurst[side][owner]==pursuiter.index
         pbUltraBurst(pursuiter.index)

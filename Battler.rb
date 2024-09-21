@@ -151,16 +151,11 @@ class PokeBattle_Battler
   end
 
   def hasGiga?
-    # @SWu might cause implementation issues here
-    return true if !@battle.pbOwnedByPlayer?(@index)
-    @battle.pbDisplay(_INTL("break0.0"))
     if @pokemon
-      @battle.pbDisplay(_INTL("break0.1"))
       ret = (@pokemon.hasGigaForm?)
-      @battle.pbDisplay(_INTL("ret: {1}", ret))
+      #@battle.pbDisplay(_INTL("{1} hasGiga: {2}", @pokemon.species, ret))
       return ret
     end
-    @battle.pbDisplay(_INTL("break0.2"))
     return false
   end
 
@@ -2010,9 +2005,6 @@ class PokeBattle_Battler
         j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:self)
       end
     end
-
-    @battle.pbDisplay(_INTL("Has giga: {1}", self.hasGiga?))
-
     # Downdraft
     if self.ability == :DOWNDRAFT && onactive
       for index in 0...4

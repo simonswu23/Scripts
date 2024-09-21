@@ -515,6 +515,8 @@ class PokemonDataBox < SpriteWrapper
         imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
       elsif @battler.isUltra? # Maybe temporary until new icon
         imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
+      elsif @battler.isMega? && @battler.hasGiga?
+        imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
       end
       # Crest
       illusion = !@battler.effects[:Illusion].nil?
@@ -1459,6 +1461,8 @@ def pbFightMenu(index)
   cw.megaButton=1 if (@battle.pbCanMegaEvolve?(index) && !@battle.pbCanZMove?(index))
   cw.ultraButton=0
   cw.ultraButton=1 if @battle.pbCanUltraBurst?(index)
+  cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
+  cw.megaButton=1 if (@battle.pbCanGigaEvolve?(index))
   cw.zButton=0
   cw.zButton=1 if @battle.pbCanZMove?(index)
   pbSelectBattler(index)
@@ -1505,8 +1509,8 @@ def pbFightMenu(index)
         @lastmove[index]=ret   
         return ret
       end          
-    elsif Input.trigger?(Input::X)   # Use Mega Evolution 
-      if @battle.pbCanMegaEvolve?(index) && !pbIsZCrystal?(battler.item)
+    elsif Input.trigger?(Input::X)   # Use Giga Evolution 
+      if (@battle.pbCanMegaEvolve?(index)) && !pbIsZCrystal?(battler.item)
         if cw.megaButton==2
           @battle.pbUnRegisterMegaEvolution(index)
           cw.megaButton=1
@@ -1517,17 +1521,28 @@ def pbFightMenu(index)
           pbPlayDecisionSE()
         end
       end
-        if @battle.pbCanUltraBurst?(index)
-          if cw.ultraButton==2
-            @battle.pbUnRegisterUltraBurst(index)
-            cw.ultraButton=1
-            pbPlayCancelSE()
-          else
-            @battle.pbRegisterUltraBurst(index)
-            cw.ultraButton=2
-            pbPlayDecisionSE()
-          end
+      if @battle.pbCanGigaEvolve?(index) && !pbIsZCrystal?(battler.item)
+        if cw.megaButton==2
+          @battle.pbUnRegisterGigaEvolution(index)
+          cw.megaButton=1
+          pbPlayCancelSE()
+        else
+          @battle.pbRegisterGigaEvolution(index)
+          cw.megaButton=2
+          pbPlayDecisionSE()
         end
+      end
+      if @battle.pbCanUltraBurst?(index)
+        if cw.ultraButton==2
+          @battle.pbUnRegisterUltraBurst(index)
+          cw.ultraButton=1
+          pbPlayCancelSE()
+        else
+          @battle.pbRegisterUltraBurst(index)
+          cw.ultraButton=2
+          pbPlayDecisionSE()
+        end
+      end
       if @battle.pbCanZMove?(index)  # Use Z Move
         if cw.zButton==2
           @battle.pbUnRegisterZMove(index)
