@@ -325,7 +325,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - TODO: also clear terrain
 
 - Confection
-  - lowers all foes evasion by 2 on entry and at the end of each turn
+  - lowers all foes evasion by 1 on entry and at the end of each turn
   - foes with lowered evasion cannot switch
   - takes x0.5 damage from fire and ice attacks
  
@@ -1024,10 +1024,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Finale
   - Fairy
   - Special
-  - bp: 100
-  - acc: 80
+  - bp: 40
+  - acc: 60
   - All Foes
-  - For each foe hit, restores all allies HP by 1/6
+  - Launches three random attacks at target (additively scaling in damage, each with own acc checks). Each hit restores 1/6 HP to allies.
 
 - Psychic Noise
   - Psychic

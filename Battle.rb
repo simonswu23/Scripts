@@ -4929,7 +4929,7 @@ class PokeBattle_Battle
           next if (i.index % 2 == j.index % 2) || j.isFainted?
           @battle.pbAnimation(:SWEETSCENT, i, j, 0);
           if j.pbCanReduceStatStage?(PBStats::EVASION) 
-            j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:i)
+            j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:i)
           end
         end
       end

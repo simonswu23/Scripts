@@ -1217,7 +1217,7 @@ class PokeBattle_Move_908 < PokeBattle_Move
 
     return ret
   end
-
+end
 # ################################################################################
 # # Template
 # ################################################################################
@@ -1263,4 +1263,55 @@ class PokeBattle_Move_909 < PokeBattle_Move
 
 end
 
+################################################################################
+# Finale
+################################################################################
+
+class PokeBattle_Move_90A < PokeBattle_Move
+  def isHealingMove?
+    return true
+  end
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    for i in [attacker,attacker.pbPartner]
+      next if !i || i.isFainted?
+      pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+      showanim=true
+      recoveramount = (i.totalhp/6.0).round
+      i.pbRecoverHP(recoveramount,true)
+    end
+    return ret
+  end
+
+  # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :LUNARBLESSINg
+      @battle.pbAnimation(:LUNARDANCE,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
+  end
+
+  def pbIsMultiHit
+    return true
+  end
+
+  def pbNumHits(attacker)
+    return 3
+  end
+
+  def pbOnStartUse(attacker)
+    @calcbasedmg=@basedamage
+    @calcbasedmg=[attacker.happiness,250].min if attacker.crested == :LUVDISC
+    return true
+  end
+
+  def pbBaseDamage(basedmg,attacker,opponent)
+    ret=@calcbasedmg
+    @calcbasedmg+=basedmg
+    return ret
+  end
+  
 end

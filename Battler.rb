@@ -2001,7 +2001,7 @@ class PokeBattle_Battler
         i = self
         j = @battle.battlers[index]
         @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-        j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:self)
+        j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:self)
       end
     end
     # Downdraft
@@ -5021,11 +5021,11 @@ class PokeBattle_Battler
         return if bosscheck == 0
       end
       # Check success (accuracy/evasion calculation)
-      if !nocheck && !pbSuccessCheck(basemove,user,target,flags,i==0 || basemove.function==0xBF) # Triple Kick
+      if !nocheck && !pbSuccessCheck(basemove,user,target,flags,i==0 || basemove.function== 0xBF || basemove.function==0x90A) # Triple Kick / Finale
        if (0xC9...0xCE).to_a.include?(basemove.function)
           @battle.scene.pbUnVanishSprite(user)
         end
-        if basemove.function==0xBF && realnumhits>0   # Triple Kick
+        if basemove.function==0xBF || basemove.function==0x90A && realnumhits>0   # Triple Kick
           break   # Considered a success if Triple Kick hits at least once
         elsif basemove.function==0x10B || basemove.function==0x506   # Hi Jump Kick, Jump Kick, Axe Kick
           #TODO: Not shown if message is "It doesn't affect XXX..."
