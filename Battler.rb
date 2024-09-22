@@ -2107,6 +2107,14 @@ class PokeBattle_Battler
           end
         end
       end
+      if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+        @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+        @battle.state.effects[:PSYTERRAIN] = 0
+        @battle.state.effects[:GRASSY] = 0
+        @battle.state.effects[:ELECTERRAIN] = 0
+        @battle.state.effects[:MISTY] = 0
+        @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
+      end
       @battle.pbDisplay(_INTL("{1}'s Downdraft is exerting pressure!",pbThis))
     end
 
