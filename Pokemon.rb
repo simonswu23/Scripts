@@ -737,9 +737,7 @@ class PokeBattle_Pokemon
 
     # will need to handle urshifu at some point
 
-    # returning false here
-    return true if $PokemonBag.pbQuantity(PBStuff::POKEMONTOGIGA[@species])>0
-    # return false
+    # owning giga stone handled in call pbCanGigaEvolve
     return true
   end
 

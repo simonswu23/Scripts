@@ -2215,11 +2215,25 @@ class PokeBattle_Battle
     return false if $game_switches[:No_Mega_Evolution]==true
     return false if !@battlers[index].hasGiga?
     return false if !pbHasMegaRing(index)
+    return false if !pbHasGigaStone(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @gigaEvolution[side][owner]==-1
     return false if @gigaEvolution[side][owner]!=index
     return true
+  end
+
+  def pbHasGigaStone(battlerIndex)
+    gigaStone = PBStuff::POKEMONTOGIGASTONE[@battlers[battlerIndex].species][0]
+    if !pbBelongsToPlayer?(battlerIndex)
+      items=@battle.pbGetOwnerItems(battlerIndex)
+      for i in items
+        return true if i == gigaStone
+      end
+    else
+      return true if $PokemonBag.pbQuantity(gigaStone)>0
+    end
+    return false
   end
 
   def pbCanMegaEvolveAI?(i,index)

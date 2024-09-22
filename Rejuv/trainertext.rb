@@ -1,6 +1,6 @@
 TEAMARRAY = [{
 :teamid => ["SWu",:LEADER_KETA,0],
-:items => [:SILVCREST,:SUPERPOTION],
+:items => [:SNORLAXITE, :SUPERPOTION],
 =begin
 :trainereffect => { # in party order
 	:effectmode => :Party, #effect mode switches how the effects are applied (:Party = on party index; :Fainted = first sendout after this number of pokemon are fainted)
@@ -45,12 +45,12 @@ TEAMARRAY = [{
 	# :iv => 31,
 	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
-	:species => :MUNCHLAX,
+	:species => :SNORLAX,
 	:level => 100,
 	:item => :LEFTOVERS,
 	:moves => [:DEFOG],
 	:ability => :DOWNDRAFT,
-	:form => 1,
+	:form => 0,
 	:nature => :SERIOUS,
 	:iv => 31,
 	:ev => [252, 252, 252, 252, 252, 252]}

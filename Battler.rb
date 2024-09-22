@@ -153,7 +153,6 @@ class PokeBattle_Battler
   def hasGiga?
     if @pokemon
       ret = (@pokemon.hasGigaForm?)
-      #@battle.pbDisplay(_INTL("{1} hasGiga: {2}", @pokemon.species, ret))
       return ret
     end
     return false

@@ -133,6 +133,7 @@ class PokeBattle_AI
 			#Check for conditions where the attacker object is not the one we want to score
 			checkMega()
 			checkUltraBurst()
+			checkGiga()
 			#Actually get the scores
 			checkZMoves()
 			buildMoveScores()
@@ -180,6 +181,18 @@ class PokeBattle_AI
 		return if !want_to_mega
 		#and if you want to mega, change the attacker
 		@attacker.pokemon.makeMega
+		@attacker.form=@attacker.pokemon.form
+		@attacker.pbUpdate(true)
+		@mondata.shouldMegaOrUltraBurst = true
+	end
+
+	def checkGiga
+		return if !@battle.pbCanGigaEvolve?(@index)
+		want_to_giga=true
+		#Run through conditions to see if you don't want to giga
+		return if !want_to_giga
+		#and if you want to giga, change the attacker
+		@attacker.pokemon.makeGiga
 		@attacker.form=@attacker.pokemon.form
 		@attacker.pbUpdate(true)
 		@mondata.shouldMegaOrUltraBurst = true
@@ -418,6 +431,7 @@ class PokeBattle_AI
 			if @aimondata[index].shouldMegaOrUltraBurst
 				@battle.pbRegisterMegaEvolution(index) if @battle.pbCanMegaEvolve?(index)
 				@battle.pbRegisterUltraBurst(index) if @battle.pbCanUltraBurst?(index)
+				@battle.pbRegisterGigaEvolution(index) if @battle.pbCanGigaEvolve?(index)
 			end
 
 			#MOVE
@@ -8518,6 +8532,9 @@ class PokeBattle_AI
 			theseRoles = pbGetMonRoles(i) if !theseRoles
 			if @battle.pbCanMegaEvolveAI?(i,@attacker.index)
 				i.pokemon.makeMega
+			end
+			if @battle.pbCanGigaEvolveAI?(i,@attacker.index)
+				i.pokemon.makeGiga
 			end
 			#speed changing
 			pbStatChangingSwitch(i)
