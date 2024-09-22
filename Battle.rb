@@ -358,23 +358,28 @@ class PokeBattle_Battle
     @megaEvolution   = []
     @ultraBurst      = []
     @zMove           = []
+    @gigaEvolution   = []
     if @player.is_a?(Array)
       @megaEvolution[0]=[-1]*@player.length
       @ultraBurst[0]   =[-1]*@player.length
       @zMove[0]        =[-1]*@player.length
+      @gigaEvolution[0]=[-1]*@player.length
     else
       @megaEvolution[0]=[-1]
       @ultraBurst[0]   =[-1]
       @zMove[0]        =[-1] 
+      @gigaEvolution[0]=[-1]
     end
     if @opponent.is_a?(Array)
       @megaEvolution[1]=[-1]*@opponent.length
       @ultraBurst[1]   =[-1]*@opponent.length
       @zMove[1]        =[-1]*@opponent.length
+      @gigaEvolution[1]=[-1]*@opponent.length
     else
       @megaEvolution[1]=[-1]
       @ultraBurst[1]   =[-1]
       @zMove[1]        =[-1]
+      @gigaEvolution[1]=[-1]
     end
     @amuletcoin      = false
     @switchedOut     = []
@@ -1630,6 +1635,9 @@ class PokeBattle_Battle
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
     end
+    if @gigaEvolution[side][owner]==idxPokemon
+      @gigaEvolution[side][owner]=-1
+    end
     return true
   end
 
@@ -1951,6 +1959,9 @@ class PokeBattle_Battle
     if @zMove[side][owner]==idxPokemon
       @zMove[side][owner]=-1
     end
+    if @gigaEvolution[side][owner]==idxPokemon
+      @gigaEvolution[side][owner]=-1
+    end
     return true
   end
 
@@ -2200,6 +2211,31 @@ class PokeBattle_Battle
     return true
   end
 
+  def pbCanGigaEvolve?(index)
+    return false if $game_switches[:No_Mega_Evolution]==true
+    return false if !@battlers[index].hasGiga?
+    return false if !pbHasMegaRing(index)
+    return false if !pbHasGigaStone(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    return true if @gigaEvolution[side][owner]==-1
+    return false if @gigaEvolution[side][owner]!=index
+    return true
+  end
+
+  def pbHasGigaStone(battlerIndex)
+    gigaStone = PBStuff::POKEMONTOGIGASTONE[@battlers[battlerIndex].species][0]
+    if !pbBelongsToPlayer?(battlerIndex)
+      items=@battle.pbGetOwnerItems(battlerIndex)
+      for i in items
+        return true if i == gigaStone
+      end
+    else
+      return true if $PokemonBag.pbQuantity(gigaStone)>0
+    end
+    return false
+  end
+
   def pbCanMegaEvolveAI?(i,index)
     return false if $game_switches[:No_Mega_Evolution]==true
     if i.class==PokeBattle_Battler
@@ -2214,6 +2250,19 @@ class PokeBattle_Battle
     return true
   end
 
+  def pbCanGigaEvolveAI?(i,index)
+    return false if $game_switches[:No_Mega_Evolution]==true
+    if i.class==PokeBattle_Battler
+      return false if !i.pokemon.hasGigaForm?
+    else
+      return false if !i.hasGigaForm?
+    end
+    return false if !pbHasMegaRing(index)
+    side=1
+    owner=pbGetOwnerIndex(index)
+    return false if @gigaEvolution[side][owner]!=-1
+    return true
+  end
 
   def pbRegisterMegaEvolution(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
@@ -2225,6 +2274,18 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=-1
+  end
+
+  def pbRegisterGigaEvolution(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=index
+  end
+
+  def pbUnRegisterGigaEvolution(index)
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=-1
   end
 
   def pbMegaEvolve(index)
@@ -2284,6 +2345,56 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @megaEvolution[side][owner]=-2
+
+    # Re-update ability of mega-evolved mon
+    @battlers[index].pbAbilitiesOnSwitchIn(true)
+  end
+
+
+  # GIGA EVO BELOW
+
+  def pbGigaEvolve(index)
+    # Things that disallow giga-evolution
+    return if !@battlers[index] || !@battlers[index].pokemon
+    return if !(@battlers[index].hasGiga? rescue false)
+    # can keep isMega below
+    return if (@battlers[index].isMega? rescue true)
+
+    # Battle message start
+    if @battlers[index].issossmon
+      ownername = @battlers[index].pbPartner.isbossmon ? @battlers[index].pbPartner.name : @battlers[index].name
+    elsif @battlers[index].isbossmon
+      ownername = @battlers[index].name
+    else
+      ownername=pbGetOwner(index).fullname
+      ownername=pbGetOwner(index).name if pbBelongsToPlayer?(index)
+    end
+
+    # @SWu add the specific GMax stone here
+    pbDisplay(_INTL("{1}'s is reacting to {3}'s {4}!", @battlers[index].pbThis, ownername,pbGetMegaRingName(index)))
+  
+    # Animation
+    pbCommonAnimation("MegaEvolution",@battlers[index],nil)
+
+    # Update battler
+    @battlers[index].pokemon.makeGiga
+    @battlers[index].form=@battlers[index].pokemon.form
+    @battlers[index].backupability = @battlers[index].pokemon.ability
+    @battlers[index].pbUpdate(true)
+    @scene.pbChangePokemon(@battlers[index],@battlers[index].pokemon) if @battlers[index].effects[:Substitute]==0
+
+    # Battle message finish
+    formname = $cache.pkmn[@battlers[index].pokemon.species].forms[@battlers[index].form]
+    if formname.include?("Form")
+      formname = formname.split("Form")[0].strip
+    end
+    meganame = formname + " " + getMonName(@battlers[index].pokemon.species)
+    pbDisplay(_INTL("{1} Giga Evolved into {2}!",@battlers[index].pbThis,meganame))
+
+    # Remember trainer has mega-evolved
+    side=(pbIsOpposing?(index)) ? 1 : 0
+    owner=pbGetOwnerIndex(index)
+    @gigaEvolution[side][owner]=-2
 
     # Re-update ability of mega-evolved mon
     @battlers[index].pbAbilitiesOnSwitchIn(true)
@@ -3622,6 +3733,12 @@ class PokeBattle_Battle
     for i in 0...@megaEvolution[1].length
       @megaEvolution[1][i]=-1 if @megaEvolution[1][i]>=0
     end
+    for i in 0...@gigaEvolution[0].length
+      @gigaEvolution[0][i]=-1 if @gigaEvolution[0][i]>=0
+    end
+    for i in 0...@gigaEvolution[1].length
+      @gigaEvolution[1][i]=-1 if @gigaEvolution[1][i]>=0
+    end
     for i in 0...@ultraBurst[0].length
       @ultraBurst[0][i]=-1 if @ultraBurst[0][i]>=0
     end
@@ -3659,6 +3776,9 @@ class PokeBattle_Battle
                   owner=pbGetOwnerIndex(i)
                   if @megaEvolution[side][owner]==i
                     @megaEvolution[side][owner]=-1
+                  end
+                  if @gigaEvolution[side][owner]==i
+                    @gigaEvolution[side][owner]=-1
                   end
                   if @ultraBurst[side][owner]==i
                     @ultraBurst[side][owner]=-1
@@ -3733,6 +3853,9 @@ class PokeBattle_Battle
               if @megaEvolution[side][owner]==i
                 @megaEvolution[side][owner]=-1
               end
+              if @gigaEvolution[side][owner]==i
+                @gigaEvolution[side][owner]=-1
+              end
               if @ultraBurst[side][owner]==i
                 @ultraBurst[side][owner]=-1
               end
@@ -3750,6 +3873,9 @@ class PokeBattle_Battle
             if @megaEvolution[side][owner]==i
               @megaEvolution[side][owner]=-1
             end
+            if @gigaEvolution[side][owner]==i
+              @gigaEvolution[side][owner]=-1
+            end
             if @ultraBurst[side][owner]==i
               @ultraBurst[side][owner]=-1
             end
@@ -3760,6 +3886,8 @@ class PokeBattle_Battle
           elsif cmd==-1   # Go back to first battler's choice
             @megaEvolution[0][0]=-1 if @megaEvolution[0][0]>=0
             @megaEvolution[1][0]=-1 if @megaEvolution[1][0]>=0
+            @gigaEvolution[0][0]=-1 if @gigaEvolution[0][0]>=0
+            @gigaEvolution[1][0]=-1 if @gigaEvolution[1][0]>=0
             @ultraBurst[0][0]=-1 if @ultraBurst[0][0]>=0
             @ultraBurst[1][0]=-1 if @ultraBurst[1][0]>=0
             @zMove[0][0]=-1 if @zMove[0][0]>=0
@@ -3899,6 +4027,15 @@ class PokeBattle_Battle
         pbMegaEvolve(i.index)
       end
     end
+    # Giga Evolution
+    for i in priority
+      next if @choices[i.index][0]!=1
+      side=(pbIsOpposing?(i.index)) ? 1 : 0
+      owner=pbGetOwnerIndex(i.index)
+      if @gigaEvolution[side][owner]==i.index
+        pbGigaEvolve(i.index)
+      end
+    end
     # Ultra Burst
     for i in priority
       next if @choices[i.index][0]!=1
@@ -4000,6 +4137,9 @@ class PokeBattle_Battle
       owner=pbGetOwnerIndex(pursuiter.index)
       if @megaEvolution[side][owner]==pursuiter.index
         pbMegaEvolve(pursuiter.index)
+      end
+      if @gigaEvolution[side][owner]==pursuiter.index
+        pbGigaEvolve(pursuiter.index)
       end
       if @ultraBurst[side][owner]==pursuiter.index
         pbUltraBurst(pursuiter.index)
@@ -4788,7 +4928,9 @@ class PokeBattle_Battle
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
           @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-          j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:i)
+          if j.pbCanReduceStatStage?(PBStats::EVASION) 
+            j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:i)
+          end
         end
       end
 
@@ -4928,6 +5070,14 @@ class PokeBattle_Battle
               @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
             end
           end
+        end
+        if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+          @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+          @battle.state.effects[:PSYTERRAIN] = 0
+          @battle.state.effects[:GRASSY] = 0
+          @battle.state.effects[:ELECTERRAIN] = 0
+          @battle.state.effects[:MISTY] = 0
+          @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
         end
       end
 
@@ -5399,6 +5549,7 @@ class PokeBattle_Battle
         next
       end
     end
+
     # Multi-turn attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     for i in priority
       next if i.isFainted?

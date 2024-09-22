@@ -1066,7 +1066,7 @@ class PokeBattle_Move
           return 0
         end
       when :VANILLUXE
-        if type == :FIRE
+        if type == :FIRE && @battle.pbWeather == :HAIL
           @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
@@ -2102,7 +2102,7 @@ class PokeBattle_Move
         when :SKILLLINK then atkmult*=1.2 if (@battle.FE == :COLOSSEUM && (@function == 0xC0 || @function == 0x307 || (attacker.crested == :CINCCINO && !pbIsMultiHit))) #0xC0: 2-5 hits; 0x307: Scale Shot
       end
     end
-    atkmult*=0.5 if opponent.ability == :THICKFAT && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=0.5 if (opponent.ability == :THICKFAT || :CONFECTION) && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
     atkmult*=1.5 if attacker.crested == :DARKRAI && opponent.status==:SLEEP
     atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)
     atkmult*=0.33 if opponent.ability == :LIGHTMETAL && (type == :GROUND) && !(opponent.moldbroken)
@@ -2489,11 +2489,6 @@ class PokeBattle_Move
       multiplier = 0.5*(opponent.pokemon.hp*1.0)/(opponent.pokemon.totalhp*1.0)
       multiplier += 1.0
       finalmult=(finalmult*multiplier)
-    end
-    
-    if opponent.ability == :CONFECTION && !(opponent.moldbroken) && attacker.stages[PBStats::EVASION] < 0
-      evadrops = -1 * attacker.stages[PBStats::EVASION]
-      finalmult *= 3/(3 + evadrops)
     end
 
     if @zmove

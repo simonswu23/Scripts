@@ -150,6 +150,14 @@ class PokeBattle_Battler
     return false
   end
 
+  def hasGiga?
+    if @pokemon
+      ret = (@pokemon.hasGigaForm?)
+      return ret
+    end
+    return false
+  end
+
   def hasUltra?
     if @pokemon
       return (@pokemon.hasUltraForm? rescue false)
@@ -1993,7 +2001,7 @@ class PokeBattle_Battler
         i = self
         j = @battle.battlers[index]
         @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-        j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:self)
+        j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:self)
       end
     end
     # Downdraft
@@ -2098,6 +2106,14 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
           end
         end
+      end
+      if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+        @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+        @battle.state.effects[:PSYTERRAIN] = 0
+        @battle.state.effects[:GRASSY] = 0
+        @battle.state.effects[:ELECTERRAIN] = 0
+        @battle.state.effects[:MISTY] = 0
+        @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
       end
       @battle.pbDisplay(_INTL("{1}'s Downdraft is exerting pressure!",pbThis))
     end
@@ -5005,11 +5021,11 @@ class PokeBattle_Battler
         return if bosscheck == 0
       end
       # Check success (accuracy/evasion calculation)
-      if !nocheck && !pbSuccessCheck(basemove,user,target,flags,i==0 || basemove.function==0xBF) # Triple Kick
+      if !nocheck && !pbSuccessCheck(basemove,user,target,flags,i==0 || basemove.function== 0xBF || basemove.function==0x90A) # Triple Kick / Finale
        if (0xC9...0xCE).to_a.include?(basemove.function)
           @battle.scene.pbUnVanishSprite(user)
         end
-        if basemove.function==0xBF && realnumhits>0   # Triple Kick
+        if basemove.function==0xBF || basemove.function==0x90A && realnumhits>0   # Triple Kick
           break   # Considered a success if Triple Kick hits at least once
         elsif basemove.function==0x10B || basemove.function==0x506   # Hi Jump Kick, Jump Kick, Axe Kick
           #TODO: Not shown if message is "It doesn't affect XXX..."
@@ -5108,13 +5124,7 @@ class PokeBattle_Battler
               target.pbThis,user.pbThis(true),target.pbThis))
         end
       end
-      if target.ability == :ADAMANTINEBODY && basemove.category == :physical && basemove.contactMove? && !user.isFainted?
-            target.damagestate.calcdamage>0 && !target.damagestate.substitute && (user.ability != (:MAGICGUARD) && 
-            !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM))
-        @battle.scene.pbDamageAnimation(user,0)
-        user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
-        @battle.pbDisplay(_INTL("{2} was hurt by {1}'s Adamantine Body!", target.pbThis,user.pbThis(true),target.pbThis))
-      end
+
       user.effects[:Tantrum]= (damage == -1)
       totaldamage += damage if damage && damage > 0
       if target.isbossmon
@@ -6072,19 +6082,6 @@ class PokeBattle_Battler
         end
 
         user.pbFaint if user.isFainted? # no return
-      end
-
-      # Finale
-      if user.ability == (:FINALE) && @effects[:HealBlock]==0
-        hpgain1=((user.totalhp+1)/4).floor
-        hpgain2=((user.pbPartner.totalhp+1)/4).floor
-        user.pbRecoverHP([hpgain1.floor,1].max,true)
-        if (!user.pbPartner.isFainted?)
-          user.pbPartner.pbRecoverHP([hpgain2.floor,1].max,true)
-        end
-        if hpgain1>0 || hpgain2 >0
-          @battle.pbDisplay(_INTL("{1}'s Finale restored its allies HP!",user.pbThis))
-        end
       end
 
       # Dancer

@@ -1,6 +1,6 @@
 TEAMARRAY = [{
 :teamid => ["SWu",:LEADER_KETA,0],
-:items => [:SILVCREST,:SUPERPOTION],
+:items => [:SNORLAXITE, :SUPERPOTION],
 =begin
 :trainereffect => { # in party order
 	:effectmode => :Party, #effect mode switches how the effects are applied (:Party = on party index; :Fainted = first sendout after this number of pokemon are fainted)
@@ -45,12 +45,12 @@ TEAMARRAY = [{
 	# :iv => 31,
 	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
-	:species => :CORVIKNIGHT,
+	:species => :MUNCHLAX,
 	:level => 100,
-	:item => :LEFTOVERS,
-	:moves => [:DEFOG],
-	:ability => :DOWNDRAFT,
-	:form => 1,
+	:item => :EVIOLITE,
+	:moves => [:SPLASH],
+	:ability => :ICESCALES,
+	:form => 0,
 	:nature => :SERIOUS,
 	:iv => 31,
 	:ev => [252, 252, 252, 252, 252, 252]}
@@ -50343,11 +50343,11 @@ TEAMARRAY = [{
 {
 :teamid => ["01001101",:TREAT_03,0],
 :defeat => "Even this is necessary! Isn't it?",
-:items => [:ULTRAPOTION,:MAXPOTION],
+:items => [:ULTRAPOTION,:MAXPOTION,:SNORLAXITE],
 :mons => [{
 	:species => :HYDREIGON,
 	:level => 85,
-	:item => :LIFEORB,
+	:item => :HYDREICREST,
 	:moves => [:DARKPULSE,:FLASHCANNON,:DRAGONPULSE,:HEATWAVE],
 	:ability => :LEVITATE,
 	:gender => "F",
@@ -50387,7 +50387,7 @@ TEAMARRAY = [{
 	:species => :MIMIKYU,
 	:level => 85,
 	:item => :SPOOKYPLATE,
-	:moves => [:HONECLAWS,:PLAYROUGH,:SHADOWCLAW,:SHADOWSNEAK],
+	:moves => [:SWORDSDANCE,:PLAYROUGH,:SPECTRALTHIEF,:SHADOWSNEAK],
 	:ability => :DISGUISE,
 	:gender => "F",
 	:shiny => true,
@@ -50399,7 +50399,7 @@ TEAMARRAY = [{
 {
 	:species => :SNORLAX,
 	:level => 86,
-	:item => :SNORLAXITE,
+	:item => :ASSAULTVEST,
 	:moves => [:RETURN,:EARTHQUAKE,:HEAVYSLAM,:HEATCRASH],
 	:ability => :THICKFAT,
 	:gender => "M",

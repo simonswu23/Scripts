@@ -722,15 +722,36 @@ class PokeBattle_Pokemon
 	  return v.keys.include?(@item)
   end
 
+  def hasGigaForm?
+    v = $cache.pkmn[@species].formData.dig(:GigaForm)
+    return false if !v
+    # check if current species form *can* Mega
+    if !self.isMega? # don't do this check if you are already a Mega
+      k = $cache.pkmn[@species].formData.dig(:DefaultForm)
+      if k.is_a?(Array)
+        return false if !k.include?(@form)
+      else
+        return false if k != @form
+      end 
+    end
+
+    # will need to handle urshifu at some point
+
+    # owning giga stone handled in call pbCanGigaEvolve
+    return true
+  end
+
   def hasUltraForm?
     return @species == :NECROZMA && @item == :ULTRANECROZIUMZ && self.form!=0
   end
 
   def isMega?
     v = $cache.pkmn[@species].formData.dig(:MegaForm)
+    v = $cache.pkmn[@species].formData.dig(:GigaForm) if (Rejuv && !v)
     v = $cache.pkmn[@species].formData.dig(:PulseForm) if (Reborn && !v)
     v = $cache.pkmn[@species].formData.dig(:RiftForm) if (Rejuv && !v)
-    v.values.each{|a| v=a if a.is_a?(Hash)} if v # filter for nested hashes aka Urshifu (if there is ever a mon with more than 1 megastone and a nested hash this needs rewriting)
+    # @SWu: Do urshifu below
+    # v.values.each{|a| v=a if a.is_a?(Hash)} if v # filter for nested hashes aka Urshifu (if there is ever a mon with more than 1 megastone and a nested hash this needs rewriting)
     return true if v.is_a?(Hash) && v.values.include?(self.form)
     return false if v.is_a?(Hash)
     return v!=nil && self.form >= v
@@ -744,6 +765,18 @@ class PokeBattle_Pokemon
     self.form=v if v.is_a?(Integer)
     self.form=v[@item] if v.is_a?(Hash) && v[@item].is_a?(Integer)
     self.form=v[@item][@form] if v.is_a?(Hash) && v[@item].is_a?(Hash)
+    self.originalAbility = self.ability
+    self.ability = self.abilityIndex
+  end
+
+  def makeGiga
+    v = $cache.pkmn[@species].formData.dig(:GigaForm)
+    self.originalForm = self.form
+    self.form=v # if v.is_a?(Integer)
+
+    # @SWu TODO: only need to handle Urshifu below
+    # self.form=v[@item] if v.is_a?(Hash) && v[@item].is_a?(Integer)
+    # self.form=v[@item][@form] if v.is_a?(Hash) && v[@item].is_a?(Hash)
     self.originalAbility = self.ability
     self.ability = self.abilityIndex
   end

@@ -219,6 +219,12 @@ class PokeBattle_Battle
 		for i in 0...@zMove[1].length
 			@zMove[1][i]=-1 if @zMove[1][i]>=0
 		end
+    # for i in 0...@gigaEvolution[0].length
+		# 	@gigaEvolution[0][i]=-1 if @gigaEvolution[0][i]>=0
+		# end
+		# for i in 0...@gigaEvolution[1].length
+		# 	@gigaEvolution[1][i]=-1 if @gigaEvolution[1][i]>=0
+		# end
 		@scene.pbChooseEnemyCommand
 		switchTrainers
 		@scene.pbChooseEnemyCommand
@@ -291,10 +297,10 @@ class PokeBattle_Battle
               side=(pbIsOpposing?(j.index)) ? 1 : 0
               owner=pbGetOwnerIndex(j.index)
               if @megaEvolution[side][owner]==j.index
-              pbMegaEvolve(j.index)
+                pbMegaEvolve(j.index)
               end
               if @ultraBurst[side][owner]==i.index
-              pbUltraBurst(i.index)
+                pbUltraBurst(i.index)
               end
               j.pbUseMove(@choices[j.index])
               j.effects[:Pursuit]=true

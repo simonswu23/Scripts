@@ -8866,6 +8866,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :BUTTERFREENITE => {
@@ -8876,6 +8877,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :PIKACHUTITE => {
@@ -8886,6 +8888,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :MEOWTHITE => {
@@ -8896,6 +8899,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :MACHAMPITE => {
@@ -8906,6 +8910,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :GENGARITEG => {
@@ -8916,6 +8921,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :KINGLERITE => {
@@ -8926,6 +8932,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :LAPRASITE => {
@@ -8936,6 +8943,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :EEVEETITE => {
@@ -8946,6 +8954,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :SNORLAXITE => {
@@ -8956,6 +8965,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :GARBODORNITE => {
@@ -8966,6 +8976,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :MELMETALITE => {
@@ -8976,6 +8987,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :CORVIKNITE => {
@@ -8986,6 +8998,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :ORBEETLENITE => {
@@ -8996,6 +9009,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :DREDNAWTITE => {
@@ -9006,6 +9020,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :COALOSSALITE => {
@@ -9016,6 +9031,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :FLAPPLETITE => {
@@ -9026,6 +9042,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :APPLETUNITE => {
@@ -9036,6 +9053,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :SANDACONDITE => {
@@ -9046,6 +9064,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :TOXTRICITITE => {
@@ -9056,6 +9075,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :CENTISKORCHITE => {
@@ -9066,6 +9086,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :HATTERENITE => {
@@ -9076,6 +9097,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :GRIMMSNARLITE => {
@@ -9086,6 +9108,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :ALCREMITE => {
@@ -9096,6 +9119,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :COPPERAJITE => {
@@ -9106,6 +9130,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :DURALUDONITE => {
@@ -9116,6 +9141,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :VENUSAURITEG => {
@@ -9126,6 +9152,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :BLASTOISINITEG => {
@@ -9136,6 +9163,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :RILLABOOMITE => {
@@ -9146,6 +9174,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :CINDERACITE => {
@@ -9156,6 +9185,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :INTELEONITE => {
@@ -9166,6 +9196,7 @@ ITEMHASH = {
 	:crystal => true,
 	:noUseInBattle => true,
 	:noUse => true,
+	:keyitem => true,
 },
 
 :PHANTOMCANDYS => {

@@ -14115,16 +14115,16 @@ MOVEHASH = {
 :FINALE => {
 	:ID => 903,
 	:name => "Finale",
-	:function => 0x318,
+	:function => 0x90A,
 	:type => :FAIRY,
 	:category => :special,
-	:basedamage => 100,
-	:accuracy => 80,
-	:maxpp => 15,
+	:basedamage => 40,
+	:accuracy => 60,
+	:maxpp => 8,
 	:target => :AllOpposing,
 	:healingmove => true,
   	:kingrock => true,
-  	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little."
+  	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little on each hit."
 },
 
 :PSYCHICNOISE => {
