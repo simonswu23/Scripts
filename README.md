@@ -326,7 +326,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Confection
   - lowers all foes evasion by 2 on entry and at the end of each turn
-  - foes with lowered evasion cannot switch, and their attack scales with evasion drops
+  - foes with lowered evasion cannot switch
+  - takes x0.5 damage from fire and ice attacks
  
 - Silver Scales
   - takes 1/2 damage from moves with side effect chances, 100% chance to trigger side effect chances of wind moves

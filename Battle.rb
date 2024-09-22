@@ -4928,7 +4928,9 @@ class PokeBattle_Battle
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
           @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-          j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:i)
+          if j.pbCanReduceStatStage?(PBStats::EVASION) 
+            j.pbReduceStat(PBStats::EVASION,2,abilitymessage:true, statdropper:i)
+          end
         end
       end
 
@@ -5547,6 +5549,7 @@ class PokeBattle_Battle
         next
       end
     end
+
     # Multi-turn attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     for i in priority
       next if i.isFainted?

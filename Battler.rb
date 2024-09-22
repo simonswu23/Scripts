@@ -5124,13 +5124,7 @@ class PokeBattle_Battler
               target.pbThis,user.pbThis(true),target.pbThis))
         end
       end
-      if target.ability == :ADAMANTINEBODY && basemove.category == :physical && basemove.contactMove? && !user.isFainted?
-            target.damagestate.calcdamage>0 && !target.damagestate.substitute && (user.ability != (:MAGICGUARD) && 
-            !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM))
-        @battle.scene.pbDamageAnimation(user,0)
-        user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
-        @battle.pbDisplay(_INTL("{2} was hurt by {1}'s Adamantine Body!", target.pbThis,user.pbThis(true),target.pbThis))
-      end
+
       user.effects[:Tantrum]= (damage == -1)
       totaldamage += damage if damage && damage > 0
       if target.isbossmon
@@ -6088,19 +6082,6 @@ class PokeBattle_Battler
         end
 
         user.pbFaint if user.isFainted? # no return
-      end
-
-      # Finale
-      if user.ability == (:FINALE) && @effects[:HealBlock]==0
-        hpgain1=((user.totalhp+1)/4).floor
-        hpgain2=((user.pbPartner.totalhp+1)/4).floor
-        user.pbRecoverHP([hpgain1.floor,1].max,true)
-        if (!user.pbPartner.isFainted?)
-          user.pbPartner.pbRecoverHP([hpgain2.floor,1].max,true)
-        end
-        if hpgain1>0 || hpgain2 >0
-          @battle.pbDisplay(_INTL("{1}'s Finale restored its allies HP!",user.pbThis))
-        end
       end
 
       # Dancer
