@@ -179,8 +179,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 122, 83, 145, 115, 80],
-		# :BaseStats => [160, 62, 83, 140, 80, 80],
+		:BaseStats => [160, 62, 83, 140, 80, 80],
 		:Abilities => [:CHLOROPHYLL],
 		:Height => 240,
 		:Weight => 2216,
@@ -378,8 +377,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [78, 119, 98, 134, 100, 105],
-		# :BaseStats => [156, 54, 78, 159, 85, 80],
+		:BaseStats => [156, 54, 78, 159, 85, 80],
 		:Abilities => [:SOLARPOWER],
 		:Height => 280,
 		:Weight => 2216,
@@ -568,8 +566,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [79, 83, 130, 135, 135, 68],
-		# :BaseStats => [158, 73, 130, 115, 85, 48],
+		:BaseStats => [158, 73, 130, 115, 85, 48],
 		:Abilities => [:MASSIVESHELL],
 		:Height => 250,
 		:Weight => 2216,
@@ -725,8 +722,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [60, 25, 70, 145, 115, 120],
-		# :BaseStats => [120, 15, 50, 125, 85, 100],
+		:BaseStats => [120, 15, 50, 125, 85, 100],
 		:Height => 170,
 		:Abilities => [:SILVERSCALES],
 		:Weight => 705,
@@ -1563,8 +1559,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [35, 60, 140, 55, 140, 30],
-		# :BaseStats => [140, 15, 40, 90, 50, 90],
+		:BaseStats => [140, 15, 40, 90, 50, 90],
 		:Abilities => [:STATIC],
 		:Height => 210,
 		:Weight => 2456,
@@ -3538,8 +3533,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [40, 120, 65, 40, 65, 110],
-		# :BaseStats => [200, 85, 55, 20, 40, 40],
+		:BaseStats => [200, 85, 55, 20, 40, 40],
 		:Abilities => [:TECHNICIAN],
 		:Height => 330,
 		:Weight => 2456,
@@ -4624,8 +4618,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [90, 170, 105, 70, 105, 65],
-		# :BaseStats => [180, 150, 80, 45, 85, 55],
+		:BaseStats => [180, 150, 80, 45, 85, 55],
 		:Abilities => [:NOGUARD],
 		:Height => 250,
 		:Weight => 2866,
@@ -6599,8 +6592,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :GHOST,
 		:Type2 => :DARK,
-		:BaseStats => [60, 65, 100, 150, 115, 110],
-		# :BaseStats => [120, 25, 100, 130, 125, 60],
+		:BaseStats => [120, 25, 100, 130, 125, 60],
 		:Abilities => [:GRAVPULL],
 		:Height => 200,
 		:Weight => 1222,
@@ -6912,8 +6904,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [55, 169, 135, 60, 60, 96],
-		#:BaseStats => [110, 155, 115, 25, 50, 75],
+		:BaseStats => [110, 155, 115, 25, 50, 75],
 		:Abilities => [:SHEERFORCE],
 		:toobig => true,
 		:Height => 190,
@@ -9191,8 +9182,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [150, 115, 130, 125, 115, 60],
-		# :BaseStats => [220, 65, 130, 125, 110, 45],
+		:BaseStats => [220, 65, 130, 125, 110, 45],
 		:Abilities => [:RESONANCE],
 		:Height => 240,
 		:Weight => 2456,
@@ -9308,8 +9298,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [55, 55, 80, 115, 65, 105],
-		# :BaseStats => [220, 75, 50, 25, 65, 55],
+		:BaseStats => [220, 75, 50, 25, 65, 55],
 		:Abilities => [:ADAPTABILITY],
 		:Height => 180,
 		:Weight => 2456,
@@ -9919,8 +9908,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [160, 150, 95, 55, 160, 20],
-		# :BaseStats => [320, 110, 65, 65, 110, 30],
+		:BaseStats => [320, 110, 65, 65, 110, 30],
 		:Abilities => [:REPLENISH],
 		:Height => 350,
 		:Weight => 100141,
@@ -36815,8 +36803,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 135, 107, 60, 107, 85],
-		# :BaseStats => [160, 115, 82, 50, 82, 65],
+		:BaseStats => [160, 115, 82, 50, 82, 65],
 		:Abilities => [:NEUTRALIZINGGAS],
 		:Height => 6033,
 		:Weight => 2366,
@@ -51887,8 +51874,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [135, 183, 163, 85, 85, 45],
-		# :BaseStats => [270, 153, 153, 60, 65, 34],
+		:BaseStats => [270, 153, 153, 60, 65, 34],
 		:Abilities => [:IRONFIST],
 		:Height => 250,
 		:Weight => 17637,
@@ -52053,8 +52039,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [100, 150, 115, 120, 90, 55],
-		# :BaseStats => [200, 155, 90, 50, 70, 65],
+		:BaseStats => [200, 155, 90, 50, 70, 65],
 		:Abilities => [:GRASSYSURGE],
 		:Height => 280,
 		:Weight => 1653,
@@ -52218,8 +52203,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [80, 155, 82, 82, 82, 149],
-		# :BaseStats => [160, 136, 75, 35, 65, 139],
+		:BaseStats => [160, 136, 75, 35, 65, 139],
 		:Abilities => [:LIBERO],
 		:Height => 270,
 		:Weight => 1653,
@@ -52382,8 +52366,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [70, 125, 75, 145, 75, 140],
-		# :BaseStats => [140, 65, 65, 145, 65, 120],
+		:BaseStats => [140, 65, 65, 145, 65, 120],
 		:Abilities => [:SNIPER],
 		:Height => 400,
 		:Weight => 1653,
@@ -52651,8 +52634,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [98, 122, 145, 53, 110, 67],
-		# :BaseStats => [196, 87, 125, 43, 95, 47],
+		:BaseStats => [196, 87, 125, 43, 95, 47],
 		:Abilities => [:DOWNDRAFT],
 		:Height => 140,
 		:Weight => 1653,
@@ -52804,8 +52786,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [60, 75, 130, 95, 140, 105],
-		# :BaseStats => [120, 45, 110, 100, 120, 70],
+		:BaseStats => [120, 45, 110, 100, 120, 70],
 		:Abilities => [:GRAVFLUX],
 		:Height => 140,
 		:Weight => 899
@@ -53282,8 +53263,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [90, 155, 110, 48, 88, 94],
-		# :BaseStats => [180, 135, 90, 38, 58, 74],
+		:BaseStats => [180, 135, 90, 38, 58, 74],
 		:Abilities => [:STRONGJAW],
 		:Height => 240,
 		:Weight => 2456,
@@ -53544,8 +53524,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [110, 135, 150, 80, 100, 35],
-		# :BaseStats => [220, 80, 120, 80, 90, 30],
+		:BaseStats => [220, 80, 120, 80, 90, 30],
 		:Abilities => [:STEAMENGINE],
 		:Height => 420,
 		:Weight => 8845,
@@ -53651,8 +53630,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [70, 130, 105, 110, 80, 90],
-		# :BaseStats => [140, 130, 80, 65, 60, 80],
+		:BaseStats => [140, 130, 80, 65, 60, 80],
 		:Abilities => [:OWNTEMPO],
 		:Height => 240,
 		:Weight => 2456,
@@ -53716,8 +53694,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [110, 95, 110, 140, 110, 20],
-		# :BaseStats => [220, 55, 80, 120, 100, 20],
+		:BaseStats => [220, 55, 80, 120, 100, 20],
 		:Abilities => [:THICKFAT],
 		:Height => 240,
 		:Weight => 2456,
@@ -53827,8 +53804,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [72, 127, 125, 105, 90, 91],
-		# :BaseStats => [144, 117, 145, 55, 90, 31],
+		:BaseStats => [144, 117, 145, 55, 90, 31],
 		:Abilities => [:THICKFAT],
 		:Height => 220,
 		:Weight => 2456,
@@ -54165,8 +54141,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [75, 123, 95, 139, 70, 100],
-		# :BaseStats => [150, 68, 70, 144, 70, 75],
+		:BaseStats => [150, 68, 70, 144, 70, 75],
 		:Abilities => [:TECHNICIAN],
 		:Height => 240,
 		:Weight => 2456,
@@ -54287,8 +54262,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [100, 140, 75, 90, 110, 110],
-		# :BaseStats => [200, 125, 75, 50, 100, 65],
+		:BaseStats => [200, 125, 75, 50, 100, 65],
 		:Abilities => [:FLASHFIRE],
 		:Height => 750,
 		:Weight => 2456,
@@ -54649,8 +54623,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [57, 107, 115, 166, 130, 25],
-		# :BaseStats => [114, 45, 115, 146, 123, 29],
+		:BaseStats => [114, 45, 115, 146, 123, 29],
 		:Abilities => [:MAGICBOUNCE],
 		:Height => 260,
 		:Weight => 2456,
@@ -54825,8 +54798,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [95, 145, 105, 75, 100, 90],
-		# :BaseStats => [190, 120, 65, 95, 75, 60],
+		:BaseStats => [190, 120, 65, 95, 75, 60],
 		:Abilities => [:PRANKSTER],
 		:Height => 320,
 		:Weight => 2456,
@@ -55285,8 +55257,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [130, 60, 85, 150, 161, 24],
-		# :BaseStats => [130, 30, 85, 145, 166, 24],
+		:BaseStats => [130, 30, 85, 145, 166, 24],
 		#:Abilities => [:FINALE],
 		:Abilities => [:CONFECTION],
 		:Height => 300,
@@ -55819,8 +55790,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [122, 155, 104, 45, 124, 50],
-		# :BaseStats => [244, 150, 99, 30, 69, 30],
+		:BaseStats => [244, 150, 99, 30, 69, 30],
 		:Abilities => [:BULLDOZER],
 		:Height => 230,
 		:Weight => 13000,
@@ -56066,8 +56036,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [70, 95, 130, 150, 80, 110],
-		# :BaseStats => [140, 55, 125, 140, 80, 65],
+		:BaseStats => [140, 55, 125, 140, 80, 65],
 		:Abilities => [:LIGHTNINGROD],
 		:Height => 430,
 		:Weight => 2456,
@@ -56533,8 +56502,7 @@ MONHASH = {
 	},
 
 	"Single Giga Form" => {
-		:BaseStats => [100, 165, 120, 73, 80, 112],
-		# :BaseStats => [200, 150, 100, 43, 60, 97],
+		:BaseStats => [200, 150, 100, 43, 60, 97],
 		:Abilities => [:UNSEENFIST],
 		:Height => 290,
 		:Weight => 2216,
@@ -56542,7 +56510,7 @@ MONHASH = {
 
 	"Rapid Giga Form" => {
 		:BaseStats => [100, 165, 110, 73, 70, 132],
-		# :BaseStats => [100, 130, 100, 43, 60, 117],
+		:BaseStats => [100, 130, 100, 43, 60, 117],
 		:Abilities => [:UNSEENFIST],
 		:Height => 260,
 		:Weight => 2216,

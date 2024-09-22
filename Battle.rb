@@ -5069,6 +5069,14 @@ class PokeBattle_Battle
             end
           end
         end
+        if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
+          @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
+          @battle.state.effects[:PSYTERRAIN] = 0
+          @battle.state.effects[:GRASSY] = 0
+          @battle.state.effects[:ELECTERRAIN] = 0
+          @battle.state.effects[:MISTY] = 0
+          @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
+        end
       end
 
       # Dry Skin
