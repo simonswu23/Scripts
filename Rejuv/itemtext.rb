@@ -10225,4 +10225,24 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:PLUSLECREST => {
+	:ID => 2016,
+	:name => "Plusle Crest",
+	:desc => "Burn Baby Burn",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:MINUNCREST => {
+	:ID => 2017,
+	:name => "Minun Crest",
+	:desc => "Ice Ice Baby",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

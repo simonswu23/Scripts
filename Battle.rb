@@ -2371,7 +2371,7 @@ class PokeBattle_Battle
     end
 
     # @SWu add the specific GMax stone here
-    pbDisplay(_INTL("{1}'s is reacting to {3}'s {4}!", @battlers[index].pbThis, ownername,pbGetMegaRingName(index)))
+    pbDisplay(_INTL("{1} is reacting to {3}'s {4}!", @battlers[index].pbThis, ownername, PBStuff::POKEMONTOGIGASTONE[@battlers[index].species][0]))
   
     # Animation
     pbCommonAnimation("MegaEvolution",@battlers[index],nil)
@@ -4905,8 +4905,10 @@ class PokeBattle_Battle
         end
       end
     end
+
     for i in priority
       next if i.isFainted?
+
       if i.crested == :MEGANIUM
         party=@battle.pbParty(i.index)
         for j in 0...party.length
@@ -4920,7 +4922,6 @@ class PokeBattle_Battle
       # Meganium + Meganium Crest
       if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
           hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
-          pbDisplay(_INTL("The Meganium Crest restored {1}'s HP a little!",i.pbThis(true))) if hpgain>0    
       end
 
       # Confection

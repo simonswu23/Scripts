@@ -179,6 +179,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :GRASS,
+		:Type2 => :GROUND,
 		:BaseStats => [160, 62, 83, 140, 80, 80],
 		:Abilities => [:CHLOROPHYLL],
 		:Height => 240,
@@ -377,6 +379,7 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :FIRE,
 		:BaseStats => [156, 54, 78, 159, 85, 80],
 		:Abilities => [:SOLARPOWER],
 		:Height => 280,
@@ -566,8 +569,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :WATER,
+		:Type2 => :STEEL,
 		:BaseStats => [158, 73, 130, 115, 85, 48],
-		:Abilities => [:MASSIVESHELL],
+		:Abilities => [:DRIZZLE],
 		:Height => 250,
 		:Weight => 2216,
 	},
@@ -1559,7 +1564,11 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
-		:BaseStats => [140, 15, 40, 90, 50, 90],
+		:Type1 => :ELECTRIC,
+		:Type2 => :NORMAL,
+		:BaseStats => [140, 90, 40, 90, 50, 15],
+		# electric type attacks have 100% chance to paralyze
+		# paralysis quarters speed + immobile chance boosted to 1/3
 		:Abilities => [:STATIC],
 		:Height => 210,
 		:Weight => 2456,
@@ -3533,7 +3542,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :NORMAL,
+		:Type2 => :STEEL,
 		:BaseStats => [200, 85, 55, 20, 40, 40],
+		# Constant Follow Me
 		:Abilities => [:TECHNICIAN],
 		:Height => 330,
 		:Weight => 2456,
@@ -4618,6 +4630,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :FIGHTING,
+		:Type2 => :ROCK,
 		:BaseStats => [180, 150, 80, 45, 85, 55],
 		:Abilities => [:NOGUARD],
 		:Height => 250,
@@ -6904,6 +6918,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :WATER,
+		:Type2 => :BUG,
 		:BaseStats => [110, 155, 115, 25, 50, 75],
 		:Abilities => [:SHEERFORCE],
 		:toobig => true,
@@ -9298,7 +9314,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :NORMAL,
+		:Type2 => :FAIRY,
 		:BaseStats => [220, 75, 50, 25, 65, 55],
+		# All foes are infatuated
 		:Abilities => [:ADAPTABILITY],
 		:Height => 180,
 		:Weight => 2456,
@@ -9908,6 +9927,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :NORMAL,
+		:Type2 => :GROUND,
 		:BaseStats => [320, 110, 65, 65, 110, 30],
 		:Abilities => [:REPLENISH],
 		:Height => 350,
@@ -20473,6 +20494,7 @@ MONHASH = {
 		:EggMoves => [:CHARM,:DISCHARGE,:FAKETEARS,:LUCKYCHANT,:SING,:SWEETKISS,:TEARFULLOOK,:WISH],
 		:Moveset => [
 			[1,:NUZZLE],
+			[1,:UPROAR],
 			[1,:PLAYNICE],
 			[1,:GROWL],
 			[1,:THUNDERWAVE],
@@ -20488,12 +20510,13 @@ MONHASH = {
 			[28,:CHARGE],
 			[31,:DISCHARGE],
 			[34,:BATONPASS],
+			[35,:HYPERVOICE],
 			[37,:AGILITY],
-			[40,:LASTRESORT],
+			[40,:FAKEOUT],
 			[43,:THUNDER],
 			[46,:NASTYPLOT],
-			[49,:ENTRAINMENT]],
-		:compatiblemoves => [:AGILITY,:BATONPASS,:BODYSLAM,:CHARGEBEAM,:CHARM,:COUNTER,:COVET,:DEFENSECURL,:DOUBLEEDGE,:DRAININGKISS,:DYNAMICPUNCH,:ECHOEDVOICE,:EERIEIMPULSE,:ELECTRICTERRAIN,:ELECTROBALL,:ELECTROWEB,:ENCORE,:FLASH,:FLING,:GRASSKNOT,:HEADBUTT,:HELPINGHAND,:IRONTAIL,:LASTRESORT,:LIGHTSCREEN,:MAGNETRISE,:MEGAKICK,:MEGAPUNCH,:MIMIC,:MUDSLAP,:MYSTICALFIRE,:NASTYPLOT,:PLAYROUGH,:POWERSWAP,:RAINDANCE,:RISINGVOLTAGE,:ROLLOUT,:SCREECH,:SEISMICTOSS,:SHOCKWAVE,:SIGNALBEAM,:SKILLSWAP,:SWIFT,:TERRAINPULSE,:THUNDER,:THUNDERBOLT,:THUNDERPUNCH,:THUNDERWAVE,:UPROAR,:VOLTSWITCH,:WILDCHARGE],
+			[49,:MEFIRST]],
+		:compatiblemoves => [:AGILITY,:BATONPASS,:BODYSLAM,:CHARGEBEAM,:CHARM,:COUNTER,:COVET,:DEFENSECURL,:DOUBLEEDGE,:DRAININGKISS,:DYNAMICPUNCH,:ECHOEDVOICE,:EERIEIMPULSE,:ELECTRICTERRAIN,:ELECTROBALL,:ELECTROWEB,:ENCORE,:FLASH,:FLING,:GRASSKNOT,:HEADBUTT,:HELPINGHAND,:HYPERVOICE,:IRONTAIL,:LASTRESORT,:LIGHTSCREEN,:MAGNETRISE,:MEGAKICK,:MEGAPUNCH,:MIMIC,:MUDSLAP,:MYSTICALFIRE,:NASTYPLOT,:PLAYROUGH,:POWERSWAP,:RAINDANCE,:RISINGVOLTAGE,:ROLLOUT,:SCREECH,:SEISMICTOSS,:SHOCKWAVE,:SIGNALBEAM,:SKILLSWAP,:SWIFT,:TERRAINPULSE,:THUNDER,:THUNDERBOLT,:THUNDERPUNCH,:THUNDERWAVE,:UPROAR,:VOLTSWITCH,:WILDCHARGE],
 		:moveexceptions => [],
 		:Color => "Yellow",
 		:Habitat => "Grassland",
@@ -20528,6 +20551,7 @@ MONHASH = {
 		:EggMoves => [:CHARM,:DISCHARGE,:FAKETEARS,:LUCKYCHANT,:SING,:SWEETKISS,:TEARFULLOOK,:WISH],
 		:Moveset => [
 			[1,:NUZZLE],
+			[1,:UPROAR],
 			[1,:PLAYNICE],
 			[1,:GROWL],
 			[1,:THUNDERWAVE],
@@ -20543,12 +20567,13 @@ MONHASH = {
 			[28,:CHARGE],
 			[31,:DISCHARGE],
 			[34,:BATONPASS],
+			[35,:HYPERVOICE],
 			[37,:AGILITY],
-			[40,:TRUMPCARD],
+			[40,:FAKEOUT],
 			[43,:THUNDER],
 			[46,:NASTYPLOT],
-			[49,:ENTRAINMENT]],
-		:compatiblemoves => [:AGILITY,:BATONPASS,:BODYSLAM,:CHARGEBEAM,:COUNTER,:COVET,:DEFENSECURL,:DOUBLEEDGE,:DRAININGKISS,:DYNAMICPUNCH,:ECHOEDVOICE,:EERIEIMPULSE,:ELECTRICTERRAIN,:ELECTROBALL,:ELECTROWEB,:ENCORE,:FAKETEARS,:FLASH,:FLING,:GRASSKNOT,:GUARDSWAP,:HEADBUTT,:HELPINGHAND,:HEX,:IRONTAIL,:LASTRESORT,:LIGHTSCREEN,:MAGNETRISE,:MEGAKICK,:MEGAPUNCH,:METRONOME,:MIMIC,:MUDSLAP,:NASTYPLOT,:PLAYROUGH,:RAINDANCE,:RISINGVOLTAGE,:ROLLOUT,:SCREECH,:SEISMICTOSS,:SHOCKWAVE,:SIGNALBEAM,:SWIFT,:TERRAINPULSE,:THUNDER,:THUNDERBOLT,:THUNDERPUNCH,:THUNDERWAVE,:UPROAR,:VOLTSWITCH,:WILDCHARGE],
+			[49,:AFTERYOU]],
+		:compatiblemoves => [:AGILITY,:BATONPASS,:BODYSLAM,:CHARGEBEAM,:COUNTER,:COVET,:DEFENSECURL,:DOUBLEEDGE,:DRAININGKISS,:DYNAMICPUNCH,:ECHOEDVOICE,:EERIEIMPULSE,:ELECTRICTERRAIN,:ELECTROBALL,:ELECTROWEB,:ENCORE,:FAKETEARS,:FLASH,:FLING,:GRASSKNOT,:GUARDSWAP,:HEADBUTT,:HELPINGHAND,:HEX,:HYPERVOICE,:IRONTAIL,:LASTRESORT,:LIGHTSCREEN,:MAGNETRISE,:MEGAKICK,:MEGAPUNCH,:METRONOME,:MIMIC,:MUDSLAP,:NASTYPLOT,:PLAYROUGH,:RAINDANCE,:RISINGVOLTAGE,:ROLLOUT,:SCREECH,:SEISMICTOSS,:SHOCKWAVE,:SIGNALBEAM,:SWIFT,:TERRAINPULSE,:THUNDER,:THUNDERBOLT,:THUNDERPUNCH,:THUNDERWAVE,:UPROAR,:VOLTSWITCH,:WILDCHARGE],
 		:moveexceptions => [],
 		:Color => "Yellow",
 		:Habitat => "Grassland",
@@ -36803,7 +36828,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :POISON,
+		:Type2 => :GROUND,
 		:BaseStats => [160, 115, 82, 50, 82, 65],
+		# Landfill
 		:Abilities => [:NEUTRALIZINGGAS],
 		:Height => 6033,
 		:Weight => 2366,
@@ -37722,6 +37750,7 @@ MONHASH = {
 		},
 		:Moveset => [
 			[0,:SUNDAE],
+			[1,:SUNDAE],
 			[1,:SHEERCOLD],
 			[1,:FREEZEDRY],
 			[1,:WEATHERBALL],
@@ -37759,6 +37788,17 @@ MONHASH = {
 		:BattlerPlayerY => 17,
 		:BattlerEnemyY => 9,
 		:BattlerAltitude => 7,
+	},
+
+	"Giga Form" => {
+		:Type1 => :ICE,
+		:Type2 => :FLYING,
+		:BaseStats => [142, 95, 85, 110, 95, 79],
+		# Ice type attacks have 100% chance to frostbite
+		# Double frostbite damage when active
+		:Abilities => [:SNOWWARNING],
+		:Height => 750,
+		:Weight => 2456,
 	},
 
 	:OnCreation => {},
@@ -51874,7 +51914,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :STEEL,
+		:Type2 => :POISON,
 		:BaseStats => [270, 153, 153, 60, 65, 34],
+		# Steel SE against Steel, restores HP with Steel
 		:Abilities => [:IRONFIST],
 		:Height => 250,
 		:Weight => 17637,
@@ -52039,6 +52082,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :GRASS,
+		:Type2 => :NORMAL,
 		:BaseStats => [200, 155, 90, 50, 70, 65],
 		:Abilities => [:GRASSYSURGE],
 		:Height => 280,
@@ -52203,6 +52248,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :FIRE,
+		:Type2 => :FIGHTING,
 		:BaseStats => [160, 136, 75, 35, 65, 139],
 		:Abilities => [:LIBERO],
 		:Height => 270,
@@ -52366,6 +52413,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :WATER,
+		:Type2 => :DARK,
 		:BaseStats => [140, 65, 65, 145, 65, 120],
 		:Abilities => [:SNIPER],
 		:Height => 400,
@@ -53264,7 +53313,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [180, 135, 90, 38, 58, 74],
-		:Abilities => [:STRONGJAW],
+		:Abilities => [:SWIFTSWIM],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -53631,7 +53680,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [140, 130, 80, 65, 60, 80],
-		:Abilities => [:OWNTEMPO],
+		:Abilities => [:SIMPLE],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -53694,8 +53743,10 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :BUG,
+		:Type2 => :DRAGON,
 		:BaseStats => [220, 55, 80, 120, 100, 20],
-		:Abilities => [:THICKFAT],
+		:Abilities => [:HARVEST],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -53805,7 +53856,8 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [144, 117, 145, 55, 90, 31],
-		:Abilities => [:THICKFAT],
+		# Figure out more interesting ability here
+		:Abilities => [:SANDVEIL],
 		:Height => 220,
 		:Weight => 2456,
 	},
@@ -54142,7 +54194,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [150, 68, 70, 144, 70, 75],
-		:Abilities => [:TECHNICIAN],
+		:Abilities => [:PUNKROCK],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -54262,7 +54314,11 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :FIRE,
+		:Type2 => :DRAGON,
 		:BaseStats => [200, 125, 75, 50, 100, 65],
+		# Fire type attacks have 100% chance to burn
+		# Double burn damage when active
 		:Abilities => [:FLASHFIRE],
 		:Height => 750,
 		:Weight => 2456,
@@ -55790,6 +55846,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :STEEL,
+		:Type2 => :GROUND,
 		:BaseStats => [244, 150, 99, 30, 69, 30],
 		:Abilities => [:BULLDOZER],
 		:Height => 230,
@@ -56037,7 +56095,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [140, 55, 125, 140, 80, 65],
-		:Abilities => [:LIGHTNINGROD],
+		:Abilities => [:STAMINA],
 		:Height => 430,
 		:Weight => 2456,
 	},
@@ -56503,15 +56561,14 @@ MONHASH = {
 
 	"Single Giga Form" => {
 		:BaseStats => [200, 150, 100, 43, 60, 97],
-		:Abilities => [:UNSEENFIST],
+		:Abilities => [:ADAPTABILITY],
 		:Height => 290,
 		:Weight => 2216,
 	},
 
 	"Rapid Giga Form" => {
-		:BaseStats => [100, 165, 110, 73, 70, 132],
 		:BaseStats => [100, 130, 100, 43, 60, 117],
-		:Abilities => [:UNSEENFIST],
+		:Abilities => [:TECHNICIAN],
 		:Height => 260,
 		:Weight => 2216,
 	},

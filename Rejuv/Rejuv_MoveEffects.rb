@@ -1245,6 +1245,7 @@ class PokeBattle_Move_909 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    @battle.pbAnimation(:STEELBEAM,attacker,opponent,hitnum)
     if (!attacker.pbOpposingSide.effects[:Steelsurge])
       attacker.pbOpposingSide.effects[:Steelsurge]=true
       if !@battle.pbIsOpposing?(attacker.index)
@@ -1255,12 +1256,6 @@ class PokeBattle_Move_909 < PokeBattle_Move
     end
     return 0
   end
-
-  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return if !showanimation
-    @battle.pbAnimation(:STEELBEAM,attacker,opponent,hitnum)
-  end
-
 end
 
 ################################################################################
@@ -1287,11 +1282,7 @@ class PokeBattle_Move_90A < PokeBattle_Move
   # Replacement animation till a proper one is made
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return if !showanimation
-    if id == :LUNARBLESSINg
-      @battle.pbAnimation(:LUNARDANCE,attacker,opponent,hitnum)
-    else
-      @battle.pbAnimation(id,attacker,opponent,hitnum)
-    end
+    @battle.pbAnimation(id,attacker,opponent,hitnum)
   end
 
   def pbIsMultiHit
@@ -1310,8 +1301,38 @@ class PokeBattle_Move_90A < PokeBattle_Move
 
   def pbBaseDamage(basedmg,attacker,opponent)
     ret=@calcbasedmg
-    @calcbasedmg+=basedmg
+    @calcbasedmg+=10
     return ret
   end
   
+end
+
+################################################################################
+# Parry
+################################################################################
+
+class PokeBattle_Move_90B < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
+      attacker.effects[:ProtectRate]=0
+    end
+    priority = @battle.pbPriority
+    if (@battle.doublebattle && attacker == priority[3]) || (!@battle.doublebattle && attacker == priority[1])
+      attacker.effects[:ProtectRate]=0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return -1
+    end
+    if @battle.pbRandom(65536)<(65536/(3**attacker.effects[:ProtectRate])).floor
+      attacker.effects[:Protect]=:Parry
+      attacker.effects[:ProtectRate]+=1
+      @battle.pbAnimation(:ENDURE,attacker,nil)
+      @battle.pbDisplay(_INTL("{1} readied itself against damage!",attacker.pbThis))
+      return 0
+    else
+      attacker.effects[:ProtectRate]=0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return -1
+    end
+  end
+
 end

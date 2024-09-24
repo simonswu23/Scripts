@@ -14,6 +14,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
    
   - Misty Terrain
     - grants fairy types a x1.5 special defense boost
+    - TODO: change this to grounded Fairy types only
       
   - Frostbite
     - halves special attack of afflicted pokemon
@@ -431,21 +432,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - 25% boost to special attack and special defense
   - Traps and curses attacker on hit
   - Drains 1/16th hp from trapped foes at the end of each turn
- 
-- Runerigus Crest
-  - 25% boost to attack and defense
-  - Traps and harshly lowers attackers offensive stats on hit
-  - Drains 1/16th hp from trapped foes at the end of each turn
 
 - Thievul Crest
   - no longer raises special attack on entry
   - all stat drops this pokemon inflicts are doubled
 
-- Bronzong Crest
-  - special attack and special defense is always the higher of the two
-  - swaps defense and special defense (including stat boosts)
-  - restores 1/16th hp at the end of each turn
-  - TODO: levitate? (too powerful?)
 
 ### New Items
 - Poison Potion
@@ -454,6 +445,11 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Harmony Orb
   - hard coded: activates all possible abilities of holder in battle
   - TODO: not fully implemented, might need to override ability equality
+
+- Runerigus Crest
+  - 25% boost to attack and defense
+  - Traps and harshly lowers attackers offensive stats on hit
+  - Drains 1/16th hp from trapped foes at the end of each turn
  
 - Hydreigon Crest
   - Resists fairy attacks, user's dark type attacks are SE against Fairy
@@ -1028,6 +1024,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - acc: 60
   - All Foes
   - Launches three random attacks at target (additively scaling in damage, each with own acc checks). Each hit restores 1/6 HP to allies.
+  - TODO:
+    - figure out how to do random targeting across both foes
+    - randomly restore 1/6 to an ally instead of both (check life dew impl)
 
 - Psychic Noise
   - Psychic

@@ -14139,7 +14139,58 @@ MOVEHASH = {
 	:target => :SingleNonUser,
 	:effect => 100,
 	:kingrock => true,
+	:soundmove => true,
 	:desc => "The user attacks the target with a strange noise, preventing them from healing for two turns."
+},
+
+:PEEKABOO => {
+	:ID => 905,
+	:name => "Peekaboo",
+	:function => 0x00F,
+	:type => :FAIRY,
+	:category => :physical,
+	:basedamage => 40,
+	:accuracy => 100,
+	:maxpp => 20,
+	:effect => 30,
+	:target => :SingleNonUser,
+	:priority => 1,
+	:contact => true,
+	:kingrock => true,
+	:desc => "The user surprises the target with a fast fake-out attack, potentially making them flinch."
+},
+
+:PESTER => {
+	:ID => 906,
+	:name => "Pester",
+	:function => 0x0AA,
+	:type => :BUG,
+	:category => :physical,
+	:basedamage => 40,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 90,
+	:target => :SingleNonUser,
+	:priority => 4,
+	:contact => true,
+	:kingrock => true,
+	:nonmirror => true,
+	:desc => "The user annoys the target, evading attacks this turn. Its chance of failing rises if used in succession."
+},
+
+:PARRY => {
+	:ID => 907,
+	:name => "Parry",
+	:function => 0x90B,
+	:type => :FIGHTING,
+	:category => :status,
+	:basedamage => 0,
+	:accuracy => 0,
+	:maxpp => 10,
+	:target => :User,
+	:priority => 4,
+	:nonmirror => true,
+	:desc => "The user takes a ready stance. If hit by a contact move, it sharply raises its attack."
 },
 
 }

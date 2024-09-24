@@ -1117,29 +1117,27 @@ class PokeBattle_Battler
     end
     if (self.pokemon && self.pokemon.species == :CASTFORM)
       if self.ability == :FORECAST
-        if True
-          case @battle.pbWeather
-            when :SUNNYDAY
-              if self.form!=1
-                self.form=1
-                transformed=true
-              end
-            when :RAINDANCE
-              if self.form!=2
-                self.form=2
-                transformed=true
-              end
-            when :HAIL
-              if self.form!=3
-                self.form=3
-                transformed=true
-              end
-            else
-              if self.form!=0
-                self.form=0
-                transformed=true
-              end
-          end
+        case @battle.pbWeather
+          when :SUNNYDAY
+            if self.form!=1
+              self.form=1
+              transformed=true
+            end
+          when :RAINDANCE
+            if self.form!=2
+              self.form=2
+              transformed=true
+            end
+          when :HAIL
+            if self.form!=3
+              self.form=3
+              transformed=true
+            end
+          else
+            if self.form!=0
+              self.form=0
+              transformed=true
+            end
         end
       else
         if self.form!=0
@@ -1232,6 +1230,7 @@ class PokeBattle_Battler
       end
     end
     # UPDATE 1/18/2014
+    # @SWu: Handle other stance change variants here in the future
     # Aegislash
     if (self.pokemon && self.pokemon.species == :AEGISLASH) && !self.isFainted?
       if (self.ability == :STANCECHANGE && !@effects[:Transform])
@@ -1239,7 +1238,7 @@ class PokeBattle_Battler
         if self.form == 0 && !basemove.nil? && basemove.basedamage > 0
           self.form = 1 ; transformed = true
         # in Blade Forme and used King's Shield
-        elsif self.form == 1 && !basemove.nil? && basemove.move == :KINGSSHIELD
+        elsif self.form == 1 && !basemove.nil? && PBStuff::RATESHARERS.include?(basemove.move)
           self.form = 0 ; transformed = true
         end
       end
@@ -3255,6 +3254,17 @@ class PokeBattle_Battler
         end
       end
     end
+
+    if user.crested == :PLUSLE && @battle.pbRandom(10)<3 && target.pbCanBurn?(false) && movetype == :FIRE
+      target.pbBurn(user)
+      @battle.pbDisplay(_INTL("{1}'s crest burned {2}!",user.pbThis, target.pbThis(true)))
+    end
+
+    if user.crested == :MINUN && @battle.pbRandom(10)<3 && target.pbCanFrostbite?(false) && movetype == :ICE
+      target.pbFrostbite(user)
+      @battle.pbDisplay(_INTL("{1}'s crest frostbit {2}!",user.pbThis, target.pbThis(true)))
+    end
+
     if damage>0
       if target.crested == :COFAGRIGUS
         if (user.effects[:MeanLook]<0)
@@ -4569,25 +4579,34 @@ class PokeBattle_Battler
       # Protect / King's Shield / Obstruct / Spiky Shield / Baneful Bunker
       if !target.effects[:ProtectNegation] && !unseenfist && basemove.canProtect? && basemove.function!=0x116 &&
         ((target.effects[:Protect] == :KingsShield && (basemove.basedamage > 0 || @battle.FE == :FAIRYTALE || @battle.FE == :CHESS)) || target.effects[:Protect] == :Protect ||
-        (target.effects[:Protect] == :Obstruct && (basemove.basedamage > 0 || @battle.FE == :DIMENSIONAL || @battle.FE == :CHESS)) || target.effects[:Protect] == :SpikyShield || target.effects[:Protect] == :BanefulBunker)
-        @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
-        # physical contact
-        if basemove.contactMove? && !(user.ability == :LONGREACH)
-          if target.effects[:Protect] == :KingsShield
-            user.pbReduceStat(PBStats::ATTACK,2)
-            user.pbReduceStat(PBStats::SPATK,2) if @battle.FE == :FAIRYTALE || @battle.FE == :CHESS || @battle.FE == :COLOSSEUM
-          elsif target.effects[:Protect] == :Obstruct
-            user.pbReduceStat(PBStats::DEFENSE,2)
-          elsif target.effects[:Protect] == :SpikyShield
-            if @battle.FE == :COLOSSEUM
-              user.pbReduceHP((user.totalhp/4.0).floor)  
-            else  
-              user.pbReduceHP((user.totalhp/8.0).floor) 
+        (target.effects[:Protect] == :Obstruct && (basemove.basedamage > 0 || @battle.FE == :DIMENSIONAL || @battle.FE == :CHESS)) || target.effects[:Protect] == :SpikyShield || target.effects[:Protect] == :BanefulBunker) ||
+        (target.effects[:Protect] == :Parry && basemove.basedamage > 0) || (target.effects[:Pester] == :Parry && basemove.accuracy > 0)
+        if (target.effects[:Protect] == :Parry)
+          @battle.pbDisplay(_INTL("{1} parried the attack!",target.pbThis))
+          target.pbIncreaseStat(PBStats::ATTACK,2) if basemove.contactMove? && !(user.ability == :LONGREACH)
+          target.effects[:Protect] = false
+        elsif (target.effects[:Protect] == :Pester)
+          @battle.pbDisplay(_INTL("{1} evaded the attack!",target.pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+          # physical contact
+          if basemove.contactMove? && !(user.ability == :LONGREACH)
+            if target.effects[:Protect] == :KingsShield
+              user.pbReduceStat(PBStats::ATTACK,2)
+              user.pbReduceStat(PBStats::SPATK,2) if @battle.FE == :FAIRYTALE || @battle.FE == :CHESS || @battle.FE == :COLOSSEUM
+            elsif target.effects[:Protect] == :Obstruct
+              user.pbReduceStat(PBStats::DEFENSE,2)
+            elsif target.effects[:Protect] == :SpikyShield
+              if @battle.FE == :COLOSSEUM
+                user.pbReduceHP((user.totalhp/4.0).floor)  
+              else  
+                user.pbReduceHP((user.totalhp/8.0).floor) 
+              end
+              @battle.pbDisplay(_INTL("{1}'s Spiky Shield hurt {2}!",target.pbThis,user.pbThis(true)))
+            elsif target.effects[:Protect] == :BanefulBunker && user.pbCanPoison?(false)
+              user.pbPoison(target)
+              @battle.pbDisplay(_INTL("{1}'s Baneful Bunker poisoned {2}!",target.pbThis,user.pbThis(true)))            
             end
-            @battle.pbDisplay(_INTL("{1}'s Spiky Shield hurt {2}!",target.pbThis,user.pbThis(true)))
-          elsif target.effects[:Protect] == :BanefulBunker && user.pbCanPoison?(false)
-            user.pbPoison(target)
-            @battle.pbDisplay(_INTL("{1}'s Baneful Bunker poisoned {2}!",target.pbThis,user.pbThis(true)))
           end
         end
         return false
@@ -4689,7 +4708,6 @@ class PokeBattle_Battler
         return false
       end
     end
-    # @SWu I finally found it
     if basemove.basedamage==0 #Status move type absorb abilities
       type=basemove.pbType(user)
       if basemove.pbStatusMoveAbsorption(type,user,target)==0
@@ -4697,7 +4715,7 @@ class PokeBattle_Battler
       end
     end
 
-    if (basemove.pbType(user) == :POISON)
+    if (type == :POISON)
       if (target.ability == :PASTELVEIL)
         @battle.pbDisplay(_INTL("{1}'s {2} protected its allies from the attack!", target.pbThis,getAbilityName(target.ability)))
         return false
@@ -4707,7 +4725,7 @@ class PokeBattle_Battler
       end
     end
 
-    if (basemove.pbType(user) == :FIRE && target.ability == :HEATPROOF)
+    if (type == :FIRE && target.ability == :HEATPROOF)
       @battle.pbDisplay(_INTL("{1}'s {2} protected it from the attack!", target.pbThis,getAbilityName(target.ability)))
       return false
     end

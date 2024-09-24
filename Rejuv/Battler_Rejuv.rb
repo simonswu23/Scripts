@@ -311,6 +311,11 @@ class PokeBattle_Battler
           defense = @defense
           @defense = @spdef
           @spdef = defense
+          # @SWu check w/ Dedenne Crest too
+        when :PLUSLE
+          @spatk *= 1.5
+        when :MINUN
+          @speed *= 1.5
         end 
       end
 

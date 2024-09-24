@@ -4041,14 +4041,12 @@ class PokeBattle_Move_087 < PokeBattle_Move
   def pbType(attacker,type=@type)
     weather=@battle.pbWeather
     type=(:NORMAL) || 0
-    if True
-      type=((:WATER) || type) if weather== :RAINDANCE
-      type=((:ROCK) || type) if weather== :SANDSTORM
-      type=((:ICE)  || type) if weather== :HAIL
-      type=((:FLYING) || type) if @battle.FE == :SKY && weather == :STRONGWINDS
-      type=((:SHADOW) || type) if Rejuv && weather == :SHADOWSKY
-      type=((:FIRE) || type) if weather== :SUNNYDAY || attacker.crested == :CHERRIM  
-    end
+    type=((:WATER) || type) if weather== :RAINDANCE
+    type=((:ROCK) || type) if weather== :SANDSTORM
+    type=((:ICE)  || type) if weather== :HAIL
+    type=((:FLYING) || type) if @battle.FE == :SKY && weather == :STRONGWINDS
+    type=((:SHADOW) || type) if Rejuv && weather == :SHADOWSKY
+    type=((:FIRE) || type) if weather== :SUNNYDAY || attacker.crested == :CHERRIM  
     type=super(attacker,type)
     return type
   end
@@ -4920,6 +4918,7 @@ end
 ################################################################################
 class PokeBattle_Move_0AA < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
       attacker.effects[:ProtectRate]=0
     end
@@ -4954,6 +4953,29 @@ class PokeBattle_Move_0AA < PokeBattle_Move
     else
       attacker.effects[:ProtectRate]=0
       @battle.pbDisplay(_INTL("But it failed!"))
+      return -1
+    end
+  end
+
+  # Pester
+  def pbAdditionalEffect(attacker,opponent)
+    if !PBStuff::RATESHARERS.include?(attacker.previousMove) && !(attacker.crested == :VESPIQUEN && attacker.previousMove == :DEFENDORDER)
+      attacker.effects[:ProtectRate]=0
+    end
+    priority = @battle.pbPriority
+    if (@battle.doublebattle && attacker == priority[3]) || (!@battle.doublebattle && attacker == priority[1])
+      attacker.effects[:ProtectRate]=0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return -1
+    end
+    baseRate = 2
+    if @battle.pbRandom(65536)<(65536/(baseRate**attacker.effects[:ProtectRate])).floor
+      attacker.effects[:Protect]=:Pester
+      attacker.effects[:ProtectRate]+=1
+      @battle.pbDisplay(_INTL("{1} got away!",attacker.pbThis))
+      return 0
+    else
+      attacker.effects[:ProtectRate]=0
       return -1
     end
   end
@@ -8546,6 +8568,9 @@ class PokeBattle_Move_116 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1}'s Spiky Shield hurt {2}!",opponent.pbThis,attacker.pbThis(true)))
       end
       return -1
+    elsif opponent.effects[:Protect]==:Parry
+      opponent.pbIncreaseStat(PBStats::ATTACK, 2)
+      opponent.effects[:Protect] = false
     end
     if (@battle.choices[opponent.index][2] == nil) || (@battle.choices[opponent.index][2] == 0) || (@battle.choices[opponent.index][2] == -1) || (@battle.choices[opponent.index][2].basedamage == 0)
       @battle.pbDisplay(_INTL("But it failed!"))

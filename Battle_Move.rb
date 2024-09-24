@@ -168,17 +168,19 @@ class PokeBattle_Move
       end
     end
     case attacker.crested
-        when :SIMISEAR  then type=:WATER  if type==:NORMAL
-        when :SIMIPOUR  then type=:GRASS  if type==:NORMAL
-        when :SIMISAGE  then type=:FIRE   if type==:NORMAL
-        when :LUXRAY  then type=:ELECTRIC   if type==:NORMAL
-        when :SAWSBUCK
-          case attacker.form
-            when 0  then type=:WATER  if type==:NORMAL
-            when 1  then type=:FIRE   if type==:NORMAL
-            when 2  then type=:GROUND if type==:NORMAL
-            when 3  then type=:ICE    if type==:NORMAL 
-          end
+      when :SIMISEAR  then type=:WATER  if type==:NORMAL
+      when :SIMIPOUR  then type=:GRASS  if type==:NORMAL
+      when :SIMISAGE  then type=:FIRE   if type==:NORMAL
+      when :LUXRAY  then type=:ELECTRIC   if type==:NORMAL
+      when :PLUSLE  then type =:FIRE if type==:NORMAL
+      when :MINUN   then type =:ICE if  type==:NORMAL
+      when :SAWSBUCK
+        case attacker.form
+          when 0  then type=:WATER  if type==:NORMAL
+          when 1  then type=:FIRE   if type==:NORMAL
+          when 2  then type=:GROUND if type==:NORMAL
+          when 3  then type=:ICE    if type==:NORMAL 
+        end
     end
     if (attacker.effects[:Electrify] || type == :NORMAL && @battle.state.effects[:IonDeluge]) && !@zmove
       type=(:ELECTRIC)
@@ -269,11 +271,11 @@ class PokeBattle_Move
       return [opp2]
     end
     if opp2.effects[:Protect] || opp2.effects[:SpikyShield] || opp2.effects[:BanefulBunker] ||
-       opp2.effects[:KingsShield] || opp2.effects[:Obstruct]
+       opp2.effects[:KingsShield] || opp2.effects[:Obstruct] || opp2.effects[:Parry] || opp2.effects[:Pester]
       return [opp1]
     end
     if opp1.effects[:Protect] || opp1.effects[:SpikyShield] || opp1.effects[:BanefulBunker] ||
-       opp1.effects[:KingsShield] || opp1.effects[:Obstruct]
+       opp1.effects[:KingsShield] || opp1.effects[:Obstruct] || opp1.effects[:Parry] || opp2.effects[:Pester]
       return [opp2]
     end
     # immunity due to wonder guard?
@@ -389,8 +391,8 @@ class PokeBattle_Move
     calcspatkmult *= 2 if attacker.hasWorkingItem(:DEEPSEATOOTH) && (attacker.pokemon.species == :CLAMPERL)
     calcspatkmult *= 2 if attacker.hasWorkingItem(:LIGHTBALL) && (attacker.pokemon.species == :PIKACHU)
     calcspatkmult *= 1.5 if attacker.ability == :FLAREBOOST && (attacker.status== :BURN || @battle.FE == :BURNING || @battle.FE == :VOLCANIC || @battle.FE == :INFERNAL) &&  @battle.FE != :FROZENDIMENSION
-    calcspatkmult *= 1.5 if attacker.ability == :MINUS && (attacker.pbPartner.ability == :PLUS || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
-    calcspatkmult *= 1.5 if attacker.ability == :PLUS && (attacker.pbPartner.ability == :MINUS || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
+    calcspatkmult *= 1.5 if attacker.ability == :MINUS && (attacker.pbPartner.ability == :PLUS || attacker.crested == :MINUN || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
+    calcspatkmult *= 1.5 if attacker.ability == :PLUS && (attacker.pbPartner.ability == :MINUS || attacker.crested == :PLUSLE || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
     calcspatkmult *= 1.5 if attacker.ability == :SOLARPOWER && (@battle.pbWeather== :SUNNYDAY) &&  @battle.FE != :FROZENDIMENSION
     calcspatkmult *= 1.3 if attacker.pbPartner.ability == :BATTERY
     calcspatkmult *= 2 if attacker.ability == :PUREPOWER && @battle.FE == :PSYTERRAIN
@@ -1446,7 +1448,7 @@ class PokeBattle_Move
       accuracy*=0.9
     end
     if (opponent.ability == :WONDERSKIN || (Rejuv && @battle.FE == :PSYTERRAIN && opponent.ability == :MAGICIAN)) && 
-      @basedamage==0 && attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken)
+      (@accuracy > 0 && @accuracy < 100) && attacker.pbIsOpposing?(opponent.index) && !(opponent.moldbroken)
       if @battle.FE == :RAINBOW
         accuracy*=0
       else
@@ -1598,8 +1600,7 @@ class PokeBattle_Move
               basemult*=1.3 
           end
         end
-      when :LIQUIDVOICE
-        basemult*=1.3 if isSoundBased?
+      when :LIQUIDVOICE   then basemult*=1.3 if isSoundBased?
       when :RIVALRY       then basemult*= attacker.gender==opponent.gender ? 1.25 : 0.75 if attacker.gender!=2
       when :MEGALAUNCHER  then basemult*=1.5 if [:AURASPHERE,:DRAGONPULSE,:DARKPULSE,:WATERPULSE,:ORIGINPULSE,:TERRAINPULSE].include?(@move)
       when :ANALYTIC      then basemult*=1.3 if (@battle.battlers.find_all {|battler| battler && battler.hp > 0 && !battler.hasMovedThisRound? }).length == 0
@@ -2004,6 +2005,8 @@ class PokeBattle_Move
             atkmult*=1.5
           elsif @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN) || @battle.state.effects[:ELECTERRAIN] > 0
             atkmult*=1.5
+          elsif attacker.crested == :PLUSLE || attacker.crested == :MINUN
+            atkmult*=1.5
           end
         end
       when :DEFEATIST then atkmult*=0.5 if attacker.hp<=(attacker.totalhp/2.0).floor
@@ -2335,6 +2338,8 @@ class PokeBattle_Move
       damage*=1.5 if attacker.crested == :ARIADOS
       damage*=1.5 if @move == :AIRCUTTER
     end
+
+    # @SWu idk if this was always bugged but I think this actively decreases move power :skull
     # STAB-addition from Crests 
     typecrest = false
     case attacker.crested
@@ -2347,8 +2352,11 @@ class PokeBattle_Move
       when :LUMINEON then typecrest = true if type == :BUG || type == :FLYING
       when :GOTHITELLE then typecrest = true if type == :PSYCHIC || type == :DARK
       when :REUNICLUS then typecrest = true if type == :FIGHTING
+      # @SWu these don't work for some reason?
       when :CHERRIM then typecrest = true if type == :FIRE
-      when :GOODRA then tyepcrest = true if type == :POISON
+      when :GOODRA then  typecrest = true if type == :POISON
+      when :PLUSLE then typecrest = true if type == :FIRE
+      when :MINUN then typecrest = true if type == :ICE
       when :ZOROARK
         party = @battle.pbPartySingleOwner(attacker.index)
         party=party.find_all {|item| item && !item.egg? && item.hp>0 }
@@ -2357,12 +2365,12 @@ class PokeBattle_Move
         end
       end
     # STAB
-    if (attacker.hasType?(type) && (!attacker.effects[:DesertsMark]) ||
+    if  (attacker.hasType?(type) && (!attacker.effects[:DesertsMark])) ||
         (attacker.ability == :STEELWORKER && type == :STEEL) ||
         (attacker.ability == :BULLDOZER && type == :GROUND) ||
         (attacker.ability == :SOLARIDOL && type == :FIRE) || (attacker.ability == :SOLARIDOL && type == :PSYCHIC) || 
         (attacker.ability == :LUNARIDOL && type == :ICE) || (attacker.ability == :LUNARIDOL && type == :PSYCHIC) ||
-        typecrest==true)
+        (typecrest==true)
       if attacker.ability == :ADAPTABILITY
         damage*=2.0
       elsif (attacker.ability == :STEELWORKER && type == :STEEL) && @battle.FE == :FACTORY # Factory Field
@@ -2370,17 +2378,19 @@ class PokeBattle_Move
       else
         damage*=1.5
       end
+      # @SWu cursory fix to typemod issue (more or less accurate w/ damage rolls)
+      damage*=2 if typecrest
       if attacker.crested == :SILVALLY
         damage*=1.2
       end
       if attacker.species == :GENESECT
-        if (type == :WATER && opp2.species == :GENESECT && opp2.hasWorkingItem(:DOUSEDRIVE))
+        if (type == :WATER && attacker.species == :GENESECT && attacker.hasWorkingItem(:DOUSEDRIVE))
           damage*=1.5
-        elsif (type == :ELECTRIC && opp2.species == :GENESECT && opp2.hasWorkingItem(:SHOCKDRIVE))
+        elsif (type == :ELECTRIC && attacker.species == :GENESECT && attacker.hasWorkingItem(:SHOCKDRIVE))
           damage*=1.5
-        elsif (type == :ICE && opp2.species == :GENESECT && opp2.hasWorkingItem(:CHILLDRIVE))
+        elsif (type == :ICE && attacker.species == :GENESECT && attacker.hasWorkingItem(:CHILLDRIVE))
           damage*=1.5
-        elsif (type == :FIRE && opp2.species == :GENESECT && opp2.hasWorkingItem(:BURNDRIVE))
+        elsif (type == :FIRE && attacker.species == :GENESECT && attacker.hasWorkingItem(:BURNDRIVE))
           damage*=1.5
         end
       end
@@ -2494,7 +2504,7 @@ class PokeBattle_Move
     if @zmove
       if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] || 
         opponent.effects[:KingsShield] || opponent.effects[:Obstruct] ||
-        opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] ||
+        opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] || opponent.effects[:Parry]
         opponent.pbOwnSide.effects[:WideGuard] && (@target == :AllOpposing || @target == :AllNonUsers))
         if @move ==:UNLEASHEDPOWER
           @battle.pbDisplay(_INTL("The Interceptor's power broke through {1}'s Protect!",opponent.pbThis))
