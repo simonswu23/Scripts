@@ -6,6 +6,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Copy this folder into the same directory
 
 ## General
+  - Incoming Giga Evolution Changes
+    - Giga evolution typing / stat / ability rework (to be updated in the future)
+    - Giga evolutions now require no held item (Giga stone still required to be in bag)
+    - Giga evolutions now double the user's HP, but don't provide additional BST increases (some stat resdistributions)
+    - Giga evolutions now do not count as a mega evolution, meaning each team can have both one giga and mega evolution
+
   - Aqua Ring
     - also cures the user's status at the end of each turn
       
@@ -68,10 +74,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Lapras
   - base stat buffs: 130, 95, 100, 95, 105, 60
-  - ability: Water Absorb -> Hydro Veil
   - aevian base stat buffs: 135, 105, 90, 95, 95, 60
   - giga base stat buffs: 150, 115, 130, 125, 110, 45
-  - giga ability: Resonance
+  - giga ability: Hydro Veil
  
 - Gardevoir
   - mega base stat buffs: 68, 85, 65, 165, 135, 100
@@ -193,6 +198,21 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 65, 60, 75, 115, 136, 64
   - giga base stat buffs: 130, 60, 85, 150, 161, 24
   - learns chain drain at lvl 68
+
+- Plusle
+  - learns fake out at level 40
+  - learns uproar at level 1
+  - learns hyper voice at level 35
+  - learns follow me at level 45
+
+- Minun
+  - learns fake out at level 40
+  - learns uproar at level 1
+  - learns hyper voice at level 35
+  - learns after you at level 45
+
+- Popplio Line
+  - learns chirp instead of double slap by level up
    
 ### New Pokemon
 - Alpha Larvesta
@@ -307,6 +327,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Shield Dust
   - Also halves incoming damage from attacks with side effect chances
+
+- Wonder Skin
+  - New effect: sets the accuracy to all non 100% accurate moves to be 50%
+
+- Stance Change
+  - changes stances with any protection move
  
 ### New Abilities
 
@@ -497,6 +523,16 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - swaps defense and special defense stats
   - combines special attack and special defense stats to be the higher of the two
   - TOOD: update smart damage category
+
+- Plusle Crest
+  - Activates Plus (independently of other activations)
+  - x1.5 special attack
+  - Normal -> Fire, gains Fire STAB + gains chance to burn equal to the original attack's effect chance
+
+- Minun Crest
+  - Activates Minus (independently of other activations)
+  - x1.5 speed
+  - Normal -> Ice, gains Ice STAB + gains chance to frostbite equal to the original attack's effect chance
 
 ## Attacks
 
@@ -1007,7 +1043,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - bp: 130
   - acc: 90
   - Single Target
-  - Ignores defense modifiers and resistances (TODO: incomplete)
+  - ignores defense modifiers and resistances (TODO: incomplete)
  
 - Steelsurge
   - Steel
@@ -1015,7 +1051,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - bp: 90
   - acc: 90
   - All Foes
-  - Sets up steelsurge entry hazard on opposing side
+  - sets up steelsurge entry hazard on opposing side
 
 - Finale
   - Fairy
@@ -1023,7 +1059,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - bp: 40
   - acc: 60
   - All Foes
-  - Launches three random attacks at target (additively scaling in damage, each with own acc checks). Each hit restores 1/6 HP to allies.
+  - launches three random attacks at target (additively scaling in damage, each with own acc checks). Each hit restores 1/6 HP to allies.
   - TODO:
     - figure out how to do random targeting across both foes
     - randomly restore 1/6 to an ally instead of both (check life dew impl)
@@ -1034,7 +1070,38 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - bp: 70
   - acc: 100
   - Single Target
-  - Inflicts Heal Block for 2 turns
+  - inflicts Heal Block for 2 turns
+
+- Pester
+  - Bug
+  - Physical
+  - BP: 40
+  - acc: 100
+  - Single Target
+  - priority +1. 90% chance to evade attacks from the target this turn, evasion chance decreases if used in succession.
+  - TODO: continue testing (incomplete w/ doubles implementation)
+
+- Parry
+  - Fighting
+  - Status
+  - User
+  - priority +4. The user shields itself from the first attack this turn. If the attack was a direct contact move, gain +2 attack. Success chance decreases if used in succession.
+
+- Peekaboo
+  - Fairy
+  - Physical
+  - BP: 40
+  - acc: 100
+  - Single Target
+  - priority +1. 20% chance to make the target flinch.
+
+- Chirp
+  - Normal
+  - Special
+  - BP: 40
+  - acc: 100
+  - Single Target
+  - priority +1. 20% chance to make the target flinch. Sound based.
 
 # Battles
 - Valarie (Gym)

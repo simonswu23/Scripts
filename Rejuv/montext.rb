@@ -1566,7 +1566,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :ELECTRIC,
 		:Type2 => :NORMAL,
-		:BaseStats => [140, 90, 40, 90, 50, 15],
+		:BaseStats => [140, 90, 60, 90, 70, 75],
 		# electric type attacks have 100% chance to paralyze
 		# paralysis quarters speed + immobile chance boosted to 1/3
 		:Abilities => [:STATIC],
@@ -3544,7 +3544,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :NORMAL,
 		:Type2 => :STEEL,
-		:BaseStats => [200, 85, 55, 20, 40, 40],
+		:BaseStats => [200, 85, 75, 60, 60, 60],
 		# Constant Follow Me
 		:Abilities => [:TECHNICIAN],
 		:Height => 330,
@@ -6900,7 +6900,7 @@ MONHASH = {
 			[48,:SWORDSDANCE],
 			[51,:BRINE],
 			[56,:CRABHAMMER],
-			[63,:FLAIL]],
+			[63,:XSCISSOR]],
 		:compatiblemoves => [:AGILITY,:ALLYSWITCH,:AMNESIA,:ANCIENTPOWER,:BIDE,:BLIZZARD,:BODYSLAM,:BRICKBREAK,:BRINE,:BRUTALSWING,:BUBBLEBEAM,:CURSE,:CUT,:DIG,:DIVE,:DOUBLEEDGE,:FALSESWIPE,:FLING,:FURYCUTTER,:GIGAIMPACT,:HAIL,:HEADBUTT,:HIGHHORSEPOWER,:HONECLAWS,:HYDROPUMP,:HYPERBEAM,:ICEBEAM,:ICYWIND,:IRONDEFENSE,:KNOCKOFF,:LIQUIDATION,:MIMIC,:MUDSHOT,:MUDSLAP,:QUASH,:RAGE,:RAINDANCE,:RAZORSHELL,:ROCKSLIDE,:ROCKSMASH,:ROCKTOMB,:SCALD,:STOMPINGTANTRUM,:STRENGTH,:SUPERPOWER,:SURF,:SWORDSDANCE,:TAKEDOWN,:THIEF,:WATERGUN,:WATERPULSE,:WHIRLPOOL,:XSCISSOR,
 			#Rejuv only moves
 			:DELUGE,:MUDBARRAGE],
@@ -9119,7 +9119,7 @@ MONHASH = {
 		:BaseStats => [110, 95, 110, 95, 115, 60],
 		:EVs => [2, 0, 0, 0, 0, 0],
 		:Abilities => [:HYDRATION, :SHELLARMOR],
-		:HiddenAbilities => :HYDROVEIL,
+		:HiddenAbilities => :WATERABSORB,
 		:GrowthRate => :Slow,
 		:GenderRatio => :FemHalf,
 		:BaseEXP => 187,
@@ -9199,7 +9199,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [220, 65, 130, 125, 110, 45],
-		:Abilities => [:RESONANCE],
+		:Abilities => [:HYDROVEIL],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -9316,7 +9316,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :NORMAL,
 		:Type2 => :FAIRY,
-		:BaseStats => [220, 75, 50, 25, 65, 55],
+		:BaseStats => [220, 75, 60, 75, 85, 75],
 		# All foes are infatuated
 		:Abilities => [:ADAPTABILITY],
 		:Height => 180,
@@ -20515,7 +20515,7 @@ MONHASH = {
 			[40,:FAKEOUT],
 			[43,:THUNDER],
 			[46,:NASTYPLOT],
-			[49,:MEFIRST]],
+			[49,:FOLLOWME]],
 		:compatiblemoves => [:AGILITY,:BATONPASS,:BODYSLAM,:CHARGEBEAM,:CHARM,:COUNTER,:COVET,:DEFENSECURL,:DOUBLEEDGE,:DRAININGKISS,:DYNAMICPUNCH,:ECHOEDVOICE,:EERIEIMPULSE,:ELECTRICTERRAIN,:ELECTROBALL,:ELECTROWEB,:ENCORE,:FLASH,:FLING,:GRASSKNOT,:HEADBUTT,:HELPINGHAND,:HYPERVOICE,:IRONTAIL,:LASTRESORT,:LIGHTSCREEN,:MAGNETRISE,:MEGAKICK,:MEGAPUNCH,:MIMIC,:MUDSLAP,:MYSTICALFIRE,:NASTYPLOT,:PLAYROUGH,:POWERSWAP,:RAINDANCE,:RISINGVOLTAGE,:ROLLOUT,:SCREECH,:SEISMICTOSS,:SHOCKWAVE,:SIGNALBEAM,:SKILLSWAP,:SWIFT,:TERRAINPULSE,:THUNDER,:THUNDERBOLT,:THUNDERPUNCH,:THUNDERWAVE,:UPROAR,:VOLTSWITCH,:WILDCHARGE],
 		:moveexceptions => [],
 		:Color => "Yellow",
@@ -46782,7 +46782,7 @@ MONHASH = {
 			[18,:ENCORE],
 			[22,:BUBBLEBEAM],
 			[25,:SING],
-			[29,:DOUBLESLAP],
+			[29,:CHIRP],
 			[32,:HYPERVOICE],
 			[36,:MOONBLAST],
 			[39,:CAPTIVATE],
@@ -46840,7 +46840,7 @@ MONHASH = {
 			[19,:ENCORE],
 			[24,:BUBBLEBEAM],
 			[28,:SING],
-			[33,:DOUBLESLAP],
+			[33,:CHIRP],
 			[37,:HYPERVOICE],
 			[42,:MOONBLAST],
 			[46,:CAPTIVATE],
@@ -46901,7 +46901,7 @@ MONHASH = {
 			[19,:ENCORE],
 			[24,:BUBBLEBEAM],
 			[28,:SING],
-			[33,:DOUBLESLAP],
+			[33,:CHIRP],
 			[38,:HYPERVOICE],
 			[44,:MOONBLAST],
 			[49,:CAPTIVATE],
@@ -53855,6 +53855,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :GROUND,
+		:Type2 => :FLYING,
 		:BaseStats => [144, 117, 145, 55, 90, 31],
 		# Figure out more interesting ability here
 		:Abilities => [:SANDVEIL],

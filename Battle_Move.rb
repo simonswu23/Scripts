@@ -164,7 +164,8 @@ class PokeBattle_Move
         when :GALVANIZE   then type=:ELECTRIC if type==:NORMAL
         when :REFRIGERATE then type=:ICE      if type==:NORMAL
         when :DUSKILATE   then type=:DARK     if type==:NORMAL && @battle.FE != :GLITCH
-        when :LIQUIDVOICE then type= @battle.FE==:ICY ? :ICE : :WATER if isSoundBased?
+        when :LIQUIDVOICE then type= @battle.FE==:ICY ? :ICE : :WATER if isSoundBased? && type == :NORMAL
+        when :PUNKROCK    then type= @battle.FE==:BACKALLEY ? :DARK : :POISON if isSoundBased? && type == :NORMAL
       end
     end
     case attacker.crested
@@ -2005,7 +2006,8 @@ class PokeBattle_Move
             atkmult*=1.5
           elsif @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN) || @battle.state.effects[:ELECTERRAIN] > 0
             atkmult*=1.5
-          elsif attacker.crested == :PLUSLE || attacker.crested == :MINUN
+          end
+          if attacker.crested == :PLUSLE || attacker.crested == :MINUN
             atkmult*=1.5
           end
         end

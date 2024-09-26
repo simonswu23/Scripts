@@ -4044,12 +4044,13 @@ MOVEHASH = {
 :HYPERVOICE => {
 	:ID => 272,
 	:name => "Hyper Voice",
-	:function => 0x000,
+	:function => 0x00F,
 	:type => :NORMAL,
 	:category => :special,
 	:basedamage => 90,
 	:accuracy => 100,
 	:maxpp => 10,
+	:effect => 20,
 	:target => :AllOpposing,
 	:soundmove => true,
 	:desc => "The user lets loose a horribe shout with the power to inflict damage."
@@ -14152,7 +14153,7 @@ MOVEHASH = {
 	:basedamage => 40,
 	:accuracy => 100,
 	:maxpp => 20,
-	:effect => 30,
+	:effect => 20,
 	:target => :SingleNonUser,
 	:priority => 1,
 	:contact => true,
@@ -14191,6 +14192,22 @@ MOVEHASH = {
 	:priority => 4,
 	:nonmirror => true,
 	:desc => "The user takes a ready stance. If hit by a contact move, it sharply raises its attack."
+},
+
+:CHIRP => {
+	:ID => 908,
+	:name => "Chirp",
+	:function => 0x00F,
+	:type => :NORMAL,
+	:category => :special,
+	:basedamage => 40,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 20,
+	:target => :SingleNonUsesr,
+	:priority => 1,
+	:soundmove => true,
+	:desc => "The user lets out a quick chirp, alarming the target."
 },
 
 }

@@ -3255,12 +3255,12 @@ class PokeBattle_Battler
       end
     end
 
-    if user.crested == :PLUSLE && @battle.pbRandom(10)<3 && target.pbCanBurn?(false) && movetype == :FIRE
+    if user.crested == :PLUSLE && @battle.pbRandom(100)<move.effect && target.pbCanBurn?(false) && movetype == :FIRE
       target.pbBurn(user)
       @battle.pbDisplay(_INTL("{1}'s crest burned {2}!",user.pbThis, target.pbThis(true)))
     end
 
-    if user.crested == :MINUN && @battle.pbRandom(10)<3 && target.pbCanFrostbite?(false) && movetype == :ICE
+    if user.crested == :MINUN && @battle.pbRandom(100)<move.effect && target.pbCanFrostbite?(false) && movetype == :ICE
       target.pbFrostbite(user)
       @battle.pbDisplay(_INTL("{1}'s crest frostbit {2}!",user.pbThis, target.pbThis(true)))
     end
