@@ -281,7 +281,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Protects against frostbite
  
 - Liquid Voice
-  - gives sound based moves a x1.3 boost in power
+  - gives normal-type sound based moves a x1.3 boost in power and they become water type
+
+- PUnk Rock
+  - gives normal-type sound based moves a x1.3 boost in power and they become poison type, user takes x0.5 damage from sound based attacks
  
 - Solar Idol
   - x1.5 attack boost in sun, levitate, boosts fire and psychic attacks
@@ -1105,60 +1108,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 # Battles
 - Valarie (Gym)
-  - Overqwil
-    - Item: Poison Barb
-    - Ability: Swift Swim
-    - Moves: 
-      - Barb Barrage
-      - Waterfall
-      - Crunch
-      - Destiny Bond
-    - Other:
-  - Lanturn
-    - Item: Elemental Seed
-    - Ability: Volt Absorb
-    - Moves: 
-      - Whirlpool
-      - Thunderbolt
-      - Rest
-      - Ice Beam
-    - Other:
-  - Barraskewda
-    - Item: Muscle Band
-    - Ability: Swift Swim
-    - Moves: 
-      - Waterfall
-      - Psychic Fangs
-      - Poison Jab
-      - Flip Turn
-    - Other:
-  - Whiscash
-    - Item:
-    - Ability:
-    - Moves: 
-      - Rest
-      - Bounce
-      - Dragon Dance
-      - Waterfall
-    - Other:
-  - Lapras
-    - Item: Laprasite
-    - Ability: Hydro Veil
-    - Moves: 
-      - Freeze Dry
-      - Thunderbolt
-      - Surf
-      - Rest
-    - Other:
-  - Primarina
-    - Item: Wacan Berry
-    - Ability: *Swift Swim
-    - Moves: 
-      - Moonblast
-      - Surf
-      - Psychic
-      - Energy Ball
-    - Other:
+- Melanie
+- Melia (League Administration)
+- Ren (Desert)
+  
 
 # Passwords
   - icecream
