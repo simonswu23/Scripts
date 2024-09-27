@@ -164,7 +164,7 @@ class PokeBattle_Move
         when :GALVANIZE   then type=:ELECTRIC if type==:NORMAL
         when :REFRIGERATE then type=:ICE      if type==:NORMAL
         when :DUSKILATE   then type=:DARK     if type==:NORMAL && @battle.FE != :GLITCH
-        when :LIQUIDVOICE then type= @battle.FE==:ICY ? :ICE : :WATER if isSoundBased? && type == :NORMAL
+        when :LIQUIDVOICE then type= @battle.FE==:ICY ? :ICE : :WATER if isSoundBased?
         when :PUNKROCK    then type= @battle.FE==:BACKALLEY ? :DARK : :POISON if isSoundBased? && type == :NORMAL
       end
     end
@@ -191,6 +191,7 @@ class PokeBattle_Move
 
   def pbIsPhysical?(type = @type)
     return (!PBTypes.isSpecialType?(type) && @category!=:status) if @battle.FE == :GLITCH
+    # return isSoundBased if attacker.pokemon.species == :RILLABOOM && attacker.form == 1
     return @category==:physical
   end
 
@@ -436,6 +437,7 @@ class PokeBattle_Move
 
     # Compares difference between Atk/Def and SpAtk/SpDef to determine Physical or Special
     @category=(calcattack-calcdefense>calcspatk-calcspdef) ? :physical : :special
+    @category= :physical if (attacker.pokemon.species == :RILLABOOM && attacker.form == 1 && isSoundBased?)
     return
   end
 
@@ -1280,9 +1282,9 @@ class PokeBattle_Move
         end
       end
     end
-    if (@move == :RAINBOWSCALES || @move == :NEEDLEPIERCE && typemod < 4)
-      return 4
-    end
+    # if (@move == :RAINBOWSCALES || @move == :NEEDLEPIERCE && typemod < 4)
+    #   return 4
+    # end
     return typemod
   end
 
@@ -1542,6 +1544,7 @@ class PokeBattle_Move
   end
   
   def pbCalcDamage(attacker,opponent,options=0, hitnum: 0)
+    @category = :physical if attacker.pokemon.species == :RILLABOOM && attacker.form == 1 && isSoundBased?
     opponent.damagestate.critical=false
     opponent.damagestate.typemod=0
     opponent.damagestate.calcdamage=0
@@ -2006,8 +2009,7 @@ class PokeBattle_Move
             atkmult*=1.5
           elsif @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN) || @battle.state.effects[:ELECTERRAIN] > 0
             atkmult*=1.5
-          end
-          if attacker.crested == :PLUSLE || attacker.crested == :MINUN
+          elsif attacker.crested == :PLUSLE || attacker.crested == :MINUN
             atkmult*=1.5
           end
         end

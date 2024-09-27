@@ -5163,7 +5163,7 @@ class PokeBattle_Battler
       @battle.pbJudgeCheckpoint(user,basemove)
 
       # Additional effect
-      if !basemove.zmove && target.damagestate.calcdamage>0 && !target.hasType?(:BUG) && (target.crested != :LUMINEON) && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function)) && user.ability != (:SHEERFORCE)
+      if !basemove.zmove && target.damagestate.calcdamage>0 && (target.ability != (:SHIELDDUST) || target.moldbroken || [0x1C,0x1D,0x1E,0x1F,0x20,0x2D,0x2F,0x147,0x186,0x307].include?(basemove.function)) && user.ability != (:SHEERFORCE) # && !target.hasType?(:BUG) && (target.crested != :LUMINEON) 
         addleffect=basemove.effect
         addleffect=20 if basemove.move == :OMINOUSWIND && @battle.FE == :HAUNTED
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW

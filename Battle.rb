@@ -3169,7 +3169,7 @@ class PokeBattle_Battle
       # Corrosive Field Entry
       if @field.effect == :CORROSIVE
         if !(pkmn.ability == :MAGICGUARD || pkmn.ability == :POISONHEAL || pkmn.ability == :IMMUNITY || pkmn.ability == :WONDERGUARD || 
-            pkmn.ability == :TOXICBOOST || pkmn.ability == :PASTELVEIL) && !pkmn.isAirborne? && !pkmn.hasType?(:POISON) && !pkmn.hasType?(:STEEL) && pkmn.crested != :ZANGOOSE && pkm.crested != :GOODRA && !(pkmn.isbossmon && pkmn.immunities[:fieldEffectDamage].include?(@field.effect))
+            pkmn.ability == :TOXICBOOST || pkmn.ability == :PASTELVEIL) && !pkmn.isAirborne? && !pkmn.hasType?(:POISON) && !pkmn.hasType?(:STEEL) && pkmn.crested != :ZANGOOSE && pkmn.crested != :GOODRA && !(pkmn.isbossmon && pkmn.immunities[:fieldEffectDamage].include?(@field.effect))
           atype = :POISON
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
           if eff>0

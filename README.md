@@ -83,9 +83,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - mega ability: Pixilate -> Fairy Aura
  
 - Cacturne line
-  - Cacnea ability: Sap Sipper
   - Cacturne base stat buffs: 80, 130, 60, 130, 60, 55
-  - Cacturne ability: Grassy Surge
+  - Cacnea/Cacturne ability: Technician
  
 - Manaphy
   - ability: Hydration -> Hydro Veil
@@ -213,6 +212,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Popplio Line
   - learns chirp instead of double slap by level up
+
+- Rillaboom
+  - Giga form: turns all sound-based attacks into physical moves
    
 ### New Pokemon
 - Alpha Larvesta
@@ -281,9 +283,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Protects against frostbite
  
 - Liquid Voice
-  - gives normal-type sound based moves a x1.3 boost in power and they become water type
+  - gives sound based moves a x1.3 boost in power and they become water type
 
-- PUnk Rock
+- Punk Rock
   - gives normal-type sound based moves a x1.3 boost in power and they become poison type, user takes x0.5 damage from sound based attacks
  
 - Solar Idol
@@ -1102,7 +1104,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - priority +1. 20% chance to make the target flinch.
 
 - Chirp
-  - Normal
+  - Flying
   - Special
   - BP: 40
   - acc: 100
