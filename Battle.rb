@@ -2371,7 +2371,7 @@ class PokeBattle_Battle
     end
 
     # @SWu add the specific GMax stone here
-    pbDisplay(_INTL("{1} is reacting to {3}'s {4}!", @battlers[index].pbThis, ownername, PBStuff::POKEMONTOGIGASTONE[@battlers[index].species][0]))
+    pbDisplay(_INTL("{1} is reacting to its giga core!", @battlers[index].pbThis))
   
     # Animation
     pbCommonAnimation("MegaEvolution",@battlers[index],nil)

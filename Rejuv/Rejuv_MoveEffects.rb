@@ -664,11 +664,10 @@ end
 class PokeBattle_Move_80C < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.pbOwnSide.effects[:AuroraVeil]>0 &&
-      attacker.pbCanIncreaseStatStage?(PBStats::DEFENSE,false) && attacker.pbCanIncreaseStatStage?(PBStats::SPDEF,false)
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
-    end
+    attacker.effects[:Protect]=:Protect
+    attacker.effects[:ProtectRate]+=1
+    @battle.pbDisplay(_INTL("{1} protected itself!",attacker.pbThis))
+    
     pbShowAnimation(:AURORAVEIL,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[:AuroraVeil]=5
     attacker.pbOwnSide.effects[:AuroraVeil]=8 if @battle.FE == :MIRROR

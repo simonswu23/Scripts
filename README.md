@@ -83,9 +83,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - mega ability: Pixilate -> Fairy Aura
  
 - Cacturne line
-  - Cacnea ability: Quick Draw
+  - Cacnea ability: Sap Sipper
   - Cacturne base stat buffs: 80, 130, 60, 130, 60, 55
-  - Cacturne ability: Quick Draw
+  - Cacturne ability: Grassy Surge
  
 - Manaphy
   - ability: Hydration -> Hydro Veil
@@ -909,6 +909,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Aurora Beam
   - 10% omniboost effect
   - chance doubled in Hail
+
+- Elysian Shield
+  - additionally protects the user (not rate shared)
     
 ### New Attacks
 
@@ -1111,6 +1114,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Melanie
 - Melia (League Administration)
 - Ren (Desert)
+- Angie + Cera (Diamond Route)
   
 
 # Passwords

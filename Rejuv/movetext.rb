@@ -13077,6 +13077,7 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 0,
 	:target => :User,
+	:priority => 4,
 	:zmove => true,
 	:intercept => true,
 	:desc => "Filler"
