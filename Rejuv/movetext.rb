@@ -14086,7 +14086,7 @@ MOVEHASH = {
 },
 
 :STEELSURGE => {
-	:ID => 882,
+	:ID => 915,
 	:name => "Steelsurge",
 	:function => 0x909,
 	:type => :STEEL,
@@ -14100,7 +14100,7 @@ MOVEHASH = {
 },
 
 :COCOONBASH => {
-	:ID => 902,
+	:ID => 916,
 	:name => "Cocoon Bash",
 	:function => 0x184,
 	:type => :BUG,
@@ -14115,7 +14115,7 @@ MOVEHASH = {
 },
 
 :FINALE => {
-	:ID => 903,
+	:ID => 917,
 	:name => "Finale",
 	:function => 0x90A,
 	:type => :FAIRY,
@@ -14130,7 +14130,7 @@ MOVEHASH = {
 },
 
 :PSYCHICNOISE => {
-	:ID => 904,
+	:ID => 918,
 	:name => "Psychic Noise",
 	:function => 0x0BB,
 	:type => :PSYCHIC,
@@ -14146,7 +14146,7 @@ MOVEHASH = {
 },
 
 :PEEKABOO => {
-	:ID => 905,
+	:ID => 919,
 	:name => "Peekaboo",
 	:function => 0x00F,
 	:type => :FAIRY,
@@ -14163,7 +14163,7 @@ MOVEHASH = {
 },
 
 :PESTER => {
-	:ID => 906,
+	:ID => 920,
 	:name => "Pester",
 	:function => 0x0AA,
 	:type => :BUG,
@@ -14181,7 +14181,7 @@ MOVEHASH = {
 },
 
 :PARRY => {
-	:ID => 907,
+	:ID => 921,
 	:name => "Parry",
 	:function => 0x90B,
 	:type => :FIGHTING,
@@ -14196,7 +14196,7 @@ MOVEHASH = {
 },
 
 :CHIRP => {
-	:ID => 908,
+	:ID => 922,
 	:name => "Chirp",
 	:function => 0x00F,
 	:type => :FLYING,
@@ -14209,6 +14209,23 @@ MOVEHASH = {
 	:priority => 1,
 	:soundmove => true,
 	:desc => "The user lets out a quick chirp, alarming the target."
+},
+
+# ====================== GIGA MOVES ============================ #
+
+:BEFUDDLE => {
+	:ID => 923,
+	:name => "Befuddle",
+	:function => 0x907,
+	:type => :BUG,
+	:category => :special,
+	:basedamage => 130,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:effect => 100,
+	:target => :AllOpposing,
+	:desc => "Attacks opponents with springtime air. May poison, paralyze, or sleep."
 },
 
 }

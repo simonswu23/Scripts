@@ -775,31 +775,31 @@ class PokeBattle_Scene
     backdrop = @battle.field.backdrop
     # Choose bases
     environ=@battle.environment
-    base=""
+    base = ""
     if environ==:Grass || environ==:TallGrass
-      base="Grass"
+      base= "Grass"
     elsif environ==:Sand
-      base="Sand"
+      base= "Sand"
     elsif $PokemonGlobal.surfing
-      base="Water"
+      base= "Water"
     elsif $PokemonGlobal.lavasurfing
-      base="Volcano"
+      base= "Volcano"
     end
-    base="" if !pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+base))
+    base= "" if !pbResolveBitmap(sprintf("Graphics/Battlebacks/playerbase"+backdrop+base))
     # Choose time of day
-    time=""
+    time= ""
     timenow=pbGetTimeNow
     if PBDayNight.isNight?(timenow)
-      time="Night"
+      time= "Night"
     elsif PBDayNight.isEvening?(timenow)
-      time="Eve"
+      time= "Eve"
     end
-    time="" if !pbResolveBitmap(sprintf("Graphics/Battlebacks/battlebg"+backdrop+time))
-    battlebg="Graphics/Battlebacks/battlebg"+backdrop+time
-    enemybase="Graphics/Battlebacks/enemybase"+backdrop+base+time
-    playerbase="Graphics/Battlebacks/playerbase"+backdrop+base+time
-    enemybase="Graphics/Battlebacks/enemybaseDummy" if !pbResolveBitmap(sprintf(enemybase))
-    playerbase="Graphics/Battlebacks/playerbaseDummy" if !pbResolveBitmap(sprintf(playerbase))
+    time= "" if !pbResolveBitmap(sprintf("Graphics/Battlebacks/battlebg"+backdrop+time))
+    battlebg= "Graphics/Battlebacks/battlebg"+backdrop+time
+    enemybase= "Graphics/Battlebacks/enemybase"+backdrop+base+time
+    playerbase= "Graphics/Battlebacks/playerbase"+backdrop+base+time
+    enemybase= "Graphics/Battlebacks/enemybaseDummy" if !pbResolveBitmap(sprintf(enemybase))
+    playerbase= "Graphics/Battlebacks/playerbaseDummy" if !pbResolveBitmap(sprintf(playerbase))
     pbAddPlane("battlebg",battlebg,@viewport)
     pbAddSprite("playerbase",
        PBScene::PLAYERBASEX,
@@ -1494,8 +1494,12 @@ def pbFightMenu(index)
     end
     if Input.trigger?(Input::C)   # Confirm choice
       ret=cw.index
-      if cw.zButton==2
+      if cw.zButton==2        
         if battler.pbCompatibleZMoveFromMove?(ret,true)
+          pbPlayDecisionSE()     
+          @lastmove[index]=ret
+          return ret
+        elsif @battle.pbCanGigaEvolve?(index)
           pbPlayDecisionSE()     
           @lastmove[index]=ret
           return ret

@@ -1833,8 +1833,8 @@ ABILHASH = {
 
 :BULLDOZER => {
 	:ID => 323,
-	:name => "Bulldozer",
-	:desc => "The user's attacks destroy surrounding ground, drastically dropping their target's speed."
+	:name => "Earth Eater",
+	:desc => "The user's restores HP when hit by ground type attacks."
 },
 
 :ADAMANTINEBODY => {

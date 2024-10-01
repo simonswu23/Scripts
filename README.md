@@ -11,6 +11,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - Giga evolutions now require no held item (Giga stone still required to be in bag)
     - Giga evolutions now double the user's HP, but don't provide additional BST increases (some stat resdistributions)
     - Giga evolutions now do not count as a mega evolution, meaning each team can have both one giga and mega evolution
+    - Upon Giga evolving, Giga pokemon may gain a Giga move (from a certain base move) -> WIP
 
   - Aqua Ring
     - also cures the user's status at the end of each turn
@@ -284,9 +285,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Liquid Voice
   - gives sound based moves a x1.3 boost in power and they become water type
-
-- Punk Rock
-  - gives normal-type sound based moves a x1.3 boost in power and they become poison type, user takes x0.5 damage from sound based attacks
  
 - Solar Idol
   - x1.5 attack boost in sun, levitate, boosts fire and psychic attacks
@@ -370,9 +368,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Tidepool Tyrant
   - merciless, regenerator, water attacks clear stat changes and poison moves destroy items
  
-- Bulldozer
-  - restores HP when hit by ground attacks, x1.5 power to ground attacks, drastically lowers grounded foes speed after using a physical attack
-  - (check) -- not fully tested iirc
+- Earth Eater
+  - restores HP when hit by ground attacks
  
 - Adamantine Body
   - doubles defense, returns 50% of damage dealt from direct contact physical attacks
@@ -1159,7 +1156,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - Heatproof
   - Lunar Idol
   - Levitaters (Solar/Lunar Idol, Vespiquen Crest, Lumineon Crest Gravitational Flux)
-  - Bulldozer
+  - Earth Eater
   - Detritovore
     
 - Massive AI overhaul: integrate everything above EXCEPT the following:

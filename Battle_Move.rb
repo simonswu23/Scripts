@@ -7,6 +7,7 @@ class PokeBattle_Move
   attr_accessor   :pp
   attr_accessor   :totalpp
   attr_accessor   :zmove
+  attr_accessor   :giga
   attr_reader     :user
   attr_reader     :function
   attr_accessor   :type
@@ -165,7 +166,7 @@ class PokeBattle_Move
         when :REFRIGERATE then type=:ICE      if type==:NORMAL
         when :DUSKILATE   then type=:DARK     if type==:NORMAL && @battle.FE != :GLITCH
         when :LIQUIDVOICE then type= @battle.FE==:ICY ? :ICE : :WATER if isSoundBased?
-        when :PUNKROCK    then type= @battle.FE==:BACKALLEY ? :DARK : :POISON if isSoundBased? && type == :NORMAL
+        # when :PUNKROCK    then type= @battle.FE==:BACKALLEY ? :DARK : :POISON if isSoundBased? && type == :NORMAL
       end
     end
     case attacker.crested

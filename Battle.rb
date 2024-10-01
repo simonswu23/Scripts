@@ -2391,12 +2391,37 @@ class PokeBattle_Battle
     meganame = formname + " " + getMonName(@battlers[index].pokemon.species)
     pbDisplay(_INTL("{1} Giga Evolved into {2}!",@battlers[index].pbThis,meganame))
 
-    # Remember trainer has mega-evolved
+    # Remember trainer has giga-evolved
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     @gigaEvolution[side][owner]=-2
 
-    # Re-update ability of mega-evolved mon
+    # Update move to become Giga-Move here
+
+    for i in 0...4
+      next if !@battlers[index].moves[i]
+      next if !@battlers[index].pbGigaCompatibleBaseMove?(@battlers[index].moves[i])
+
+      newmove=PBMove.new(PBStuff::POKEMONTOGIGAMOVE[@battlers[index].species][0])
+      @battlers[index].moves[i]=PokeBattle_Move.pbFromPBMove(@battle,newmove,@battlers[index])
+      
+      if !(@battlers[index].zmoves.nil? || @battlers[index].item == :INTERCEPTZ)
+        @battle.updateZMoveIndexBattler(i,@battlers[index])
+      end
+      @battlers[index].moves[i].pp=5
+      @battlers[index].moves[i].totalpp=5
+      # unsure, this is literally spaghetti mamma mia
+      # if @battlers[index][:DisableMove] == i + 1
+      #   @battlers[index][:Disable]=0
+      #   @battlers[index][:DisableMove]=0
+      # end
+    end
+
+    # do later
+    # @moves.each {|copiedmove| @battle.ai.addMoveToMemory(self,copiedmove) } if !@battle.isOnline?
+    # choice.moves.each {|moveloop| @battle.ai.addMoveToMemory(choice,moveloop) }  if !@battle.isOnline?
+
+    # Re-update ability of giga-evolved mon
     @battlers[index].pbAbilitiesOnSwitchIn(true)
   end
 

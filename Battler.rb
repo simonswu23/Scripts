@@ -202,6 +202,14 @@ class PokeBattle_Battler
     return true
   end
 
+  def pbGigaCompatibleBaseMove?(move)
+    pkmn=self.species
+    case pkmn
+      when :BUTTERFREE      then return true if move.move == :SPRINGBREEZE
+    end
+    return false
+  end
+
   def pbCompatibleZMoveFromMove?(move,moveindex = false)
     pkmn=self
     move = pkmn.moves[move] if moveindex
@@ -422,7 +430,15 @@ class PokeBattle_Battler
         zmove = pkmn.zmoves[i]
         @zmoves[i] = PokeBattle_Move.pbFromPBMove(@battle,zmove,pkmn,@moves[i]) if !zmove.nil?
       end
-    else 
+    elsif (@battle.pbCanGigaEvolve?(@index))
+      @zmoves       = [nil,nil,nil,nil]
+      for i in 0...4
+        next if !@moves[i]
+        next if !self.pbGigaCompatibleBaseMove?(@moves[i])
+        newmove=PBMove.new(PBStuff::POKEMONTOGIGAMOVE[@species][0])
+        @zmoves[i]=PokeBattle_Move.pbFromPBMove(@battle,newmove,pkmn)
+      end
+    else
       @zmoves = nil
     end
     @iv           = pkmn.iv
@@ -5274,12 +5290,12 @@ class PokeBattle_Battler
         end
       end
 
-      # Bulldozer
-      if user.ability == :BULLDOZER && basemove.category == :physical
-        if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
-          target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
-        end
-      end
+      # Bulldozer -> change to Copperajah Item
+      # if user.ability == :BULLDOZER && basemove.category == :physical
+      #   if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
+      #     target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
+      #   end
+      # end
 
       # Ability effects
       pbEffectsOnDealingDamage(basemove,user,target,damage,innardsOutHp)

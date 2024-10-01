@@ -729,7 +729,7 @@ MONHASH = {
 	"Giga Form" => {
 		:BaseStats => [120, 15, 50, 125, 85, 100],
 		:Height => 170,
-		:Abilities => [:TINTEDLENS],
+		:Abilities => [:COMPOUNDEYES],
 		:Weight => 705,
 	},
 
@@ -1569,7 +1569,7 @@ MONHASH = {
 		:BaseStats => [140, 90, 60, 90, 70, 75],
 		# electric type attacks have 100% chance to paralyze
 		# paralysis quarters speed + immobile chance boosted to 1/3
-		:Abilities => [:STATIC],
+		:Abilities => [:ELECTRICSURGE],
 		:Height => 210,
 		:Weight => 2456,
 	},
@@ -3545,7 +3545,7 @@ MONHASH = {
 		:Type1 => :NORMAL,
 		:Type2 => :STEEL,
 		:BaseStats => [200, 85, 75, 60, 60, 60],
-		# Constant Follow Me
+		# Gold Envy
 		:Abilities => [:TECHNICIAN],
 		:Height => 330,
 		:Weight => 2456,
@@ -9317,7 +9317,7 @@ MONHASH = {
 		:Type1 => :NORMAL,
 		:Type2 => :FAIRY,
 		:BaseStats => [220, 75, 60, 75, 85, 75],
-		# All foes are infatuated
+		# Cute Aura
 		:Abilities => [:ADAPTABILITY],
 		:Height => 180,
 		:Weight => 2456,
@@ -36831,8 +36831,7 @@ MONHASH = {
 		:Type1 => :POISON,
 		:Type2 => :GROUND,
 		:BaseStats => [160, 115, 82, 50, 82, 65],
-		# Landfill
-		:Abilities => [:NEUTRALIZINGGAS],
+		:Abilities => [:CORROSION],
 		:Height => 6033,
 		:Weight => 2366,
 	},
@@ -37794,9 +37793,7 @@ MONHASH = {
 		:Type1 => :ICE,
 		:Type2 => :FLYING,
 		:BaseStats => [142, 95, 85, 110, 95, 79],
-		# Ice type attacks have 100% chance to frostbite
-		# Double frostbite damage when active
-		:Abilities => [:SNOWWARNING],
+		:Abilities => [:SNOWCLOAK],
 		:Height => 750,
 		:Weight => 2456,
 	},
@@ -51917,7 +51914,7 @@ MONHASH = {
 		:Type1 => :STEEL,
 		:Type2 => :POISON,
 		:BaseStats => [270, 153, 153, 60, 65, 34],
-		# Steel SE against Steel, restores HP with Steel
+		# Alloy
 		:Abilities => [:IRONFIST],
 		:Height => 250,
 		:Weight => 17637,
@@ -52684,7 +52681,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [196, 87, 125, 43, 95, 47],
-		:Abilities => [:DOWNDRAFT],
+		:Abilities => [:GALEWINGS],
 		:Height => 140,
 		:Weight => 1653,
 		:BattlerEnemyY => -2,
@@ -53746,7 +53743,7 @@ MONHASH = {
 		:Type1 => :BUG,
 		:Type2 => :DRAGON,
 		:BaseStats => [220, 55, 80, 120, 100, 20],
-		:Abilities => [:HARVEST],
+		:Abilities => [:GLUTTONY],
 		:Height => 240,
 		:Weight => 2456,
 	},
@@ -54321,7 +54318,7 @@ MONHASH = {
 		:BaseStats => [200, 125, 75, 50, 100, 65],
 		# Fire type attacks have 100% chance to burn
 		# Double burn damage when active
-		:Abilities => [:FLASHFIRE],
+		:Abilities => [:DROUGHT],
 		:Height => 750,
 		:Weight => 2456,
 	},
@@ -54682,7 +54679,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [114, 45, 115, 146, 123, 29],
-		:Abilities => [:MAGICBOUNCE],
+		:Abilities => [:PSYCHICSURGE],
 		:Height => 260,
 		:Weight => 2456,
 	},
@@ -55316,8 +55313,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [130, 30, 85, 145, 166, 24],
-		#:Abilities => [:FINALE],
-		:Abilities => [:CONFECTION],
+		:Abilities => [:MISTYSURGE],
 		:Height => 300,
 		:Weight => 2456,
 	},
