@@ -84,7 +84,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - mega ability: Pixilate -> Fairy Aura
  
 - Cacturne line
-  - Cacturne base stat buffs: 80, 130, 60, 130, 60, 55
   - Cacnea/Cacturne ability: Technician
  
 - Manaphy
