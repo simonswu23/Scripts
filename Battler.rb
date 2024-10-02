@@ -1851,7 +1851,7 @@ class PokeBattle_Battler
         @battle.weather=:HAIL
         @battle.weatherduration=5
         @battle.weatherduration=8 if self.hasWorkingItem(:ICYROCK) || @battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :FROZENDIMENSION || @battle.FE == :SKY
-        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VANILLUXE
+        @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true || self.crested == :VANILLUXE || self.crested == :SANDACONDA
         @battle.pbCommonAnimation("Hail",nil,nil)
         @battle.pbDisplay(_INTL("{1}'s {2} made it hail!",pbThis,getAbilityName(ability)))
         for facemon in @battle.battlers
@@ -2010,17 +2010,17 @@ class PokeBattle_Battler
       end
     end
     # Confection
-    if self.ability == :CONFECTION && onactive
+    if self.crested == :ALCREMIE
       for index in 0...4
         next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
         i = self
         j = @battle.battlers[index]
         @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-        j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:self)
+        j.pbReduceStat(PBStats::EVASION,1, statdropper:self)
       end
     end
     # Downdraft
-    if self.ability == :DOWNDRAFT && onactive
+    if self.crested == :CORVIKNIGHT
       for index in 0...4
         next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
         i = self
@@ -4285,7 +4285,7 @@ class PokeBattle_Battler
       end
     end
     # TODO: Pressure here is incorrect if Magic Coat redirects target
-    if target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT
+    if target.ability == (:PRESSURE) || target.crested == :CORVIKNIGHT
       pressuredmove = (basemove.zmove && !user.zmoves.nil? && user.zmoves.include?(basemove)) ? user.moves[user.zmoves.index(basemove)] : basemove
       pbReducePP(pressuredmove) # Reduce PP
       if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4304,7 +4304,7 @@ class PokeBattle_Battler
           user=i
           # Snatch's PP is reduced if old user has Pressure
           userchoice=@battle.choices[user.index][1]
-          if (target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT) && userchoice>=0
+          if (target.ability == (:PRESSURE) || target.crested == :CORVIKNIGHT) && userchoice>=0
             pressuremove=user.moves[userchoice]
             pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
             if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -4333,7 +4333,7 @@ class PokeBattle_Battler
 
       # Magic Coat's PP is reduced if old user has Pressure
       userchoice=@battle.choices[user.index][1]
-      if (target.ability == (:PRESSURE) || target.ability == :DOWNDRAFT) && userchoice>=0
+      if (target.ability == (:PRESSURE) || target.crested == :CORVIKNIGHT) && userchoice>=0
         pressuremove=user.moves[userchoice]
         pbSetPP(pressuremove,pressuremove.pp-1) if pressuremove.pp>0
         if @battle.FE == :DIMENSIONAL || @battle.FE == :DEEPEARTH
@@ -5290,12 +5290,11 @@ class PokeBattle_Battler
         end
       end
 
-      # Bulldozer -> change to Copperajah Item
-      # if user.ability == :BULLDOZER && basemove.category == :physical
-      #   if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
-      #     target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
-      #   end
-      # end
+      if user.crested == :COPPERAJAH && basemove.category == :physical
+        if (target.pbCanReduceStatStage?(PBStats::SPEED,true) && !target.damagestate.substitute && !target.isAirborne?)
+          target.pbReduceStat(PBStats::SPEED,3,abilitymessage:false, statdropper: user)
+        end
+      end
 
       # Ability effects
       pbEffectsOnDealingDamage(basemove,user,target,damage,innardsOutHp)

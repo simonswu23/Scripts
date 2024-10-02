@@ -10245,4 +10245,84 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:RILLACREST => {
+	:ID => 2018,
+	:name => "Rillaboom Crest",
+	:desc => "King Kong",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:CINDERCREST => {
+	:ID => 2019,
+	:name => "Cinderace Crest",
+	:desc => "BUGS",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:INTELCREST => {
+	:ID => 2020,
+	:name => "Inteleon Crest",
+	:desc => "Bondman",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:ALCREMIECREST => {
+	:ID => 2021,
+	:name => "Alcremie Crest",
+	:desc => "Thick Cream",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:SANDACONDACREST => {
+	:ID => 2021,
+	:name => "Alcremie Crest",
+	:desc => "Confection",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:CORVICREST => {
+	:ID => 2022,
+	:name => "Corviknight Crest",
+	:desc => "Downdraft",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:COPPERACREST => {
+	:ID => 2023,
+	:name => "Copperajah Crest",
+	:desc => "Bulldozer",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:TOXTRICREST => {
+	:ID => 2024,
+	:name => "Toxtricity Crest",
+	:desc => "Acid Rock",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

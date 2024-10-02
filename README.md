@@ -125,17 +125,17 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - learns Grassy Glide at level 50
  
 - Corviknight
-  - giga ability: Mirror Armor -> Downdraft
+  - giga ability: Mirror Armor -> Gale Wings
  
 - Alcremie
   - giga base stat buffs: 65, 60, 105, 150, 161, 54
-  - giga ability: Aroma Veil -> Confection
+  - giga ability: Aroma Veil -> Misty Surge
   - learns Chain Drain, Finale
  
 - Butterfree
   - base stat buffs: 60, 55, 60, 95, 85, 80
   - giga base stat buffs: 60, 25, 70, 145, 115, 120
-  - giga ability: Tinted Lens -> Silver Scales
+  - giga ability: Tinted Lens -> Compoundeyes
   - learns Hurricane at level 50
   - learns Spring Breeze at level 60
   - learns Rainbow Scales at level 68
@@ -346,22 +346,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - summons Aqua ring on entry
 
 - Replenish
-  - gains +1 stockpile at the end of each turn
-  - TODO: if the user's HP drops below half, consume all stockpile stacks to restore HP
- 
-- Downdraft
-  - clears hazards and screens at the end of each turn
-  - (check) on entry trigger
-  - TODO: also clear terrain
-
-- Confection
-  - lowers all foes evasion by 1 on entry and at the end of each turn
-  - foes with lowered evasion cannot switch
-  - takes x0.5 damage from fire and ice attacks
- 
-- Silver Scales
-  - takes 1/2 damage from moves with side effect chances, 100% chance to trigger side effect chances of wind moves
- 
+  - gains +1 stockpile at the end of each turn (up to 3)
+  
 - Hive Queen
   - prio +1 to all friendly bug attacks, queenly majesty, friendly bug attacks x1.5 power
  
@@ -514,7 +500,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - extra x2 defense in the hail
   - ice attacks x1.5 power in hail
   - immune to fire in hail
-  - on entry, lower all foes evasion by 1. Foes with lowered evasion cannot switch
+
+- Sandaconda Crest
+  - sand lasts indefinitely
+  - extra x3 special defense in the sand
+  - ground attacks hit airborne targets in the sand
+  - restores 1/8 of HP at the end of each turn in the sand
  
 - Cacturne Crest
   - raises attack and special attack by 1 if attacking before the target
@@ -527,15 +518,42 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - TOOD: update smart damage category
 
 - Plusle Crest
-  - Activates Plus (independently of other activations)
+  - activates Plus 
   - x1.5 special attack
   - Normal -> Fire, gains Fire STAB + gains chance to burn equal to the original attack's effect chance
 
 - Minun Crest
-  - Activates Minus (independently of other activations)
+  - activates Minus 
   - x1.5 speed
   - Normal -> Ice, gains Ice STAB + gains chance to frostbite equal to the original attack's effect chance
 
+- Corviknight
+  - clears hazards and screens at the end of each turn
+  - on entry trigger
+  - TODO: also clear terrain
+
+- Alcremie
+  - lowers all foes evasion by 1 on entry and at the end of each turn
+  - foes with lowered evasion cannot switch
+  - takes x0.5 damage from fire and ice attacks
+
+- Rillaboom
+  - all sound based attacks -> physical
+  - take x0.5 damage from sound based attacks
+  - x1.5 special defense in grassy terrain
+
+- Cinderace
+  - special attack = attack
+  - moves cannot miss
+
+- Inteleon
+  - x1.2 speed
+  - +2 CHR on all attacks
+
+- Copperajah
+  - physical attacks lower foes speed by 2
+  - x1.3 attack
+ 
 ## Attacks
 
 ### Updates

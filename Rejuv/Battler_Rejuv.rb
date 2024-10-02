@@ -240,8 +240,14 @@ class PokeBattle_Battler
         when :RUNERIGUS
           @attack *=1.25
           @defense *= 1.25
+        when :COPPERAJAH
+          @attack *=1.3
         when :ARIADOS
           @speed *= 1.5
+        when :INTELEON
+          @speed *= 1.2
+        when :CINDERACE
+          @spatk = @atk
         when :PHIONE
           @defense *= 1.5
           @spdef *= 1.5

@@ -431,6 +431,7 @@ class PokeBattle_Move
     calcspdefmult*=2.0 if opponent.ability == :ICESCALES && !(opponent.moldbroken)
     calcspdefmult*=1.5 if opponent.ability == :HYDRATION && (@battle.pbWeather == :RAIN) && !(opponent.moldbroken)
     calcspdefmult*=1.5 if opponent.hasWorkingItem(:ASSAULTVEST)
+    calcspdefmult*=1.5 if opponent.crested == :RILLABOOM && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0)
     calcspdefmult*=1.5 if opponent.crested == :GOTHITELLE
     calcspdefmult*=2.0 if opponent.hasWorkingItem(:DEEPSEASCALE) && (opponent.pokemon.species == :CLAMPERL)
     # end spdef boosts
@@ -438,7 +439,6 @@ class PokeBattle_Move
 
     # Compares difference between Atk/Def and SpAtk/SpDef to determine Physical or Special
     @category=(calcattack-calcdefense>calcspatk-calcspdef) ? :physical : :special
-    @category= :physical if (attacker.pokemon.species == :RILLABOOM && attacker.form == 1 && isSoundBased?)
     return
   end
 
@@ -604,13 +604,14 @@ class PokeBattle_Move
         (atype == :GRASS && (opponent.ability == :SAPSIPPER)) ||
         (atype == :WATER && (opponent.ability == :WATERABSORB || opponent.ability == :STORMDRAIN || opponent.ability == :DRYSKIN)) ||
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
-        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX) && @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne?) ||
+        (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX) && 
+                              @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne? && !(attacker.crested == :SANDACONDA && @battle.pbWeather == :SAND)) ||
         (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
         (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
       end
     end
-    if @battle.FE == :CAVE || @move == :THOUSANDARROWS
+    if @battle.FE == :CAVE || @move == :THOUSANDARROWS || (attacker.crested == :SANDACONDA && @battle.pbWeather == :SAND)
       mod1=2 if (otype1 == :FLYING) && (atype == :GROUND)
       mod2=2 if (otype2 == :FLYING) && (atype == :GROUND)
     end
@@ -636,11 +637,11 @@ class PokeBattle_Move
     otype2=opponent.type2
     mod1=PBTypes.oneTypeEff(atype,otype1)
     mod2=(otype1==otype2) ? 2 : PBTypes.oneTypeEff(atype,otype2)
-    if @battle.FE == :CAVE || @move == :THOUSANDARROWS
+    if @battle.FE == :CAVE || @move == :THOUSANDARROWS || (attacker.crested == :SANDACONDA && @battle.pbWeather == :SAND)
       mod1=2 if (otype1 == :FLYING) && (atype == :GROUND)
       mod2=2 if (otype2 == :FLYING) && (atype == :GROUND)
     end
-    if @move == :VENAMSKISS
+    if @move == :VENAMSKISS || attacker.crested == :TOXTRICITY
       mod1=4 if (otype1 == :STEEL) && (atype == :POISON)
       mod2=4 if (otype2 == :STEEL) && (atype == :POISON)
     end
@@ -1077,6 +1078,12 @@ class PokeBattle_Move
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
         end
+      when :SANDACONDA
+        if type == :WATER && @battle.pbWeather == :SAND
+          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+              opponent.pbThis,getItemName(opponent.item),self.name))
+          return 0
+        end
       when :SKUNTANK
         if (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -1381,6 +1388,7 @@ class PokeBattle_Move
 		baseaccuracy = fieldmove[:accmod] if fieldmove && fieldmove[:accmod]
     return true if baseaccuracy==0
     return true if attacker.ability == :NOGUARD || opponent.ability == :NOGUARD || (attacker.ability == (:FAIRYAURA) && @battle.FE == :FAIRYTALE)
+    return true if attacker.crested == :CINDERACE
     return true if opponent.effects[:Telekinesis]>0
     return true if @function==0x0D && @battle.pbWeather== :HAIL # Blizzard
     return true if @move == :MIRAGEBEAM && @battle.pbWeather== :SUNNYDAY
@@ -1491,7 +1499,7 @@ class PokeBattle_Move
     return 3 if attacker.ability == :MERCILESS && (opponent.status == :POISON || [:CORROSIVE,:CORRPSIVEMIST,:WASTELAND,:MURKWATERSURFACE].include?(@battle.FE))
     return 3 if attacker.ability == :TIDEPOOLTYRANT && (!opponent.status.nil? || [:CORROSIVE,:CORRPSIVEMIST,:WASTELAND,:MURKWATERSURFACE].include?(@battle.FE))
     return 3 if (opponent.ability == :RATTLED || opponent.ability == :WIMPOUT) && @battle.FE == :COLOSSEUM
-    return 3 if attacker.crested == :ARIADOS && (opponent.status == :POISON || opponent.stages[PBStats::SPEED] < 0 || !opponent.hasMovedThisRound?) # ariados crest
+    return 3 if attacker.crested == :ARIADOS && (opponent.stages[PBStats::SPEED] < 0 || !opponent.hasMovedThisRound?) # ariados crest
     return 3 if (attacker.ability == :QUICKDRAW && attacker.effects[:QuickDrawSnipe])
     c=0    
     c+=attacker.effects[:FocusEnergy]
@@ -1511,6 +1519,7 @@ class PokeBattle_Move
     end
     c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
     c+=1 if attacker.hasWorkingItem(:SCOPELENS)
+    c+=2 if attacker.hasWorkingItem(:INTELEON)
     c+=3 if sharpMove? && attacker.crested == :SAMUROTT
     c+=1 if attacker.crested == :FEAROW # Fearow Crest
     c+=1 if attacker.speed > opponent.speed && @battle.FE == :GLITCH
@@ -1545,7 +1554,7 @@ class PokeBattle_Move
   end
   
   def pbCalcDamage(attacker,opponent,options=0, hitnum: 0)
-    @category = :physical if attacker.pokemon.species == :RILLABOOM && attacker.form == 1 && isSoundBased?
+    @category = :physical if attacker.pokemon.crested == :RILLABOOM && attacker.form == 1 && isSoundBased?
     opponent.damagestate.critical=false
     opponent.damagestate.typemod=0
     opponent.damagestate.calcdamage=0
@@ -2110,7 +2119,8 @@ class PokeBattle_Move
         when :SKILLLINK then atkmult*=1.2 if (@battle.FE == :COLOSSEUM && (@function == 0xC0 || @function == 0x307 || (attacker.crested == :CINCCINO && !pbIsMultiHit))) #0xC0: 2-5 hits; 0x307: Scale Shot
       end
     end
-    atkmult*=0.5 if (opponent.ability == :THICKFAT || :CONFECTION) && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=0.5 if (opponent.ability == :THICKFAT) && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=0.5 if opponent.crested == :ALCREMIE && (type == :ICE || type == :FIRE || type == :WATER)
     atkmult*=1.5 if attacker.crested == :DARKRAI && opponent.status==:SLEEP
     atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)
     atkmult*=0.33 if opponent.ability == :LIGHTMETAL && (type == :GROUND) && !(opponent.moldbroken)
@@ -2151,7 +2161,9 @@ class PokeBattle_Move
     if @battle.pbWeather== :RAINDANCE && (opponent.ability == :HYDRATION) && applysandstorm
       defense=(defense*1.5).round
     end
-
+    if @battle.pbWeather== :SAND && opponent.crested == :SANDACONDA && applysandstorm
+      defense=(defense*3).round
+    end
 
     if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL) && !applysandstorm
       defense=(defense*1.5).round
@@ -2220,6 +2232,9 @@ class PokeBattle_Move
     if opponent.hasWorkingItem(:METALPOWDER) && (opponent.pokemon.species == :DITTO) && !opponent.effects[:Transform] && pbIsPhysical?(type)
       defmult*=2.0
     end
+
+    defmult*=1.5 if opponent.crested == :RILLABOOM && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0)
+    defmult*=2 if opponent.crested == :RILLABOOM && isSoundBased?
 
     #General damage modifiers
     damage = 1.0
@@ -2372,7 +2387,6 @@ class PokeBattle_Move
     # STAB
     if  (attacker.hasType?(type) && (!attacker.effects[:DesertsMark])) ||
         (attacker.ability == :STEELWORKER && type == :STEEL) ||
-        (attacker.ability == :BULLDOZER && type == :GROUND) ||
         (attacker.ability == :SOLARIDOL && type == :FIRE) || (attacker.ability == :SOLARIDOL && type == :PSYCHIC) || 
         (attacker.ability == :LUNARIDOL && type == :ICE) || (attacker.ability == :LUNARIDOL && type == :PSYCHIC) ||
         (typecrest==true)

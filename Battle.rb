@@ -1606,12 +1606,12 @@ class PokeBattle_Battle
       opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
     end
     if (thispkmn.stages[PBStats::EVASION] < 0)
-      opp=opp1 if opp1.ability == :CONFECTION
-      opp=opp2 if opp2.ability == :CONFECTION
+      opp=opp1 if opp1.crested == :ALCREMIE
+      opp=opp2 if opp2.crested == :ALCREMIE
     end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname="Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI
+      abilityname= "Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI || opp1.crested == :ALCREMIE || opp2.crested == :ALCRMIE 
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -4950,12 +4950,12 @@ class PokeBattle_Battle
       end
 
       # Confection
-      if i.ability == :CONFECTION
+      if i.crested == :ALCREMIE
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
           @battle.pbAnimation(:SWEETSCENT, i, j, 0);
           if j.pbCanReduceStatStage?(PBStats::EVASION) 
-            j.pbReduceStat(PBStats::EVASION,1,abilitymessage:true, statdropper:i)
+            j.pbReduceStat(PBStats::EVASION,1,statdropper:i)
           end
         end
       end
@@ -4990,10 +4990,7 @@ class PokeBattle_Battle
 
       # Downdraft
       # @SWu how is ability suppression handled here?
-      if (i.ability == :DOWNDRAFT)
-        # @SWu figure out animation here
-        # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-
+      if (i.crested == :CORVIKNIGHT)
         for j in priority
           next if (i.index % 2 == j.index % 2) || j.isFainted?
 
@@ -5150,6 +5147,10 @@ class PokeBattle_Battle
       end
       if i.crested == :DRUDDIGON && pbWeather== :SUNNYDAY && i.effects[:HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)
+        pbDisplay(_INTL("{1}'s Crest restored its HP a little!",i.pbThis)) if hpgain>0
+      end
+      if i.crested == :SANDACONDA && pbWeather== :SANDSTORM && i.effects[:HealBlock]==0
+        hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
         pbDisplay(_INTL("{1}'s Crest restored its HP a little!",i.pbThis)) if hpgain>0
       end
       if i.isFainted?
