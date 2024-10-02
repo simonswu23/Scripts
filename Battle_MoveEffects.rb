@@ -430,6 +430,8 @@ class PokeBattle_Move_007 < PokeBattle_Move
       @battle.pbAnimation(:THUNDER,attacker,opponent,hitnum)
     elsif id == :ETHEREALTEMPEST
       @battle.pbAnimation(:HURRICANE,attacker,opponent,hitnum)
+    elsif id == :VOLTCRASH
+      @battle.pbAnimation(:CATASTROPIKA,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
     end
@@ -2024,12 +2026,23 @@ class PokeBattle_Move_042 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
+
+    if @move == :CUDDLESTORM
+      if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
+        opponent.pbReduceStat(PBStats::ATTACK,2,abilitymessage:false, statdropper: attacker)
+      end
+      if opponent.pbCanReduceStatStage?(PBStats::SPATK,false)
+        opponent.pbReduceStat(PBStats::SPATK,2,abilitymessage:false, statdropper: attacker)
+      end
+      return true
+    end
+
     if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
       opponent.pbReduceStat(PBStats::ATTACK,1,abilitymessage:false, statdropper: attacker)
     end
     if @battle.FE == :HAUNTED && @move==:BITTERMALICE
-      if opponent.pbCanReduceStatStage?(PBStats::SPATK,abilitymessage:false)
-        opponent.pbReduceStat(PBStats::SPATK,1,abilitymessage:false)
+      if opponent.pbCanReduceStatStage?(PBStats::ATTACK,false)
+        opponent.pbReduceStat(PBStats::ATTACK,1,abilitymessage:false, statdropper: attacker)
       end
     end
     if @move==:BITTERMALICE && @battle.FE == :ICY && @battle.FE == :SNOWYMOUNTAIN
@@ -2050,6 +2063,8 @@ class PokeBattle_Move_042 < PokeBattle_Move
       @battle.pbAnimation(:FLEURCANNON,attacker,opponent,hitnum)
     elsif id == :BITTERMALICE
       @battle.pbAnimation(:HEX,attacker,opponent,hitnum)
+    elsif id == :CUDDLESTORM
+      @battle.pbAnimation(:PLAYROUGH,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
     end
@@ -7150,7 +7165,7 @@ class PokeBattle_Move_0F0 < PokeBattle_Move
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute && opponent.item
       if opponent.hasWorkingItem(:ROCKYHELMET,true) && attacker.ability != :MAGICGUARD && !(attacker.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) &&
-        !(opponent.ability == :STICKYHOLD && !(opponent.moldbroken))
+        !(opponent.ability == :STICKYHOLD && !(opponent.moldbroken)) && @move != :GIANTSDRUM
         @battle.scene.pbDamageAnimation(attacker,0)
         attacker.pbReduceHP((attacker.totalhp/6.0).floor)
         @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",attacker.pbThis,
@@ -7189,6 +7204,15 @@ class PokeBattle_Move_0F0 < PokeBattle_Move
       end
     end
     return ret
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :GIANTSDRUM
+      @battle.pbAnimation(:DRUMBEATING,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
   end
 end
 
@@ -8586,7 +8610,8 @@ end
 ################################################################################
 class PokeBattle_Move_117 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !@battle.doublebattle
+    super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
+    if (!@battle.doublebattle && @basedamage == 0)
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end

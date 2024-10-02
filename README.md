@@ -12,6 +12,8 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - Giga evolutions now double the user's HP, but don't provide additional BST increases (some stat resdistributions)
     - Giga evolutions now do not count as a mega evolution, meaning each team can have both one giga and mega evolution
     - Upon Giga evolving, Giga pokemon may gain a Giga move (from a certain base move) -> WIP
+      - Giga moves break through protect and have 5 pp
+      - Giga move documentation to come
 
   - Aqua Ring
     - also cures the user's status at the end of each turn
@@ -98,9 +100,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - learns Chilling Water at level 58
   - learns Sea Breeze at level 68
  
-- Hatterene
-  - learns Smite at level 70
- 
 - Venusaur
   - mega base stat buffs: 80, 95, 128, 127, 140, 55
   - giga base stat buffs: 80, 82, 108, 150, 125, 80
@@ -125,11 +124,12 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Corviknight
   - giga ability: Mirror Armor -> Gale Wings
+  - learns Hurricane at level 58
  
 - Alcremie
   - giga base stat buffs: 65, 60, 105, 150, 161, 54
   - giga ability: Aroma Veil -> Misty Surge
-  - learns Chain Drain, Finale
+  - learns Chain Drain
  
 - Butterfree
   - base stat buffs: 60, 55, 60, 95, 85, 80
@@ -335,6 +335,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Stance Change
   - changes stances with any protection move
+
+- Sniper
+  - x2 boost instead of x1.5 boost
  
 ### New Abilities
 

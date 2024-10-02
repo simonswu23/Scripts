@@ -1217,6 +1217,7 @@ class PokeBattle_Move_908 < PokeBattle_Move
     return ret
   end
 end
+
 # ################################################################################
 # # Template
 # ################################################################################
@@ -1300,7 +1301,7 @@ class PokeBattle_Move_90A < PokeBattle_Move
 
   def pbBaseDamage(basedmg,attacker,opponent)
     ret=@calcbasedmg
-    @calcbasedmg+=10
+    @calcbasedmg *= 2
     return ret
   end
   
@@ -1335,3 +1336,6 @@ class PokeBattle_Move_90B < PokeBattle_Move
   end
 
 end
+
+# ====================== BEGIN GIGA MOVES ============================= #
+

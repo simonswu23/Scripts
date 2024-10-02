@@ -206,6 +206,17 @@ class PokeBattle_Battler
     pkmn=self.species
     case pkmn
       when :BUTTERFREE      then return true if move.move == :SPRINGBREEZE
+      when :RILLABOOM       then return true if move.move == :DRUMBEATING   
+      when :CINDERACE       then return true if move.move == :PYROBALL    
+      when :INTELEON        then return true if move.move == :SNIPESHOT
+      when :TOXTRICITY      then return true if move.move == :BOOMBURST
+      when :ALCREMIE        then return true if move.move == :DRAININGKISS
+      when :HATTERENE       then return true if move.move == :MAGICPOWDER
+      when :COPPERAJAH      then return true if move.move == :IRONHEAD   
+      when :CORVIKNIGHT     then return true if move.move == :HURRICANE
+      when :MEOWTH          then return true if move.move == :PAYDAY
+      when :PIKACHU         then return true if move.move == :VOLTTACKLE
+      when :EEVEE           then return true if move.move == :CHARM
     end
     return false
   end
@@ -434,9 +445,12 @@ class PokeBattle_Battler
       @zmoves       = [nil,nil,nil,nil]
       for i in 0...4
         next if !@moves[i]
-        next if !self.pbGigaCompatibleBaseMove?(@moves[i])
-        newmove=PBMove.new(PBStuff::POKEMONTOGIGAMOVE[@species][0])
-        @zmoves[i]=PokeBattle_Move.pbFromPBMove(@battle,newmove,pkmn)
+        if self.pbGigaCompatibleBaseMove?(@moves[i])
+          newmove=PBMove.new(PBStuff::POKEMONTOGIGAMOVE[@species][0])
+          @zmoves[i]=PokeBattle_Move.pbFromPBMove(@battle,newmove,pkmn)
+        else
+          @zmoves[i]=PokeBattle_Move.pbFromPBMove(@battle,@moves[i],pkmn)
+        end
       end
     else
       @zmoves = nil

@@ -13944,20 +13944,6 @@ MOVEHASH = {
 	:desc => "The user attacks the targets with a strong ocean wind, removing all their stat changes."
 },
 
-:SMITE => {
-	:ID => 908,
-	:name => "Smite",
-	:function => 0x013,
-	:type => :FAIRY,
-	:category => :special,
-	:basedamage => 110,
-	:accuracy => 85,
-	:maxpp => 5,
-	:effect => 100,
-	:target => :SingleNonUser,
-	:desc => "The target is hit by a strike of magic light from the sky, leaving them confused."
-},
-
 :CHAINDRAIN => {
 	:ID => 909,
 	:name => "Chain Drain",
@@ -14085,20 +14071,6 @@ MOVEHASH = {
 	:desc => "The user attacks with a shimmering beam of light. It may also confuse the target."
 },
 
-:STEELSURGE => {
-	:ID => 915,
-	:name => "Steelsurge",
-	:function => 0x909,
-	:type => :STEEL,
-	:category => :physical,
-	:basedamage => 90,
-	:accuracy => 90,
-	:maxpp => 15,
-	:target => :AllOpposing,
-	:kingrock => true,
-	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
-},
-
 :COCOONBASH => {
 	:ID => 916,
 	:name => "Cocoon Bash",
@@ -14112,21 +14084,6 @@ MOVEHASH = {
 	:contact => true,
 	:kingrock => true,
 	:desc => "The user attacks by slamming its hardened body into the target. The higher the user's Defense, the more damage it can inflict."
-},
-
-:FINALE => {
-	:ID => 917,
-	:name => "Finale",
-	:function => 0x90A,
-	:type => :FAIRY,
-	:category => :special,
-	:basedamage => 40,
-	:accuracy => 60,
-	:maxpp => 8,
-	:target => :AllOpposing,
-	:healingmove => true,
-  	:kingrock => true,
-  	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little on each hit."
 },
 
 :PSYCHICNOISE => {
@@ -14213,6 +14170,52 @@ MOVEHASH = {
 
 # ====================== GIGA MOVES ============================ #
 
+:SMITE => {
+	:ID => 908,
+	:name => "Smite",
+	# change to have confusion affect all foes
+	:function => 0x013,
+	:type => :FAIRY,
+	:category => :special,
+	:basedamage => 130,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:effect => 100,
+	:target => :SingleOpposing,
+	:highcrit => true,
+	:desc => "The target is hit by a strike of magic light from the sky, leaving them confused."
+},
+
+:STEELSURGE => {
+	:ID => 915,
+	:name => "Steelsurge",
+	:function => 0x909,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:desc => "The user sends a torrent of steel at the target. The debris left behind by this attack floats around the target."
+},
+
+:FINALE => {
+	:ID => 917,
+	:name => "Finale",
+	:function => 0x90A,
+	:type => :FAIRY,
+	:category => :special,
+	:basedamage => 20,
+	:accuracy => 90,
+	:maxpp => 5,
+	# Figure out random targeting in the future (might have to adjust num hits + power level)
+	:target => :SingleNonUser,
+	:healingmove => true,
+  	:desc => "The user sends thick, creamy missiles at the opposing team, healing all friendly pokemon by a little on each hit."
+},
+
 :BEFUDDLE => {
 	:ID => 923,
 	:name => "Befuddle",
@@ -14227,5 +14230,130 @@ MOVEHASH = {
 	:target => :AllOpposing,
 	:desc => "Attacks opponents with springtime air. May poison, paralyze, or sleep."
 },
+
+:GIANTSDRUM => {
+	:ID => 924,
+	:name => "Giant's Drum",
+	:function => 0x0F0,
+	:type => :GRASS,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:soundmove => true,
+	:desc => "Big Drum Boom"
+},
+
+:FLAMESTRIKE => {
+	:ID => 925,
+	:name => "Flame Strike",
+	:function => 0x000,
+	:type => :FIRE,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	# Need to fix -- not true smart targeting?
+	:target => :DragonDarts,
+	:desc => "Fire Ball"
+},
+
+:HYDROSNIPE => {
+	:ID => 926,
+	:name => "Hydrosnipe",
+	:function => 0x179,
+	:type => :WATER,
+	:category => :special,
+	:basedamage => 100,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :SingleNonUser,
+	# high crit handled elsewhere
+	:desc => "360 no scope"
+},
+
+:ACIDROCK => {
+	:ID => 927,
+	:name => "Acid Rock",
+	:function => 0x04F,
+	:type => :POISON,
+	:category => :special,
+	:basedamage => 140,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:effect => 100,
+	:target => :AllOpposing,
+	:desc => "Rock on Venam"
+},
+
+:WINDRAGE => {
+	:ID => 928,
+	:name => "Wind Rage",
+	:function => 0x0EB,
+	:type => :FLYING,
+	:category => :physical,
+	:basedamage => 130,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:effect => 100,
+	:priority => -6,
+	:target => :AllOpposing,
+	:desc => "gone with the wind"
+},
+
+:VOLTCRASH => {
+	:ID => 929,
+	:name => "Volt Crash",
+	# change to have paralysis affect all foes
+	:function => 0x007,
+	:type => :ELECTRIC,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :SingleOpposing,
+	:contact => true,
+	:effect => 100,
+	:desc => "PEEEEEE"
+},
+
+:GOLDRUSH => {
+	:ID => 926,
+	:name => "Gold Rush",
+	:function => 0x117,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 110,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:priority => 2,
+	:desc => "It's not about the money money money"
+},
+
+:CUDDLESTORM => {
+	:ID => 930,
+	:name => "Cuddlestorm",
+	:function => 0x042,
+	:type => :FAIRY,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :SingleNonUser,
+	:contact => true,
+	:effect => 100,
+	:desc => "Who's a good boy?"
+},
+
 
 }

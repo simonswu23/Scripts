@@ -1519,7 +1519,8 @@ class PokeBattle_Move
     end
     c+=1 if attacker.hasWorkingItem(:RAZORCLAW)
     c+=1 if attacker.hasWorkingItem(:SCOPELENS)
-    c+=2 if attacker.hasWorkingItem(:INTELEON)
+    c+=2 if @move == :HYDROSNIPE
+    c+=2 if attacker.crested == :INTELEON
     c+=3 if sharpMove? && attacker.crested == :SAMUROTT
     c+=1 if attacker.crested == :FEAROW # Fearow Crest
     c+=1 if attacker.speed > opponent.speed && @battle.FE == :GLITCH
@@ -1554,7 +1555,7 @@ class PokeBattle_Move
   end
   
   def pbCalcDamage(attacker,opponent,options=0, hitnum: 0)
-    @category = :physical if attacker.pokemon.crested == :RILLABOOM && attacker.form == 1 && isSoundBased?
+    @category = :physical if attacker.crested == :RILLABOOM && attacker.form == 1 && isSoundBased?
     opponent.damagestate.critical=false
     opponent.damagestate.typemod=0
     opponent.damagestate.calcdamage=0
@@ -2354,7 +2355,7 @@ class PokeBattle_Move
     # Critical hits
     if opponent.damagestate.critical
       damage*=1.5
-      damage*=1.5 if attacker.ability == :SNIPER
+      damage*=2 if attacker.ability == :SNIPER
       damage*=1.5 if attacker.crested == :ARIADOS
       damage*=1.5 if @move == :AIRCUTTER
     end
@@ -2520,7 +2521,7 @@ class PokeBattle_Move
       finalmult=(finalmult*multiplier)
     end
 
-    if @zmove
+    if @zmove || @giga
       if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] || 
         opponent.effects[:KingsShield] || opponent.effects[:Obstruct] ||
         opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] || opponent.effects[:Parry]

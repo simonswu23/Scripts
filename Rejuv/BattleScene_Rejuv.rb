@@ -1464,7 +1464,7 @@ def pbFightMenu(index)
   cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
   cw.megaButton=1 if @battle.pbCanGigaEvolve?(index)
   cw.zButton=0
-  cw.zButton=1 if @battle.pbCanZMove?(index)
+  cw.zButton=1 if @battle.pbCanZMove?(index) && !battler.isMega?
   pbSelectBattler(index)
   pbRefresh
   update_menu = true

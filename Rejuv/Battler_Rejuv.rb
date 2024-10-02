@@ -245,9 +245,9 @@ class PokeBattle_Battler
         when :ARIADOS
           @speed *= 1.5
         when :INTELEON
-          @speed *= 1.2
+          @speed *= 1.3
         when :CINDERACE
-          @spatk = @atk
+          @spatk = @attack
         when :PHIONE
           @defense *= 1.5
           @spdef *= 1.5
