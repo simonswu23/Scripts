@@ -1555,6 +1555,9 @@ def pbFightMenu(index)
           @battle.pbRegisterZMove(index)
           cw.zButton=2
           pbPlayDecisionSE()
+          if (battler.isMega?)
+            @battle.pbUnRegisterZMove(index)
+          end
         end
       end        
       update_menu=true

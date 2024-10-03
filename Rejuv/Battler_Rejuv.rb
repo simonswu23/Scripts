@@ -322,6 +322,12 @@ class PokeBattle_Battler
           @spatk *= 1.5
         when :MINUN
           @speed *= 1.5
+        when :DARMANITAN
+          @spatk   *= 1.5
+          @spdef   *= 1.5
+          @speed   *= 0.5
+          @attack  *= 0.5
+          @defense *= 0.5
         end 
       end
 

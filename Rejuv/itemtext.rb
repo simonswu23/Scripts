@@ -10325,4 +10325,24 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:GORECRESS => {
+	:ID => 2025,
+	:name => "Gorebyss Crest",
+	:desc => "GORE",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:HUNTACREST => {
+	:ID => 2026,
+	:name => "Huntail Crest",
+	:desc => "On the Hunt",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

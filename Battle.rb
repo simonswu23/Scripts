@@ -4963,7 +4963,7 @@ class PokeBattle_Battle
 
       # Rain Dish
       if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE))&& i.effects[:HealBlock]==0
-        hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)
+        hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
 
@@ -5134,7 +5134,7 @@ class PokeBattle_Battle
           end
         elsif @field.effect == :SWAMP  # Swamp Field
           if i.effects[:HealBlock]==0
-            hpgain=(i.totalhp/16.0).floor
+            hpgain=(i.totalhp/8.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1}'s Dry Skin was healed by the murk!",i.pbThis)) if hpgain>0
           end
@@ -5142,11 +5142,11 @@ class PokeBattle_Battle
       end
       # Ice Body
       if i.ability == :ICEBODY && (pbWeather== :HAIL || @field.effect == :ICY || @field.effect == :SNOWYMOUNTAIN || @field.effect == :FROZENDIMENSION) && i.effects[:HealBlock]==0
-        hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)
+        hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
         pbDisplay(_INTL("{1}'s Ice Body restored its HP a little!",i.pbThis)) if hpgain>0
       end
       if i.crested == :DRUDDIGON && pbWeather== :SUNNYDAY && i.effects[:HealBlock]==0
-        hpgain=i.pbRecoverHP((i.totalhp/16.0).floor,true)
+        hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
         pbDisplay(_INTL("{1}'s Crest restored its HP a little!",i.pbThis)) if hpgain>0
       end
       if i.crested == :SANDACONDA && pbWeather== :SANDSTORM && i.effects[:HealBlock]==0

@@ -1078,12 +1078,6 @@ class PokeBattle_Move
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
         end
-      when :SANDACONDA
-        if type == :WATER && @battle.pbWeather == :SAND
-          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-              opponent.pbThis,getItemName(opponent.item),self.name))
-          return 0
-        end
       when :SKUNTANK
         if (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -2153,29 +2147,36 @@ class PokeBattle_Move
       defstage=6 if opponent.damagestate.critical && defstage>6
       defense=(defense*1.0*stagemul[defstage]/stagediv[defstage]).floor
     end
-    if @battle.pbWeather== :SANDSTORM && opponent.hasType?(:ROCK) && applysandstorm
-      defense=(defense*1.5).round
-    end
-    if @battle.state.effects[:MISTY] > 0 && opponent.hasType?(:FAIRY) && applysandstorm
-      defense=(defense*1.5).round
-    end
-    if @battle.pbWeather== :RAINDANCE && (opponent.ability == :HYDRATION) && applysandstorm
-      defense=(defense*1.5).round
-    end
-    if @battle.pbWeather== :SAND && opponent.crested == :SANDACONDA && applysandstorm
-      defense=(defense*3).round
-    end
 
-    if @battle.pbWeather== :HAIL && (opponent.hasType?(:ICE) || opponent.ability == :LUNARIDOL) && !applysandstorm
-      defense=(defense*1.5).round
-    end
-
-    if @battle.pbWeather== :HAIL && opponent.crested == :VANILLUXE && !applysandstorm
-      defense=(defense*2).round
-    end
-
-    if @battle.pbWeather== :SUNNYDAY && (opponent.ability == :LEAFGUARD) && !applysandstorm
-      defense=(defense*1.5).round
+    if (applysandstorm)
+      if @battle.pbWeather== :SANDSTORM && opponent.hasType?(:ROCK)
+        defense=(defense*1.5).round
+      end
+      if @battle.state.effects[:MISTY] > 0 && opponent.hasType?(:FAIRY) && !opponent.isAirborne?
+        defense=(defense*1.5).round
+      end
+      if @battle.pbWeather== :SANDSTORM && opponent.crested == :SANDACONDA
+        defense=(defense*1.5).round
+      end
+      if @battle.pbWeather== :RAINDANCE && (opponent.ability == :HYDRATION)
+        defense=(defense*1.5).round
+      end
+      if @battle.pbWeather== :SANDSTORM && (opponent.ability == :SANDVEIL)
+        defense=(defense*1.5).round
+      end
+    else
+      if @battle.pbWeather== :HAIL && opponent.hasType?(:ICE) 
+        defense=(defense*1.5).round
+      end
+      if @battle.pbWeather== :HAIL && opponent.crested == :VANILLUXE 
+        defense=(defense*1.5).round
+      end
+      if battle.pbWeather == :HAIL && (opponent.ability == :LUNARIDOL || opponent.ability == :SNOWCLOAK) 
+        defense=(defense*1.5).round
+      end
+      if @battle.pbWeather== :SUNNYDAY && (opponent.ability == :LEAFGUARD)
+        defense=(defense*1.5).round
+      end
     end
 
     defmult=1.0
