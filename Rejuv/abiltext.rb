@@ -1831,7 +1831,7 @@ ABILHASH = {
 	:desc => "Big Pex."
 },
 
-:BULLDOZER => {
+:EARTHEATER => {
 	:ID => 323,
 	:name => "Earth Eater",
 	:desc => "The user's restores HP when hit by ground type attacks."

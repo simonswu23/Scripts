@@ -76,6 +76,8 @@ class PokeBattle_Battler
   attr_accessor :roll #currently only used in Deso for Crowd Field
   attr_accessor :tempBoosts #currently only used in Deso for Crowd Field
   attr_accessor :isbattlernew #currently only used in Deso for Crowd Field
+  attr_accessor :forewarn
+  attr_accessor :anticipation
   def inHyperMode?; return false; end
   def isShadow?; return false; end
 
@@ -398,6 +400,9 @@ class PokeBattle_Battler
     @iv           = [0,0,0,0,0,0]
     @item         = nil
     @weight       = nil
+
+    @forewarn     = []
+    @anticipation = false
 
     pbInitEffects(false,fakebattler)
     
@@ -860,6 +865,8 @@ class PokeBattle_Battler
         speed*=0.5 if self.turncount<5 && !@battle.FE == :DEEPEARTH
       when :QUARKDRIVE
         speed*=1.5 if self.effects[:Quarkdrive][0] == PBStats::SPEED
+      when :MINUS
+        speed*=1.5 if self.pbPartner.ability == :PLUS
     end
     case @battle.FE
       when :NEWWORLD
@@ -2248,7 +2255,7 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s {2} boosted its Attack!", pbThis,getAbilityName(ability)))
       end
     end
-    # Grand Larceny
+    # Joker
     if self.ability == :JOKER && onactive
       self.effects[:Snatch]=true
       @battle.pbDisplay(_INTL("{1} waits for its foes to make a move...", pbThis))
@@ -2963,7 +2970,11 @@ class PokeBattle_Battler
         end
         break if found
       end
-      @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis)) if found
+      if found
+        @battle.pbDisplay(_INTL("{1} shuddered with anticipation!",pbThis))
+        @anticipation = true
+      end
+      
     end
     if self.ability == :UNNERVE && onactive
        if @battle.pbOwnedByPlayer?(@index)
@@ -3013,6 +3024,9 @@ class PokeBattle_Battler
         move=moves[chosenmovenumber]
         movename=getMoveName(move)
         @battle.pbDisplay(_INTL("{1}'s Forewarn alerted it to {2}!",pbThis,movename))
+        @forewarn.push(move)
+        # push for partner as well
+        pbPartner.forewarn.push(move)
         # AI CHANGES
         if !@battle.isOnline?
           warnedMove = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(move),self)
@@ -3285,12 +3299,17 @@ class PokeBattle_Battler
       end
     end
 
-    if user.crested == :PLUSLE && @battle.pbRandom(100)<move.effect && target.pbCanBurn?(false) && movetype == :FIRE
+    # if user.crested == :WIGGLYTUFF && move.isSoundBased? && @battle.pbRandom(100)<20 && move.move != :UPROAR && target.pbCanSleep?(false)
+    #   target.pbSleep(user)
+    #   @battle.pbDisplay(_INTL("{1}'s crest put {2} to sleep!",user.pbThis, target.pbThis(true))) 
+    # end
+
+    if user.crested == :PLUSLE && @battle.pbRandom(100)<30 && target.pbCanBurn?(false) && movetype == :FIRE && target.pbCanBurn?(false)
       target.pbBurn(user)
       @battle.pbDisplay(_INTL("{1}'s crest burned {2}!",user.pbThis, target.pbThis(true)))
     end
 
-    if user.crested == :MINUN && @battle.pbRandom(100)<move.effect && target.pbCanFrostbite?(false) && movetype == :ICE
+    if user.crested == :MINUN && @battle.pbRandom(100)<30 && target.pbCanFrostbite?(false) && movetype == :ICE && target.pbCanFrostbite?(false)
       target.pbFrostbite(user)
       @battle.pbDisplay(_INTL("{1}'s crest frostbit {2}!",user.pbThis, target.pbThis(true)))
     end
@@ -4524,7 +4543,7 @@ class PokeBattle_Battler
     if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
       (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
       @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user
-      if (basemove.priorityCheck(user) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
+      if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
       end
@@ -4601,7 +4620,7 @@ class PokeBattle_Battler
         end
         return false
       end
-      if target.pbOwnSide.effects[:QuickGuard] && (basemove.priorityCheck(user) > 0) && basemove.canProtect? && !target.effects[:ProtectNegation] && !unseenfist
+      if target.pbOwnSide.effects[:QuickGuard] && (basemove.priorityCheck(user, target) > 0) && basemove.canProtect? && !target.effects[:ProtectNegation] && !unseenfist
         @battle.pbDisplay(_INTL("{1}'s Quick Guard prevented damage!",target.pbThis))
         user.pbCancelMoves
         return false
@@ -6248,7 +6267,6 @@ class PokeBattle_Battler
     spatkmult *= 1.5 if self.item == :CHOICESPECS
     spatkmult *= 2 if self.item == :DEEPSEATOOTH && self.pokemon.species == :CLAMPERL
     spatkmult *= 2 if self.item == :LIGHTBALL && self.pokemon.species == :PIKACHU
-    spatkmult *= 1.5 if self.ability == :MINUS && self.pbPartner.ability == :PLUS
     spatkmult *= 1.5 if self.ability == :PLUS && self.pbPartner.ability == :MINUS
     spatkmult *= 1.5 if self.ability == :SOLARPOWER && @battle.pbWeather== :SUNNYDAY
     spatkmult *= 1.5 if self.crested == :CASTFORM && @battle.pbWeather== :SUNNYDAY

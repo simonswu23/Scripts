@@ -34,26 +34,26 @@ TEAMARRAY = [{
 },
 =end
 :mons => [
-	# {
-	# :species => :GENGAR,
-	# :level => 95,
-	# :item => :CHERISHBALL,
-	# :moves => [:SPLASH],
-	# :ability => :SHIELDDUST,
-	# :form => 2,
-	# :nature => :TIMID,
-	# :iv => 31,
-	# :ev => [0, 252, 0, 4, 252, 252]},
 	{
-	:species => :MUNCHLAX,
-	:level => 100,
-	:item => :EVIOLITE,
-	:moves => [:PROTECT],
-	:ability => :ICESCALES,
-	:form => 0,
-	:nature => :SERIOUS,
+	:species => :GENGAR,
+	:level => 95,
+	:item => :CHERISHBALL,
+	:moves => [:SPLASH, :TACKLE],
+	:ability => :SHIELDDUST,
+	:form => 1,
+	:nature => :TIMID,
 	:iv => 31,
-	:ev => [252, 252, 252, 252, 252, 252]}
+	:ev => [0, 252, 0, 4, 252, 252]},
+	# {
+	# :species => :MUNCHLAX,
+	# :level => 100,
+	# :item => :EVIOLITE,
+	# :moves => [:PROTECT],
+	# :ability => :ICESCALES,
+	# :form => 0,
+	# :nature => :SERIOUS,
+	# :iv => 31,
+	# :ev => [252, 252, 252, 252, 252, 252]}
 ]},
 {
 :teamid => ["Aevis",:TRAINER_AEVIS,9],
@@ -43319,7 +43319,7 @@ TEAMARRAY = [{
 {
 	:species => :MIMIKYU,
 	:level => 84,
-	:item => :FAIRYGEM,
+	:item => :MIMIKIUMZ,
 	:moves => [:SWORDSDANCE,:PLAYROUGH,:SPECTRALTHIEF,:SHADOWSNEAK],
 	:ability => :DISGUISE,
 	:gender => "F",
@@ -43371,7 +43371,7 @@ TEAMARRAY = [{
 {
 	:species => :AEGISLASH,
 	:level => 83,
-	:item => :LEFTOVERS,
+	:item => :MAGICALSEED,
 	:moves => [:KINGSSHIELD,:SWORDSDANCE,:SHADOWSNEAK,:SACREDSWORD],
 	:ability => :STANCECHANGE,
 	:gender => "F",

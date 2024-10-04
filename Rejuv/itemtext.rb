@@ -10345,4 +10345,24 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:SUNFLORACREST => {
+	:ID => 2027,
+	:name => "Sunflora Crest",
+	:desc => "Solar Nuke",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:WIGGLYCREST => {
+	:ID => 2027,
+	:name => "Wigglytuff Crest",
+	:desc => "Guildmaster",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

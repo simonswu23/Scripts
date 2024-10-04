@@ -192,7 +192,6 @@ class PokeBattle_Move
 
   def pbIsPhysical?(type = @type)
     return (!PBTypes.isSpecialType?(type) && @category!=:status) if @battle.FE == :GLITCH
-    # return isSoundBased if attacker.pokemon.species == :RILLABOOM && attacker.form == 1
     return @category==:physical
   end
 
@@ -325,10 +324,10 @@ class PokeBattle_Move
     if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && (opp1.ability == :ICEBODY && !opp1.moldbroken) || (@battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:CHILLDRIVE) && !opp1.moldbroken)
       return [opp2]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || ((opp2.ability == :BULLDOZER || opp2.ability == :DETRITOVORE) && !opp2.moldbroken))
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || ((opp2.ability == :EARTHEATER || opp2.ability == :DETRITOVORE) && !opp2.moldbroken))
       return [opp1]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || ((opp1.ability == :BULLDOZER || opp1.ability == :DETRITOVORE) && !opp1.moldbroken))
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || ((opp1.ability == :EARTHEATER || opp1.ability == :DETRITOVORE) && !opp1.moldbroken))
       return [opp2]
     end
     if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && ((opp1.ability == :DETRITOVORE) && !opp1.moldbroken)
@@ -394,10 +393,11 @@ class PokeBattle_Move
     calcspatkmult *= 2 if attacker.hasWorkingItem(:DEEPSEATOOTH) && (attacker.pokemon.species == :CLAMPERL)
     calcspatkmult *= 2 if attacker.hasWorkingItem(:LIGHTBALL) && (attacker.pokemon.species == :PIKACHU)
     calcspatkmult *= 1.5 if attacker.ability == :FLAREBOOST && (attacker.status== :BURN || @battle.FE == :BURNING || @battle.FE == :VOLCANIC || @battle.FE == :INFERNAL) &&  @battle.FE != :FROZENDIMENSION
-    calcspatkmult *= 1.5 if attacker.ability == :MINUS && (attacker.pbPartner.ability == :PLUS || attacker.crested == :MINUN || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
-    calcspatkmult *= 1.5 if attacker.ability == :PLUS && (attacker.pbPartner.ability == :MINUS || attacker.crested == :PLUSLE || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
+    calcspatkmult *= 1.5 if attacker.ability == :PLUS && (attacker.pbPartner.ability == :MINUS || @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN)) || @battle.state.effects[:ELECTERRAIN] > 0
     calcspatkmult *= 1.5 if attacker.ability == :SOLARPOWER && (@battle.pbWeather== :SUNNYDAY) &&  @battle.FE != :FROZENDIMENSION
     calcspatkmult *= 1.3 if attacker.pbPartner.ability == :BATTERY
+    calcspatkmult *= 1.15 if attacker.pbPartner.ability == :PLUS ||attacker.ability == :PLUS
+    calcspatkmult *= 1.15 if attacker.pbPartner.crested == :PLUSLE ||attacker.crested == :PLUSLE
     calcspatkmult *= 2 if attacker.ability == :PUREPOWER && @battle.FE == :PSYTERRAIN
     # end spatk boosts
     calcspatk=(attacker.spatk*1.0*(stagemul[calcspatkstage]/stagediv[calcspatkstage])*calcspatkmult).floor
@@ -433,6 +433,8 @@ class PokeBattle_Move
     calcspdefmult*=1.5 if opponent.hasWorkingItem(:ASSAULTVEST)
     calcspdefmult*=1.5 if opponent.crested == :RILLABOOM && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0)
     calcspdefmult*=1.5 if opponent.crested == :GOTHITELLE
+    calcspdefmult*=0.85 if attacker.pbPartner.ability == :MINUS || attacker.ability == :MINUS
+    calcspdefmult*=0.85 if attacker.pbPartner.crested == :MINUN || attacker.crested == :MINUN
     calcspdefmult*=2.0 if opponent.hasWorkingItem(:DEEPSEASCALE) && (opponent.pokemon.species == :CLAMPERL)
     # end spdef boosts
     calcspdef=(opponent.spdef*1.0*(stagemul[calcspdefstage]/stagediv[calcspdefstage])*calcspdefmult).floor
@@ -606,7 +608,7 @@ class PokeBattle_Move
         (atype == :ELECTRIC && (opponent.ability == :VOLTABSORB || opponent.ability == :LIGHTNINGROD || opponent.ability == :MOTORDRIVE)) ||
         (atype == :GROUND && (opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.ability == :GRAVFLUX) && 
                               @battle.FE != :CAVE && @move != :THOUSANDARROWS && opponent.isAirborne? && !(attacker.crested == :SANDACONDA && @battle.pbWeather == :SAND)) ||
-        (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :BULLDOZER))
+        (atype == :GROUND && (opponent.ability == :DETRITOVORE || opponent.ability == :EARTHEATER))
         (atype == :POISON && (opponent.ability == :PASTELVEIL || opponent.ability == :DETRITOVORE)) 
         mod1=0
       end
@@ -809,14 +811,14 @@ class PokeBattle_Move
     if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB) &&  type == :WATER) || 
                                    (opponent.ability == :VOLTABSORB && type == :ELECTRIC))) ||
                                   ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
-                                  ((opponent.ability == :BULLDOZER || opponent.ability == :DETRITOVORE) && type == :GROUND) ||
+                                  ((opponent.ability == :EARTHEATER || opponent.ability == :DETRITOVORE) && type == :GROUND) ||
                                   (opponent.ability == :DETRITOVORE && type == :POISON)
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && type == :WATER) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && type == :ICE) ||
                                   ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && type == :WATER)
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:LUNARIDOL,:ICEBODY,:BULLDOZER,:DETRITOVORE].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:DRYSKIN,:LUNARIDOL,:ICEBODY,:EARTHEATER,:DETRITOVORE].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -1026,7 +1028,7 @@ class PokeBattle_Move
       (opponent.ability == :DETRITOVORE && !(opponent.moldbroken) && 
                                                                   (type == :WATER || type == :GROUND || type == :POISON || 
                                                                   (!secondtype.nil? && secondtype.include?(:WATER)) || (!secondtype.nil? && secondtype.include?(:GROUND)) || (!secondtype.nil? && secondtype.include?(:POISON)))) ||
-      (opponent.ability == :BULLDOZER && !(opponent.moldbroken) && (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))) ||
+      (opponent.ability == :EARTHEATER && !(opponent.moldbroken) && (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && (type == :ICE || (!secondtype.nil? && secondtype.include?(:ICE)))) ||
       ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER))))
@@ -1428,11 +1430,17 @@ class PokeBattle_Move
       end
     end
     if attacker.ability == :VICTORYSTAR
-      accuracy*=1.1
+      accuracy*=1.5
+    end
+    if attacker.ability == :ILLUMINATE
+      accuracy*=1.15
     end
     partner=attacker.pbPartner
     if partner && partner.ability == :VICTORYSTAR
-      accuracy*=1.1
+      accuracy*=1.5
+    end
+    if partner && partner.ability == :ILLUMINATE
+      accuracy*=1.15
     end
     if attacker.hasWorkingItem(:WIDELENS)
       accuracy*=1.1
@@ -1549,7 +1557,7 @@ class PokeBattle_Move
   end
   
   def pbCalcDamage(attacker,opponent,options=0, hitnum: 0)
-    @category = :physical if attacker.crested == :RILLABOOM && attacker.form == 1 && isSoundBased?
+    @category = :physical if attacker.crested == :RILLABOOM && isSoundBased?
     opponent.damagestate.critical=false
     opponent.damagestate.typemod=0
     opponent.damagestate.calcdamage=0
@@ -1698,6 +1706,7 @@ class PokeBattle_Move
       when :CRABOMINABLE then basemult*=1.5 if attacker.lastHPLost>0
       when :AMPHAROS then basemult*= attacker.hasType?(type) ? 1.2 : 1.5 if attacker.moves[0] == self
       when :LUXRAY then basemult *= 1.2 if @type == :NORMAL && type == :ELECTRIC
+      when :WIGGLYTUFF then basemult *= 2 if isSoundBased?
       when :SAWSBUCK  
         case attacker.form
         when 0 then basemult*=1.2 if @type == :NORMAL && type == :WATER
@@ -1871,7 +1880,7 @@ class PokeBattle_Move
         end
         @battle.field.counter = 0
       when :DEEPEARTH
-        if (priorityCheck(attacker) > 0) && @basedamage > 0
+        if (priorityCheck(attacker, opponent) > 0) && @basedamage > 0
           provimult=0.7
           provimult=0.85 if $game_variables[:DifficultyModes]==1
           provimult = ((provimult-1.0)*2.0)+1.0 if $game_switches[:FieldFrenzy]
@@ -1879,7 +1888,7 @@ class PokeBattle_Move
           @battle.pbDisplay(_INTL("The intense pull slowed the attack...")) if !@fieldmessageshown
           @fieldmessageshown = true
         end
-        if (priorityCheck(attacker) < 0) && @basedamage > 0
+        if (priorityCheck(attacker, opponent) < 0) && @basedamage > 0
           provimult=1.3
           provimult=1.15 if $game_variables[:DifficultyModes]==1
           provimult = ((provimult-1.0)*2.0)+1.0 if $game_switches[:FieldFrenzy]
@@ -2007,14 +2016,12 @@ class PokeBattle_Move
     end
     case attacker.ability
       when :GUTS then atkmult*=1.5 if !attacker.status.nil? && pbIsPhysical?(type)
-      when :PLUS, :MINUS
+      when :PLUS
         if pbIsSpecial?(type) && @battle.FE != :GLITCH
           partner=attacker.pbPartner
-          if partner.ability == :PLUS || partner.ability == :MINUS
+          if partner.ability == :MINUS
             atkmult*=1.5
           elsif @battle.FE == :SHORTCIRCUIT || (Rejuv && @battle.FE == :ELECTERRAIN) || @battle.state.effects[:ELECTERRAIN] > 0
-            atkmult*=1.5
-          elsif attacker.crested == :PLUSLE || attacker.crested == :MINUN
             atkmult*=1.5
           end
         end
@@ -2037,6 +2044,7 @@ class PokeBattle_Move
     # Mid Battle stat multiplying crests; Spiritomb Crest, Castform Crest
     case attacker.crested
       when :CASTFORM then atkmult*=1.5 if attacker.form == 1 && @battle.pbWeather== :SUNNYDAY && pbIsSpecial?(type) && (@battle.FE != :GLITCH &&  @battle.FE != :FROZENDIMENSION)
+      when :SUNFLORA then atkmult*=2 if @battle.pbWeather== :SUNNYDAY
       when :SPIRITOMB
           allyfainted = attacker.pbFaintedPokemonCount
           modifier = (allyfainted * 0.2) + 1.0
@@ -2056,6 +2064,12 @@ class PokeBattle_Move
         atkmult*=1.5
       else
         atkmult*=1.3
+      end
+    end
+    if (attacker.ability == :PLUS || attacker.pbPartner.ability == (:PLUS)) && pbIsSpecial?(type)
+      atkmult*=1.15
+      if (attacker.crested == :PLUSLE || attacker.pbPartner.crested == (:PLUSLE)) && pbIsSpecial?(type)
+        atkmult*=1.15
       end
     end
     if @battle.FE == :FAIRYTALE
@@ -2201,6 +2215,15 @@ class PokeBattle_Move
         defmult*=4.0 if contactMove? && attacker.ability != :LONGREACH && @battle.FE == :CLOUDS  && !(opponent.moldbroken)
         defmult*=0.5 if type == :FIRE && !(opponent.moldbroken)
     end
+
+
+    if (attacker.ability == :MINUS || attacker.pbPartner.ability == (:MINUS)) && pbIsSpecial?(type)
+      defmult*=0.85
+      if (attacker.crested == :MINUN || attacker.pbPartner.crested == :MINUN) && pbIsSpecial?(type)
+        defmult*=0.85
+      end
+    end
+
     if ((@battle.pbWeather== :SUNNYDAY) || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN) || @battle.FE == :BEWITCHED) && !(opponent.moldbroken) && pbIsSpecial?(type)
       if opponent.ability == :FLOWERGIFT && opponent.species == :CHERRIM
         defmult*=1.5
@@ -2231,11 +2254,11 @@ class PokeBattle_Move
     if opponent.hasWorkingItem(:DEEPSEASCALE) && @battle.FE != :GLITCH && (opponent.pokemon.species == :CLAMPERL) && pbIsSpecial?(type)
       defmult*=2.0
     end
-    if opponent.hasWorkingItem(:METALPOWDER) && (opponent.pokemon.species == :DITTO) && !opponent.effects[:Transform] && pbIsPhysical?(type)
+    if opponent.hasWorkingItem(:METALPOWDER) && (opponent.pokemon.species == :DITTO) && pbIsPhysical?(type)
       defmult*=2.0
     end
 
-    defmult*=1.5 if opponent.crested == :RILLABOOM && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0)
+    defmult*=1.5 if opponent.crested == :RILLABOOM && pbIsSpecial?(type) && (@battle.FE == :GRASSY || @battle.FE == :FOREST || @battle.state.effects[:GRASSY] > 0)
     defmult*=2 if opponent.crested == :RILLABOOM && isSoundBased?
 
     #General damage modifiers
@@ -2473,6 +2496,13 @@ class PokeBattle_Move
         end
       end
     end
+
+    if (opponent.anticipation && opponent.damagestate.typemod>4)
+      finalmult*=0.5
+      @battle.pbDisplay(_INTL("{1} braced itself for the attack!",pbThis))
+      opponent.anticipation = false
+    end
+
     finalmult*=0.75 if (((opponent.ability == :SOLIDROCK || opponent.ability == :FILTER) && !opponent.moldbroken) || opponent.ability == :PRISMARMOR) && opponent.damagestate.typemod>4
     finalmult*=0.75 if opponent.ability == :SHADOWSHIELD && [:STARLIGHT, :NEWWORLD, :DARKCRYSTALCAVERN].include?(@battle.FE)
     finalmult*=0.70 if opponent.crested == :AMPHAROS && opponent.damagestate.typemod>4
@@ -2717,7 +2747,7 @@ class PokeBattle_Move
     return damage   # The HP lost by the opponent due to this attack
   end
 
-  def priorityCheck(attacker)
+  def priorityCheck(attacker, opponent=nil)
     pri = self.priority
     
     pri = 0 if @zmove && @basedamage > 0
@@ -2728,9 +2758,10 @@ class PokeBattle_Move
     pri += 1 if attacker.ability == :PRANKSTER && @basedamage==0 && attacker.effects[:TwoTurnAttack] == 0 # Is status move
     pri += 1 if attacker.ability == :GALEWINGS && @type==:FLYING
     pri += 1 if (attacker.ability == :HIVEQUEEN || attacker.pbPartner.ability == :HIVEQUEEN) && @type==:BUG 
+
+    # forewarn
+    pri += 1 if (opponent && !opponent.hasMovedThisRound? && attacker.forewarn.include?(opponent.selectedMove))
     
-    # @SWu this bugs out the AI for some reason (because it tries to calc damage using :FAKEMOVE but fakemove doesn't have a function code??? pls help @Rei)
-    # pri += 2 if (attacker.ability == :RUNAWAY || attacker.ability == :JOKER) && (@move.function == 0x0EE || @move.function == 0x902 || @move.function == 0x13D || @move.function == 0x0ED)
     pri += 3 if attacker.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@function)
     pri -= 1 if @battle.FE == :DEEPEARTH && @move == :COREENFORCER
     return pri

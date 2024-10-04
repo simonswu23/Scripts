@@ -1359,6 +1359,7 @@ class PokeBattle_Battle
         pri += 1 if @choices[i][2].move == :QUASH && @field.effect == :DIMENSIONAL
         pri += 1 if @choices[i][2].basedamage != 0 && @battlers[i].crested == :FERALIGATR && @battlers[i].turncount == 1 # Feraligatr Crest
         pri += 3 if @battlers[i].ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(@choices[i][2].function)
+        pri += 1 if (@battlers[i].pbOpposing1 && @battlers[i].forewarn.include?(@battlers[i].pbOpposing1.selectedMove)) || (@battlers[i].pbOpposing2 && @battlers[i].forewarn.include?(@battlers[i].pbOpposing2.selectedMove))
       end
       priorityarray[i][0]=pri
 
@@ -1561,12 +1562,17 @@ class PokeBattle_Battle
     opp1=thispkmn.pbOpposing1
     opp2=thispkmn.pbOpposing2
     opp=nil
+
     if thispkmn.hasType?(:GHOST) && (@field.effect != :DIMENSIONAL || !(opp1.ability == :SHADOWTAG || opp2.ability == :SHADOWTAG) )
       return true
     end
     if thispkmn.hasWorkingItem(:SHEDSHELL)
       return true
     end
+    if thispkmn.hasWorkingAbility(:RUNAWAY)
+      return true
+    end
+    
     if @field.effect == :INFERNAL && thispkmn.status ==:SLEEP && (opp1.ability == (:BADDREAMS) || opp2.ability == (:BADDREAMS))
       pbDisplayPaused(_INTL("{1}'s terrible dreams prevent it from being switched out!",thispkmn.pbThis)) if showMessages 
       return false
