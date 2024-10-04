@@ -6608,7 +6608,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :GHOST,
 		:Type2 => :DARK,
-		:BaseStats => [120, 25, 100, 130, 125, 60],
+		:BaseStats => [120, 25, 70, 150, 145, 50],
 		:Abilities => [:GRAVPULL],
 		:Height => 200,
 		:Weight => 1222,
@@ -53693,6 +53693,8 @@ MONHASH = {
 	},
 
 	"Giga Form" => {
+		:Type1 => :GRASS,
+		:Type2 => :FLYING,
 		:BaseStats => [140, 130, 80, 65, 60, 80],
 		:Abilities => [:SIMPLE],
 		:Height => 240,
@@ -53872,7 +53874,6 @@ MONHASH = {
 		:Type1 => :GROUND,
 		:Type2 => :FLYING,
 		:BaseStats => [144, 117, 145, 55, 90, 31],
-		# Figure out more interesting ability here
 		:Abilities => [:SANDVEIL],
 		:Height => 220,
 		:Weight => 2456,
@@ -56107,7 +56108,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:BaseStats => [140, 55, 125, 140, 80, 65],
-		:Abilities => [:STAMINA],
+		:Abilities => [:MAGICGUARD],
 		:Height => 430,
 		:Weight => 2456,
 	},

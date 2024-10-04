@@ -1286,9 +1286,9 @@ class PokeBattle_Move
         end
       end
     end
-    # if (@move == :RAINBOWSCALES || @move == :NEEDLEPIERCE && typemod < 4)
-    #   return 4
-    # end
+    if ((@move == :RAINBOWSCALES || @move == :NEEDLEPIERCE) && typemod < 4)
+      return 4
+    end
     return typemod
   end
 
@@ -2129,6 +2129,7 @@ class PokeBattle_Move
       end
     end
     atkmult*=0.5 if (opponent.ability == :THICKFAT) && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
+    atkmult*=0.5 if (opponent.ability == :STEAMENGINE || opponent.ability == :WATERCOMPACTION) && (type == :WATER) && !(opponent.moldbroken)
     atkmult*=0.5 if opponent.crested == :ALCREMIE && (type == :ICE || type == :FIRE || type == :WATER)
     atkmult*=1.5 if attacker.crested == :DARKRAI && opponent.status==:SLEEP
     atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)

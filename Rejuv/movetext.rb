@@ -14248,15 +14248,14 @@ MOVEHASH = {
 :FLAMESTRIKE => {
 	:ID => 925,
 	:name => "Flame Strike",
-	:function => 0x000,
+	:function => 0x0AD,
 	:type => :FIRE,
 	:category => :physical,
 	:basedamage => 150,
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,
-	# Need to fix -- not true smart targeting?
-	:target => :DragonDarts,
+	:target => :SingleNonUser,
 	:desc => "Fire Ball"
 },
 
@@ -14266,7 +14265,7 @@ MOVEHASH = {
 	:function => 0x179,
 	:type => :WATER,
 	:category => :special,
-	:basedamage => 100,
+	:basedamage => 110,
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,

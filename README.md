@@ -22,8 +22,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - grants ice types a x1.5 defense boost
    
   - Misty Terrain
-    - grants fairy types a x1.5 special defense boost
-    - TODO: change this to grounded Fairy types only
+    - grants grounded fairy types a x1.5 special defense boost
       
   - Frostbite
     - halves special attack of afflicted pokemon
@@ -42,6 +41,418 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     - TODO: change this into a password instead
 
 ## Pokemon
+
+### Giga Evolution
+- Venusaur
+  - Typing: Grass/Ground
+  - Ability: Chlorophyll
+  - Stats: 160, 62, 83, 140, 80, 80
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+  
+- Charizard
+  - Typing: Fire 
+  - Ability: Solar Power
+  - Stats: 156, 54, 78, 159, 85, 80
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Blastoise
+  - Typing: Water/Steel
+  - Ability: Drizzle
+  - Stats: 158, 73, 130, 115, 85, 48
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Butterfree
+  - Typing: Bug/Flying
+  - Ability: Compoundeyes
+  - Stats: 120, 15, 50, 125, 85, 100
+  - Giga Move: Befuddle
+    - basemove: Spring Breeze
+    - Type: Bug
+    - category: special
+    - BP: 130
+    - acc: 0
+    - target: All Foes
+    - effect: 100% chance to inflict poison, paralysis, or sleep
+
+- Pikachu
+  - Typing: Electric/Normal
+  - Ability: Electric Surge
+  - Stats: 140, 90, 60, 90, 70, 75
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Meowth
+  - Typing: Normal/Steel
+  - Ability: Gold Envy*
+  - Stats: 200, 85, 75, 60, 60, 60
+  - Giga Move: Gold Rush
+    - basemove: Pay Day
+    - Type: Steel
+    - category: physical
+    - BP: 110
+    - acc: 0
+    - target: All Foes
+    - effect: priority +2, follow me effect
+
+- Machamp
+  - Typing: Fighting/Rock
+  - Ability: No GUard
+  - Stats: 180, 150, 80, 45, 85, 55
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Gengar
+  - Typing: Ghost/Dark
+  - Ability: Gravitational Pull
+  - Stats: 120, 25, 70, 150, 145, 50
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Kingler
+  - Typing: Water/Bug
+  - Ability: Sheer Force
+  - Stats: 110, 155, 115, 25, 50, 75
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Lapras
+  - Typing: Water/Ice 
+  - Ability: Hydro Veil
+  - Stats: 220, 65, 130, 125, 110, 45
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Eevee
+  - Typing: Normal/Fairy
+  - Ability: Cute Aura*
+  - Stats: 220, 75, 60, 75, 85, 75
+  - Giga Move:
+    - basemove: Charm
+    - Type: Fairy
+    - category: physical
+    - BP: 120
+    - acc: 0
+    - target: Single Target
+    - effect: Lowers the target's attack and special attack by 2
+
+- Snorlax
+  - Typing: Normal/Ground 
+  - Ability: Replenish
+  - Stats: 320, 110, 65, 65, 110, 30
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Garbodor
+  - Typing: Poison/Ground
+  - Ability: Corrosion
+  - Stats: 160, 115, 82, 50, 82, 65
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Vanilluxe
+  - Typing: Ice/Flying
+  - Ability: Snow Cloak
+  - Stats: 142, 95, 85, 110, 95, 79
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Melmetal
+  - Typing: Steel/Poison
+  - Ability: Alloy*
+  - Stats: 270, 153, 153, 60, 65, 34
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Rillaboom
+  - Typing: Grass/Normal
+  - Ability: Grassy Surge
+  - Stats: 200, 155, 90, 50, 70, 65
+  - Giga Move: Giant's Drum
+    - Type: Grass
+    - category: physical
+    - BP: 150
+    - acc: 0
+    - target: All Foes
+    - effect: knocks off target's item
+
+- Cinderace
+  - Typing: Fire/Fighting
+  - Ability: Libero
+  - Stats: 160, 146, 65, 35, 65, 139
+  - Giga Move: Flame Strike
+    - Type: Fire
+    - category: Physical
+    - BP: 150
+    - acc: 0
+    - target: Single Target
+    - effect: fully breaks protect (feint)
+
+- Inteleon
+  - Typing: Water/Dark
+  - Ability: Sniper
+  - Stats: 140, 105, 65, 145, 65, 80
+  - Giga Move: Hydrosnipe
+    - Type: Water
+    - category: special
+    - BP: 110
+    - acc: 0
+    - target: Singel Target
+    - effect: +2 chr, cannot be redirected (like snipe shot)
+
+- Corviknight
+  - Typing: Flying/Steel
+  - Ability: Gale Wings
+  - Stats: 196, 87, 125, 43, 95, 47
+  - Giga Move: Wind Rage
+    - Type: Flying
+    - category: Physical
+    - BP: 130
+    - acc: 0
+    - target: All Foes
+    - effect: priority -6, forces targets to switch out
+
+- Orbeetle
+  - Typing: Bug/Psychic
+  - Ability: Gravitational Flux
+  - Stats: 120, 45, 110, 100, 120, 70
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Drednaw
+  - Typing: Water/Rock
+  - Ability: Swift Swim
+  - Stats: 180, 135, 90, 38, 58, 74
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Coalossal
+  - Typing: Fire/Rock
+  - Ability: Steam Engine
+  - Stats: 220, 80, 120, 80, 90, 30
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Flapple
+  - Typing: Grass/Flying 
+  - Ability: Simple
+  - Stats: 140, 130, 80, 65, 60, 80
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Appletun
+  - Typing: Bug/Dragon
+  - Ability: Gluttony
+  - Stats: 220, 55, 80, 120, 100, 20
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Sandaconda
+  - Typing: Ground/Flying
+  - Ability: Sand Veil
+  - Stats: 144, 117, 145, 55, 90, 31
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Toxtricity
+  - Typing: Poison/Electric
+  - Ability: Punk Rock
+  - Stats: 150, 68, 70, 144, 70, 75
+  - Giga Move: Acid Rock
+    - Type: Poison
+    - category: special
+    - BP: 140
+    - acc: 0
+    - target: all foes
+    - effect: lowers foes special defense by 2
+
+- Centiskorch
+  - Typing: Fire/Dragon
+  - Ability: Drought
+  - Stats: 200, 125, 75, 50, 100, 65
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Hatterene
+  - Typing: Psychic/Fairy
+  - Ability: Psychic Surge
+  - Stats: 114, 45, 115, 146, 123, 29
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Grimmsnarl
+  - Typing: Dark/Fairy
+  - Ability: Prankster
+  - Stats: 190, 120, 65, 95, 75, 60
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Alcremie
+  - Typing: Fairy
+  - Ability: Misty Surge
+  - Stats: 130, 30, 85, 145, 166, 24
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Copperajah
+  - Typing: Steel/Ground
+  - Ability: Earth Earter
+  - Stats: 244, 150, 99, 30, 69, 30
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Duraludon
+  - Typing: Steel/Dragon
+  - Ability: Magic Guard
+  - Stats: 140, 55, 125, 140, 80, 65
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Urshifu (SS)
+  - Typing: Fighting/Dark
+  - Ability: Adaptability
+  - Stats: 200, 150, 100, 43, 60, 97
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
+
+- Urshifu (RS)
+  - Typing: Fighting/Water
+  - Ability: Technician
+  - Stats: 100, 130, 100, 43, 60, 117
+  - Giga Move:
+    - Type:
+    - category:
+    - BP:
+    - acc:
+    - target:
+    - effect:
 
 ### Pokemon Changes
 
@@ -65,21 +476,17 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
     
 - Volcarona Line
   - added Flash Fire as ability for Larvesta and Volcarona
-  - added Run Away and Gale Wings asa bility for Larvesta (Aevian) and Volcarona (Aevian)
+  - added Run Away and Gale Wings as ability for Larvesta (Aevian) and Volcarona (Aevian)
  
 - Absol
   - added Fairy typing to Mega Absol
  
 - Snorlax
   - learns Slack Off at lvl 80
-  - base stat buffs: 160, 150, 95, 55, 160, 20
-  - giga ability: Replenish
  
 - Lapras
   - base stat buffs: 130, 95, 100, 95, 105, 60
   - aevian base stat buffs: 135, 105, 90, 95, 95, 60
-  - giga base stat buffs: 150, 115, 130, 125, 110, 45
-  - giga ability: Hydro Veil
  
 - Gardevoir
   - mega base stat buffs: 68, 85, 65, 165, 135, 100
@@ -87,6 +494,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Cacturne line
   - Cacnea/Cacturne ability: Technician
+  - Cacturne gains +15 to its attack and special attack
  
 - Manaphy
   - ability: Hydration -> Hydro Veil
@@ -102,12 +510,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Venusaur
   - mega base stat buffs: 80, 95, 128, 127, 140, 55
-  - giga base stat buffs: 80, 82, 108, 150, 125, 80
  
 - Blastoise
   - mega base stat buffs: 79, 83, 120, 155, 115, 78
-  - giga base stat buffs: 83, 130, 135, 135, 68
-  - giga abilty: Rain Dish -> Massive SHell
  
 - Cherrim
   - learns Fairy Wind at level 0
@@ -119,22 +524,16 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - sunshine form base stat buffs: 70, 110, 70, 97, 118, 85
  
 - Cinderace
-  - giga base stat buffs: 80, 155, 82, 82, 82, 149
   - learns Grassy Glide at level 50
  
 - Corviknight
-  - giga ability: Mirror Armor -> Gale Wings
   - learns Hurricane at level 58
  
 - Alcremie
-  - giga base stat buffs: 65, 60, 105, 150, 161, 54
-  - giga ability: Aroma Veil -> Misty Surge
   - learns Chain Drain
  
 - Butterfree
   - base stat buffs: 60, 55, 60, 95, 85, 80
-  - giga base stat buffs: 60, 25, 70, 145, 115, 120
-  - giga ability: Tinted Lens -> Compoundeyes
   - learns Hurricane at level 50
   - learns Spring Breeze at level 60
   - learns Rainbow Scales at level 68
@@ -172,14 +571,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - base stat buffs: 70, 145, 125, 75, 80, 65
   - mega base stat buffs: 70, 175, 145, 105, 100, 65
  
-- Gengar
-  - giga base stat buffs: 60, 65, 100, 150, 115, 110
-  - changed giga Gengar typing to Ghost/Dark
-  - giga ability: Cursed Body -> Gravitational Pull
- 
-- Orbeetle
-  - giga ability: Prankster -> Gravitational Flux
- 
 - Sableye
   - base stat buffs: 50, 75, 105, 65, 95, 50
   - mega base stat buffs: 50, 85, 155, 85, 145, 20
@@ -195,7 +586,6 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Alcremie
   - base stat buffs: 65, 60, 75, 115, 136, 64
-  - giga base stat buffs: 130, 60, 85, 150, 161, 24
   - learns chain drain at lvl 68
 
 - Plusle
@@ -213,9 +603,52 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 - Popplio Line
   - learns chirp instead of double slap by level up
 
-- Rillaboom
-  - Giga form: turns all sound-based attacks into physical moves
-   
+- Gorebyss
+  - gains Simple as hidden ability 
+  - added Psychic typing
+  - learns Nasty Plot at level 65
+
+- Huntail
+  - gains Simple as hidden ability 
+  - added Dark typing
+  - learns Wave Crash at level 60 (instad of Hydro Pump)
+  - learns Swords Dance at level 65
+
+- Wigglytuff line
+  - learns Fake Out at level 1
+  - Jigglypuff learns Boomburst at level 50
+
+- Tentacruel line
+  - gains Regenerator instead of liquid ooze
+
+- Marowak
+  - learns Head Smash at level 1
+  - learns Wild Charge
+
+- Seaking line
+  - now are part normal type
+  - learns Double Edge at level 52 and 58 respectively
+
+- Meganium
+  - learns Rage Powder at level 1
+
+- Ledian
+  - gains Huge Power instead of Iron Fist
+
+- Banette
+  - learns Follow Me instead of Snatch at level 46
+
+- Absol
+  - gains Forewarn instead of Justified
+
+- Aggron line
+  - gains Earth Eater
+
+- Luvdisc
+  - +20 speed
+  - gains Friend Guard instead of Hydration
+  - learns lovely kiss at level 31
+
 ### New Pokemon
 - Alpha Larvesta
   - Bug/Fire
@@ -314,6 +747,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
  
 - Run Away
   - prio +1 to switching moves
+  - cannot be trapped
 
 - Healer
   - Friendly HP restoration is doubled
@@ -338,6 +772,44 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Sniper
   - x2 boost instead of x1.5 boost
+  
+- Sand Veil
+  - x1.5 special defense in sand
+
+- Snow CLoak
+  - x1.5 defense in ice
+
+- Ice Body
+  - restores 1/8 HP at the end of each turn in Hail
+
+- Rain Dish
+  - restores 1/8 HP at the end of each turn in Rain
+
+- Plus
+  - boosts friendly special attack by x1.15
+
+- Minus
+  - instead of x1.5 special attack when activated, gain x1.5 speed instead
+  - lowers opposing special defense by x0.85
+
+- Forewarn
+  - on triggers, all allies learn about the forewarned attack
+  - pokemon have priority +1 if opponents are using a forewarned attack
+
+- Anticipation
+  - on trigger, the suer takes x0.5 damage from the first super effecitve attack it recieves
+
+- Victory Star
+  - boosts allies accuracy by x1.5
+
+- Illuminate
+  - boosts allies accuracy by x1.15
+
+- Steam Engine
+  - halves water type damage
+
+- Water Compaction
+  - halves water type damage
  
 ### New Abilities
 
@@ -453,6 +925,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - no longer raises special attack on entry
   - all stat drops this pokemon inflicts are doubled
 
+- Darmanitan Crest
+  - x1.3 special defense and special attack
+  - x0.8 attack, defense, and speed
 
 ### New Items
 - Poison Potion
@@ -499,19 +974,18 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Vanilluxe Crest
   - hail lasts indefinitely
-  - extra x2 defense in the hail
+  - extra x1.5 defense in the hail
   - ice attacks x1.5 power in hail
   - immune to fire in hail
 
 - Sandaconda Crest
   - sand lasts indefinitely
-  - extra x3 special defense in the sand
+  - x1.5 special defense in the sand
   - ground attacks hit airborne targets in the sand
   - restores 1/8 of HP at the end of each turn in the sand
  
 - Cacturne Crest
   - raises attack and special attack by 1 if attacking before the target
-  - x1.3 boost to offenses
 
 - Bronzong Crest
   - restores 1/16th hp at the end of each turn
@@ -520,41 +994,53 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
   - TOOD: update smart damage category
 
 - Plusle Crest
-  - activates Plus 
+  - additional x1.15 special attack boost to allies
   - x1.5 special attack
-  - Normal -> Fire, gains Fire STAB + gains chance to burn equal to the original attack's effect chance
+  - Gains Fire STAB
+  - Normal -> Fire
+  - Fire attacks have a 30% burn chance
 
 - Minun Crest
-  - activates Minus 
+  - additional x0.85 special defense drop to foes
   - x1.5 speed
-  - Normal -> Ice, gains Ice STAB + gains chance to frostbite equal to the original attack's effect chance
+  - Normal -> Ice
+  - Gains Ice STAB
+  - Ice attacks have a 30% frostbite chance
 
-- Corviknight
+- Corviknight Crest
   - clears hazards and screens at the end of each turn
   - on entry trigger
   - TODO: also clear terrain
 
-- Alcremie
+- Alcremie Crest
   - lowers all foes evasion by 1 on entry and at the end of each turn
   - foes with lowered evasion cannot switch
   - takes x0.5 damage from fire and ice attacks
 
-- Rillaboom
+- Rillaboom Crest
   - all sound based attacks -> physical
   - take x0.5 damage from sound based attacks
   - x1.5 special defense in grassy terrain
 
-- Cinderace
+- Cinderace Crest
   - special attack = attack
   - moves cannot miss
 
-- Inteleon
-  - x1.2 speed
+- Inteleon Crest
+  - x1.3 speed
   - +2 CHR on all attacks
 
-- Copperajah
+- Copperajah Crest
   - physical attacks lower foes speed by 2
   - x1.3 attack
+
+- Wigglytuff Crest
+  - x2 attack
+  - x2 boost to sound moves
+
+- Sunflora Crest
+  - x1.3 attack and special attack
+  - x2 special attack in the sun
  
 ## Attacks
 
@@ -931,6 +1417,9 @@ Difficulty Mod for Pokemon Rejuvenation v13.5
 
 - Elysian Shield
   - additionally protects the user (not rate shared)
+
+- Pay Day
+  - BP 40 -> 60
     
 ### New Attacks
 
