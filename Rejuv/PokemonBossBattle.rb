@@ -116,8 +116,9 @@ class PokeBattle_Move
           opponent.damagestate.rampcrestused=true
           opponent.pokemon.rampCrestUsed = true
           damage=damage-1
-        elsif damage==opponent.totalhp && opponent.ability == :STALWART && @battle.FE == :COLOSSEUM && !opponent.moldbroken
-          opponent.damagestate.stalwart=true
+        elsif opponent.ability == :STALWART && @battle.FE == :COLOSSEUM && !opponent.moldbroken && !opponent.pokemon.rampCrestUsed
+          opponent.damagestate.rampcrestused=true
+          opponent.pokemon.rampCrestUsed = true
           damage=damage-1
         end
         damage=0 if damage<0

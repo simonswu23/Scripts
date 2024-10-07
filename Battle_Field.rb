@@ -698,7 +698,7 @@ class PokeBattle_Move
   def typeFieldBoost(type,attacker=nil,opponent=nil) #returns multiplier value of field boost
     fieldtype = @battle.field.typeData(type)
     return 1 if !fieldtype || !fieldtype[:mult]
-    return 1 if fieldtype[:mult] && @battle.field.effect == :STARLIGHT && !(@battle.pbWeather == 0 || @battle.pbWeather == :STRONGWINDS) #starlight arena
+    return 1 if fieldtype[:mult] && @battle.field.effect == :STARLIGHT && !(@battle.pbWeather == 0 || @battle.pbWeather == :STRONGWINDS || @battle.pbWeather == :HAIL) #starlight arena
     if fieldtype[:condition] && attacker && opponent
       return 1 if !eval(fieldtype[:condition])
     end

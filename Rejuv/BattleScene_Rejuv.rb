@@ -1458,11 +1458,10 @@ def pbFightMenu(index)
     cw.setIndex(0)
   end
   cw.megaButton=0 unless @battle.megaEvolution[(@battle.pbIsOpposing?(index)) ? 1 : 0][@battle.pbGetOwnerIndex(index)] == index && @battle.battlers[index].hasMega?
-  cw.megaButton=1 if (@battle.pbCanMegaEvolve?(index) && !@battle.pbCanZMove?(index))
+  cw.megaButton=1 if @battle.pbCanMegaEvolve?(index) && !@battle.pbCanZMove?(index)
   cw.ultraButton=0
   cw.ultraButton=1 if @battle.pbCanUltraBurst?(index)
-  cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
-  cw.megaButton=1 if @battle.pbCanGigaEvolve?(index)
+  # cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
   cw.zButton=0
   cw.zButton=1 if @battle.pbCanZMove?(index) && !battler.isMega?
   pbSelectBattler(index)
@@ -1546,7 +1545,7 @@ def pbFightMenu(index)
           pbPlayDecisionSE()
         end
       end
-      if @battle.pbCanZMove?(index)  # Use Z Move
+      if @battle.pbCanZMove?(index) # && !@battle.pbCanGigaEvolve?(index) # Use Z Move
         if cw.zButton==2
           @battle.pbUnRegisterZMove(index)
           cw.zButton=1

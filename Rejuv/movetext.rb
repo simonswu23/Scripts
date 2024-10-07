@@ -12157,7 +12157,7 @@ MOVEHASH = {
 	:function => 0x20D,
 	:type => :STEEL,
 	:category => :physical,
-	:basedamage => 90,
+	:basedamage => 100,
 	:accuracy => 100,
 	:maxpp => 10,
 	:effect => 20,
@@ -14167,6 +14167,36 @@ MOVEHASH = {
 	:desc => "The user lets out a quick chirp, alarming the target."
 },
 
+:SOUTHERNWIND => {
+	:ID => 936,
+	:name => "Southern Wind",
+	:function => 0x90D,
+	:type => :FLYING,
+	:category => :special,
+	:basedamage => 90,
+	:accuracy => 100,
+	:maxpp => 16,
+	:target => :AllOpposing,
+	:effect => 15,
+	:desc => "Talon Signature Move"
+},
+
+:ORBITALSTRIKE => {
+	:ID => 937,
+	:name => "Orbital Strike",
+	:function => 0x0EE,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 70,
+	:accuracy => 100,
+	:maxpp => 20,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "After making its attack, the user switches places with a party Pokémon in waiting."
+},
+
+
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14180,7 +14210,7 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,
-	:effect => 100,
+	:effect => 00,
 	:target => :SingleOpposing,
 	:highcrit => true,
 	:desc => "The target is hit by a strike of magic light from the sky, leaving them confused."
@@ -14206,7 +14236,7 @@ MOVEHASH = {
 	:function => 0x90A,
 	:type => :FAIRY,
 	:category => :special,
-	:basedamage => 20,
+	:basedamage => 30,
 	:accuracy => 90,
 	:maxpp => 5,
 	# Figure out random targeting in the future (might have to adjust num hits + power level)
@@ -14353,5 +14383,95 @@ MOVEHASH = {
 	:desc => "Who's a good boy?"
 },
 
+:SNOOZE => {
+	:ID => 931,
+	:name => "Snooze",
+	:function => 0x004,
+	:type => :DARK,
+	:category => :special,
+	:basedamage => 110,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:effect => 100,
+	:desc => "Ya snooze ya lose"
+},
+
+:DEPLETION => {
+	:ID => 932,
+	:name => "Depletion",
+	:function => 0x050,
+	:type => :DRAGON,
+	:category => :special,
+	:basedamage => 140,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:effect => 100,
+	:desc => "Duraludon"
+},
+
+# not fully implemented yet
+:MELTDOWN => {
+	:ID => 933,
+	:name => "Meltdown",
+	:function => 0x006,
+	:type => :STEEL,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllNonUsers,
+	:effect => 100,
+	:desc => "Melmetal"
+},
+
+:BLACKHOLE => {
+	:ID => 934,
+	:name => "Black Hole",
+	:function => 0x09B,
+	:type => :DARK,
+	:category => :special,
+	:basedamage => 1,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllNonUsers,
+	:effect => 100,
+	:desc => "Gengar"
+},
+
+:LANDFILL => {
+	:ID => 935,
+	:name => "Landfill",
+	:function => 0x1100,
+	:type => :POISON,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:effect => 100,
+	:desc => "Garbodor"
+},
+
+:CENTIFERNO => {
+	:ID => 936,
+	:name => "Centiferno",
+	:function => 0x00A,
+	:type => :FIRE,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:effect => 100,
+	:desc => "Centiskorch"
+},
 
 }

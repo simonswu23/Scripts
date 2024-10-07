@@ -1890,6 +1890,25 @@ ABILHASH = {
 	:ID => 331,
 	:name => "Confection",
 	:desc => "Entrances foes with sweet smell, lowering their attack with evasion."
-}
+},
+
+# Not implemented
+:ALLOY => {
+	:ID => 332,
+	:name => "Alloy",
+	:desc => "Restores HP when hit by Steel moves, user's own Steel type attacks are Super Effective versus other Steel types."
+},
+
+:POWERSURGE => {
+	:ID => 333,
+	:name => "Power Surge",
+	:desc => "Skips the first time the user needs to charge or recharge. In electric terrain, x1.5 special attack and does not need to charge/recharge."
+},
+
+:GOLDENVY => {
+	:ID => 334,
+	:name => "Gold Envy",
+	:desc => "Raptured by tremendous jealousy, the foes can only use attacking moves."
+},
 
 }

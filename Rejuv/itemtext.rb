@@ -10287,8 +10287,8 @@ ITEMHASH = {
 
 :SANDACONDACREST => {
 	:ID => 2021,
-	:name => "Alcremie Crest",
-	:desc => "Confection",
+	:name => "Sandaconda Crest",
+	:desc => "Slytherin",
 	:price => 0,
 	:crest => true,
 	:noUseInBattle => true,
@@ -10359,6 +10359,26 @@ ITEMHASH = {
 	:ID => 2027,
 	:name => "Wigglytuff Crest",
 	:desc => "Guildmaster",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:BASTCREST2 => {
+	:ID => 2028,
+	:name => "Bastiodon Crest",
+	:desc => "Attackers take 50% of the damage they deal as recoil, and the wearer is healed the same amount.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:BRAVIARYCREST => {
+	:ID => 2029,
+	:name => "Braviary Crest",
+	:desc => "Murica?",
 	:price => 0,
 	:crest => true,
 	:noUseInBattle => true,

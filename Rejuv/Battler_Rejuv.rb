@@ -237,7 +237,7 @@ class PokeBattle_Battler
         when :COFAGRIGUS
           @spatk *=1.25
           @spdef *= 1.25
-        when :RUNERIGUS
+        when :RUNERIGUS, :BRAVIARY
           @attack *=1.25
           @defense *= 1.25
         when :COPPERAJAH

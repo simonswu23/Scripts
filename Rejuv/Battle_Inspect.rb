@@ -112,7 +112,7 @@ PokeBattle_Battler.class_eval{
     defmult=(defmult*1.5).round if @battle.FE == :DIMENSIONAL && (self.hasType?(:GHOST))
     defmult=(defmult*1.5).round if (self.hasType?(:ICE)) && @battle.pbWeather==:HAIL && ((@battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN))
     defmult=(defmult*2.0).round if self.ability == (:FURCOAT)
-    defmult=(defmult*1.5).round if self.hasWorkingItem(:EVIOLITE) && !pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil?
+    defmult=(defmult*1.5).round if self.hasWorkingItem(:EVIOLITE) && (!pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil? || self.species == :DURALUDON)
     defmult=(defmult*2.0).round if self.hasWorkingItem(:METALPOWDER) && self.species == :DITTO && !self.effects[:Transform]
     defmult=(defmult*1.3).round if self.ability == (:PRISMARMOR) && (@battle.FE==:DARKCRYSTALCAVERN || @battle.FE==:RAINBOW || @battle.FE==:CRYSTALCAVERN)
     defmult=(defmult*1.5).round if self.ability == (:SHADOWSHIELD) && (@battle.FE==:STARLIGHT || @battle.FE==:NEWWORLD || @battle.FE==:DARKCRYSTALCAVERN)
@@ -154,7 +154,7 @@ PokeBattle_Battler.class_eval{
     defmult=(defmult*1.2).round if @battle.FE == :FROZENDIMENSION && (self.hasType?(:GHOST) || self.hasType?(:ICE))
     defmult=(defmult*1.5).round if @battle.FE == :DIMENSIONAL && (self.hasType?(:GHOST))
     defmult=(defmult*1.5).round if (self.hasType?(:ICE)) && @battle.pbWeather==:HAIL && ((@battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN))
-    defmult=(defmult*1.5).round if self.hasWorkingItem(:EVIOLITE) && !pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil?
+    defmult=(defmult*1.5).round if self.hasWorkingItem(:EVIOLITE) && (!pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil? || self.species == :DURALUDON)
     defmult=(defmult*1.5).round if self.hasWorkingItem(:ASSAULTVEST)
     defmult=(defmult*2.0).round if self.hasWorkingItem(:DEEPSEASCALE) && self.species == :CLAMPERL 
     defmult=(defmult*2.0).round if self.hasWorkingItem(:METALPOWDER) && self.species == :DITTO && !self.effects[:Transform]

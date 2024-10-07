@@ -78,6 +78,8 @@ class PokeBattle_Battler
   attr_accessor :isbattlernew #currently only used in Deso for Crowd Field
   attr_accessor :forewarn
   attr_accessor :anticipation
+  attr_accessor :powerSurge
+  attr_accessor :giga
   def inHyperMode?; return false; end
   def isShadow?; return false; end
 
@@ -219,6 +221,7 @@ class PokeBattle_Battler
       when :MEOWTH          then return true if move.move == :PAYDAY
       when :PIKACHU         then return true if move.move == :VOLTTACKLE
       when :EEVEE           then return true if move.move == :CHARM
+      when :GRIMMSNARL      then return true if move.move == :FALSESURRENDER
     end
     return false
   end
@@ -839,11 +842,12 @@ class PokeBattle_Battler
       speed=speed*2
     end
     
-    # @SWu 
-  
-    if @battle.state.effects[:Gravity] != 0
-      speed *= [1, self.weight/2000.0].min
-      speed *= [1, 2000.0/self.weight].max if self.ability == :GRAVFLUX
+    # @SWu gravity speed fuckery
+    if @battle.state.effects[:Gravity] != 0 && self.ability != :GRAVFLUX
+      # 440 is the sky drop cutoff
+      weightLim = @battle.FE == :DEEPEARTH ? 880 : 440
+      speed *= [1,(self.weight / 440).floor].min
+      speed = [speed, 1].max
     end
 
     case self.ability
@@ -872,9 +876,9 @@ class PokeBattle_Battler
       when :NEWWORLD
         speed*=0.75 if !self.isAirborne?
       when :WATERSURFACE, :MURKWATERSURFACE
-        speed*=0.75 if !self.isAirborne? && self.ability != :SURGESURFER && self.ability != :SWIFTSWIM && !self.hasType?(:WATER)
+        speed*=0.5 if !self.isAirborne? && self.ability != :SURGESURFER && self.ability != :SWIFTSWIM && !self.hasType?(:WATER)
       when :UNDERWATER
-        speed*=0.5 if !self.hasType?(:WATER) && self.ability != :SWIFTSWIM && self.ability != :STEELWORKER
+        speed*=0.25 if !self.hasType?(:WATER) && self.ability != :SWIFTSWIM && self.ability != :STEELWORKER
     end
     if self.itemWorks?
       if (self.item == :CHOICESCARF)
@@ -1532,8 +1536,10 @@ class PokeBattle_Battler
         @pokemon.species == :DITTO        ||
         @pokemon.species == :MEW          ||
         @pokemon.species == :MORPEKO      ||
-        @pokemon.species == :CRAMORANT
+        @pokemon.species == :CRAMORANT    ||
+        @giga
         self.form=0
+        @giga=0
       elsif (@pokemon.species == :DARMANITAN) ||
         (@pokemon.species == :MINIOR)
         self.form=@startform
@@ -2009,6 +2015,12 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1}'s Pastel Veil cured its partner's poison problem!",self.pbThis))
       end
     end
+    if self.ability == :FLASHFIRE && @battle.FE == :VOLCANICTOP
+      if !i.effects[:FlashFire]
+        i.effects[:FlashFire]=true
+        pbDisplay(_INTL("{1}'s {2} raised its Fire power!", i.pbThis,getAbilityName(i.ability)))
+      end
+    end
     # Intimidate
     if self.ability == :INTIMIDATE && onactive
       for i in 0...4
@@ -2030,130 +2042,6 @@ class PokeBattle_Battler
         @battle.battlers[i].pbReduceStat(PBStats::SPEED,1,abilitymessage:true, statdropper: self)
       end
     end
-    # Confection
-    if self.crested == :ALCREMIE
-      for index in 0...4
-        next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
-        i = self
-        j = @battle.battlers[index]
-        @battle.pbAnimation(:SWEETSCENT, i, j, 0);
-        j.pbReduceStat(PBStats::EVASION,1, statdropper:self)
-      end
-    end
-    # Downdraft
-    if self.crested == :CORVIKNIGHT
-      for index in 0...4
-        next if !pbIsOpposing?(index) || @battle.battlers[index].isFainted?
-        i = self
-        j = @battle.battlers[index]
-
-        @battle.pbAnimation(:DEFOG, i, j, 0);
-
-        if i.pbOpposingSide.effects[:Reflect]>0
-          i.pbOpposingSide.effects[:Reflect]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team's Reflect wore off!"))
-          else
-              @battle.pbDisplay(_INTL("Your team's Reflect wore off!"))
-          end
-        end
-        if i.pbOpposingSide.effects[:LightScreen]>0
-          i.pbOpposingSide.effects[:LightScreen]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team's Light Screen wore off!"))
-          else
-            @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
-          end
-        end
-        if i.pbOpposingSide.effects[:AuroraVeil]>0
-          i.pbOpposingSide.effects[:AuroraVeil]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team's Aurora Veil wore off!"))
-          else
-            @battle.pbDisplay(_INTL("Your team's Aurora Veil wore off!"))
-          end
-        end
-        if i.pbOpposingSide.effects[:AreniteWall]>0
-          i.pbOpposingSide.effects[:AreniteWall]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team's Arenite Wall wore off!"))
-          else
-            @battle.pbDisplay(_INTL("Your team's Arenite Wall wore off!"))
-          end
-        end
-        if i.pbOpposingSide.effects[:Mist]>0 || j.pbOwnSide.effects[:Mist]>0
-          j.pbOwnSide.effects[:Mist]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team is no longer protected by Mist."))
-          else
-            @battle.pbDisplay(_INTL("Your team is no longer protected by Mist."))
-          end
-        end
-        if i.pbOpposingSide.effects[:Safeguard]>0 || j.pbOwnSide.effects[:Safeguard]>0
-          j.pbOwnSide.effects[:Safeguard]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The opposing team is no longer protected by Safeguard."))
-          else
-            @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
-          end
-        end
-        if i.pbOwnSide.effects[:Spikes]>0 || j.pbOwnSide.effects[:Spikes]>0
-          i.pbOwnSide.effects[:Spikes]=0
-          j.pbOwnSide.effects[:Spikes]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
-          else
-            @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
-          end
-        end
-        if i.pbOwnSide.effects[:StealthRock] || j.pbOwnSide.effects[:StealthRock]
-          i.pbOwnSide.effects[:StealthRock]=false
-          j.pbOwnSide.effects[:StealthRock]=false
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
-          else
-            @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
-          end
-        end
-        if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
-          i.pbOwnSide.effects[:Steelsurge]=false
-          j.pbOwnSide.effects[:Steelsurge]=false
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
-          else
-            @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
-          end
-        end
-        if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
-          i.pbOwnSide.effects[:ToxicSpikes]=0
-          j.pbOwnSide.effects[:ToxicSpikes]=0
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
-          else
-            @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
-          end
-        end
-        if i.pbOwnSide.effects[:StickyWeb] || j.pbOwnSide.effects[:StickyWeb]
-          attacker.pbOwnSide.effects[:StickyWeb]=false
-          j.pbOwnSide.effects[:StickyWeb]=false
-          if !@battle.pbIsOpposing?(i.index)
-            @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
-          else
-            @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
-          end
-        end
-      end
-      if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
-        @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
-        @battle.state.effects[:PSYTERRAIN] = 0
-        @battle.state.effects[:GRASSY] = 0
-        @battle.state.effects[:ELECTERRAIN] = 0
-        @battle.state.effects[:MISTY] = 0
-        @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
-      end
-      @battle.pbDisplay(_INTL("{1}'s Downdraft is exerting pressure!",pbThis))
-    end
-
     if Rejuv
       rejuvAbilities(onactive)
     end
@@ -2341,7 +2229,7 @@ class PokeBattle_Battler
       end
     end
     # Volcanic Field Entry
-    if @battle.FE == :VOLCANIC
+    if @battle.FE == :VOLCANIC || @battle.FE == :VOLCANICTOP
       if self.ability == :MAGMAARMOR && onactive
         if !pbTooHigh?(PBStats::DEFENSE)
           pbIncreaseStatBasic(PBStats::DEFENSE,1)
@@ -2951,6 +2839,9 @@ class PokeBattle_Battler
         end
       end
     end
+    if self.ability == :POWERSURGE && onactive
+      self.powerSurge = true;
+    end
     # Anticipation
     if self.ability == :ANTICIPATION && onactive
       found=false
@@ -3492,6 +3383,14 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1}'s {2} raised its Attack!", target.pbThis,getAbilityName(target.ability)))
           end
         end
+        if target.crested == :BRAVIARY && (movetype == :DARK)
+          if target.pbCanIncreaseStatStage?(PBStats::ATTACK)
+            stat = @battle.FE == :HOLY ? 3 : 2
+            target.pbIncreaseStatBasic(PBStats::ATTACK,stat)
+            @battle.pbCommonAnimation("StatUp",target,nil)
+            @battle.pbDisplay(_INTL("{1}'s crest raised its Attack!", target.pbThis))
+          end
+        end
         if user.ability == (:MAGICIAN) && target.damagestate.calcdamage>0 &&
          !target.damagestate.substitute && target.item
           if target.ability == (:STICKYHOLD)
@@ -3731,6 +3630,8 @@ class PokeBattle_Battler
             @battle.pbDisplay(_INTL("{1} anchored itself with its roots!",user.pbThis))
           elsif @battle.FE == :COLOSSEUM
             @battle.pbDisplay(_INTL("{1} stands their ground in the arena!",user.pbThis))
+          elsif user.giga
+            @battle.pbDisplay(_INTL("But it failed!"))
           else
             user.forcedSwitch = true
           end
@@ -4542,7 +4443,7 @@ class PokeBattle_Battler
     end
     if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
       (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
-      @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user
+      @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
       if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
@@ -4721,7 +4622,7 @@ class PokeBattle_Battler
       typemod=basemove.pbTypeModifier(type,user,target)
       typemod=basemove.fieldTypeChange(user,target,typemod)
       typemod=basemove.overlayTypeChange(user,target,typemod)
-      if (type == :GROUND) && target.isAirborne? && !target.hasWorkingItem(:RINGTARGET) && @battle.FE != :CAVE && basemove.move != :THOUSANDARROWS && basemove.move != :DESERTSMARK
+      if (type == :GROUND) && target.isAirborne? && !target.hasWorkingItem(:RINGTARGET) && @battle.FE != :CAVE && basemove.move != :THOUSANDARROWS && basemove.move != :SOUTHERNWIND && basemove.move != :DESERTSMARK
         if ([:LEVITATE,:SOLARIDOL,:LUNARIDOL,:GRAVFLUX].include?(target.ability) || (@battle.FE == :DEEPEARTH && [:UNAWARE,:OBLIVIOUS,:MAGNETPULL,:CONTRARY,:GRAVFLUX].include?(target.ability))) && !(target.moldbroken)
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with {2}!",target.pbThis,getAbilityName(target.ability)))
           return false
@@ -4863,6 +4764,14 @@ class PokeBattle_Battler
     # TODO: Gravity prevents airborne-based moves here
     if @effects[:Taunt]>0 && basemove.betterCategory(basemove.type) == :status && !choice[2].zmove
       @battle.pbDisplay(_INTL("{1} can't use {2} after the taunt!", pbThis,basemove.name))
+      return false
+    end
+    if (pbOpposing1.hasWorkingAbility(:GOLDENVY) && !pbOpposing1.moldbroken) && basemove.betterCategory(basemove.type) == :status && !choice[2].zmove
+      @battle.pbDisplay(_INTL("{1} can't use {2} due to {3}'s {4}!",self.pbThis,basemove.name,pbOpposing1.pbThis,getAbilityName(pbOpposing1.ability)))
+      return false
+    end
+    if (pbOpposing2.hasWorkingAbility(:GOLDENVY) && !pbOpposing2.moldbroken) && basemove.betterCategory(basemove.type) == :status && !choice[2].zmove
+      @battle.pbDisplay(_INTL("{1} can't use {2} due to {3}'s {4}!",self.pbThis,basemove.name,pbOpposing2.pbThis,getAbilityName(pbOpposing2.ability)))
       return false
     end
     if @effects[:HealBlock]>0 && basemove.isHealingMove? && !choice[2].zmove
@@ -5049,6 +4958,9 @@ class PokeBattle_Battler
       pbCheckForm(basemove)
     end
     flags[:passedtrying]=true
+    if (self.crested == :WIGGLYTUFF && basemove.isSoundBased? && self.pbCanIncreaseStatStage?(PBStats::SPATK)) 
+      self.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+    end
     return true
   end
 
@@ -5182,7 +5094,7 @@ class PokeBattle_Battler
       end
 
       # Bastiodon Crest
-      if target.crested == :BASTIODON
+      if target.crested == :BASTIODON || target.crested == :AGGRON
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute &&
           user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
@@ -5222,6 +5134,7 @@ class PokeBattle_Battler
         addleffect*=2 if @move == :BLEAKWINDSTORM && @battle.pbWeather == :HAIL
         addleffect*=2 if @move == :AURORABEAM && @battle.pbWeather == :HAIL
         addleffect*=2 if @move == :FAIRYWIND && @battle.FE == :MISTY
+        addleffect*=2 if @move == :SOUTHERNWIND && @battle.weather == :STRONGWINDS
 
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
         addleffect=100 if basemove.move == :MIRRORSHOT && @battle.FE == :MIRROR
@@ -6274,7 +6187,7 @@ class PokeBattle_Battler
     spatkmult *= 1.3 if self.pbPartner.ability == :BATTERY
     spdefmult = 1
     spdefmult *= 1.5 if self.item == :ASSAULTVEST
-    spdefmult *= 1.5 if self.item == :EVIOLITE && !pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil?
+    spdefmult *= 1.5 if self.item == :EVIOLITE && (!pbGetEvolvedFormData(self.pokemon.species,self.pokemon).nil? || self.species == :DURALUDON)
     #spdefmult *= 1.5 if self.item == :EEVIUMZ && self.species == :EEVEE
     spdefmult *= 1.5 if self.item == :PIKANIUMZ && self.species == :PIKACHU
     spdefmult *= 1.5 if self.item == :LIGHTBALL && self.species == :PIKACHU

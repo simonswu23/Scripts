@@ -686,6 +686,7 @@ class PokeBattle_Pokemon
       return pkmn.item == :RUSTEDSWORD ? 1 : 0
     end
     if pkmn.species == :ZAMAZENTA
+      return 1 if pkmn.form == 1   # for cheater saki
       return pkmn.item == :RUSTEDSHIELD ? 1 : 0
     end
     return pkmn.form

@@ -14,7 +14,7 @@ class PokeBattle_DamageState
   attr_accessor :pawnsturdyused # pawn ability used
   attr_accessor :rampcrest     # Rampardos Crest possible
   attr_accessor :rampcrestused # Rampardos Crest used
-  attr_accessor :stalwart      # Colosseum Stalwart sturdy
+  attr_accessor :stalwart      # Stalwart sturdy
 
   def reset
     @hplost          = 0
@@ -31,7 +31,7 @@ class PokeBattle_DamageState
     @endured         = false
     @rampcrest       = false
     @rampcrestused   = false
-    @stalwart        = false
+    @stalwart        = false # reusing rampcrest for colosseum
   end
 
   def initialize
