@@ -7527,11 +7527,14 @@ end
 ################################################################################
 class PokeBattle_Move_0F6 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.pokemon.itemRecycle.nil? || attacker.item
+    ret = 0
+    if basedamage > 0
+      ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    elsif attacker.pokemon.itemRecycle.nil? || attacker.item
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+    pbShowAnimation(:RECYCLE,attacker,nil,hitnum,alltargets,showanimation)
     item=attacker.pokemon.itemRecycle
     itemname=getItemName(item)
     attacker.item=item
@@ -7548,6 +7551,15 @@ class PokeBattle_Move_0F6 < PokeBattle_Move
       @battle.pbDisplay(_INTL("Reduce, reuse, recycle!")) if statgain
     end
     return 0
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :SWEETMAX
+      @battle.pbAnimation(:APPELACID,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
   end
 end
 

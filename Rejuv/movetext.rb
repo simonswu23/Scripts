@@ -14474,4 +14474,19 @@ MOVEHASH = {
 	:desc => "Centiskorch"
 },
 
+:SWEETMAX => {
+	:ID => 937,
+	:name => "Sweetmax",
+	:function => 0x00A,
+	:type => :GRASS,
+	:category => :special,
+	:basedamage => 110,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:effect => 100,
+	:desc => "Appleanch (Appletun)"
+},
+
 }

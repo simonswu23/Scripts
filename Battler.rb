@@ -4441,8 +4441,8 @@ class PokeBattle_Battler
         return false
       end
     end
-    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
-      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
+    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
+      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
       @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
       if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))

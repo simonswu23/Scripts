@@ -27034,6 +27034,7 @@ MONHASH = {
 		:Moveset => [
 			[0,:SLASH],
 			[1,:FELLSTINGER],
+			[1,:WIDEGUARD],
 			[1,:DESTINYBOND],
 			[1,:SWEETSCENT],
 			[1,:GUST],
@@ -27073,7 +27074,7 @@ MONHASH = {
 		:dexnum => 416,
 		:Type1 => :BUG,
 		:Type2 => :STEEL,
-		:BaseStats => [70, 100, 152, 80, 132, 40],
+		:BaseStats => [70, 100, 132, 80, 112, 40],
 		:EVs => [0, 0, 1, 0, 1, 0],
 		:Abilities => [:HIVEQUEEN],
 		:GrowthRate => :MediumSlow,
