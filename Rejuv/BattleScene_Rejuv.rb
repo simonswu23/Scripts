@@ -515,7 +515,7 @@ class PokemonDataBox < SpriteWrapper
         imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
       elsif @battler.isUltra? # Maybe temporary until new icon
         imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
-      elsif @battler.isMega? && @battler.hasGiga?
+      elsif @battler.isGiga? && @battler.hasGiga?
         imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",sbX+megaX,megaY,0,0,-1,-1])
       end
       # Crest
@@ -1463,7 +1463,7 @@ def pbFightMenu(index)
   cw.ultraButton=1 if @battle.pbCanUltraBurst?(index)
   # cw.gigaButton=0   #@SWu might need to update to be consistent with mega evo code above (assuming it's for double battles)
   cw.zButton=0
-  cw.zButton=1 if @battle.pbCanZMove?(index) && !battler.isMega?
+  cw.zButton=1 if @battle.pbCanZMove?(index) && (!battler.isMega? || !battler.isGiga?)
   pbSelectBattler(index)
   pbRefresh
   update_menu = true
@@ -1554,7 +1554,7 @@ def pbFightMenu(index)
           @battle.pbRegisterZMove(index)
           cw.zButton=2
           pbPlayDecisionSE()
-          if (battler.isMega?)
+          if (battler.isGiga?)
             @battle.pbUnRegisterZMove(index)
           end
         end

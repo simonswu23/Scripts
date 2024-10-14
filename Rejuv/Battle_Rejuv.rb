@@ -264,6 +264,26 @@
       fieldmessage = (trainereffect[:fieldChange][1] != "") ? trainereffect[:fieldChange][1] : "The field was changed!"
       pbDisplay(_INTL("{1}",fieldmessage))
     end
+    if trainereffect[:setWeather] && trainereffect[:setWeather] != @weather
+      weather = trainereffect[:setWeather][0]
+      @weather = weather
+      @weatherduration= trainereffect[:setWeather][1]
+      weatherMessage = trainereffect[:setWeather][2]
+      weatherText = ""
+      if (weather == :RAINDANCE)
+        weatherText = "Rain"
+      elsif (weather == :SUNNYDAY)
+        weatherText = "Sunny"
+      elsif (weather == :HAIL)
+        weatherText = "Hail"
+      elsif (weather == :SANDSTORM)
+        weatherText = "Sandstorm"
+      elsif (weather == :STRONGWINDS)
+        weatherText = "Wind"
+      end
+      pbCommonAnimation(weatherText)
+      pbDisplayBrief(_INTL("{1}", weatherMessage))
+    end
     if trainereffect[:typeChange]
       pkmn.type1 = trainereffect[:typeChange][0]
       pkmn.type2 = trainereffect[:typeChange][1] if trainereffect[:typeChange][1]

@@ -871,6 +871,12 @@ class PokeBattle_Battle
     return false
   end
 
+  def pbHasGigaBand(battlerIndex)
+    return true if !pbBelongsToPlayer?(battlerIndex)
+    return true if $PokemonBag.pbQuantity(:GIGABAND)>0
+    return false
+  end
+
 ################################################################################
 # Get party info, manipulate parties.
 ################################################################################
@@ -2232,7 +2238,7 @@ class PokeBattle_Battle
   def pbCanGigaEvolve?(index)
     return false if $game_switches[:No_Mega_Evolution]==true
     return false if !@battlers[index].hasGiga?
-    return false if !pbHasMegaRing(index)
+    return false if !pbHasGigaBand(index)
     return false if !pbHasGigaStone(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
@@ -2275,7 +2281,7 @@ class PokeBattle_Battle
     else
       return false if !i.hasGigaForm?
     end
-    return false if !pbHasMegaRing(index)
+    return false if !pbHasGigaBand(index)
     side=1
     owner=pbGetOwnerIndex(index)
     return false if @gigaEvolution[side][owner]!=-1
@@ -2375,8 +2381,7 @@ class PokeBattle_Battle
     # Things that disallow giga-evolution
     return if !@battlers[index] || !@battlers[index].pokemon
     return if !(@battlers[index].hasGiga? rescue false)
-    # can keep isMega below
-    return if (@battlers[index].isMega? rescue true)
+    return if (@battlers[index].isGiga? rescue true)
 
     # Battle message start
     if @battlers[index].issossmon
@@ -2415,7 +2420,6 @@ class PokeBattle_Battle
     @gigaEvolution[side][owner]=-2
 
     # Update move to become Giga-Move here
-
     for i in 0...4
       next if !@battlers[index].moves[i]
       next if !@battlers[index].pbGigaCompatibleBaseMove?(@battlers[index].moves[i])
@@ -4955,6 +4959,11 @@ class PokeBattle_Battle
     for i in priority
       next if i.isFainted?
 
+      # Meganium + Meganium Crest
+      if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
+          hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
+      end
+
       if i.crested == :MEGANIUM
         party=@battle.pbParty(i.index)
         for j in 0...party.length
@@ -4963,11 +4972,6 @@ class PokeBattle_Battle
           party[j].healHp(((party[j].totalhp+1)/16).floor);
         end
         pbDisplay(_INTL("The Meganium Crest restored the team's HP a little!",i.pbThis(true)))
-      end
-
-      # Meganium + Meganium Crest
-      if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
-          hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
       end
 
       # Confection
@@ -6628,7 +6632,7 @@ class PokeBattle_Battle
     end
     for i in @party1
       next if i.nil?
-      i.makeUnmega if i.isMega?
+      i.makeUnmega if i.isMega? || i.isGiga?
       i.makeUnprimal if i.isPrimal?
       i.makeUnultra if i.isUltra?
       if i.species == :ZYGARDE && !i.originalForm.nil?

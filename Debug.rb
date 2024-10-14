@@ -719,6 +719,8 @@ def pbDebugMenu
       $INTERNAL=!$INTERNAL
       Kernel.pbMessage(_INTL("Debug logs for battles will be made in the Data folder.")) if $INTERNAL
       Kernel.pbMessage(_INTL("Debug logs for battles will not be made.")) if !$INTERNAL
+      # Kernel.pbMessage(_INTL("Disabled Function (see Debug.rb)"))
+      # $INTERNAL = false
     end
   end
   pbFadeOutAndHide(sprites)

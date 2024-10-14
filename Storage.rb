@@ -176,7 +176,7 @@ class PokemonStorage
   end
 
   def pbStoreCaught(pkmn)
-    pkmn.makeUnmega if pkmn.isMega?
+    pkmn.makeUnmega if pkmn.isMega? || pkmn.isGiga?
     pkmn.form=0 if pkmn.species == :MIMIKYU && pkmn.form == 1
     pkmn.form=0 if pkmn.species == :EISCUE && pkmn.form == 1
     pkmn.form=0 if pkmn.species == :MORPEKO && pkmn.form == 1

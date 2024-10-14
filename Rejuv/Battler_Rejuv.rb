@@ -217,7 +217,8 @@ class PokeBattle_Battler
           @spatk = @defense
         when :DEDENNE
           @attack = @speed
-        when :RELICANTH
+          @spatk = @speed
+        when :RELICANTH, :COPPERAJAH
           @attack *=1.2
           @spdef *= 1.3
         when :SKUNTANK
@@ -240,8 +241,6 @@ class PokeBattle_Battler
         when :RUNERIGUS, :BRAVIARY
           @attack *=1.25
           @defense *= 1.25
-        when :COPPERAJAH
-          @attack *=1.3
         when :ARIADOS
           @speed *= 1.5
         when :INTELEON
@@ -479,7 +478,7 @@ class PokeBattle_Battler
         if @pokemon && @battle.internalbattle
           @pokemon.changeHappiness("faint")
         end
-        if self.isMega?
+        if self.isMega? || self.isGiga?
           @pokemon.makeUnmega
         end
         if self.isUltra?

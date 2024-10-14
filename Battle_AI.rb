@@ -5884,7 +5884,7 @@ class PokeBattle_AI
 		end
 		miniscore*=1.3 if [:SNOWCLOAK,:ICEBODY,:LUNARIDOL].include?(@attacker.ability) || (@attacker.ability == :ICEFACE && @attacker.form == 1)
 		miniscore*=0.5 if @attacker.pbHasMove?(:MOONLIGHT) || @attacker.pbHasMove?(:SYNTHESIS) || @attacker.pbHasMove?(:MORNINGSUN) || @attacker.pbHasMove?(:GROWTH) || @attacker.pbHasMove?(:SOLARBEAM) || @attacker.pbHasMove?(:SOLARBLADE)
-		miniscore*=2 if @attacker.pbHasMove?(:AURORAVEIL)
+		miniscore*=2 if @attacker.pbHasMove?(:AURORAVEIL) || @attacker.pbHasMove?(:RESONANCE)
 		miniscore*=1.3 if @attacker.pbHasMove?(:BLIZZARD)
 		return miniscore
 	end
@@ -10400,7 +10400,7 @@ class PokeBattle_AI
 		end
 		case attacker.crested
 			when :CLAYDOL then atkstage=attacker.stages[PBStats::DEFENSE]+6 if move.pbIsSpecial?(type)
-			when :DEDENNE then atkstage=attacker.stages[PBStats::SPEED]+6 if !move.pbIsSpecial?(type)
+			when :DEDENNE then atkstage=attacker.stages[PBStats::SPEED]+6
 		end
 		if opponent.ability != :UNAWARE || moldBreakerCheck(attacker)
 			atk=(atk*1.0*stagemul[atkstage]/stagediv[atkstage]).floor

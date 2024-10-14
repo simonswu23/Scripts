@@ -855,7 +855,7 @@ class PokemonDataBox < SpriteWrapper
       imagepos.push(["Graphics/Pictures/Battle/battleRiftEvoBox.png",@spritebaseX+megaX,@spritebaseY+megaY,0,0,-1,-1])
     elsif @battler.pokemon.isPerfection?
       imagepos.push(["Graphics/Pictures/Battle/battlePerfectionEvoBox.png",@spritebaseX+megaX,@spritebaseY+megaY,0,0,-1,-1])
-    elsif @battler.isMega?
+    elsif @battler.isMega? || @battler.isGiga?
       imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",@spritebaseX+megaX,@spritebaseY+megaY,0,0,-1,-1])
     elsif @battler.isUltra? # Maybe temporary until new icon
       imagepos.push(["Graphics/Pictures/Battle/battleMegaEvoBox.png",@spritebaseX+megaX,@spritebaseY+megaY,0,0,-1,-1])

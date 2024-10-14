@@ -727,7 +727,7 @@ class PokeBattle_Pokemon
     v = $cache.pkmn[@species].formData.dig(:GigaForm)
     return false if !v
     # check if current species form *can* Mega
-    if !self.isMega? # don't do this check if you are already a Mega
+    if !self.isGiga? # don't do this check if you are already a Mega
       k = $cache.pkmn[@species].formData.dig(:DefaultForm)
       if k.is_a?(Array)
         return false if !k.include?(@form)
@@ -748,14 +748,48 @@ class PokeBattle_Pokemon
 
   def isMega?
     v = $cache.pkmn[@species].formData.dig(:MegaForm)
-    v = $cache.pkmn[@species].formData.dig(:GigaForm) if (Rejuv && !v)
     v = $cache.pkmn[@species].formData.dig(:PulseForm) if (Reborn && !v)
     v = $cache.pkmn[@species].formData.dig(:RiftForm) if (Rejuv && !v)
+    return true if v.is_a?(Hash) && v.values.include?(self.form)
+    return false if v.is_a?(Hash)
+    return v!=nil && self.form >= v
+  end
+
+  def isGiga?
+    v = $cache.pkmn[@species].formData.dig(:GigaForm) if (Rejuv && !v)
     # @SWu: Do urshifu below
     # v.values.each{|a| v=a if a.is_a?(Hash)} if v # filter for nested hashes aka Urshifu (if there is ever a mon with more than 1 megastone and a nested hash this needs rewriting)
     return true if v.is_a?(Hash) && v.values.include?(self.form)
     return false if v.is_a?(Hash)
     return v!=nil && self.form >= v
+  end
+
+  def pbGigaCompatibleBaseMove?(move)
+    pkmn=self.species
+    case pkmn
+      when :BUTTERFREE      then return true if move.move == :SPRINGBREEZE
+      when :RILLABOOM       then return true if move.move == :DRUMBEATING   
+      when :CINDERACE       then return true if move.move == :PYROBALL    
+      when :INTELEON        then return true if move.move == :SNIPESHOT
+      when :TOXTRICITY      then return true if move.move == :BOOMBURST
+      when :ALCREMIE        then return true if move.move == :DRAININGKISS
+      when :HATTERENE       then return true if move.move == :MAGICPOWDER
+      when :COPPERAJAH      then return true if move.move == :IRONHEAD   
+      when :CORVIKNIGHT     then return true if move.move == :HURRICANE
+      when :MEOWTH          then return true if move.move == :PAYDAY
+      when :PIKACHU         then return true if move.move == :VOLTTACKLE
+      when :EEVEE           then return true if move.move == :CHARM
+      when :GRIMMSNARL      then return true if move.move == :FALSESURRENDER
+      when :GENGAR          then return true if move.move == :DARKPULSE
+      when :GARBODOR        then return true if move.move == :GUNKSHOT
+      when :DURALUDON       then return true if move.move == :DRAGONPULSE
+      when :CENTISKORCH     then return true if move.move == :FIRELASH
+      when :LAPRAS          then return true if move.move == :SHEERCOLD
+      when :APPLETUN        then return true if move.move == :APPLEACID
+      when :DREDNAW         then return true if move.move == :LIQUIDATION
+      when :MELMETAL        then return true if move.move == :HYPERBEAM
+    end
+    return false
   end
 
   def makeMega

@@ -207,23 +207,8 @@ class PokeBattle_Battler
   end
 
   def pbGigaCompatibleBaseMove?(move)
-    pkmn=self.species
-    case pkmn
-      when :BUTTERFREE      then return true if move.move == :SPRINGBREEZE
-      when :RILLABOOM       then return true if move.move == :DRUMBEATING   
-      when :CINDERACE       then return true if move.move == :PYROBALL    
-      when :INTELEON        then return true if move.move == :SNIPESHOT
-      when :TOXTRICITY      then return true if move.move == :BOOMBURST
-      when :ALCREMIE        then return true if move.move == :DRAININGKISS
-      when :HATTERENE       then return true if move.move == :MAGICPOWDER
-      when :COPPERAJAH      then return true if move.move == :IRONHEAD   
-      when :CORVIKNIGHT     then return true if move.move == :HURRICANE
-      when :MEOWTH          then return true if move.move == :PAYDAY
-      when :PIKACHU         then return true if move.move == :VOLTTACKLE
-      when :EEVEE           then return true if move.move == :CHARM
-      when :GRIMMSNARL      then return true if move.move == :FALSESURRENDER
-    end
-    return false
+    return false if !move
+    return @pokemon.pbGigaCompatibleBaseMove?(move)
   end
 
   def pbCompatibleZMoveFromMove?(move,moveindex = false)
@@ -262,6 +247,13 @@ class PokeBattle_Battler
   def isMega?
     if @pokemon
       return (@pokemon.isMega? rescue false)
+    end
+    return false
+  end
+
+  def isGiga?
+    if @pokemon
+      return (@pokemon.isGiga? rescue false)
     end
     return false
   end
@@ -1015,7 +1007,7 @@ class PokeBattle_Battler
     if @pokemon && @battle.internalbattle
       @pokemon.changeHappiness("faint")
     end
-    if self.isMega?
+    if self.isMega? || self.isGiga?
       @pokemon.makeUnmega
     end
     if self.isUltra?
@@ -2065,6 +2057,10 @@ class PokeBattle_Battler
       self.effects[:AquaRing]=true
       @battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",self.pbThis))
     end
+    if self.ability == :DAMP && onactive
+      @battle.state.effects[:WaterSport] += 5
+      @battle.pbDisplay(_INTL("{1}'s {2} weakened the power of fire moves!",self.pbThis,getAbilityName(self.ability)))
+    end
     # Download
     if self.ability == :DOWNLOAD && onactive
       if (Rejuv && (@battle.FE == :SHORTCIRCUIT || @battle.FE == :GLITCH))
@@ -3019,18 +3015,6 @@ class PokeBattle_Battler
           user.pbBurn(target)
           @battle.pbDisplay(_INTL("{1} was burned by the heat!",user.pbThis))
         end
-
-        if target.ability == :AFTERMATH && !user.isFainted? && target.hp <= 0 && !@battle.pbCheckGlobalAbility(:DAMP) && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
-          PBDebug.log("[#{user.pbThis} hurt by Aftermath]")
-          @battle.scene.pbDamageAnimation(user,0)
-          if @battle.FE == :CORROSIVEMIST
-            user.pbReduceHP((user.totalhp/2.0).floor)
-            @battle.pbDisplay(_INTL("{1} was caught in the toxic aftermath!",user.pbThis))
-          else
-            user.pbReduceHP((user.totalhp/4.0).floor)
-            @battle.pbDisplay(_INTL("{1} was caught in the aftermath!",user.pbThis))
-          end
-        end
         # UPDATE 11/16/2013
         eschance = 3
         eschance = 6 if (@battle.FE == :FOREST || @battle.FE == :WASTELAND || @battle.FE == :BEWITCHED)
@@ -3206,6 +3190,18 @@ class PokeBattle_Battler
     end
 
     if damage>0
+
+      if target.ability == :AFTERMATH && !user.isFainted? && target.hp <= 0 && !@battle.pbCheckGlobalAbility(:DAMP)
+        # @battle.scene.pbDamageAnimation(user,0)
+        if @battle.FE == :CORROSIVEMIST
+          target.pbUseMoveSimple(:MISTYEXPLOSION)
+          @battle.pbDisplay(_INTL("The remaining pokemon were caught in the toxic aftermath!",user.pbThis))
+        else
+          target.pbUseMoveSimple(:EXPLOSION)
+          @battle.pbDisplay(_INTL("The remaining pokemon were caught in the aftermath!",user.pbThis))
+        end
+      end
+
       if target.crested == :COFAGRIGUS
         if (user.effects[:MeanLook]<0)
           user.effects[:MeanLook]=target.index
@@ -3216,6 +3212,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1} laid a curse on {2}!",target.pbThis,user.pbThis))
         end
       end
+
       if target.crested == :RUNERIGUS
         if (user.effects[:MeanLook]<0)
           user.effects[:MeanLook]=target.index
@@ -3230,6 +3227,7 @@ class PokeBattle_Battler
       if target.effects[:ShellTrap] && move.pbIsPhysical?(movetype)
         target.effects[:ShellTrap]=false
       end
+
       if target.ability == :INNARDSOUT && !user.isFainted? &&
         target.hp <= 0 && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
         PBDebug.log("[#{user.pbThis} hurt by Innards Out]")
@@ -3237,11 +3235,13 @@ class PokeBattle_Battler
         user.pbReduceHP(innards)
         @battle.pbDisplay(_INTL("{2}'s innards hurt {1}!",user.pbThis,target.pbThis))
       end
+
       if @battle.FE == :GLITCH # Glitch Field Hyper Beam Reset
         if user.hp>0 && target.hp<=0
           user.effects[:HyperBeam]=0
         end
       end
+      
       if user.ability == (:BEASTBOOST) && user.hp>0 && target.hp<=0
         aBoost = user.attack
         dBoost = user.defense
@@ -3396,23 +3396,30 @@ class PokeBattle_Battler
           if target.ability == (:STICKYHOLD)
             abilityname=getAbilityName(target.ability)
             @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",target.pbThis,abilityname,@name))
-          elsif !@battle.pbIsUnlosableItem(target,target.item) && !@battle.pbIsUnlosableItem(user,user.item) && user.item.nil? && (target || !pbIsOpposing?(user.index))
-            itemname=getItemName(target.item)
-            user.item=target.item
-            target.item=nil
-            target.effects[:ChoiceBand]=nil
-            if user.pokemon.corrosiveGas
-              user.pokemon.corrosiveGas=false
-              target.pokemon.corrosiveGas=true
+          elsif !@battle.pbIsUnlosableItem(target,target.item) && !@battle.pbIsUnlosableItem(user,user.item) && (target || !pbIsOpposing?(user.index))
+            if user.item.nil?
+              itemname=getItemName(target.item)
+              user.item=target.item
+              target.item=nil
+              target.effects[:ChoiceBand]=nil
+              if user.pokemon.corrosiveGas
+                user.pokemon.corrosiveGas=false
+                target.pokemon.corrosiveGas=true
+              end
+              if @battle.pbIsWild? # In a wild battle
+                user.pokemon.itemInitial.nil? && !user.isbossmon && !target.isbossmon &&
+                target.pokemon.itemInitial==user.item 
+                user.pokemon.itemInitial=user.item
+                user.pokemon.itemReallyInitialHonestlyIMeanItThisTime=user.item
+                target.pokemon.itemInitial=nil
+              end
+              @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
+            else
+              itemname=getItemName(target.item)
+              target.item=nil
+              target.effects[:ChoiceBand]=nil
+              @battle.pbDisplay(_INTL("{1} made {2}'s {3} disappear!",user.pbThis,target.pbThis(true),itemname))
             end
-            if @battle.pbIsWild? && # In a wild battle
-              user.pokemon.itemInitial.nil? && !user.isbossmon && !target.isbossmon &&
-              target.pokemon.itemInitial==user.item 
-              user.pokemon.itemInitial=user.item
-              user.pokemon.itemReallyInitialHonestlyIMeanItThisTime=user.item
-              target.pokemon.itemInitial=nil
-            end
-            @battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,target.pbThis(true),itemname))
           end
         end
         if target.ability == (:RATTLED) && ((movetype == :BUG) || (movetype == :DARK) || (movetype == :GHOST))
@@ -5606,6 +5613,9 @@ class PokeBattle_Battler
       end
     end
     basemove=choice[2]
+    if (self.pbGigaCompatibleBaseMove?(basemove) && self.isGiga?)
+      basemove = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(PBStuff::POKEMONTOGIGAMOVE[self.species][0]),self)
+    end
     return if !basemove
     if !flags[:specialusage]
       # TODO: Quick Claw message

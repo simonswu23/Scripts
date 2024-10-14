@@ -709,6 +709,10 @@ class PokeBattle_Move
       mod1=2 if (otype1 == :NORMAL) && (atype == :GHOST)
       mod2=2 if (otype2 == :NORMAL) && (atype == :GHOST)
     end
+    if @battle.FE == :MURKWATERSURFACE
+      mod1=1 if (otype1 == :STEEL) && (atype == :POISON)
+      mod2=1 if (otype2 == :STEEL) && (atype == :POISON)
+    end
     if @battle.FE == :BEWITCHED
       mod1=2 if (otype1 == :GRASS) && (atype == :POISON)
       mod2=2 if (otype2 == :GRASS) && (atype == :POISON)
@@ -1627,7 +1631,8 @@ class PokeBattle_Move
         else
           basemult*=1.2 if punchMove?
         end
-      when :RECKLESS      then basemult*=1.2 if [0xFA,0xFA,0xFA,0xFA,0xFA].include?(@function)
+      when :RECKLESS      then basemult*=1.3 if [0xFA,0x0D2,0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN
+      when :AFTERMATH     then basemult*=1.5 if [0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN
       when :FLAREBOOST    then basemult*=1.5 if (attacker.status== :BURN || @battle.FE == :BURNING || @battle.FE == :VOLCANIC || @battle.FE == :INFERNAL) && pbIsSpecial?(type) && @battle.FE != :FROZENDIMENSION
       when :TOXICBOOST    
         if (attacker.status== :POISON || @battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :WASTELAND || @battle.FE == :MURKWATERSURFACE) && pbIsPhysical?(type)
@@ -1648,9 +1653,10 @@ class PokeBattle_Move
         end
       when :LIQUIDVOICE   then basemult*=1.3 if isSoundBased?
       when :RIVALRY       then basemult*= attacker.gender==opponent.gender ? 1.25 : 0.75 if attacker.gender!=2
-      when :MEGALAUNCHER  then basemult*=1.5 if [:AURASPHERE,:DRAGONPULSE,:DARKPULSE,:WATERPULSE,:ORIGINPULSE,:TERRAINPULSE].include?(@move)
+      when :MEGALAUNCHER  then basemult*=1.5 if (PBStuff::BULLETMOVE).include?(@move)
       when :ANALYTIC      then basemult*=1.3 if (@battle.battlers.find_all {|battler| battler && battler.hp > 0 && !battler.hasMovedThisRound? }).length == 0
       when :SHEERFORCE    then basemult*=1.3 if effect > 0
+      when :MAGICIAN      then basemult*=1.3 if opponent.item != nil
       when :AERILATE 
         if @type == :NORMAL && type == :FLYING
           case @battle.FE
@@ -1693,7 +1699,7 @@ class PokeBattle_Move
           end
         end
       when :DUSKILATE     then basemult*=1.3 if @type == :NORMAL && (type == :DARK || (type == :NORMAL && @battle.FE == :GLITCH))
-      when :NORMALIZE     then basemult*=1.3 if !@zmove
+      when :NORMALIZE     then basemult*=1.5 if !@zmove
       when :TRANSISTOR    then basemult*=1.5 if type == :ELECTRIC
       when :DRAGONSMAW    then basemult*=1.5 if type == :DRAGON
       when :TERAVOLT      then basemult*=1.5 if (Rejuv && @battle.FE == :ELECTERRAIN && type == :ELECTRIC)
@@ -2577,7 +2583,7 @@ class PokeBattle_Move
         @battle.pbDisplay(_INTL("The {1} weakened the damage to {2}!",getItemName(opponent.pokemon.itemRecycle),opponent.pbThis))
       end
     end
-    finalmult*=0.75 if (opponent.crested == :MEGANIUM || opponent.pbPartner.crested == :MEGANIUM)
+    finalmult*=0.8 if (opponent.crested == :MEGANIUM || opponent.pbPartner.crested == :MEGANIUM)
     if attacker.crested == :SEVIPER
       multiplier = 0.5*(opponent.pokemon.hp*1.0)/(opponent.pokemon.totalhp*1.0)
       multiplier += 1.0
@@ -2850,6 +2856,10 @@ class PokeBattle_Move
         @battle.pbDisplayBrief(_INTL("{1} unleashed its full force Z-Move!",attacker.pbThis))
         @battle.pbDisplayBrief(_INTL("{1}!",getMoveUseName))
       end
+    elsif attacker.pbGigaCompatibleBaseMove?(self) && attacker.isGiga?
+      newmove = PBMove.new(PBStuff::POKEMONTOGIGAMOVE[attacker.species][0])
+      newPBmove = PokeBattle_Move.pbFromPBMove(@battle,newmove,attacker)
+      @battle.pbDisplayBrief(_INTL("{1} used\r\n{2}!",attacker.pbThis,newPBmove.getMoveUseName))
     else
       @battle.pbDisplayBrief(_INTL("{1} used\r\n{2}!",attacker.pbThis,getMoveUseName))
     end

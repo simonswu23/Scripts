@@ -377,8 +377,7 @@ class PokeBattle_Move_006 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    return true if @move == :MELTDOWN # always overrides
-    return false if !opponent.pbCanPoison?(false)
+    return false if !opponent.pbCanPoison?(false) # always overrides
     opponent.pbPoison(attacker,true)
     @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
     return true
@@ -666,6 +665,15 @@ end
 # (Stomp, Steamroller, Dragon Rush)
 ################################################################################
 class PokeBattle_Move_010 < PokeBattle_Move
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret = super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
+    if @move == :STEAMROLLER && opponent.isFainted? &&
+       attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false)
+    end
+    return ret
+  end
+
   def pbAdditionalEffect(attacker,opponent)
     if opponent.ability != :INNERFOCUS && !opponent.damagestate.substitute 
       opponent.effects[:Flinch]=true
@@ -2620,7 +2628,7 @@ class PokeBattle_Move_04F < PokeBattle_Move
     return if !showanimation
     if id == :UPROOT
       @battle.pbAnimation(:FRENZYPLANT,attacker,opponent,hitnum)
-    elsif id == :ACIDROCK
+    elsif id == :ACIDROCK || id == :ACIDROCK2
       @battle.pbAnimation(:BOOMBURST,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
@@ -3453,7 +3461,7 @@ class PokeBattle_Move_06C < PokeBattle_Move
       return false if !opponent.pbCanParalyze?(false)
       opponent.pbParalyze(attacker)
       @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!", opponent.pbThis))
-    elsif (@battle.state.effects[:GRASSYTERRAIN] > 0)
+    elsif (@battle.state.effects[:GRASSY] > 0)
       if opponent.effects[:LeechSeed] >= 0 || opponent.effects[:Substitute] > 0
         return false
       end
@@ -3464,7 +3472,7 @@ class PokeBattle_Move_06C < PokeBattle_Move
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
       opponent.effects[:LeechSeed]=attacker.index
       @battle.pbDisplay(_INTL("{1} was seeded!",opponent.pbThis))
-    elsif (@battle.state.effects[:MISTYTERRAIN] > 0)
+    elsif (@battle.state.effects[:MISTY] > 0)
       if opponent.damagestate.substitute
         return false
       end
@@ -4671,7 +4679,7 @@ class PokeBattle_Move_0A2 < PokeBattle_Move
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[:Reflect]=5
-    attacker.pbOwnSide.effects[:Reflect]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUM
+    attacker.pbOwnSide.effects[:Reflect]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[:Reflect]=8 if @battle.FE == :MIRROR || @battle.FE == :DANCEFLOOR
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Reflect raised your team's Defense!"))
@@ -4698,7 +4706,7 @@ class PokeBattle_Move_0A3 < PokeBattle_Move
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     attacker.pbOwnSide.effects[:LightScreen]=5
-    attacker.pbOwnSide.effects[:LightScreen]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUM
+    attacker.pbOwnSide.effects[:LightScreen]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[:LightScreen]=8 if @battle.FE == :MIRROR || @battle.FE == :DANCEFLOOR
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Light Screen raised your team's Special Defense!"))
@@ -7528,7 +7536,7 @@ end
 class PokeBattle_Move_0F6 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret = 0
-    if basedamage > 0
+    if @basedamage > 0
       ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     elsif attacker.pokemon.itemRecycle.nil? || attacker.item
       @battle.pbDisplay(_INTL("But it failed!"))
@@ -7555,7 +7563,7 @@ class PokeBattle_Move_0F6 < PokeBattle_Move
 
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return if !showanimation
-    if id == :SWEETMAX
+    if id == :HONEYPOT
       @battle.pbAnimation(:APPELACID,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
@@ -8905,7 +8913,7 @@ class PokeBattle_Move_11C < PokeBattle_Move
       opponent.effects[:SmackDown]=true
       showmsg=false
       showmsg=true if opponent.hasType?(:FLYING) ||
-                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.crested == :LUMINEON || oppomnent.ability == :GRAVFLUX
+                      opponent.ability == :LEVITATE || opponent.ability == :SOLARIDOL || opponent.ability == :LUNARIDOL || opponent.crested == :VESPIQUEN || opponent.crested == :LUMINEON || opponent.ability == :GRAVFLUX
       if !$cache.moves[opponent.effects[:TwoTurnAttack]].nil? && 
         ($cache.moves[opponent.effects[:TwoTurnAttack]].function==0xC9 || # Fly
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
@@ -10104,25 +10112,44 @@ end
 ############################################################################################################
 class PokeBattle_Move_15B < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if attacker.pbOwnSide.effects[:AuroraVeil]>0 || ((@battle.weather!=:HAIL ||
-      @battle.pbCheckGlobalAbility(:AIRLOCK) || @battle.pbCheckGlobalAbility(:CLOUDNINE)) &&
-      !([:DARKCRYSTALCAVERN,:RAINBOW,:ICY,:CRYSTALCAVERN,:SNOWYMOUNTAIN,:MIRROR,:STARLIGHT,:FROZENDIMENSION].include?(@battle.FE)))
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
-    end
-    pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-    attacker.pbOwnSide.effects[:AuroraVeil]=5
-    attacker.pbOwnSide.effects[:AuroraVeil]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUM
-    attacker.pbOwnSide.effects[:AuroraVeil]=8 if @battle.FE == :MIRROR
-    if !@battle.pbIsOpposing?(attacker.index)
-      @battle.pbDisplay(_INTL("An Aurora is protecting your team!"))
+    ret = 0
+    if (@basedamage > 0)
+      ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+      if attacker.pbOwnSide.effects[:AuroraVeil] <= 0
+        pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+        attacker.pbOwnSide.effects[:AuroraVeil]=5
+        attacker.pbOwnSide.effects[:AuroraVeil]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
+        attacker.pbOwnSide.effects[:AuroraVeil]=8 if @battle.FE == :MIRROR
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("An Aurora is protecting your team!"))
+        else
+          @battle.pbDisplay(_INTL("An Aurora is protecting the opposing team!"))
+        end
+        if @battle.FE == :MIRROR && attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
+          attacker.pbIncreaseStat(PBStats::EVASION,1,abilitymessage:false)
+        end
+      end
     else
-      @battle.pbDisplay(_INTL("An Aurora is protecting the opposing team!"))
+      if attacker.pbOwnSide.effects[:AuroraVeil]>0 || ((@battle.weather!=:HAIL ||
+        @battle.pbCheckGlobalAbility(:AIRLOCK) || @battle.pbCheckGlobalAbility(:CLOUDNINE)) &&
+        !([:DARKCRYSTALCAVERN,:RAINBOW,:ICY,:CRYSTALCAVERN,:SNOWYMOUNTAIN,:MIRROR,:STARLIGHT,:FROZENDIMENSION].include?(@battle.FE)))
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return -1
+      end
+      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+      attacker.pbOwnSide.effects[:AuroraVeil]=5
+      attacker.pbOwnSide.effects[:AuroraVeil]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
+      attacker.pbOwnSide.effects[:AuroraVeil]=8 if @battle.FE == :MIRROR
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("An Aurora is protecting your team!"))
+      else
+        @battle.pbDisplay(_INTL("An Aurora is protecting the opposing team!"))
+      end
+      if @battle.FE == :MIRROR && attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
+        attacker.pbIncreaseStat(PBStats::EVASION,1,abilitymessage:false)
+      end
     end
-    if @battle.FE == :MIRROR && attacker.pbCanIncreaseStatStage?(PBStats::EVASION,false)
-      attacker.pbIncreaseStat(PBStats::EVASION,1,abilitymessage:false)
-    end
-    return 0
+    return ret
   end
 end
 
@@ -10857,7 +10884,7 @@ end
 ################################################################################
 class PokeBattle_Move_178 < PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    if opponent.isMega? || opponent.isUltra? || opponent.isPrimal?
+    if opponent.isMega? || opponent.isUltra? || opponent.isPrimal? || opponent.isGiga?
       basedmg*=2
     end
     return basedmg
@@ -11109,7 +11136,7 @@ end
 class PokeBattle_Move_184 < PokeBattle_Move
   # Handled Elsewhere.
   def pbBaseDamage(basedmg,attacker,opponent)
-    if @move == :BEHEMOTHBASH && (opponent.isMega? || opponent.isUltra? || opponent.isPrimal?)
+    if @move == :BEHEMOTHBASH && (opponent.isMega? || opponent.isUltra? || opponent.isPrimal? || opponent.isGiga?)
       basedmg*=2
     end
     return basedmg
@@ -11273,7 +11300,7 @@ class PokeBattle_Move_772 < PokeBattle_Move
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation=false)
     attacker.pbOwnSide.effects[:LightScreen]=5
-    attacker.pbOwnSide.effects[:LightScreen]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUM
+    attacker.pbOwnSide.effects[:LightScreen]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[:LightScreen]=8 if @battle.FE == :MIRROR
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Glitzy Glow raised your team's Special Defense!"))
@@ -11300,7 +11327,7 @@ class PokeBattle_Move_773 < PokeBattle_Move
     end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation=false)
     attacker.pbOwnSide.effects[:Reflect]=5
-    attacker.pbOwnSide.effects[:Reflect]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUM
+    attacker.pbOwnSide.effects[:Reflect]=8 if attacker.hasWorkingItem(:LIGHTCLAY)
     attacker.pbOwnSide.effects[:Reflect]=8 if @battle.FE == :MIRROR
     if !@battle.pbIsOpposing?(attacker.index)
       @battle.pbDisplay(_INTL("Baddy Bad raised your team's Defense!"))
@@ -11603,10 +11630,18 @@ class PokeBattle_Move_30A < PokeBattle_Move
   end
   
   def pbBaseDamage(basedmg,attacker,opponent)
-    if @battle.FE == :MISTY || @battle.state.effects[:MISTY] > 0
+    if @battle.FE == :MISTY || @battle.state.effects[:MISTY] > 0 || @battle.FE == :CORROSIVEMIST
       return basedmg*2
     end
     return basedmg
+  end
+
+  def pbType(attacker,type=@type)
+    type=@type
+    if (@battle.FE == :CORROSIVEMIST)
+      type = :POISON
+    end
+    return super(attacker,type)
   end
 
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)

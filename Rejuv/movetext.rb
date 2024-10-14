@@ -4648,7 +4648,7 @@ MOVEHASH = {
 	:function => 0x011,
 	:type => :NORMAL,
 	:category => :special,
-	:basedamage => 50,
+	:basedamage => 100,
 	:accuracy => 100,
 	:maxpp => 15,
 	:effect => 30,
@@ -7983,12 +7983,13 @@ MOVEHASH = {
 :CRABHAMMER => {
 	:ID => 540,
 	:name => "Crabhammer",
-	:function => 0x000,
+	:function => 0x01C,
 	:type => :WATER,
 	:category => :physical,
 	:basedamage => 100,
 	:accuracy => 90,
 	:maxpp => 10,
+	:effect => 30,
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
@@ -14168,7 +14169,7 @@ MOVEHASH = {
 },
 
 :SOUTHERNWIND => {
-	:ID => 936,
+	:ID => 923,
 	:name => "Southern Wind",
 	:function => 0x90D,
 	:type => :FLYING,
@@ -14182,7 +14183,7 @@ MOVEHASH = {
 },
 
 :ORBITALSTRIKE => {
-	:ID => 937,
+	:ID => 924,
 	:name => "Orbital Strike",
 	:function => 0x0EE,
 	:type => :STEEL,
@@ -14196,11 +14197,55 @@ MOVEHASH = {
 	:desc => "After making its attack, the user switches places with a party Pokémon in waiting."
 },
 
+:CANNONBALL => {
+	:ID => 925,
+	:name => "Cannonball",
+	:function => 0x122,
+	:type => :WATER,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 100,
+	:maxpp => 10,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:desc => "The user shoots a ball of pressurized water to hit the target. This attack does physical damage."
+},
 
+:TRAILBLAZE => {
+	:ID => 926,
+	:name => "Trailblaze",
+	:function => 0x01F,
+	:type => :GRASS,
+	:category => :physical,
+	:basedamage => 50,
+	:accuracy => 100,
+	:maxpp => 20,
+	:effect => 100,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "The user blazes a path while attacking. It raises the user's Speed stat."
+},
+
+:LASTRESPECTS => {
+	:ID => 927,
+	:name => "Last Respects",
+	:function => 0x01F,
+	:type => :GHOST,
+	:category => :physical,
+	:basedamage => 50,
+	:accuracy => 100,
+	:maxpp => 20,
+	:effect => 100,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "Basculegion / Houndstone"
+},
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
-	:ID => 908,
+	:ID => 2000,
 	:name => "Smite",
 	# change to have confusion affect all foes
 	:function => 0x013,
@@ -14217,7 +14262,7 @@ MOVEHASH = {
 },
 
 :STEELSURGE => {
-	:ID => 915,
+	:ID => 2001,
 	:name => "Steelsurge",
 	:function => 0x909,
 	:type => :STEEL,
@@ -14231,7 +14276,7 @@ MOVEHASH = {
 },
 
 :FINALE => {
-	:ID => 917,
+	:ID => 2002,
 	:name => "Finale",
 	:function => 0x90A,
 	:type => :FAIRY,
@@ -14246,7 +14291,7 @@ MOVEHASH = {
 },
 
 :BEFUDDLE => {
-	:ID => 923,
+	:ID => 2003,
 	:name => "Befuddle",
 	:function => 0x907,
 	:type => :BUG,
@@ -14261,7 +14306,7 @@ MOVEHASH = {
 },
 
 :GIANTSDRUM => {
-	:ID => 924,
+	:ID => 2004,
 	:name => "Giant's Drum",
 	:function => 0x0F0,
 	:type => :GRASS,
@@ -14276,7 +14321,7 @@ MOVEHASH = {
 },
 
 :FLAMESTRIKE => {
-	:ID => 925,
+	:ID => 2005,
 	:name => "Flame Strike",
 	:function => 0x0AD,
 	:type => :FIRE,
@@ -14290,7 +14335,7 @@ MOVEHASH = {
 },
 
 :HYDROSNIPE => {
-	:ID => 926,
+	:ID => 2006,
 	:name => "Hydrosnipe",
 	:function => 0x179,
 	:type => :WATER,
@@ -14305,7 +14350,7 @@ MOVEHASH = {
 },
 
 :ACIDROCK => {
-	:ID => 927,
+	:ID => 2007,
 	:name => "Acid Rock",
 	:function => 0x04F,
 	:type => :POISON,
@@ -14320,7 +14365,7 @@ MOVEHASH = {
 },
 
 :WINDRAGE => {
-	:ID => 928,
+	:ID => 2008,
 	:name => "Wind Rage",
 	:function => 0x0EB,
 	:type => :FLYING,
@@ -14336,7 +14381,7 @@ MOVEHASH = {
 },
 
 :VOLTCRASH => {
-	:ID => 929,
+	:ID => 2009,
 	:name => "Volt Crash",
 	# change to have paralysis affect all foes
 	:function => 0x007,
@@ -14353,7 +14398,7 @@ MOVEHASH = {
 },
 
 :GOLDRUSH => {
-	:ID => 926,
+	:ID => 2010,
 	:name => "Gold Rush",
 	:function => 0x117,
 	:type => :STEEL,
@@ -14368,7 +14413,7 @@ MOVEHASH = {
 },
 
 :CUDDLESTORM => {
-	:ID => 930,
+	:ID => 2011,
 	:name => "Cuddlestorm",
 	:function => 0x042,
 	:type => :FAIRY,
@@ -14384,7 +14429,7 @@ MOVEHASH = {
 },
 
 :SNOOZE => {
-	:ID => 931,
+	:ID => 2012,
 	:name => "Snooze",
 	:function => 0x004,
 	:type => :DARK,
@@ -14399,7 +14444,7 @@ MOVEHASH = {
 },
 
 :DEPLETION => {
-	:ID => 932,
+	:ID => 2013,
 	:name => "Depletion",
 	:function => 0x050,
 	:type => :DRAGON,
@@ -14415,12 +14460,12 @@ MOVEHASH = {
 
 # not fully implemented yet
 :MELTDOWN => {
-	:ID => 933,
+	:ID => 2014,
 	:name => "Meltdown",
 	:function => 0x006,
 	:type => :STEEL,
 	:category => :physical,
-	:basedamage => 150,
+	:basedamage => 250,
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,
@@ -14430,7 +14475,7 @@ MOVEHASH = {
 },
 
 :BLACKHOLE => {
-	:ID => 934,
+	:ID => 2015,
 	:name => "Black Hole",
 	:function => 0x09B,
 	:type => :DARK,
@@ -14445,7 +14490,7 @@ MOVEHASH = {
 },
 
 :LANDFILL => {
-	:ID => 935,
+	:ID => 2016,
 	:name => "Landfill",
 	:function => 0x1100,
 	:type => :POISON,
@@ -14460,7 +14505,7 @@ MOVEHASH = {
 },
 
 :CENTIFERNO => {
-	:ID => 936,
+	:ID => 2017,
 	:name => "Centiferno",
 	:function => 0x00A,
 	:type => :FIRE,
@@ -14474,11 +14519,11 @@ MOVEHASH = {
 	:desc => "Centiskorch"
 },
 
-:SWEETMAX => {
-	:ID => 937,
-	:name => "Sweetmax",
-	:function => 0x00A,
-	:type => :GRASS,
+:HONEYPOT => {
+	:ID => 2018,
+	:name => "Honeypot",
+	:function => 0x0F6,
+	:type => :BUG,
 	:category => :special,
 	:basedamage => 110,
 	:accuracy => 0,
@@ -14487,6 +14532,50 @@ MOVEHASH = {
 	:target => :AllOpposing,
 	:effect => 100,
 	:desc => "Appleanch (Appletun)"
+},
+
+:RESONANCE => {
+	:ID => 2019,
+	:name => "Resonance",
+	:function => 0x15B,
+	:type => :ICE,
+	:category => :special,
+	:basedamage => 110,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:soundmove => true,
+	:desc => "Lapras"
+},
+
+:STONESURGE => {
+	:ID => 2020,
+	:name => "Stonesurge",
+	:function => 0x105,
+	:type => :WATER,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 100,
+	:target => :AllOpposing,
+  	:desc => "Drednaw."
+},
+
+:ACIDROCK2 => {
+	:ID => 2007,
+	:name => "Acid Rock",
+	:function => 0x04F,
+	:type => :POISON,
+	:category => :special,
+	:basedamage => 200,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:effect => 100,
+	:target => :AllNonUsers,
+	:desc => "Rock on Venam (for Saki Double Battle)"
 },
 
 }

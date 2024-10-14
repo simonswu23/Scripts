@@ -25,18 +25,19 @@ module PBDebug
 
   def PBDebug.log(msg)
     # DEBUG LOGS AUTOMATIC FOR TESTING ONLY, switch which of the next two are commented to change what is being done
-    #if $DEBUG && $INTERNAL
-    begin
-      if File.exist?("Data/debuglog.txt") && File.size("Data/debuglog.txt") > 10_000_000
-        File.delete("Data/debuglog.txt")
+    if $DEBUG && $INTERNAL && false
+      begin
+        if File.exist?("Data/debuglog.txt") && File.size("Data/debuglog.txt") > 10_000_000
+          File.delete("Data/debuglog.txt")
+        end
+        if $INTERNAL
+          File.open("Data/debuglog.txt", "a+b") {|f|
+            f.write("#{msg}\r\n")
+          }
+        end
+      rescue
+        $INTERNAL = false
       end
-      if $INTERNAL
-        File.open("Data/debuglog.txt", "a+b") {|f|
-          f.write("#{msg}\r\n")
-        }
-      end
-    rescue
-      $INTERNAL = false
     end
   end
 

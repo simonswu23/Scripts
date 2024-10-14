@@ -1574,3 +1574,22 @@ class PokeBattle_Move_1100 < PokeBattle_Move
   end
 
 end
+
+################################################################################
+# Last Respects
+################################################################################
+class PokeBattle_Move_1101< PokeBattle_Move
+  def pbBaseDamage(basedmg,attacker,opponent)
+    fainted = 0
+    for i in 0...party.length
+      fainted += 1 if party[i].isFainted?
+    end
+    return (fainted + 1) * @basedmg
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    @battle.pbAnimation(:MEMENTO,attacker,opponent,hitnum)
+  end
+
+end
