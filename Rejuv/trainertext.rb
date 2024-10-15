@@ -12111,14 +12111,16 @@ TEAMARRAY = [{
 :defeat => "Looks like I've been washed away...",
 :items => [:HYPERPOTION,:HYPERPOTION,:LAPRASITE],
 :trainereffect => { 
-	:effectmode => :Fainted,
+	:effectmode => :Party,
 	:buffactivation => :Limited,
 	0 => {
-		:message => "VALARIE: Looks like it might rain soon...",
+		:setWeather => [:RAINDANCE,-1,"VALARIE: Looks like it's going to rain!"],
 	},
-	1 => {
-		:setWeather => [:RAINDANCE,-1,"VALARIE: There it is!"],
-	},
+	5 => {
+		:pokemonEffect => {
+			:dummy => [false,:AQUABATICS,"Primarina's aquabatics gave it Swift Swim!"],
+		},
+	}
 },
 :mons => [{
 	:species => :OVERQWIL,
@@ -12154,7 +12156,7 @@ TEAMARRAY = [{
 	:species => :SWAMPERT,
 	:level => 38,
 	:item => :SWAMPERTITE,
-	:moves => [:FLIPTURN,:WATERFALL,:ICEPUNCH,:POISONJAB],
+	:moves => [:EARTHQUAKE,:WATERFALL,:ICEPUNCH,:POISONJAB],
 	:ability => :REGENERATOR,
 	:gender => "F",
 	:nature => :ADAMANT,
@@ -12184,7 +12186,7 @@ TEAMARRAY = [{
 	:species => :PRIMARINA,
 	:level => 40,
 	:item => :PRIMARIUMZ,
-	:moves => [:SURF,:AQUABATICS,:MOONBLAST,:PSYCHIC],
+	:moves => [:SURF,:ENERGYBALL,:MOONBLAST,:PSYCHIC],
 	:ability => :SWIFTSWIM,
 	:gender => "F",
 	:nature => :TIMID,
