@@ -1428,6 +1428,7 @@ class PokeBattle_Move
     return true if @move == :WILDBOLTSTORM && @battle.pbWeather ==:RAINDANCE
     return true if @move == :SANDSEARSTORM && @battle.pbWeather ==:SANDSTORM
     return true if @move == :BLEAKWINDSTORM && @battle.pbWeather ==:HAIL
+    return true if @move == :GEARGRIND && attacker.crested == :KLINKLANG
     return true if (@function==0x08 || @function==0x15) && @battle.pbWeather== :RAINDANCE # Thunder, Hurricane
     return true if @type == :ELECTRIC && @battle.FE == :UNDERWATER
     return true if attacker.hasType?(:POISON) && @move == :TOXIC

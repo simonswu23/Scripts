@@ -2240,6 +2240,7 @@ class PokeBattle_Battle
     return false if !@battlers[index].hasGiga?
     return false if !pbHasGigaBand(index)
     return false if !pbHasGigaStone(index)
+    return true if !pbBelongsToPlayer?(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @gigaEvolution[side][owner]==-1
@@ -5504,8 +5505,12 @@ class PokeBattle_Battle
       end
       # Frostbite
       if i.status== :FROSTBITE && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+        mult = 1
+        if (@field.effect == :FROZENDIMENSION)
+          mult = 2
+        end
         i.pbContinueStatus
-        i.pbReduceHP((i.totalhp/16.0).floor)
+        i.pbReduceHP((mult * i.totalhp/16.0).floor)
       end
       # Shiinotic Crest
       if i.crested == :SHIINOTIC

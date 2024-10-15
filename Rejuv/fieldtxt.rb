@@ -2649,7 +2649,7 @@ FIELDEFFECTS = {
 	:typeBoosts => {
 		1.5 => [:ICE],
 		1.5 => [:DARK],
-		0.5 => [:FIRE],
+		0.25 => [:FIRE],
 	},
 	:typeMessages => {
 		"The darkness is here..." => [:DARK],

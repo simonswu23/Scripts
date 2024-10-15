@@ -37832,6 +37832,8 @@ MONHASH = {
 	},
 
 	:OnCreation => {},
+	:DefaultForm => 0,
+  :GigaForm => 1,
 },
 
 :DEERLING => {

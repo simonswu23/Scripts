@@ -300,13 +300,13 @@
   - Typing: Fire/Rock
   - Ability: Steam Engine
   - Stats: 220, 80, 120, 80, 90, 30
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Volcalith
+    - Type: Rock
+    - category: physical
+    - BP: 120
+    - acc: 0
+    - target: all targets
+    - effect: sets up fire type stealth rocks
 
 - Flapple
   - Typing: Grass/Flying 
@@ -451,6 +451,19 @@
     - acc:
     - target:
     - effect:
+  
+- Vanilluxe
+  - Typing: Ice/Flying
+  - Ability: Snow Cloak
+  - Stats: 142, 95, 85, 110, 95, 79
+  - Giga Move: Squall
+    - Type: Flying
+    - category: special
+    - BP: 120
+    - acc: 0
+    - target: all foes
+    - effect: 30% chance to freeze targets
+
 
 ### Pokemon Changes
 
@@ -1148,6 +1161,12 @@
   - +1 priority on flying attacks
   - attack raised by 1 after getting hit by Dark attacks
   - x1.25 boost to attack and defense
+
+- Klinklang Crest
+  - alternates between speed form (default) and attack form after using Shift Gear / Gear Up
+  - attack form gives Klinklang x1.5 to offenses + extra attack and special attack boost to gear shift moves, speed for grants x2 speed and extra speed boost to gear shift moves
+  - Gear Grind never misses
+  - applies Magnet Rise to Klinklang
  
 ## Attacks
 
@@ -1792,7 +1811,7 @@
 
 - Frozen Dimensional 
   - x1.5 buff to Ice moves
-  - x0.5 nerf to Fire moves
+  - x0.25 nerf to Fire moves
 
 - Sky 
   - boost the power of Befuddle, Southern Wind, Spring Breeze by 50%
@@ -1842,6 +1861,10 @@
 - Geara (Axis Factory)
 - Saki (Gym)
 - Amber x Venam at Teila (13.5)
+- Jenner in Aquamarine
+- Madelis in Aquamarine
+- Neved in Teila (double check)
+- Angie
 - Talon (Rooftop)
 - Xara and Jean (Spirits)
 - Hazuki (Nightmare)

@@ -789,6 +789,7 @@ class PokeBattle_Pokemon
       when :DREDNAW         then return true if move.move == :LIQUIDATION
       when :MELMETAL        then return true if move.move == :HYPERBEAM
       when :COALOSSAL       then return true if move.move == :STONEEDGE
+      when :VANILLUXE       then return true if move.move == :BLIZZARD
     end
     return false
   end

@@ -10405,4 +10405,15 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:VANILLUXITE => {
+	:ID => 2032,
+	:name => "Vanilluxe Core",
+	:desc => "One variety of Giga Stone. This stone will enable Vanilluxe to Giga Evolve in battle.",
+	:price => 999,
+	:crystal => true,
+	:noUseInBattle => true,
+	:noUse => true,
+	:keyitem => true,
+},
+
 }

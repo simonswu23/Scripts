@@ -5384,6 +5384,16 @@ class PokeBattle_Move_0B7 < PokeBattle_Move
     return true
   end
 
+  def pbSecondAdditionalEffect(attacker,opponent)
+    if @move == :COLDTRUTH
+      return false if !opponent.pbCanFrostbite?(false)
+      opponent.pbFrostbite(attacker)
+      @battle.pbDisplay(_INTL("{1} was frostbitten!",opponent.pbThis))
+      return true
+    end
+    return false
+  end
+
   # Replacement animation till a proper one is made
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     return if !showanimation

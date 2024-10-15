@@ -12045,6 +12045,7 @@ MOVEHASH = {
 	:accuracy => 100,
 	:maxpp => 10,
 	:effect => 100,
+	:moreeffect => 30,
 	:target => :AllOpposing,
 	:desc => "A strong disturbing chill hits adjacent opponents, inflicting Torment upon them."
 },
@@ -14590,6 +14591,21 @@ MOVEHASH = {
 	:giga => true,
 	:target => :AllOpposing,
 	:desc => "The user sends molten rocks at the targets. The debris left behind by this attack floats around the target."
+},
+
+:SQUALL => {
+	:ID => 903,
+	:name => "Squall",
+	:function => 0x00C,
+	:type => :FLYING,
+	:category => :special,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 30,
+	:target => :AllOpposing,
+	:kingrock => true,
+	:desc => "Vanilluxe"
 },
 
 }
