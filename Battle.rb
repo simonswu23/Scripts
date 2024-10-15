@@ -3196,6 +3196,22 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} was hurt by metal debris!",pkmn.pbThis))
         end
       end
+      if pkmn.pbOwnSide.effects[:Volcalith]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+          atype = :FIRE
+          # @SWu to figure out alternate field interactions
+          eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
+          if @field.effect == :INVERSE
+            switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
+            eff = switcheff[eff]
+          end
+          if eff>0
+            @scene.pbDamageAnimation(pkmn,0)
+            pkmn.pbReduceHP([(pkmn.totalhp*eff/32).floor,1].max)
+          end
+          pbDisplay(_INTL("{1} was hurt by the molten rocks!",pkmn.pbThis))
+        end
+      end
       if pkmn.isFainted?
         pkmn.pbFaint
         pkmn.pbOwnSide.effects[:Retaliate] = true
@@ -5100,6 +5116,15 @@ class PokeBattle_Battle
               @battle.pbDisplay(_INTL("The steel debris disappeared from around your team!"))
             end
           end
+          if i.pbOwnSide.effects[:Volcalith] || j.pbOwnSide.effects[:Volcalith]
+            i.pbOwnSide.effects[:Volcalith]=false
+            j.pbOwnSide.effects[:Volcalith]=false
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+            else
+              @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+            end
+          end
           if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
             i.pbOwnSide.effects[:ToxicSpikes]=0
             j.pbOwnSide.effects[:ToxicSpikes]=0
@@ -5995,6 +6020,20 @@ class PokeBattle_Battle
           for mon in [i, i.pbPartner]
             next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
             eff=PBTypes.twoTypeEff(:STEEL,mon.type1,mon.type2)
+            next if eff <=0
+            @scene.pbDamageAnimation(mon,0)
+            mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)
+          end
+        end
+
+        # Volcalith
+        if i.pbOwnSide.effects[:Volcalith]
+          pbDisplay(_INTL("The waste swallowed up the metal debris!"))
+          i.pbOwnSide.effects[:Volcalith]=false
+          pbDisplay(_INTL("...Debris spewed out from the ground below!"))
+          for mon in [i, i.pbPartner]
+            next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
+            eff=PBTypes.twoTypeEff(:FIRE,mon.type1,mon.type2)
             next if eff <=0
             @scene.pbDamageAnimation(mon,0)
             mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)

@@ -1168,6 +1168,15 @@ class PokeBattle_Move_908 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
       end
     end
+    if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
+      attacker.pbOwnSide.effects[:Volcalith]=false
+      opponent.pbOwnSide.effects[:Volcalith]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+      end
+    end
     if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
       attacker.pbOwnSide.effects[:ToxicSpikes]=0
       opponent.pbOwnSide.effects[:ToxicSpikes]=0
@@ -1436,6 +1445,15 @@ class PokeBattle_Move_90D < PokeBattle_Move
         @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
       end
     end
+    if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
+      attacker.pbOwnSide.effects[:Volcalith]=false
+      opponent.pbOwnSide.effects[:Volcalith]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+      end
+    end
     if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
       attacker.pbOwnSide.effects[:ToxicSpikes]=0
       opponent.pbOwnSide.effects[:ToxicSpikes]=0
@@ -1482,6 +1500,25 @@ class PokeBattle_Move_90D < PokeBattle_Move
 
 end
 
+################################################################################
+# Last Respects
+################################################################################
+class PokeBattle_Move_90E< PokeBattle_Move
+  def pbBaseDamage(basedmg,attacker,opponent)
+    fainted = 0
+    for i in 0...party.length
+      fainted += 1 if party[i].isFainted?
+    end
+    return (fainted + 1) * @basedmg
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    @battle.pbAnimation(:MEMENTO,attacker,opponent,hitnum)
+  end
+
+end
+
 # ====================== BEGIN GIGA MOVES ============================= #
 
 ################################################################################
@@ -1496,8 +1533,9 @@ class PokeBattle_Move_1100 < PokeBattle_Move
     webs = true
     rocks = true
     steel = true
-    while (!chosen && (spikes || tspikes || webs || rocks || steel))
-      hazard = @battle.pbRandom(5)
+    volc = true
+    while (!chosen && (spikes || tspikes || webs || rocks || steel || volc))
+      hazard = @battle.pbRandom(6)
       case hazard
         when 0
           if (attacker.pbOpposingSide.effects[:Spikes]<3)
@@ -1564,6 +1602,19 @@ class PokeBattle_Move_1100 < PokeBattle_Move
           else
             webs = false
           end
+        when 5
+          if (!attacker.pbOpposingSide.effects[:Volcalith])
+            # pbShowAnimation(:STEALTHROCK,attacker,opponent)
+            attacker.pbOpposingSide.effects[:Volcalith]=true
+            if !@battle.pbIsOpposing?(attacker.index)
+              @battle.pbDisplay(_INTL("Flaming rocks float in the air around your foe's team!"))
+            else
+              @battle.pbDisplay(_INTL("Flaming rocks float in the air around your team!"))
+            end
+            chosen = true
+          else
+            volc = false
+          end
         end
     end
   end
@@ -1576,20 +1627,22 @@ class PokeBattle_Move_1100 < PokeBattle_Move
 end
 
 ################################################################################
-# Last Respects
+# Volcalith
 ################################################################################
-class PokeBattle_Move_1101< PokeBattle_Move
-  def pbBaseDamage(basedmg,attacker,opponent)
-    fainted = 0
-    for i in 0...party.length
-      fainted += 1 if party[i].isFainted?
+class PokeBattle_Move_1101 < PokeBattle_Move
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    @battle.pbAnimation(:ERUPTION,attacker,opponent,hitnum)
+    if (!attacker.pbOpposingSide.effects[:Volcalith])
+      attacker.pbOpposingSide.effects[:Volcalith]=true
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("Molten rocks float in the air around your foe's team!"))
+      else
+        @battle.pbDisplay(_INTL("Molten rocks float in the air around your team!"))
+      end
     end
-    return (fainted + 1) * @basedmg
+    return 0
   end
-
-  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    return if !showanimation
-    @battle.pbAnimation(:MEMENTO,attacker,opponent,hitnum)
-  end
-
 end
+

@@ -366,6 +366,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Toxic Spikes: {1} layers",pkmn.pbOwnSide.effects[:ToxicSpikes])) if pkmn.pbOwnSide.effects[:ToxicSpikes]>0
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[:StealthRock]
   report.push(_INTL("Steelsurge active")) if pkmn.pbOwnSide.effects[:Steelsurge]
+  report.push(_INTL("Steelsurge active")) if pkmn.pbOwnSide.effects[:Volcalith]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[:StickyWeb]
   report.push()
   report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : getAbilityName(shownmon.ability)))

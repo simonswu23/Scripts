@@ -1787,6 +1787,18 @@ class PokeBattle_Move_036 < PokeBattle_Move
       attacker.pbIncreaseStat(PBStats::SPEED,2,abilitymessage:false)
       showanim=false
     end
+    if attacker.crested == :KLINKLANG
+      if attacker.gear == 0
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        @battle.pbDisplay(_INTL("ATTACK MODE INITIATING:",attacker.pbThis))
+      else
+        attacker.pbIncreaseStat(PBStats::SPEED,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+        @battle.pbDisplay(_INTL("OVERCLOCKING SPEED:",attacker.pbThis))
+      end
+      # switch gears
+      attacker.gear = (attacker.gear + 1) % 2
+    end
     return 0
   end
 end
@@ -2385,6 +2397,15 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
       end
     end
+    if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
+      attacker.pbOwnSide.effects[:Volcalith]=false
+      opponent.pbOwnSide.effects[:Volcalith]=false
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+      else
+        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+      end
+    end
     if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
       attacker.pbOwnSide.effects[:ToxicSpikes]=0
       opponent.pbOwnSide.effects[:ToxicSpikes]=0
@@ -2436,6 +2457,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
     opponent.pbOwnSide.effects[:Spikes] = 0
     opponent.pbOwnSide.effects[:StealthRock] = false
     opponent.pbOwnSide.effects[:Steelsurge] = false
+    opponent.pbOwnSide.effects[:Volcalith] = false
     opponent.pbOwnSide.effects[:ToxicSpikes] = 0
     opponent.pbOwnSide.effects[:StickyWeb] = false
     return true
@@ -8462,6 +8484,10 @@ class PokeBattle_Move_110 < PokeBattle_Move
         attacker.pbOwnSide.effects[:Steelsurge]=false
         @battle.pbDisplay(_INTL("{1} blew away the steel debris!",attacker.pbThis))
       end
+      if attacker.pbOwnSide.effects[:Volcalith]
+        attacker.pbOwnSide.effects[:Volcalith]=false
+        @battle.pbDisplay(_INTL("{1} blew away the molten rocks!",attacker.pbThis))
+      end
       if attacker.pbOwnSide.effects[:Spikes]>0
         attacker.pbOwnSide.effects[:Spikes]=0
         @battle.pbDisplay(_INTL("{1} blew away Spikes!",attacker.pbThis))
@@ -10303,23 +10329,24 @@ end
 ################################################################################
 class PokeBattle_Move_163 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if !@battle.doublebattle
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return -1
-    end
-    if attacker.pbPartner.ability == :PLUS ||
-       attacker.pbPartner.ability == :MINUS
-      if @battle.FE!= :FACTORY
+    if @battle.doublebattle
+      if @battle.FE != :FACTORY
+
+        base = 1
+        if attacker.pbPartner.ability == :PLUS || attacker.pbPartner.ability == :MINUS
+          base = 2
+        end
+
         if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
-           attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+          attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
           pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
           showanim=true
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false)
+            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,base,abilitymessage:false)
             showanim=false
           end
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,base,abilitymessage:false)
             showanim=false
           end
         else
@@ -10328,41 +10355,57 @@ class PokeBattle_Move_163 < PokeBattle_Move
         end
       else
         if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
-           attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+          attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
           pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
           showanim=true
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,2,abilitymessage:false)
+            attacker.pbPartner.pbIncreaseStat(PBStats::ATTACK,base + 1,abilitymessage:false)
             showanim=false
           end
           if attacker.pbPartner.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,2,abilitymessage:false)
+            attacker.pbPartner.pbIncreaseStat(PBStats::SPATK,base + 1,abilitymessage:false)
             showanim=false
           end
         else
           @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbPartner.pbThis))
           return -1
         end
-        if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
-           attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-          pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
-          showanim=true
-          if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-            attacker.pbIncreaseStat(PBStats::ATTACK,2,abilitymessage:false)
-            showanim=false
-          end
-          if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
-            attacker.pbIncreaseStat(PBStats::SPATK,2,abilitymessage:false)
-            showanim=false
-          end
-        else
-          @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbThis))
-          return -1
-        end
+     end
+    end
+
+    base = 1
+    if attacker.ability == :PLUS || attacker.ability == :MINUS
+      base = 2
+    end
+
+    if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false) &&
+      attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+      pbShowAnimation(@move,attacker,nil,hitnum,alltargets,showanimation)
+      showanim=true
+      if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+        attacker.pbIncreaseStat(PBStats::ATTACK,base,abilitymessage:false)
+        showanim=false
+      end
+      if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,base,abilitymessage:false)
+        showanim=false
       end
     else
-      @battle.pbDisplay(_INTL("But it failed!"))
+      @battle.pbDisplay(_INTL("{1}'s stats won't go any higher!",attacker.pbThis))
       return -1
+    end
+
+    if attacker.crested == :KLINKLANG
+      if attacker.gear == 0
+        attacker.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
+        attacker.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::SPATK,false)
+        @battle.pbDisplay(_INTL("ATTACK MODE INITIATING:",attacker.pbThis))
+      else
+        attacker.pbIncreaseStat(PBStats::SPEED,1,abilitymessage:false) if attacker.pbCanIncreaseStatStage?(PBStats::SPEED,false)
+        @battle.pbDisplay(_INTL("OVERCLOCKING SPEED:",attacker.pbThis))
+      end
+      # switch gears
+      attacker.gear = (attacker.gear + 1) % 2
     end
 
     return 0
