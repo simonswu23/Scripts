@@ -12114,7 +12114,8 @@ TEAMARRAY = [{
 	:effectmode => :Party,
 	:buffactivation => :Limited,
 	0 => {
-		:setWeather => [:RAINDANCE,-1,"VALARIE: Looks like it's going to rain!"],
+		:message => "VALARIE: Looks like it's going to rain!",
+		:setWeather => [:RAINDANCE,-1] #,"VALARIE: Looks like it's going to rain!"],
 	},
 	5 => {
 		:pokemonEffect => {

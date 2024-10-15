@@ -271,7 +271,7 @@
       weather = trainereffect[:setWeather][0]
       @weather = weather
       @weatherduration= trainereffect[:setWeather][1]
-      weatherMessage = trainereffect[:setWeather][2]
+      # weatherMessage = trainereffect[:setWeather][2]
       weatherText = ""
       if (weather == :RAINDANCE)
         weatherText = "Rain"
@@ -285,7 +285,7 @@
         weatherText = "Wind"
       end
       pbCommonAnimation(weatherText)
-      pbDisplayBrief(_INTL("{1}", weatherMessage))
+      # pbDisplayBrief(_INTL("{1}", weatherMessage))
     end
     if trainereffect[:typeChange]
       pkmn.type1 = trainereffect[:typeChange][0]
