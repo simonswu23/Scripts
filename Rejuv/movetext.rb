@@ -14230,7 +14230,7 @@ MOVEHASH = {
 :LASTRESPECTS => {
 	:ID => 927,
 	:name => "Last Respects",
-	:function => 0x01F,
+	:function => 0x90E,
 	:type => :GHOST,
 	:category => :physical,
 	:basedamage => 50,
@@ -14564,7 +14564,7 @@ MOVEHASH = {
 },
 
 :ACIDROCK2 => {
-	:ID => 2007,
+	:ID => 2021,
 	:name => "Acid Rock",
 	:function => 0x04F,
 	:type => :POISON,
@@ -14576,6 +14576,20 @@ MOVEHASH = {
 	:effect => 100,
 	:target => :AllNonUsers,
 	:desc => "Rock on Venam (for Saki Double Battle)"
+},
+
+:VOLCALITH => {
+	:ID => 2022,
+	:name => "Volcalith",
+	:function => 0x1101,
+	:type => :ROCK,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :AllOpposing,
+	:desc => "The user sends molten rocks at the targets. The debris left behind by this attack floats around the target."
 },
 
 }

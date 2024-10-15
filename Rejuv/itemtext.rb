@@ -10395,4 +10395,14 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:KLINKLANGCREST => {
+	:ID => 2031,
+	:name => "Klinklang Crest",
+	:desc => "Gearhead",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

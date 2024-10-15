@@ -788,6 +788,7 @@ class PokeBattle_Pokemon
       when :APPLETUN        then return true if move.move == :APPLEACID
       when :DREDNAW         then return true if move.move == :LIQUIDATION
       when :MELMETAL        then return true if move.move == :HYPERBEAM
+      when :COALOSSAL       then return true if move.move == :STONEEDGE
     end
     return false
   end

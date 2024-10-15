@@ -80,6 +80,8 @@ class PokeBattle_Battler
   attr_accessor :anticipation
   attr_accessor :powerSurge
   attr_accessor :giga
+  attr_accessor :gear
+
   def inHyperMode?; return false; end
   def isShadow?; return false; end
 
@@ -398,6 +400,7 @@ class PokeBattle_Battler
 
     @forewarn     = []
     @anticipation = false
+    @gear         = 0        # 0 is speed gear, 1 is attack gear
 
     pbInitEffects(false,fakebattler)
     

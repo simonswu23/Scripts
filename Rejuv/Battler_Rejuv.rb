@@ -329,6 +329,10 @@ class PokeBattle_Battler
           @speed   *= 0.8
           @attack  *= 0.8
           @defense *= 0.8
+        when :KLINKLANG
+          @attack *= 1.5 if @gear == 1
+          @spatk *= 1.5 if @gear == 1
+          @speed *=2 if @gear == 0
         end 
       end
 

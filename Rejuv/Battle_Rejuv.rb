@@ -52,6 +52,9 @@
           @battlers[index].pbCheckForm
         end
       end
+    when :KLINKLANG
+      @battlers[index].effects[:MagnetRise]=8
+      pbAnimation(:MAGNETRISE,@battlers[index],nil) # Magnet Rise animation
     when :THIEVUL
       if !@battlers[index].pbOpposing1.isFainted?
         opposing=@battlers[index].pbOpposing1
