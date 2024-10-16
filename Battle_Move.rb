@@ -1633,7 +1633,7 @@ class PokeBattle_Move
           basemult*=1.2 if punchMove?
         end
       when :RECKLESS      then basemult*=1.3 if [0xFA,0x0D2,0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN
-      when :AFTERMATH     then basemult*=1.5 if [0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN
+      when :AFTERMATH     then basemult*=1.5 if [0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN && @move != :AFTERMATH
       when :FLAREBOOST    then basemult*=1.5 if (attacker.status== :BURN || @battle.FE == :BURNING || @battle.FE == :VOLCANIC || @battle.FE == :INFERNAL) && pbIsSpecial?(type) && @battle.FE != :FROZENDIMENSION
       when :TOXICBOOST    
         if (attacker.status== :POISON || @battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :WASTELAND || @battle.FE == :MURKWATERSURFACE) && pbIsPhysical?(type)
@@ -2082,6 +2082,7 @@ class PokeBattle_Move
     case attacker.crested
       when :CASTFORM then atkmult*=1.5 if attacker.form == 1 && @battle.pbWeather== :SUNNYDAY && pbIsSpecial?(type) && (@battle.FE != :GLITCH &&  @battle.FE != :FROZENDIMENSION)
       when :SUNFLORA then atkmult*=2 if @battle.pbWeather== :SUNNYDAY
+      when :EMBOAR then atkmult *= (2 * (attacker.hp * 1.0 / attacker.totalhp))
       when :SPIRITOMB
           allyfainted = attacker.pbFaintedPokemonCount
           modifier = (allyfainted * 0.2) + 1.0

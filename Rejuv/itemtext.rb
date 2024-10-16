@@ -10416,4 +10416,14 @@ ITEMHASH = {
 	:keyitem => true,
 },
 
+:EMBOARCREST => {
+	:ID => 2033,
+	:name => "Emboar Crest",
+	:desc => "Oink Oink Bitch",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
 }

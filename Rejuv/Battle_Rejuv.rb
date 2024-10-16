@@ -384,6 +384,10 @@
         i.statdownanimplayed=false
       end
     } if trainereffect[:opposingSideStatChanges]
+    if trainereffect[:applyStatus]
+      pkmn.status = trainereffect[:applyStatus][0]
+      pbDisplay(_INTL(trainereffect[:applyStatus][2])) if trainereffect[:applyStatus][2]
+    end
     if trainereffect[:instantMove]
       pkmn.pbUseMoveSimple(trainereffect[:instantMove][0],-1,trainereffect[:instantMove][1],false,true)
     end

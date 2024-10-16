@@ -2574,7 +2574,7 @@ FIELDEFFECTS = {
 	},
 	:moveEffects => {
 		"@battle.field.counter += 1" => [:BLIZZARD, :SHEERCOLD],
-		"@battle.field.counter = 2" => [:ICEBURN, :FREEZESHOCK, :GLACIATE. :COLDTRUTH],
+		"@battle.field.counter = 2" => [:ICEBURN, :FREEZESHOCK, :GLACIATE, :COLDTRUTH],
 	},
 	:typeBoosts => {
 		1.5 => [:DARK, :SHADOW],

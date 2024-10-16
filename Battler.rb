@@ -839,10 +839,10 @@ class PokeBattle_Battler
     
     # @SWu gravity speed fuckery
     if @battle.state.effects[:Gravity] != 0 && self.ability != :GRAVFLUX
-      # 440 is the sky drop cutoff
-      weightLim = @battle.FE == :DEEPEARTH ? 880 : 440
-      speed *= [1,(self.weight / 440).floor].min
-      speed = [speed, 1].max
+      # 2000 is the sky drop cutoff
+      weightLim = @battle.FE == :DEEPEARTH ? 2000 : 1000
+      speed = (speed * [1,(self.weight * 1.0 / weightLim)].min).floor
+      speed = 1 if speed < 1
     end
 
     case self.ability
@@ -860,12 +860,14 @@ class PokeBattle_Battler
         speed*=2 if @battle.pbWeather== :SANDSTORM || @battle.FE == :DESERT || @battle.FE == :ASHENBEACH
       when :SLUSHRUSH
         speed*=2 if @battle.pbWeather== :HAIL || @battle.FE==:ICY || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:FROZENDIMENSION
-      when :SLOWSTART
+      when :SLOWSTART   
         speed*=0.5 if self.turncount<5 && !@battle.FE == :DEEPEARTH
       when :QUARKDRIVE
         speed*=1.5 if self.effects[:Quarkdrive][0] == PBStats::SPEED
       when :MINUS
         speed*=1.5 if self.pbPartner.ability == :PLUS
+      when :GRAVFLUX
+        speed*=2 if @battle.state.effects[:Gravity] != 0 && @battle.FE == :DEEPEARTH
     end
     case @battle.FE
       when :NEWWORLD
@@ -3197,10 +3199,10 @@ class PokeBattle_Battler
       if target.ability == :AFTERMATH && !user.isFainted? && target.hp <= 0 && !@battle.pbCheckGlobalAbility(:DAMP)
         # @battle.scene.pbDamageAnimation(user,0)
         if @battle.FE == :CORROSIVEMIST
-          target.pbUseMoveSimple(:MISTYEXPLOSION)
+          target.pbUseMoveSimple(:EXPLOSION)
           @battle.pbDisplay(_INTL("The remaining pokemon were caught in the toxic aftermath!",user.pbThis))
         else
-          target.pbUseMoveSimple(:EXPLOSION)
+          target.pbUseMoveSimple(:AFTERMATH)
           @battle.pbDisplay(_INTL("The remaining pokemon were caught in the aftermath!",user.pbThis))
         end
       end

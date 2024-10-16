@@ -430,6 +430,10 @@ class PokeBattle_Move_007 < PokeBattle_Move
     return false if !opponent.pbCanParalyze?(false)
     opponent.pbParalyze(attacker)
     @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbThis))
+    if @move == :VOLTCRASH && opponent.pbPartner.pbCanParalyze?
+      opponent.pbPartner.pbParalyze(attacker)
+      @battle.pbDisplay(_INTL("{1} was paralyzed! It may be unable to move!",opponent.pbPartner.pbThis))
+    end
     return true
   end
 
@@ -504,6 +508,10 @@ class PokeBattle_Move_00A < PokeBattle_Move
     return false if !opponent.pbCanBurn?(false)
     opponent.pbBurn(attacker)
     @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbThis))
+    if @move == :CENTIFERNO && opponent.pbPartner.pbCanBurn?
+      opponent.pbPartner.pbBurn(attacker)
+      @battle.pbDisplay(_INTL("{1} was burned!",opponent.pbPartner.pbThis))
+    end
     return true
   end
 
@@ -1289,7 +1297,18 @@ class PokeBattle_Move_023 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    if attacker.effects[:FocusEnergy]<2
+    if @move == :CHISTRIKE
+      if attacker.effects[:FocusEnergy]<1
+        attacker.effects[:FocusEnergy]+=1
+        pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+        @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbThis))
+      end
+      if attacker.pbPartner.effects[:FocusEnergy]<1
+        attacker.pbPartner.effects[:FocusEnergy]+=1
+        pbShowAnimation(@move,attacker.pbPartner,opponent,hitnum,alltargets,showanimation)
+        @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbPartner.pbThis))
+      end
+    elsif attacker.effects[:FocusEnergy]<2
       attacker.effects[:FocusEnergy]=2
       @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbThis))
     end
@@ -6868,6 +6887,8 @@ class PokeBattle_Move_0E0 < PokeBattle_Move
     type=@type
     if (@move == :SELFDESTRUCT)
       type = attacker.type1
+    elsif (@move == :EXPLOSION && @battle.FE == :CORROSIVEMIST)
+      type = :POISON
     end
     return super(attacker,type)
   end

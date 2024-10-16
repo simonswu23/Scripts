@@ -100,7 +100,7 @@
     - BP: 150
     - acc: 0
     - target: single target
-    - effect: paralyzes target
+    - effect: paralyzes all foes
 
 - Meowth
   - Typing: Normal/Steel
@@ -112,20 +112,20 @@
     - category: physical
     - BP: 110
     - acc: 0
-    - target: All Foes
+    - target: single target
     - effect: priority +2, follow me effect
 
 - Machamp
   - Typing: Fighting/Rock
-  - Ability: No GUard
+  - Ability: No Guard
   - Stats: 180, 150, 80, 45, 85, 55
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Chi Strike
+    - Type: Fighting 
+    - category: physical
+    - BP: 120
+    - acc: 0
+    - target: single target
+    - effect: raises all friendly CHR by 1
 
 - Gengar
   - Typing: Ghost/Dark
@@ -902,7 +902,7 @@
 
 - Aftermath
   - boosts explosion moves by x1.5 power
-  - user explodes after fainting to an attack
+  - user self-destructs (200 BP) after fainting to an attack
 
 - Normalize
   - x1.5 boost to all attacks
@@ -956,7 +956,8 @@
   - summons gravity while the user is active, foes who are lighter than the user cannot switch
 
 - Gravitational Flux
-  - summons gravity for 5 turns on entry, user is immune to gravity effects (is airborne, no evasion lowering, can use anti-gravity attacks) and inversely gains speed in gravity
+  - summons gravity for 5 turns on entry, user is immune to gravity effects (is airborne, no evasion lowering, can use anti-gravity attacks)
+  - doubles inversely gains speed in gravity
 
 - Power Surge
   - Skips the first time the user needs to charge or recharge. In electric terrain, x1.5 special attack and does not need to charge/recharge
@@ -1169,7 +1170,9 @@
 
 - Vanilluxe Core
   - Giga Core for Vanilluxe
-- 
+  
+- Emboar Crest
+  - Doubles Emboar's HP, all attacks scale with Emboar's remaining HP (x2 at full, x1 at half, etc.)
  
 ## Attacks
 
@@ -1566,6 +1569,8 @@
 
 - Cold Truth
   - second additional effect: inflicts frostbite 30% of the time
+
+
 
     
 ### New Attacks

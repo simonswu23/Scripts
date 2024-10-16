@@ -14258,6 +14258,20 @@ MOVEHASH = {
 	:kingrock => true,
 	:desc => "The user attacks targets by engulfing them in frozen swirls, which may leave them frostbitten."
 },
+
+:AFTERMATH => {
+	:ID => 261,
+	:name => "Self Destruct",
+	:function => 0x0E0,
+	:type => :NORMAL,
+	:category => :physical,
+	:basedamage => 200,
+	:accuracy => 100,
+	:maxpp => 1,
+	:target => :AllNonUsers,
+	:kingrock => true,
+	:desc => "called for Aftermath."
+},
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14621,6 +14635,22 @@ MOVEHASH = {
 	:target => :AllOpposing,
 	:kingrock => true,
 	:desc => "Vanilluxe"
+},
+
+:CHISTRIKE => {
+	:ID => 2024,
+	:name => "Chi Strike",
+	:function => 0x023,
+	:type => :FIGHTING,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:giga => true,
+	:target => :SingleOpposing,
+	:contact => true,
+	:effect => 100,
+	:desc => "Kung Fu"
 },
 
 }
