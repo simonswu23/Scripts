@@ -2573,8 +2573,8 @@ FIELDEFFECTS = {
 	:typeAddOns => {
 	},
 	:moveEffects => {
-		"@battle.field.counter += 1" => [:BLIZZARD, :SHEERCOLD, :COLDTRUTH],
-		"@battle.field.counter = 2" => [:ICEBURN, :FREEZESHOCK, :GLACIATE],
+		"@battle.field.counter += 1" => [:BLIZZARD, :SHEERCOLD],
+		"@battle.field.counter = 2" => [:ICEBURN, :FREEZESHOCK, :GLACIATE. :COLDTRUTH],
 	},
 	:typeBoosts => {
 		1.5 => [:DARK, :SHADOW],
@@ -2647,8 +2647,8 @@ FIELDEFFECTS = {
 	},
 	:moveEffects => {},
 	:typeBoosts => {
-		1.5 => [:ICE],
 		1.5 => [:DARK],
+		1.5 => [:ICE],
 		0.25 => [:FIRE],
 	},
 	:typeMessages => {

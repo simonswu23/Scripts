@@ -5903,7 +5903,8 @@ TEAMARRAY = [{
 	:ability => :WATERABSORB,
 	:gender => "F",
 	:nature => :BRAVE,
-	:iv => 20,
+	:iv => 31,
+	:ev => [252, 252, 0, 252, 4, 0],
 },
 {
 	:species => :SCIZOR,
@@ -5914,6 +5915,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252, 252, 0, 0, 4, 0],
 },
 {
 	:species => :SILVALLY,
@@ -5923,7 +5925,8 @@ TEAMARRAY = [{
 	:ability => :RKSSYSTEM,
 	:gender => "F",
 	:nature => :ADAMANT,
-	:iv => 29,
+	:iv => 31,
+	:ev => [0, 252, 0, 0, 4, 252],
 },
 {
 	:species => :CINDERACE,
@@ -5934,6 +5937,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :JOLLY,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 4, 252],
 },
 {
 	:species => :GRENINJA,
@@ -5944,6 +5948,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :NAIVE,
 	:iv => 31,
+	:ev => [0, 252, 0, 252, 4, 252],
 },
 {
 	:species => :CORVIKNIGHT,
@@ -5954,6 +5959,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252, 252, 252, 0, 4, 0],
 }]},
 
 # Secret Shore - Easy
@@ -12131,7 +12137,8 @@ TEAMARRAY = [{
 	:ability => :SWIFTSWIM,
 	:gender => "M",
 	:nature => :ADAMANT,
-	:iv => 25,
+	:iv => 31,
+	:ev => [0, 252, 0, 0, 4, 252],
 },
 {
 	:species => :LANTURN,
@@ -12140,8 +12147,9 @@ TEAMARRAY = [{
 	:moves => [:THUNDERBOLT,:WHIRLPOOL,:REST,:ICEBEAM],
 	:ability => :VOLTABSORB,
 	:gender => "F",
-	:nature => :MODEST,
-	:iv => 20,
+	:nature => :CALM,
+	:iv => 31,
+	:ev => [252, 0, 0, 252, 4, 0],
 },
 # {
 # 	:species => :BARRASKEWDA,
@@ -12162,6 +12170,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 4, 252],
 },
 {
 	:species => :WHISCASH,
@@ -12171,7 +12180,8 @@ TEAMARRAY = [{
 	:ability => :HYDRATION,
 	:gender => "M",
 	:nature => :ADAMANT,
-	:iv => 20,
+	:iv => 31,
+	:ev => [252, 252, 0, 0, 4, 0],
 },
 {
 	:species => :LAPRAS,
@@ -12181,7 +12191,8 @@ TEAMARRAY = [{
 	:ability => :HYDRATION,
 	:gender => "M",
 	:nature => :MODEST,
-	:iv => 20,
+	:iv => 31,
+	:ev => [252, 0, 252, 252, 4, 0],
 },
 {
 	:species => :PRIMARINA,
@@ -12192,6 +12203,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [252, 0, 0, 252, 4, 252],
 }]},
 {
 :teamid => ["Dexoy",:DNACLONE,0],
@@ -12527,6 +12539,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252, 252, 0, 0, 4, 0],
 	:happiness => 255,
 },
 {
@@ -12539,6 +12552,7 @@ TEAMARRAY = [{
 	:shiny => true,
 	:nature => :MODEST,
 	:iv => 31,
+	:ev => [252, 0, 252, 252, 252, 0],
 },
 {
 	:species => :MAROWAK,
@@ -12550,6 +12564,7 @@ TEAMARRAY = [{
 	:form => 1,
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252, 252, 0, 0, 4, 0],
 },
 {
 	:species => :GRIMMSNARL,
@@ -12560,6 +12575,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :IMPISH,
 	:iv => 31,
+	:ev => [252, 252, 0, 252, 0, 0],
 },
 {
 	:species => :KROOKODILE,
@@ -12570,6 +12586,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :JOLLY,
 	:iv => 25,
+	:ev => [0, 252, 0, 0, 4, 252],
 },
 {
 	:species => :GENGAR,
@@ -12581,6 +12598,7 @@ TEAMARRAY = [{
 	:shiny => true,
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [0, 0, 0, 252, 4, 252],
 }]},
 {
 :teamid => ["Demetra",:XENGRUNT_F,0],
@@ -13536,7 +13554,7 @@ TEAMARRAY = [{
 	0 => {
 		:setWeather => [:RAINDANCE,-1,"It's raining in the jungle!"],
 		:stateChanges => {
-		:WaterSport => [-1,:WATERSPORT,"Dampness seeps through..."], 
+			:WaterSport => [-1,:WATERSPORT,"Dampness seeps through..."], 
 		}
 	},
 },
@@ -13568,9 +13586,9 @@ TEAMARRAY = [{
 	:moves => [:MEGAHORN,:CLOSECOMBAT,:BARBEDWEB,:ROCKSLIDE],
 	:ability => :SWARM,
 	:gender => "F",
-	:nature => :ADAMANT,
+	:nature => :JOLLY,
 	:iv => 31,
-	:ev => [252, 252, 4, 0, 0, 0]},
+	:ev => [252, 252, 4, 0, 0, 252]},
 {
 	:species => :ARIADOS,
 	:level => 43,
@@ -13589,7 +13607,7 @@ TEAMARRAY = [{
 	:ability => :GLUTTONY,
 	:nature => :MODEST,
 	:iv => 31,
-	:ev => [252, 0, 4, 252, 0, 0]},
+	:ev => [252, 0, 4, 252, 252, 0]},
 {
 	:species => :PINSIR,
 	:level => 43,
@@ -13599,13 +13617,24 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
-	:ev => [252, 252, 4, 0, 0, 0]}]},
+	:ev => [252, 252, 4, 0, 0, 252]}]},
 {
 # change field effect here to forest
 :teamid => ["Crawli",:LEADER_CRAWLI,3],
 :ace => "You're our hope! Don't let us down!",
 :defeat => "And that's that.",
 :items => [:FLAPPLETITE],
+:trainereffect => { 
+	:effectmode => :Party,
+	:buffactivation => :Always,
+	0 => {
+		:fieldChange => [:FOREST,"CRAWLI: This one's a throwback!",0],
+		:setWeather => [:RAINDANCE,-1,"It's raining in the jungle!"],
+		:stateChanges => {
+			:WaterSport => [-1,:WATERSPORT,"Dampness seeps through..."], 
+		}
+	},
+},
 :mons => [
 {
 	:species => :ARAQUANID,
@@ -13628,6 +13657,16 @@ TEAMARRAY = [{
 	:iv => 31,
 	:ev => [0, 4, 0, 252, 0, 252]},
 {
+	:species => :ARIADOS,
+	:level => 43,
+	:item => :ARIACREST,
+	:moves => [:BARBEDWEB,:STOMPINGTANTRUM,:POISONJAB,:SUCKERPUNCH],
+	:ability => :SNIPER,
+	:gender => "M",
+	:nature => :ADAMANT,
+	:iv => 31,
+	:ev => [4, 252, 0, 0, 0, 252]},
+{
 	:species => :VESPIQUEN,
 	:level => 44,
 	:item => :VESPICREST,
@@ -13637,7 +13676,17 @@ TEAMARRAY = [{
 	:form => 1,
 	:nature => :ADAMANT,
 	:iv => 31,
-	:ev => [252, 252, 4, 0, 0, 0]},
+	:ev => [252, 252, 252, 252, 252, 252]},
+{
+:species => :HERACROSS,
+:level => 43,
+:item => :HERACRONITE,
+:moves => [:PINMISSILE,:ROCKBLAST,:BULLETSEED,:ARMTHRUST],
+:ability => :SWARM,
+:gender => "M",
+:nature => :ADAMANT,
+:iv => 31,
+:ev => [4, 252, 0, 0, 0, 252]},
 {
 	:species => :ARMALDO,
 	:level => 43,
@@ -13660,7 +13709,7 @@ TEAMARRAY = [{
 {
 	:species => :SCIZOR,
 	:level => 43,
-	:item => :SCIZORITE,
+	:item => :TELLURICSEED,
 	:moves => [:CLOSECOMBAT,:SWORDSDANCE,:BULLETPUNCH,:BARBEDWEB],
 	:ability => :TECHNICIAN,
 	:gender => "F",
@@ -17127,7 +17176,9 @@ TEAMARRAY = [{
 	:ability => :HYPERCUTTER,
 	:gender => "M",
 	:nature => :ADAMANT,
-	:iv => 20,
+	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
+
 },
 {
 	:species => :BARRASKEWDA,
@@ -17138,6 +17189,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
 },
 {
 	:species => :INTELEON,
@@ -17146,8 +17198,9 @@ TEAMARRAY = [{
 	:moves => [:HYDROPUMP,:ICEBEAM,:DARKPULSE,:SUCKERPUNCH],
 	:ability => :DRIZZLE,
 	:gender => "M",
-	:nature => :TIMID,
-	:iv => 20,
+	:nature => :RASH,
+	:iv => 31,
+	:ev => [0, 252, 0, 252, 0, 252],
 },
 {
 	:species => :DREDNAW,
@@ -17158,6 +17211,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
 },
 {
 	:species => :BLASTOISE,
@@ -17168,6 +17222,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [0, 0, 0, 252, 0, 252],
 },
 {
 	:species => :BASCULEGION,
@@ -17179,6 +17234,7 @@ TEAMARRAY = [{
 	:form => 3,
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
 }]},
 {
 :teamid => ["Neved",:XENEXECUTIVE_4,3],
@@ -17340,8 +17396,9 @@ TEAMARRAY = [{
 	:moves => [:DARKPULSE,:SLUDGEBOMB,:HEATWAVE,:SUCKERPUNCH],
 	:ability => :FLASHFIRE,
 	:gender => "F",
-	:nature => :TIMID,
+	:nature => :RASH,
 	:iv => 31,
+	:ev => [0,252,0,252,4,252],
 },
 {
 	:species => :CINCCINO,
@@ -17352,6 +17409,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :JOLLY,
 	:iv => 31,
+	:ev => [0,252,0,0,4,252],
 },
 {
 	:species => :VENUSAUR,
@@ -17362,6 +17420,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :MODEST,
 	:iv => 31,
+	:ev => [252,0,0,252,4,252],
 }]},
 {
 :teamid => ["Bartz",:XENGRUNT_M,0],
@@ -17376,6 +17435,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :MODEST,
 	:iv => 31,
+	:ev => [252,0,252,252,0,0],
 },
 {
 	:species => :SABLEYE,
@@ -17386,6 +17446,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :IMPISH,
 	:iv => 31,
+	:ev => [252,0,252,0,252,0],
 },
 {
 	:species => :HELIOLISK,
@@ -17396,6 +17457,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [0,0,0,252,4,252],
 }]},
 {
 :teamid => ["Madelis",:XENEXECUTIVE_2,6],
@@ -17488,6 +17550,7 @@ TEAMARRAY = [{
 	:nature => :MODEST,
 	:happiness => 255,
 	:iv => 31,
+	:ev => [252,0,0,252,4,0],
 },
 {
 	:species => :LOPUNNY,
@@ -17499,6 +17562,7 @@ TEAMARRAY = [{
 	:nature => :JOLLY,
 	:happiness => 255,
 	:iv => 31,
+	:ev => [0,252,0,0,4,252],
 },
 {
 	:species => :TYRANTRUM,
@@ -17510,6 +17574,7 @@ TEAMARRAY = [{
 	:nature => :ADAMANT,
 	:happiness => 255,
 	:iv => 31,
+	:ev => [0,252,0,0,4,252],
 },
 {
 	:species => :COALOSSAL,
@@ -17521,6 +17586,7 @@ TEAMARRAY = [{
 	:nature => :ADAMANT,
 	:happiness => 255,
 	:iv => 31,
+	:ev => [252,252,0,0,0,252],
 },
 {
 	:species => :KOMMOO,
@@ -17531,6 +17597,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :NAIVE,
 	:iv => 31,
+	:ev => [0,252,0,252,0,252],
 },
 {
 	:species => :KLINKLANG,
@@ -17542,6 +17609,7 @@ TEAMARRAY = [{
 	:happiness => 255,
 	:nature => :NAUGHTY,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 }]},
 {
 :teamid => ["Jenner",:SPIRITJENNER,0],
@@ -17630,6 +17698,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 },
 {
 	:species => :MAGEARNA,
@@ -17640,6 +17709,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 },
 {
 	:species => :MAGNEZONE,
@@ -17650,6 +17720,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :MODEST,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 },
 {
 	:species => :PROBOPASS,
@@ -17660,6 +17731,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 },
 {
 	:species => :MELMETAL,
@@ -17670,6 +17742,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 },
 {
 	:species => :METAGROSS,
@@ -17680,6 +17753,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 }]},
 {
 :teamid => ["Venam",:LEADER_VENAM,2],
@@ -17703,7 +17777,8 @@ TEAMARRAY = [{
 	:ability => :UNBURDEN,
 	:gender => "F",
 	:nature => :ADAMANT,
-	:iv => 20,
+	:iv => 31,
+	:ev => [0,252,0,0,0,252],
 },
 {
 	:species => :TOXTRICITY,
@@ -17713,8 +17788,10 @@ TEAMARRAY = [{
 	:ability => :PUNKROCK,
 	:gender => "F",
 	:form => 1,
-	:nature => :ADAMANT,
-	:iv => 20,
+	:nature => :TIMID,
+	:iv => 31,
+	:ev => [0,0,0,252,0,252],
+
 },
 {
 	:species => :GENGAR,
@@ -17723,8 +17800,9 @@ TEAMARRAY = [{
 	:moves => [:SELFDESTRUCT,:TAUNT,:SHADOWBALL,:SLUDGEWAVE],
 	:ability => :CURSEDBODY,
 	:gender => "F",
-	:nature => :JOLLY,
-	:iv => 20,
+	:nature => :TIMID,
+	:iv => 31,
+	:ev => [0,0,0,252,0,252],
 },
 {
 	:species => :TOXAPEX,
@@ -17735,6 +17813,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :BRAVE,
 	:iv => 31,
+	:ev => [252,0,252,0,252,0],
 },
 {
 	:species => :SEVIPER,
@@ -17745,6 +17824,7 @@ TEAMARRAY = [{
 	:gender => "M",
 	:nature => :NAUGHTY,
 	:iv => 31,
+	:ev => [252,252,252,252,252,252],
 }]},
 {
 :teamid => ["Aelita",:STUDENT,1],
@@ -19730,6 +19810,65 @@ TEAMARRAY = [{
 :ace => "You push me this far...? I can't... It's too hot... It's too hot...",
 :defeat => "No! I won't accept this! I refuse... to lose to you!",
 :items => [:HYPERPOTION,:ULTRAPOTION,:VANILLUXITE],
+:trainereffect => { 
+	:effectmode => :Fainted, #effect mode switches how the effects are applied (:Party = on party index; :Fainted = first sendout after this number of pokemon are fainted)
+	:buffactivation => :Limited, #:Always => effects will activate on every send in that matches the criteria; :Limited each effect only activates on the first time
+	:doubleFaintHandler => {
+		1 => 2,
+		2 => 1,
+		3 => 4,
+		4 => 3,
+		5 => 6,
+		6 => 5,
+	},
+	1 => {
+		:friendlyEffect => true,
+		:opposingsideChanges => {	
+			:Tailwind => [4,:TAILWIND, "Melia: Hapi, help out and use Tailwind!"],
+		},
+		:trainersideChanges => {	
+			:ToxicSpikes => [1,:TOXICSPIKES,"VENAM: take that you frozen BITCH!"],
+		},
+	},
+	2 => {
+		:friendlyEffect => true,
+		:opposingsideChanges => {	
+			:Tailwind => [4,:TAILWIND, "Melia: Hapi, help out and use Tailwind!"],
+		},
+		:trainersideChanges => {	
+			:ToxicSpikes => [1,:TOXICSPIKES,"VENAM: take that you frozen BITCH!"],
+		},
+	},
+	3 => {
+		:friendlyEffect => true,
+		:message => "CRAWLI: Let's warm this place up, Volcarona!", 
+		:setWeather => [:SUNNYDAY, 5],
+		# @SWu check switch, disable if player does not free Kreiss
+		:opposingsideChanges => {	
+			:AuroraVeil => [5,:AURORAVEIL, "Kreiss: Dear Frosslass, Aurora Veil!!"],
+		},
+	},
+	4 => {
+		:friendlyEffect => true,
+		:message => "CRAWLI: Let's warm this place up, Volcarona!", 
+		:setWeather => [:SUNNYDAY, 5],
+		:opposingsideChanges => {	
+			:AuroraVeil => [5,:AURORAVEIL, "Kreiss: Dear Frosslass, Aurora Veil!!"],
+		},
+	},
+	5 => {
+		:message => "ANGIE: It's not over, I have MORE!",
+		:pokemonEffect => {
+			:Torment => [true,:TORMENT,"Angie's hate subjected {2} to Torment!"],
+		},
+	},
+	6 => {
+		:message => "ANGIE: It's not over, I have MORE!",
+		:pokemonEffect => {
+			:Torment => [true,:TORMENT,"Angie's hate subjected {2} to Torment!"],
+		},
+	},
+},
 :mons => [{
 	:species => :JYNX,
 	:level => 47,
@@ -19739,6 +19878,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [0, 0, 0, 252, 0, 252],
 },
 {
 	:species => :ARCTOVISH,
@@ -19748,47 +19888,73 @@ TEAMARRAY = [{
 	:ability => :SLUSHRUSH,
 	:nature => :MODEST,
 	:iv => 31,
+	:ev => [0, 0, 0, 252, 0, 252],
 },
 {
 	:species => :MAMOSWINE,
 	:level => 49,
-	:item => :ICIUMZ,
-	:moves => [:EARTHQUAKE,:ROCKSLIDE,:ICICLECRASH,:SLEIGHRIDE],
+	:item => :LIFEORB,
+	:moves => [:STOMPINGTANTRUM,:ROCKSLIDE,:ICICLECRASH,:SLEIGHRIDE],
 	:ability => :SLUSHRUSH,
 	:gender => "M",
 	:nature => :ADAMANT,
 	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
+},
+{
+	:species => :WEAVILE,
+	:level => 49,
+	:item => :ICIUMZ,
+	:moves => [:ICICLECRASH,:FAKEOUT,:KNOCKOFF,:BRICKBREAK],
+	:ability => :PRESSURE,
+	:gender => "M",
+	:nature => :JOLLY,
+	:iv => 31,
+	:ev => [0, 252, 0, 0, 0, 252],
 },
 {
 	:species => :ARTICUNO,
 	:level => 48,
 	:item => :BRIGHTPOWDER,
-	:moves => [:COLDTRUTH,:ROOST,:FREEZEDRY,:TAILWIND],
+	:moves => [:COLDTRUTH,:ROOST,:FREEZEDRY,:SQUALL],
 	:ability => :SNOWCLOAK,
 	:form => 3,
 	:nature => :TIMID,
 	:iv => 31,
+	:ev => [252, 0, 0, 0, 252, 0],
 },
 {
 	:species => :ABOMASNOW,
 	:level => 49,
 	:item => :ABOMASITE,
-	:moves => [:ICESHARD,:BLIZZARD,:EARTHQUAKE,:WOODHAMMER],
+	:moves => [:SLEIGHRIDE,:BLIZZARD,:STOMPINGTANTRUM,:WOODHAMMER],
 	:ability => :SNOWWARNING,
 	:gender => "M",
 	:nature => :BRAVE,
 	:iv => 31,
+	:ev => [252, 252, 0, 252, 0, 0],
 },
+# {
+# 	:species => :VANILLUXE,
+# 	:level => 50,
+# 	:item => :BRIGHTPOWDER,
+# 	:moves => [:SUNDAE,:BLIZZARD,:AURORAVEIL,:GLACIATE],
+# 	:ability => :SNOWWARNING,
+# 	:gender => "M",
+# 	:nature => :MODEST,
+# 	:iv => 31,
+# 	:ev => [248, 8, 0, 252, 0, 0]},
 {
-	:species => :VANILLUXE,
-	:level => 50,
-	:item => :VANILLUXECREST,
-	:moves => [:SUNDAE,:BLIZZARD,:AURORAVEIL,:GLACIATE],
-	:ability => :SNOWWARNING,
-	:gender => "M",
-	:nature => :MODEST,
-	:iv => 31,
-	:ev => [248, 8, 0, 252, 0, 0]}]},
+:species => :WALREIN,
+:level => 50,
+:item => :ASSAULTVEST,
+:moves => [:CHILLINGWATER,:COLDTRUTH,:CRUNCH,:STOMPINGTANTRUM],
+:ability => :ICEBODY,
+:gender => "M",
+:nature => :QUIET,
+:iv => 31,
+:ev => [252, 252, 252, 252, 252, 0]
+}]},
 {
 :teamid => ["Anju",:ICEHEIRESS,0],
 :ace => "Why?! Why!?",
@@ -31218,8 +31384,8 @@ TEAMARRAY = [{
 :defeat => "...And it's done. Bravo! You are truly the better trainer!",
 :items => [:BUTTERFREENITE],
 :trainereffect => { 
-	:effectmode => :Party,
-	:buffactivation => :Always,
+	:effectmode => :Fainted,
+	:buffactivation => :Limited,
 	0 => {
 		:trainersideChanges => {
 			:TAILWIND => [8,:TAILWIND,"A gust of wind blows from {1}'s side of the field!"],

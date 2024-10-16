@@ -843,6 +843,8 @@ class PokeBattle_Move_901 < PokeBattle_Move
       @battle.pbAnimation(:HEX,attacker,opponent,hitnum)
     elsif id == :FLURRY || id == :SUNDAE
       @battle.pbAnimation(:POWDERSNOW,attacker,opponent,hitnum)
+    elsif id == :SQUALL
+      @battle.pbAnimation(:GUST,attacker,opponent,hitnum)
     elsif id == :CHILLINGWATER
       @battle.pbAnimation(:DELUGE,attacker,opponent,hitnum)
     else

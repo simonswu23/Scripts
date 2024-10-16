@@ -204,13 +204,13 @@
   - Typing: Ice/Flying
   - Ability: Snow Cloak
   - Stats: 142, 95, 85, 110, 95, 79
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Flash Freeze
+    - Type: Flying
+    - category: special
+    - BP: 120
+    - acc: 0
+    - target: all foes
+    - effect: 30% chance to freeze targets
 
 - Melmetal
   - Typing: Steel/Poison
@@ -452,17 +452,6 @@
     - target:
     - effect:
   
-- Vanilluxe
-  - Typing: Ice/Flying
-  - Ability: Snow Cloak
-  - Stats: 142, 95, 85, 110, 95, 79
-  - Giga Move: Squall
-    - Type: Flying
-    - category: special
-    - BP: 120
-    - acc: 0
-    - target: all foes
-    - effect: 30% chance to freeze targets
 
 
 ### Pokemon Changes
@@ -470,7 +459,16 @@
 - Meganium line
   - added Fairy typing
   - base stat buffs: 80, 82, 110, 83, 110, 80
-  - ability: Leaf Guard -> Magic Guard for Chikorita, Bayleef, Meganium
+  - ability: Leaf Guard -> Magic Guard
+  - extra ability: Pastel Veil
+  - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
+
+- Inteleon line
+  - extra ability: Drizzle
+
+- Empoleon Line
+  - ability: Defiant -> Competitive
+  - extra ability: Swift Swim
   - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
     
 - Serperior
@@ -510,6 +508,7 @@
 - Vanilluxe Line
   - learns Flurry at level 24
   - learns Sundae upon evloving into Vanilluxe
+  - Vanilluxe learns Squall at level 73
   - Vanilluxe learns Glaciate at level 80
  
 - Toxapex
@@ -730,7 +729,7 @@
   - Learn Skill Swap by TM
 
 - Oranguru
-  - Reshuffled learnset order (so Trick Room is accessible before Crawli)
+  - Trick Room added to Egg Moves
 
 ### New Pokemon
 - Alpha Larvesta
@@ -1167,6 +1166,10 @@
   - attack form gives Klinklang x1.5 to offenses + extra attack and special attack boost to gear shift moves, speed for grants x2 speed and extra speed boost to gear shift moves
   - Gear Grind never misses
   - applies Magnet Rise to Klinklang
+
+- Vanilluxe Core
+  - Giga Core for Vanilluxe
+- 
  
 ## Attacks
 
@@ -1561,6 +1564,8 @@
 - Crabhammer
   - 30% chance to raise user's attack by 1
 
+- Cold Truth
+  - second additional effect: inflicts frostbite 30% of the time
 
     
 ### New Attacks
@@ -1794,6 +1799,14 @@
 - Last Respects
   - (untested)
 
+- Squall
+  - Flying
+  - Special
+  - BP: 80
+  - acc: 100
+  - Single Target
+  - 20% chance to inflict frostbite, +1 priority in the hail
+
 # Field Effect Updates
 - Snowy Mountain
   - Centiferno transforms into Cave
@@ -1808,6 +1821,9 @@
 
 - Mountain 
   - Southern Wind, Heavenly Wing transforms into Sky
+
+- Dimensional 
+  - Cold Truth (single use) transforms into Frozen Dimensional
 
 - Frozen Dimensional 
   - x1.5 buff to Ice moves
@@ -1853,6 +1869,11 @@
 - Ren (Helojak Factory)
 - Crawli (Gym)
 - Venam x Saki (Terajuma Beach)
+- Amber x Venam at Teila (13.5)
+- Jenner in Aquamarine
+- Madelis in Aquamarine
+- Neved in Teila (double check)
+- Angie
 - Crawli (Jynobi)
 - Melanie
 - Melia (League Administration)
@@ -1860,11 +1881,7 @@
 - Angie + Cera (Diamond Route)
 - Geara (Axis Factory)
 - Saki (Gym)
-- Amber x Venam at Teila (13.5)
-- Jenner in Aquamarine
-- Madelis in Aquamarine
-- Neved in Teila (double check)
-- Angie
+
 - Talon (Rooftop)
 - Xara and Jean (Spirits)
 - Hazuki (Nightmare)

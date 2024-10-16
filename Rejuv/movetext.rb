@@ -14243,6 +14243,21 @@ MOVEHASH = {
 	:kingrock => true,
 	:desc => "Basculegion / Houndstone"
 },
+
+:SQUALL => {
+	:ID => 928,
+	:name => "Squall",
+	:function => 0x901,
+	:type => :FLYING,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 100,
+	:maxpp => 10,
+	:effect => 20,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:desc => "The user attacks targets by engulfing them in frozen swirls, which may leave them frostbitten."
+},
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14593,11 +14608,11 @@ MOVEHASH = {
 	:desc => "The user sends molten rocks at the targets. The debris left behind by this attack floats around the target."
 },
 
-:SQUALL => {
-	:ID => 903,
-	:name => "Squall",
+:FLASHFREEZE => {
+	:ID => 2023,
+	:name => "Flash Freeze",
 	:function => 0x00C,
-	:type => :FLYING,
+	:type => :ICE,
 	:category => :special,
 	:basedamage => 120,
 	:accuracy => 0,

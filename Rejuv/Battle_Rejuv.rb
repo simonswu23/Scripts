@@ -224,6 +224,7 @@
     return if trainer.trainereffect[:effectmode].nil?
     if !delay
       trainer.trainereffectused = [] if !trainer.trainereffectused && trainer.trainereffect[:buffactivation] == :Limited
+      trainer.idsUsed = [] if !trainer.idsUsed
       if trainer.trainereffect[:effectmode] == :Party
         monindex = monindex-6 if monindex > 5 && @opponent.is_a?(Array)
         trainereffect = trainer.trainereffect[monindex]
@@ -232,11 +233,20 @@
           trainer.trainereffectused.push(monindex)
         end
       # on god if someone tries to use Fainted effect mode on a Multibattle heads will roll
+      # Whoops ~SWu
       elsif trainer.trainereffect[:effectmode] == :Fainted
         trainereffect = trainer.trainereffect[pkmn.pbFaintedPokemonCount]
         if trainer.trainereffect[:buffactivation] == :Limited
           return if trainer.trainereffectused.include?(pkmn.pbFaintedPokemonCount)
           trainer.trainereffectused.push(pkmn.pbFaintedPokemonCount)
+
+          if (trainer.trainereffect[:doubleFaintHandler])
+            complement = trainer.trainereffect[:doubleFaintHandler][pkmn.pbFaintedPokemonCount]
+            return if trainer.idsUsed.include?(complement)
+            return if trainer.idsUsed.include?(pkmn.pbFaintedPokemonCount)
+            trainer.idsUsed.push(complement)
+            trainer.idsUsed.push(pkmn.pbFaintedPokemonCount)
+          end          
         end
       end
     else
@@ -250,19 +260,24 @@
         showtrainer = true
       end
     else
-      if @opponent == trainer
-        @scene.pbShowOpponent(0)
-        showtrainer = true
+      # @SWu only works for fainted for now (can probably add Party logic later)
+      if @opponent == trainer && !trainereffect[:friendlyEffect]
+          @scene.pbShowOpponent(0)
+          showtrainer = true
       end
     end
     if trainereffect[:message] && trainereffect[:message] != ""
       pbDisplayPaused(_INTL(trainereffect[:message]))
     end
+    anim = pkmn
+    if (trainereffect[:friendlyEffect])
+      anim = pkmn.pbOpposing1
+    end
     if trainereffect[:animation]
-      pbAnimation(trainereffect[:animation],pkmn,nil)
+      pbAnimation(trainereffect[:animation],anim,nil)
     end
     if trainereffect[:fieldChange] && trainereffect[:fieldChange][0] != @field.effect
-      pbAnimation(:MAGICROOM,pkmn,nil)
+      pbAnimation(:MAGICROOM,anim,nil)
       setField(trainereffect[:fieldChange][0],trainereffect[:fieldChange][2])
       fieldmessage = (trainereffect[:fieldChange][1] != "") ? trainereffect[:fieldChange][1] : "The field was changed!"
       pbDisplay(_INTL("{1}",fieldmessage))
@@ -295,41 +310,43 @@
     end
     trainereffect[:pokemonEffect].each_pair {|effect,effectval|
       pkmn.effects[effect] = effectval[0]
-      pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+      pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
       effectmessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
       pbDisplay(_INTL(effectmessage,trainer.name,pkmn.pbThis(true)))
     } if trainereffect[:pokemonEffect]
     trainereffect[:opposingEffects].each_pair {|effect,effectval|
       if !pkmn.pbOpposing1.isFainted?
         pkmn.pbOpposing1.effects[effect] = effectval[0]
-        pbAnimation(effectval[1],pkmn.pbOpposing1,nil) if !effectval[1].nil?
+        pbAnimation(effectval[1],anim.pbOpposing1,nil) if !effectval[1].nil?
       end
       if !pkmn.pbOpposing2.isFainted?
         pkmn.pbOpposing2.effects[effect] = effectval[0]
-        pbAnimation(effectval[1],pkmn.pbOpposing2,nil) if !effectval[1].nil?
+        pbAnimation(effectval[1],anim.pbOpposing2,nil) if !effectval[1].nil?
       end
       effectmessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
       pbDisplay(_INTL(effectmessage,trainer.name,pkmn.pbThis(true)))
     } if trainereffect[:opposingEffects]
     trainereffect[:stateChanges].each_pair {|effect,effectval|
       @battle.state.effects[effect] = effectval[0]
-      pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+      pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
       statemessage = effectval[2] != "" ? effectval[2] : "The state of the battle was changed!"
       pbDisplay(_INTL(statemessage,trainer.name))
     } if trainereffect[:stateChanges]
     side = pkmn.pbOwnSide
     trainereffect[:trainersideChanges].each_pair {|effect,effectval|
       side.effects[effect] = effectval[0]
-      pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+      pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
       statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
       pbDisplay(_INTL(statemessage,trainer.name))
     } if trainereffect[:trainersideChanges]
     side = pkmn.pbOpposingSide
     trainereffect[:opposingsideChanges].each_pair {|effect,effectval|
       side.effects[effect] = effectval[0]
-      pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
-      statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
-      pbDisplay(_INTL(statemessage,trainer.name))
+      pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
+      if effectval[2] != nil
+        statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
+        pbDisplay(_INTL(statemessage,trainer.name))
+      end
     } if trainereffect[:opposingsideChanges]
     trainereffect[:pokemonStatChanges].each_pair {|stat,statval|
       statval *= -1 if pkmn.ability == :CONTRARY
@@ -826,4 +843,5 @@ class PokeBattle_Trainer
   attr_accessor :trainerdelayedeffect
   attr_accessor :trainerdelaycounter
   attr_accessor :tempPartyStorage
+  attr_accessor :idsUsed
 end
