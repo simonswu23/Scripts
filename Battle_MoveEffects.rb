@@ -3778,7 +3778,6 @@ class PokeBattle_Move_078 < PokeBattle_Move
   end
 
   def pbAdditionalEffect(attacker,opponent)
-    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if opponent.damagestate.calcdamage>0 && !opponent.damagestate.substitute &&
        !opponent.effects[:Roost] && !(opponent.ability == :GRAVFLUX && @battle.state.effects[:Gravity] != 0)
       opponent.effects[:SmackDown]=true
@@ -3797,8 +3796,9 @@ class PokeBattle_Move_078 < PokeBattle_Move
         opponent.effects[:Telekinesis]=0; showmsg=true
       end
       @battle.pbDisplay(_INTL("{1} fell out of the sky!",opponent.pbThis)) if showmsg
+      return true
     end
-    return ret
+    return false
   end
 end
 

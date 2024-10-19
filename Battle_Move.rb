@@ -2593,10 +2593,10 @@ class PokeBattle_Move
     end
 
     if @zmove || @giga
-      if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] || 
+      if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] == :Protect || 
         opponent.effects[:KingsShield] || opponent.effects[:Obstruct] ||
-        opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] || opponent.effects[:Parry]
-        opponent.pbOwnSide.effects[:WideGuard] && (@target == :AllOpposing || @target == :AllNonUsers))
+        opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] || opponent.effects[:Parry] ||
+        (opponent.pbOwnSide.effects[:WideGuard] && (@target == :AllOpposing || @target == :AllNonUsers)))
         if @move ==:UNLEASHEDPOWER
           @battle.pbDisplay(_INTL("The Interceptor's power broke through {1}'s Protect!",opponent.pbThis))
         elsif !opponent.effects[:ProtectNegation]
@@ -2605,6 +2605,7 @@ class PokeBattle_Move
         end
       end
     end
+
     finalmult=pbModifyDamage(finalmult,attacker,opponent)
     ##### Main damage calculation #####
     basedmg*=basemult

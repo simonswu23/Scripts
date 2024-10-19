@@ -14260,7 +14260,7 @@ MOVEHASH = {
 },
 
 :AFTERMATH => {
-	:ID => 261,
+	:ID => 929,
 	:name => "Self Destruct",
 	:function => 0x0E0,
 	:type => :NORMAL,
@@ -14271,6 +14271,19 @@ MOVEHASH = {
 	:target => :AllNonUsers,
 	:kingrock => true,
 	:desc => "called for Aftermath."
+},
+
+:CROSSDRAFT => {
+	:ID => 930,
+	:name => "Cross Draft",
+	:function => 0x000,
+	:type => :FLYING,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 100,
+	:maxpp => 16,
+	:target => :AllOpposing,
+	:desc => "No additional effect (for now), consider 30% chance to blow away target's held item?" 
 },
 # ====================== GIGA MOVES ============================ #
 
