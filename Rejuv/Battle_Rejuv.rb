@@ -76,8 +76,9 @@
       pbAnimation(:AQUARING,@battlers[index],nil) # Aqua Ring animation
     when :VESPIQUEN
       @battlers[index].effects[:VespiCrest] = true
-      @battlers[index].pbIncreaseStatBasic(PBStats::ATTACK,1)  
-      @battlers[index].pbIncreaseStatBasic(PBStats::SPATK,1)  
+      pbDisplay(_INTL("{1}'s hive took offensive formation!",@battlers[index].pbThis))
+      @battlers[index].pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false, statmessage:true)  
+      @battlers[index].pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false, statmessage:true)  
     when :ZANGOOSE
       if @battlers[index].status!=:POISON
         @battlers[index].status=:POISON
