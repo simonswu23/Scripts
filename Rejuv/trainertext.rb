@@ -13656,8 +13656,8 @@ TEAMARRAY = [{
 :mons => [
 {
 	:species => :ARAQUANID,
-	:level => 45,
-	:item => :TELLURICSEED,
+	:level => 55,
+	:item => :WATERIUMZ,
 	:moves => [:LIQUIDATION,:STRUGGLEBUG,:NATUREPOWER,:BARBEDWEB],
 	:ability => :WATERBUBBLE,
 	:gender => "M",
@@ -13666,7 +13666,7 @@ TEAMARRAY = [{
 	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :GALVANTULA,
-	:level => 44,
+	:level => 53,
 	:item => :FOCUSSASH,
 	:moves => [:BARBEDWEB,:GIGADRAIN,:THUNDER,:BUGBUZZ],
 	:ability => :COMPOUNDEYES,
@@ -13676,7 +13676,7 @@ TEAMARRAY = [{
 	:ev => [0, 4, 0, 252, 0, 252]},
 {
 	:species => :ARIADOS,
-	:level => 43,
+	:level => 53,
 	:item => :ARIACREST,
 	:moves => [:BARBEDWEB,:STOMPINGTANTRUM,:POISONJAB,:SUCKERPUNCH],
 	:ability => :SNIPER,
@@ -13686,7 +13686,7 @@ TEAMARRAY = [{
 	:ev => [4, 252, 0, 0, 0, 252]},
 {
 	:species => :VESPIQUEN,
-	:level => 44,
+	:level => 55,
 	:item => :VESPICREST,
 	:moves => [:ATTACKORDER,:DEFENDORDER,:AIRSLASH,:RAINDANCE],
 	:ability => :HIVEQUEEN,
@@ -13697,7 +13697,7 @@ TEAMARRAY = [{
 	:ev => [252, 252, 252, 252, 252, 252]},
 {
 :species => :HERACROSS,
-:level => 43,
+:level => 54,
 :item => :HERACRONITE,
 :moves => [:PINMISSILE,:ROCKBLAST,:BULLETSEED,:ARMTHRUST],
 :ability => :SWARM,
@@ -13707,7 +13707,7 @@ TEAMARRAY = [{
 :ev => [4, 252, 0, 0, 0, 252]},
 {
 	:species => :ARMALDO,
-	:level => 43,
+	:level => 53,
 	:item => :TELLURICSEED,
 	:moves => [:ROCKSLIDE,:SWORDSDANCE,:BARBEDWEB,:AQUAJET],
 	:ability => :SWIFTSWIM,
@@ -13717,16 +13717,16 @@ TEAMARRAY = [{
 	:ev => [4, 252, 0, 0, 0, 252]},
 {
 	:species => :FLAPPLE,
-	:level => 44,
+	:level => 54,
 	:item => :TELLURICSEED,
 	:moves => [:ACROBATICS,:GRAVAPPLE,:DRAGONDANCE,:BREAKINGSWIPE],
 	:ability => :HUSTLE,
 	:nature => :JOLLY,
 	:iv => 31,
-	:ev => [0, 252, 4, 0, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :SCIZOR,
-	:level => 43,
+	:level => 53,
 	:item => :TELLURICSEED,
 	:moves => [:CLOSECOMBAT,:SWORDSDANCE,:BULLETPUNCH,:BARBEDWEB],
 	:ability => :TECHNICIAN,
@@ -19934,7 +19934,7 @@ TEAMARRAY = [{
 	:species => :ARTICUNO,
 	:level => 48,
 	:item => :BRIGHTPOWDER,
-	:moves => [:COLDTRUTH,:ROOST,:FREEZEDRY,:SQUALL],
+	:moves => [:COLDTRUTH,:ROOST,:FREEZEDRY,:AIRSLASH],
 	:ability => :SNOWCLOAK,
 	:form => 3,
 	:nature => :TIMID,

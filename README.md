@@ -5,7 +5,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5.6
 - The mod may be loaded from any map
 - To install this mod, replace the "Scripts" folder in the base game with this Scripts folder in the same directory
 - Warning: save data from this mod will not be backwards compatible with the base version of Rejuvenation. We ***strongly*** recommend you download a new copy of Rejuvenation if you want to use this mod. It's always a good idea to backup your save folder and/or an old copy of your scripts folder before installing this mod.
-- Please choose *Classic Mode*, **not** *Story Mode*
+- Please choose *Classic Mode*, **not** *Story Mode*  
 - Upon loading in, please use the following passwords (mandatory):
   - stopitems
   - noitems
