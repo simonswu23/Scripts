@@ -20,7 +20,7 @@ Difficulty Mod for Pokemon Rejuvenation v13.5.6
   - unrealtime
   - freeexpall
   - easyhms
-- Once installed, you will need to "Compile All Data" using debug mode
+- Once installed, you will need to "Compile All Data" using debug mode (note that this will not work in the intro sequence)
 
 # Features
 - **new** Giga Evolution!

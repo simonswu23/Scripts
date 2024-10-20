@@ -1929,6 +1929,8 @@
 
 - Smart Damage Category double-check
 
+- Should update some PBStuff (Metronome, Assist, etc.)
+
 - Dragon Darts Targeting
   - Heatproof
   - Lunar Idol

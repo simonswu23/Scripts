@@ -1128,6 +1128,31 @@ def Kernel.pbReceiveItem(*args)
   return ret
 end
 
+def Kernel.pbIntroItems()
+  for plate in PBStuff::PLATEITEMS
+    Kernel.pbReceiveItem(plate, 3)
+  end
+  for stone in PBStuff::EVOSTONES
+    Kernel.pbReceiveItem(stone, 10)
+  end
+  for mint in PBStuff::MINTS
+    Kernel.pbReceiveItem(mint, 99)
+  end
+  for shard in PBStuff::SHARDS
+    Kernel.pbReceiveItem(shard, 99)
+  end
+  for seed in PBStuff::SEEDS
+    Kernel.pbReceiveItem(seed, 10)
+  end
+  Kernel.pbReceiveItem(:EXPCANDYXL, 999)
+  Kernel.pbReceiveItem(:HEARTSCALE, 999)
+  Kernel.pbReceiveItem(:MASTERBALL, 999)
+  Kernel.pbReceiveItem(:FULLRESTORE, 999)
+  Kernel.pbReceiveItem(:SITRUSBERRY, 999, "Sitrus Berries")
+  Kernel.pbReceiveItem(:REVIVE, 999)
+  Kernel.pbReceiveItem(:FOCUSSASH, 3)
+end
+
 class PBStuff
   ABILITYBLACKLIST = [:MULTITYPE,:COMATOSE,:DISGUISE,:SCHOOLING, 
     :RKSSYSTEM,:IMPOSTER,:SHIELDSDOWN,:POWEROFALCHEMY,:RECEIVER,:TRACE,:FORECAST,:FLOWERGIFT,
