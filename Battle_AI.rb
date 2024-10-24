@@ -7211,6 +7211,7 @@ class PokeBattle_AI
 			pri += 1 if battler.ability == :GALEWINGS && battlermove.type==:FLYING && ((true) || @battle.FE == :SKY || ((@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP) && @battle.pbWeather == :STRONGWINDS))
 			pri += 1 if @battle.FE == :CHESS && battler.pokemon && battler.pokemon.piece == :KING
 			pri += 1 if battlermove.move == :GRASSYGLIDE && (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0)
+			pri += 1 if battlermove.move == :POWERSURGE && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0)
 			pri += 3 if battler.ability == :TRIAGE && (PBStuff::HEALFUNCTIONS).include?(battlermove.function)
 			pri -= 1 if @battle.FE == :DEEPEARTH && battlermove.move == :COREENFORCER
 			priorityarray[index][0] = pri
@@ -11829,7 +11830,7 @@ class PokeBattle_AI
 	end
 
 	def ignitecheck
-		return @battle.state.effects[:WaterSport] <= 0 && @battle.pbWeather != :RAINDANCE
+		return @battle.state.effects[:WaterSport] == 0 && @battle.pbWeather != :RAINDANCE
 	end
 
 	def suncheck;	end

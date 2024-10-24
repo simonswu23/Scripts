@@ -138,7 +138,6 @@ class PokeBattle_Move_203 < PokeBattle_Move
       end
       pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
       attacker.pbOwnSide.effects[:AreniteWall]=5
-      attacker.pbOwnSide.effects[:AreniteWall]=8 if attacker.hasWorkingItem(:LIGHTCLAY) || attacker.crested == :MEGANIUMc
       attacker.pbOwnSide.effects[:AreniteWall]=8 if [:DESERT,:ROCKY,:ASHENBEACH].include?(@battle.FE)
       if !@battle.pbIsOpposing?(attacker.index)
         @battle.pbDisplay(_INTL("A wall is protecting your team!"))
@@ -974,6 +973,10 @@ class PokeBattle_Move_903 < PokeBattle_Move
   end
 end
 
+def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+  return if !showanimation
+  @battle.pbAnimation(:DRAININGKISS,attacker,opponent,hitnum)
+end
 
 ################################################################################
 # Dark Delirium
@@ -1518,7 +1521,6 @@ class PokeBattle_Move_90E< PokeBattle_Move
     return if !showanimation
     @battle.pbAnimation(:MEMENTO,attacker,opponent,hitnum)
   end
-
 end
 
 # ====================== BEGIN GIGA MOVES ============================= #
@@ -1647,4 +1649,5 @@ class PokeBattle_Move_1101 < PokeBattle_Move
     return 0
   end
 end
+
 

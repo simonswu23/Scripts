@@ -248,10 +248,17 @@ class PokeBattle_Battle
     #### DemICE
   end
 
-  def setField(fieldeffect,temp=0, add_on: false)
+  def setField(fieldeffect,temp=0,inc= 0,add_on: false)
     return if @field.effect == fieldeffect
     if Rejuv && [:ELECTERRAIN,:GRASSY,:MISTY,:PSYTERRAIN].include?(fieldeffect) && temp > 0 && @field.effect != :INDOOR
-      @state.effects[fieldeffect] = temp
+      @state.effects[fieldeffect] = temp if temp > 0
+      @state.effects[fieldeffect] += inc
+      # get rid of all other terrains
+      for terrain in [:ELECTERRAIN,:GRASSY,:MISTY,:PSYTERRAIN]
+        if (terrain != fieldeffect)
+          @state.effects[terrain] = 0
+        end
+      end
       quarkdriveCheck
       return
     end

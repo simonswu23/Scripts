@@ -380,7 +380,7 @@ MONHASH = {
 
 	"Giga Form" => {
 		:Type1 => :FIRE,
-		:BaseStats => [156, 54, 78, 159, 85, 80],
+		:BaseStats => [156, 84, 78, 159, 85, 50],
 		:Abilities => [:SOLARPOWER],
 		:Height => 280,
 		:Weight => 2216,
@@ -10632,7 +10632,7 @@ MONHASH = {
 		:Type2 => :FAIRY,
 		:BaseStats => [80, 82, 110, 83, 110, 80],
 		:EVs => [0, 0, 1, 0, 2, 0],
-		:Abilities => [:OVERGROW, :MAGICGUARD,:PASTELVEIL],
+		:Abilities => [:OVERGROW, :PASTELVEIL],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :FemEighth,
 		:BaseEXP => 236,
@@ -11050,7 +11050,8 @@ MONHASH = {
 			[58,:THRASH],
 			[63,:AQUATAIL],
 			[71,:SUPERPOWER],
-			[76,:HYDROPUMP]],
+			[76,:HYDROPUMP],
+			[85,:FISHIOUSREND]],
 		:compatiblemoves => [:AGILITY,:AVALANCHE,:AERIALACE,:ANCIENTPOWER,:AQUATAIL,:BODYSLAM,:BLIZZARD,:BLOCK,:BRICKBREAK,:BULLDOZE,:COUNTER,:CRUNCH,:CURSE,:CUT,:DETECT,:DIG,:DIVE,:DRAGONCLAW,:DRAGONDANCE,:DRAGONPULSE,:DRAGONTAIL,:DOUBLEEDGE,:DYNAMICPUNCH,:EARTHQUAKE,:FLING,:FLIPTURN,:FOCUSBLAST,:FOCUSPUNCH,:FURYCUTTER,:GIGAIMPACT,:HAIL,:HEADBUTT,:HONECLAWS,:HYDROCANNON,:HYDROPUMP,:HYPERBEAM,:ICEBEAM,:ICEPUNCH,:ICYWIND,:IRONTAIL,:LIQUIDATION,:LOWKICK,:MEGAPUNCH,:MEGAKICK,:MIMIC,:MUDDYWATER,:MUDSLAP,:OUTRAGE,:POWERUPPUNCH,:RAINDANCE,:RAZORSHELL,:ROAR,:RAZORWIND,:REVENGE,:ROCKCLIMB,:ROCKSLIDE,:ROCKSMASH,:ROCKTOMB,:SCALD,:SEISMICTOSS,:SHADOWCLAW,:SPITE,:STRENGTH,:SUPERPOWER,:SURF,:SWORDSDANCE,:UPROAR,:WATERFALL,:WATERPLEDGE,:WATERPULSE,:WORKUP,
 			#Rejuv only moves
 			:DELUGE,:POISONSWEEP,:STACKINGSHOT],
@@ -12202,6 +12203,8 @@ MONHASH = {
 			:form => 0
 		},
 		:Moveset => [
+			[0,:TAILGLOW],
+			[1,:TAILGLOW],
 			[1,:TACKLE],
 			[1,:GROWL],
 			[1,:THUNDERWAVE],
@@ -13276,8 +13279,8 @@ MONHASH = {
 		:Type1 => :DARK,
 		:BaseStats => [95, 65, 110, 60, 130, 65],
 		:EVs => [0, 0, 0, 0, 2, 0],
-		:Abilities => [:SYNCHRONIZE, :SYNCHRONIZE],
-		:HiddenAbilities => :INNERFOCUS,
+		:Abilities => [:INNERFOCUS, :INNERFOCUS],
+		:HiddenAbilities => :MAGICGUARD,
 		:GrowthRate => :MediumFast,
 		:GenderRatio => :FemEighth,
 		:BaseEXP => 184,
@@ -16968,7 +16971,7 @@ MONHASH = {
 	"Mega Form" => {
 		:Type2 => :DRAGON,
 		:BaseStats => [70, 110, 75, 145, 85, 145],
-		:Abilities => [:POWERSURGE],
+		:Abilities => [:ANABOLIC],
 		:BaseEXP => 284,
 		:Height => 19,
 		:Weight => 552,
@@ -25775,7 +25778,7 @@ MONHASH = {
 		:Type2 => :STEEL,
 		:BaseStats => [84, 86, 88, 111, 101, 60],
 		:EVs => [0, 0, 0, 3, 0, 0],
-		:Abilities => [:TORRENT, :COMPETITIVE,:SWIFTSWIM],
+		:Abilities => [:TORRENT, :COMPETITIVE],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :FemEighth,
 		:BaseEXP => 239,
@@ -25821,7 +25824,16 @@ MONHASH = {
 		:BattlerAltitude => 0,
 	},
 
+	"EMPEROR" => {
+		:Type1 => :WATER,
+		:Type2 => :STEEL,
+		# + 100 BST
+		:BaseStats => [84, 106, 138, 131, 101, 70],
+		:Abilities => [:SWIFTSWIM],
+	},
+
 	:OnCreation => {},
+	:DefaultForm => 0,
 },
 
 :STARLY => {
@@ -30352,7 +30364,17 @@ MONHASH = {
 		:BattlerAltitude => 0,
 	},
 
+	"Erick Signature" => {
+		:Type2 => :STEEL,
+		# +60
+		:BaseStats => [75, 123, 117, 105, 85, 95],
+		:Abilities => [:QUARKDRIVE],
+		:BaseEXP => 275,
+		:Weight => 615,
+	},
+
 	:OnCreation => {},
+	:DefaultForm => 0,
 },
 
 :MAGMORTAR => {
@@ -32645,7 +32667,7 @@ MONHASH = {
 		:Type1 => :WATER,
 		:BaseStats => [95, 100, 85, 108, 70, 70],
 		:EVs => [0, 0, 0, 3, 0, 0],
-		:Abilities => [:TORRENT, :SHELLARMOR],
+		:Abilities => [:TORRENT, :DEFIANT],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :FemEighth,
 		:BaseEXP => 238,
@@ -38676,6 +38698,15 @@ MONHASH = {
 		:BattlerAltitude => 1,
 	},
 
+	"Giga Form" => {
+		:Type1 => :GRASS,
+		:Type2 => :ROCK,
+		:BaseStats => [148, 114, 131, 34, 126, 10],
+		:Abilities => [:POISONHEAL],
+		:Height => 750,
+		:Weight => 2456,
+	},
+
 	"Suspended Rift Form" => {
 		:Type1 => :FIRE,
 		:Type2 => :STEEL,
@@ -38696,6 +38727,8 @@ MONHASH = {
     },
 
 	:OnCreation => {},
+	:DefaultForm => 0,
+  :GigaForm => 1,
 },
 
 :KLINK => {
@@ -49855,9 +49888,9 @@ MONHASH = {
 		:dexnum => 774,
 		:Type1 => :ROCK,
 		:Type2 => :FLYING,
-		:BaseStats => [60, 100, 60, 100, 60, 120],
+		:BaseStats => [60, 120, 60, 120, 60, 120],
 		:EVs => [0, 1, 0, 1, 0, 0],
-		:Abilities => [:SHIELDSDOWN],
+		:Abilities => [:SHIELDSDOWN], #:CRASHLANDING],
 		:GrowthRate => :MediumSlow,
 		:GenderRatio => :Genderless,
 		:BaseEXP => 175,
@@ -49919,7 +49952,7 @@ MONHASH = {
 	},
 
 	"Meteor Form" => {
-		:BaseStats => [60, 60, 100, 60, 100, 60],
+		:BaseStats => [60, 60, 120, 60, 120, 60],
 		:EVs => [0, 0, 1, 0, 1, 0],
 		:BaseEXP => 154,
 		:Color => "Brown",
@@ -54355,7 +54388,7 @@ MONHASH = {
 	"Giga Form" => {
 		:Type1 => :FIRE,
 		:Type2 => :DRAGON,
-		:BaseStats => [200, 125, 75, 50, 100, 65],
+		:BaseStats => [200, 125, 65, 100, 100, 25],
 		:Abilities => [:DROUGHT],
 		:Height => 750,
 		:Weight => 2456,

@@ -662,6 +662,8 @@ class PokeBattle_Move_00F < PokeBattle_Move
     return if !showanimation
     if id == :MOUNTAINGALE
       @battle.pbAnimation(:AVALANCHE,attacker,opponent,hitnum)
+    elsif id == :VINELASH
+      @battle.pbAnimation(:FRENZYPLANT,attacker,opponent,hitnum)
     else
       @battle.pbAnimation(id,attacker,opponent,hitnum)
     end
@@ -3789,7 +3791,7 @@ class PokeBattle_Move_078 < PokeBattle_Move
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
         opponent.effects[:TwoTurnAttack]=0; showmsg=true
       end
-      if opponent.effects[:MagnetRise]>0
+      if opponent.effects[:MagnetRise]!=0
         opponent.effects[:MagnetRise]=0; showmsg=true
       end
       if opponent.effects[:Telekinesis]>0
@@ -5532,7 +5534,7 @@ class PokeBattle_Move_0BC < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     blacklist = PBStuff::BLACKLISTS[:ENCORE]
     move = opponent.lastMoveUsed
-    if opponent.effects[:Encore]>0 || !move.is_a?(Symbol) || blacklist.include?(move)
+    if opponent.effects[:Encore]>0 || blacklist.include?(move)  || !move.is_a?(Symbol) 
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
@@ -5653,6 +5655,7 @@ class PokeBattle_Move_0C0 < PokeBattle_Move
     ret=hitchances[@battle.pbRandom(hitchances.length)]
     ret=5 if attacker.ability == :SKILLLINK
     ret=5 if attacker.crested == :FEAROW && @move == :FURYATTACK
+    ret=5 if @move == :CANNONADE
     return ret
   end
 
@@ -5710,10 +5713,10 @@ end
 class PokeBattle_Move_0C2 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !(attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0)
+    if opponent.damagestate.calcdamage>0 && !(attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0)
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif opponent.damagestate.calcdamage>0 && opponent.powerSurge
-      opponent.powerSurge = false
+    elsif opponent.damagestate.calcdamage>0 && opponent.anabolic
+      opponent.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif opponent.damagestate.calcdamage>0 && !(@battle.FE == :STARLIGHT && @move ==:METEORASSAULT) && 
       !(attacker.crested == :CLAYDOL && [:HYPERBEAM,:PRISMATICLASER,:ETERNABEAM].include?(@move))
@@ -5733,12 +5736,12 @@ class PokeBattle_Move_0C3 < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
        @immediate = true if @battle.FE == :CLOUDS || @battle.FE == :SKY || (Rejuv && @battle.FE == :GRASSY) || (@battle.state.effects[:GRASSY] > 0)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -5775,13 +5778,13 @@ class PokeBattle_Move_0C4 < PokeBattle_Move
       @immediate=true if (attacker.crested == :CLAYDOL && @move == :SOLARBEAM)
       @immediate=true if (attacker.crested == :CHERRIM)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-      attacker.powerSurge = false
+      attacker.anabolic = false
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
       if !checking
@@ -5829,12 +5832,12 @@ class PokeBattle_Move_0C5 < PokeBattle_Move
       @immediate=true if (@battle.FE == :FROZENDIMENSION)
       @immediate=true if (@battle.pbWeather == :HAIL)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -5876,12 +5879,12 @@ class PokeBattle_Move_0C6 < PokeBattle_Move
       @immediate=true if (@battle.FE == :FROZENDIMENSION)
       @immediate=true if (@battle.pbWeather == :HAIL)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -5922,12 +5925,12 @@ class PokeBattle_Move_0C7 < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
       @immediate = true if @battle.FE == :CLOUDS || @battle.FE == :SKY
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -5965,12 +5968,12 @@ end
 class PokeBattle_Move_0C8 < PokeBattle_Move
   def pbTwoTurnAttack(attacker,checking=false)
     @immediate=false
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6011,12 +6014,12 @@ class PokeBattle_Move_0C9 < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
       @immediate = true if @battle.FE == :CLOUDS || @battle.FE == :CAVE || @battle.FE == :SKY || (Rejuv && battle.FE == :DRAGONSDEN)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6059,12 +6062,12 @@ class PokeBattle_Move_0CA < PokeBattle_Move
       @immediate=true if (Rejuv && @battle.FE == :DESERT)
       @immediate=true if (@battle.FE == :WATERSURFACE || @battle.FE == :MURKWATERSURFACE) && self.pbType(attacker,self.type) == :GROUND # for move failure on these fields
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6102,12 +6105,12 @@ class PokeBattle_Move_0CB < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
       @immediate=true if (@battle.FE == :WATERSURFACE || @battle.FE == :UNDERWATER)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6159,12 +6162,12 @@ class PokeBattle_Move_0CC < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
       @immediate = true if @battle.FE == :CLOUDS || @battle.FE == :CAVE || @battle.FE == :SKY || (Rejuv && @battle.FE == :DRAGONSDEN)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6214,12 +6217,12 @@ class PokeBattle_Move_0CD < PokeBattle_Move
     if attacker.effects[:TwoTurnAttack]==0
       @immediate=true if @battle.FE == :HAUNTED || @battle.ProgressiveFieldCheck(PBFields::DARKNESS,2,3)
     end
-    if attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -6760,6 +6763,16 @@ end
 ################################################################################
 class PokeBattle_Move_0DC < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    if (@basedamage > 0)
+      ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+      return -1 if ret == -1
+      if (!(opponent.effects[:LeechSeed] >= 0) && !(opponent.effects[:Substitute]>0) && !opponent.hasType?(:GRASS))
+        pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+        opponent.effects[:LeechSeed]=attacker.index
+        @battle.pbDisplay(_INTL("{1} was seeded!",opponent.pbThis))
+      end
+      return 0
+    end
     if opponent.effects[:LeechSeed]>=0 || opponent.effects[:Substitute]>0
       @battle.pbDisplay(_INTL("{1} evaded the attack!",opponent.pbThis))
       return -1
@@ -7572,7 +7585,7 @@ class PokeBattle_Move_0F5 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
     if !attacker.isFainted? && opponent.damagestate.calcdamage>0 &&
-       !opponent.damagestate.substitute && !opponent.item.nil?
+       !opponent.damagestate.substitute && !opponent.item.nil? && !@battle.pbIsUnlosableItem(opponent,opponent.item)
       item=opponent.item
       itemname=getItemName(item)
       opponent.item=nil
@@ -8229,6 +8242,10 @@ class PokeBattle_Move_107 < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    if (@move == :WILDFIRE)
+      setField(:BURNING,fielduration=4)
+      @battle.pbDisplay(_INTL("The wildfire spreads across the opposing team!"))
+    end
     ret if !@battle.canChangeFE?
     fieldbefore = @battle.field.effect
     duration=4
@@ -8537,6 +8554,16 @@ class PokeBattle_Move_110 < PokeBattle_Move
     end
     return ret
   end
+
+  # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :OVERGROWTH
+      @battle.pbAnimation(:FRENZYPLANT,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
+  end
 end
 
 ################################################################################
@@ -8820,6 +8847,8 @@ class PokeBattle_Move_117 < PokeBattle_Move
     return if !showanimation
     if id == :GOLDRUSH
       @battle.pbAnimation(:PAYDAY,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(@move,attacker,opponent,hitnum)
     end
   end
 end
@@ -8872,7 +8901,7 @@ class PokeBattle_Move_118 < PokeBattle_Move
       if poke.effects[:SkyDrop]
         poke.effects[:SkyDrop]=false
       end
-      if poke.effects[:MagnetRise]>0
+      if poke.effects[:MagnetRise]!=0
         poke.effects[:MagnetRise]=0
       end
       if poke.effects[:Telekinesis]>0
@@ -8898,7 +8927,7 @@ class PokeBattle_Move_119 < PokeBattle_Move
     if @battle.FE != :DEEPEARTH
       if attacker.effects[:Ingrain] ||
         attacker.effects[:SmackDown] ||
-        attacker.effects[:MagnetRise]>0
+        attacker.effects[:MagnetRise]!=0
         @battle.pbDisplay(_INTL("But it failed!"))
         return -1
       end
@@ -8976,7 +9005,7 @@ class PokeBattle_Move_11C < PokeBattle_Move
          $cache.moves[opponent.effects[:TwoTurnAttack]].function==0xCC)    # Bounce
         opponent.effects[:TwoTurnAttack]=0; showmsg=true
       end
-      if opponent.effects[:MagnetRise]>0
+      if opponent.effects[:MagnetRise]!=0
         opponent.effects[:MagnetRise]=0; showmsg=true
       end
       if opponent.effects[:Telekinesis]>0
@@ -9026,6 +9055,13 @@ end
 ################################################################################
 class PokeBattle_Move_11F < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    if (@battle.FE == :BEWITCHED)
+      @battle.pbDisplay(_INTL("{1} twisted the dimensions...",attacker.pbThis))
+      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+      @battle.pbDisplay(_INTL("...but the dimensions twisted back!",attacker.pbThis))
+      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+      return 0
+    end
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     if @battle.trickroom == 0
       @battle.trickroom=5
@@ -9540,12 +9576,12 @@ class PokeBattle_Move_13E < PokeBattle_Move
     if @battle.FE == :STARLIGHT || @battle.FE == :DEEPEARTH
       @immediate=true
       @battle.pbDisplay(_INTL("{1} absorbed the starlight!",attacker.pbThis)) if @battle.FE == :STARLIGHT
-    elsif attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    elsif attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       itemname=getItemName(attacker.item)
@@ -11632,12 +11668,12 @@ class PokeBattle_Move_308 < PokeBattle_Move
     if @battle.FE == :STARLIGHT || @battle.FE == :NEWWORLD
       @immediate=true
       @battle.pbDisplay(_INTL("{1} absorbed the starlight!",attacker.pbThis)) if @battle.FE == :STARLIGHT
-    elsif attacker.ability == :POWERSURGE && @battle.state.effects[:ELECTERRAIN] > 0
+    elsif attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
       @immediate=true
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
-    elsif !@immediate && attacker.powerSurge
+    elsif !@immediate && attacker.anabolic
       @immediate=true
-      attacker.powerSurge = false
+      attacker.anabolic = false
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif !@immediate && attacker.hasWorkingItem(:POWERHERB)
       @immediate=true
@@ -11658,7 +11694,7 @@ class PokeBattle_Move_308 < PokeBattle_Move
         showanim=false
       end
     end
-    if @immediate && !attacker.ability == :POWERSURGE
+    if @immediate && !attacker.ability == :ANABOLIC
       @battle.pbCommonAnimation("UseItem",attacker,nil)
       @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!",attacker.pbThis))
       attacker.pbDisposeItem(false)
@@ -11734,12 +11770,32 @@ end
 # Power doubles on Electric Terrain (Rising Voltage) 
 ################################################################################
 class PokeBattle_Move_311 < PokeBattle_Move
+  def pbAdditionalEffect(attacker,opponent)
+    if (@move == :POWERSURGE)
+      pbShowAnimation(:ELECTRICTERRAIN,attacker,opponent)
+      @battle.setField(:ELECTERRAIN,inc=1)
+      @battle.pbDisplay(_INTL("Power surged across the battlefield!"))
+      @battle.quarkdriveCheck
+    end
+  end
+
   def pbBaseDamage(basedmg,attacker,opponent)
     if (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0) && !opponent.isAirborne?
       return basedmg*2 
     end  
     return basedmg
   end
+
+  # Replacement animation till a proper one is made
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :POWERSURGE
+      @battle.pbAnimation(:RISINGVOLTAGE,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
+  end
+  
 end
 
 ################################################################################

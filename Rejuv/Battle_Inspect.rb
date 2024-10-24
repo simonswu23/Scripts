@@ -328,7 +328,8 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Sheltered")) if pkmn.effects[:Shelter]
   report.push(_INTL("Quark Drive active")) if pkmn.effects[:Quarkdrive][0]!=0
   report.push(_INTL("Air Balloon")) if pkmn.hasWorkingItem(:AIRBALLOON)
-  report.push(_INTL("Magnet Rise: {1} turns",pkmn.effects[:MagnetRise])) if pkmn.effects[:MagnetRise]!=0
+  report.push(_INTL("Magnet Rise: {1} turns",pkmn.effects[:MagnetRise])) if pkmn.effects[:MagnetRise]>0
+  report.push(_INTL("Magnet Rise: permanent")) if pkmn.effects[:MagnetRise]<0
   report.push(_INTL("Telekinesis: {1} turns",pkmn.effects[:Telekinesis])) if pkmn.effects[:Telekinesis]!=0
   report.push(_INTL("Heal Block: {1} turns",pkmn.effects[:HealBlock])) if pkmn.effects[:HealBlock]!=0
   report.push(_INTL("Embargo: {1} turns",pkmn.effects[:Embargo])) if pkmn.effects[:Embargo]!=0
@@ -353,7 +354,8 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Embargo: {1} turns",pkmn.pbOwnSide.effects[:Embargo])) if pkmn.pbOwnSide.effects[:Embargo]>0 
   #report.push(_INTL("Altered Field: {1} turns",@battle.state.effects[:Terrain])) if @battle.state.effects[:Terrain]>0
   #report.push(_INTL("Messed up Field: {1} turns",@battle.state.effects[:Splintered])) if @battle.state.effects[:Splintered]>0  
-  report.push(_INTL("Electric Terrain: {1} turns",@battle.state.effects[:ELECTERRAIN])) if @battle.state.effects[:ELECTERRAIN]>0  
+  report.push(_INTL("Electric Terrain: {1} turns",@battle.state.effects[:ELECTERRAIN])) if @battle.state.effects[:ELECTERRAIN]>0 
+  report.push(_INTL("Electric Terrain: permanent",@battle.state.effects[:ELECTERRAIN])) if @battle.state.effects[:ELECTERRAIN]>9000  
   report.push(_INTL("Grassy Terrain: {1} turns",@battle.state.effects[:GRASSY])) if @battle.state.effects[:GRASSY]>0
   report.push(_INTL("Misty Terrain: {1} turns",@battle.state.effects[:MISTY])) if @battle.state.effects[:MISTY]>0
   report.push(_INTL("Psychic Terrain: {1} turns",@battle.state.effects[:PSYTERRAIN])) if @battle.state.effects[:PSYTERRAIN]>0
@@ -361,6 +363,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Magic Room: {1} turns",@battle.state.effects[:MagicRoom])) if @battle.state.effects[:MagicRoom]>0
   report.push(_INTL("Wonder Room: {1} turns",@battle.state.effects[:WonderRoom])) if @battle.state.effects[:WonderRoom]>0
   report.push(_INTL("Water Sport: {1} turns",@battle.state.effects[:WaterSport])) if @battle.state.effects[:WaterSport]>0
+  report.push(_INTL("Water Sport: permanent")) if @battle.state.effects[:WaterSport]<0
   report.push(_INTL("Mud Sport: {1} turns",@battle.state.effects[:MudSport])) if @battle.state.effects[:MudSport]>0
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[:Spikes])) if pkmn.pbOwnSide.effects[:Spikes]>0
   report.push(_INTL("Toxic Spikes: {1} layers",pkmn.pbOwnSide.effects[:ToxicSpikes])) if pkmn.pbOwnSide.effects[:ToxicSpikes]>0

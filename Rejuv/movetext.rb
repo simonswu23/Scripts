@@ -3882,7 +3882,7 @@ MOVEHASH = {
 	:function => 0x0E0,
 	:type => :NORMAL,
 	:category => :physical,
-	:basedamage => 300,
+	:basedamage => 200,
 	:accuracy => 100,
 	:maxpp => 5,
 	:target => :AllNonUsers,
@@ -14237,7 +14237,6 @@ MOVEHASH = {
 	:basedamage => 50,
 	:accuracy => 100,
 	:maxpp => 20,
-	:effect => 100,
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
@@ -14261,9 +14260,9 @@ MOVEHASH = {
 
 :AFTERMATH => {
 	:ID => 929,
-	:name => "Self Destruct",
+	:name => "Self-Destruct",
 	:function => 0x0E0,
-	:type => :NORMAL,
+	:type => :QMARKS,
 	:category => :physical,
 	:basedamage => 200,
 	:accuracy => 100,
@@ -14285,6 +14284,34 @@ MOVEHASH = {
 	:target => :AllOpposing,
 	:desc => "No additional effect (for now), consider 30% chance to blow away target's held item?" 
 },
+
+:METEORIMPACTOR => {
+	:ID => 931,
+	:name => "Meteor Impactor",
+	:function => 0x175,
+	:type => :ROCK,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 100,
+	:maxpp => 16,
+	:target => :AllNonUsers,
+	:desc => "called for Crash Landing" 
+},
+
+:POWERSURGE => {
+	:ID => 931,
+	:name => "Power Surge",
+	:function => 0x311,
+	:type => :ELECTRIC,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 100,
+	:effect => 30,
+	:maxpp => 16,
+	:target => :SingleNonUser,
+	:desc => "Erick Signature move -- Rising Voltage x Expanding Force x Grassy Glide" 
+},
+
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14638,13 +14665,12 @@ MOVEHASH = {
 :FLASHFREEZE => {
 	:ID => 2023,
 	:name => "Flash Freeze",
-	:function => 0x00C,
+	:function => 0x00D,
 	:type => :ICE,
 	:category => :special,
 	:basedamage => 120,
 	:accuracy => 0,
 	:maxpp => 5,
-	:effect => 30,
 	:target => :AllOpposing,
 	:kingrock => true,
 	:desc => "Vanilluxe"
@@ -14664,6 +14690,62 @@ MOVEHASH = {
 	:contact => true,
 	:effect => 100,
 	:desc => "Kung Fu"
+},
+
+:VINELASH => {
+	:ID => 2025,
+	:name => "Vine Lash",
+	:function => 0x00F,
+	:type => :GRASS,
+	:category => :special,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 30,
+	:target => :AllOpposing,
+  	:desc => "Venusaur"
+},
+
+:WILDFIRE => {
+	:ID => 2026,
+	:name => "Wildfire",
+	:function => 0x107,
+	:type => :FIRE,
+	:category => :special,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 100,
+	:target => :AllOpposing,
+  	:desc => "Charizard"
+},
+
+:CANNONADE => {
+	:ID => 2027,
+	:name => "Cannonade",
+	:function => 0x0C0,
+	:type => :WATER,
+	:category => :special,
+	# hits five times
+	:basedamage => 50,
+	:accuracy => 0,
+	:maxpp => 5,
+	:target => :AllOpposing,
+  	:desc => "Blastoise"
+},
+
+:OVERGROWTH => {
+	:ID => 2028,
+	:name => "Overgrowth",
+	:function => 0x0DC,
+	:type => :GRASS,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 30,
+	:target => :AllOpposing,
+  	:desc => "Ferrothorn"
 },
 
 }

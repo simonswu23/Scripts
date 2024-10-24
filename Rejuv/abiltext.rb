@@ -1899,7 +1899,7 @@ ABILHASH = {
 	:desc => "Restores HP when hit by Steel moves, user's own Steel type attacks are Super Effective versus other Steel types."
 },
 
-:POWERSURGE => {
+:ANABOLIC => {
 	:ID => 333,
 	:name => "Power Surge",
 	:desc => "Skips the first time the user needs to charge or recharge. In electric terrain, x1.5 special attack and does not need to charge/recharge."
@@ -1909,6 +1909,18 @@ ABILHASH = {
 	:ID => 334,
 	:name => "Gold Envy",
 	:desc => "Raptured by tremendous jealousy, the foes can only use attacking moves."
+},
+
+:CRASHLANDING => {
+	:ID => 335,
+	:name => "Crash Landing",
+	:desc => "Upon entering battle, the user crashes into the battlefield, damaging itself and all other pokemon."
+},
+
+:POWERWASH => {
+	:ID => 336,
+	:name => "Power Wash",
+	:desc => "Erick's Rotom."
 },
 
 }

@@ -1371,6 +1371,7 @@ class PokeBattle_Battle
         pri += 1 if @battlers[i].ability == :PRANKSTER && @choices[i][2].basedamage==0 && @battlers[i].effects[:TwoTurnAttack] == 0 # Is status move
         pri += 1 if (@battlers[i].ability == :GALEWINGS || @battlers[i].crested == :BRAVIARY) && @choices[i][2].type==:FLYING
         pri += 1 if @choices[i][2].move == :GRASSYGLIDE && (@field.effect == :GRASSY || @battle.state.effects[:GRASSY] > 0)
+        pri += 1 if @choices[i][2].move == :POWERSURGE && (@field.effect == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0)
         pri += 1 if @choices[i][2].move == :SLEIGHRIDE && (@battle.pbWeather == :HAIL)
         pri += 1 if @choices[i][2].move == :SQUALL && (@battle.pbWeather == :HAIL)
         pri += 1 if (@battlers[i].ability == :HIVEQUEEN || @battlers[i].pbPartner.ability == :HIVEQUEEN) && @choices[i][2].type==:BUG 
@@ -1602,6 +1603,7 @@ class PokeBattle_Battle
     end
     # Ingrain
     if thispkmn.effects[:Ingrain]
+      return true if @field.effect == :BEWITCHED
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
     end
@@ -2241,7 +2243,7 @@ class PokeBattle_Battle
     return false if !@battlers[index].hasGiga?
     return false if !pbHasGigaBand(index)
     return false if !pbHasGigaStone(index)
-    return true if !pbBelongsToPlayer?(index)
+    # return true if !pbBelongsToPlayer?(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @gigaEvolution[side][owner]==-1
@@ -2444,8 +2446,6 @@ class PokeBattle_Battle
     # do later
     # @moves.each {|copiedmove| @battle.ai.addMoveToMemory(self,copiedmove) } if !@battle.isOnline?
     # choice.moves.each {|moveloop| @battle.ai.addMoveToMemory(choice,moveloop) }  if !@battle.isOnline?
-
-    @battlers[index].giga = true
 
     # Re-update ability of giga-evolved mon
     @battlers[index].pbAbilitiesOnSwitchIn(true)
@@ -4578,6 +4578,7 @@ class PokeBattle_Battle
           end
           if i.ability == :NATURALCURE
             i.status=nil
+            pbDisplay(_INTL("The woods cured {1}'s status conditions!",i.pbThis)) if !endmessage
           end
         when :INFERNAL #Infernal Field (Rejuv)
           next if i.hp<=0

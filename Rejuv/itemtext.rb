@@ -10426,4 +10426,35 @@ ITEMHASH = {
 	:noUse => true,
 },
 
+:ELECTICREST => {
+	:ID => 2034,
+	:name => "Electivire Crest",
+	:desc => "Powersuit",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:BOOSTERENERGY => {
+	:ID => 2035,
+	:name => "Booster Energy",
+	:desc => "Delibird Test",
+	:price => 300,
+	:overworld => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:FERROTHORNITE => {
+	:ID => 2032,
+	:name => "Ferrothorn Core",
+	:desc => "One variety of Giga Stone. This stone will enable Ferrothorn to Giga Evolve in battle.",
+	:price => 999,
+	:crystal => true,
+	:noUseInBattle => true,
+	:noUse => true,
+	:keyitem => true,
+},
+
 }

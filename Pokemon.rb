@@ -773,7 +773,7 @@ class PokeBattle_Pokemon
       when :INTELEON        then return true if move.move == :SNIPESHOT
       when :TOXTRICITY      then return true if move.move == :BOOMBURST
       when :ALCREMIE        then return true if move.move == :DRAININGKISS
-      when :HATTERENE       then return true if move.move == :MAGICPOWDER
+      when :HATTERENE       then return true if move.move == :DAZZLINGGLEAM
       when :COPPERAJAH      then return true if move.move == :IRONHEAD   
       when :CORVIKNIGHT     then return true if move.move == :HURRICANE
       when :MEOWTH          then return true if move.move == :PAYDAY
@@ -783,14 +783,18 @@ class PokeBattle_Pokemon
       when :GENGAR          then return true if move.move == :DARKPULSE
       when :GARBODOR        then return true if move.move == :GUNKSHOT
       when :DURALUDON       then return true if move.move == :DRAGONPULSE
-      when :CENTISKORCH     then return true if move.move == :FIRELASH
-      when :LAPRAS          then return true if move.move == :SHEERCOLD
+      when :CENTISKORCH     then return true if move.move == :INFERNO
+      when :LAPRAS          then return true if move.move == :ICEBEAM
       when :APPLETUN        then return true if move.move == :APPLEACID
       when :DREDNAW         then return true if move.move == :LIQUIDATION
       when :MELMETAL        then return true if move.move == :HYPERBEAM
       when :COALOSSAL       then return true if move.move == :STONEEDGE
       when :VANILLUXE       then return true if move.move == :SHEERCOLD
       when :MACHAMP         then return true if move.move == :CROSSCHOP
+      when :CHARIZARD       then return true if move.move == :BLASTBURN
+      when :VENUSUAR        then return true if move.move == :FRENZYPLANT
+      when :BLASTOISE       then return true if move.move == :HYDROCANNON
+      when :FERROTHORN      then return true if move.move == :POWERWHIP
     end
     return false
   end

@@ -38,6 +38,8 @@
   - Pulse/Aura and Bullet Moves consolidated
     - Bulletproof protects against all moves that Mega Launcher boosts (and vice versa)
 
+  - Terrains (Grassy, Electric, Psychic, Misty) no longer overlap with each other (just like in main series games)
+
 ## Pokemon
 
 ### Giga Evolution
@@ -45,37 +47,40 @@
   - Typing: Grass/Ground
   - Ability: Chlorophyll
   - Stats: 160, 62, 83, 140, 80, 80
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Vine Lash
+    - basemove: Frenzy Plant
+    - Type: Grass
+    - category: special
+    - BP: 150
+    - acc: 0
+    - target: all foes
+    - effect: 30% chance to cause targets to flinch
   
 - Charizard
   - Typing: Fire 
   - Ability: Solar Power
-  - Stats: 156, 54, 78, 159, 85, 80
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Stats: 156, 84, 78, 159, 85, 50
+  - Giga Move: Wildfire
+    - basemove: Blast Burn
+    - Type: Fire
+    - category: special
+    - BP: 150
+    - acc: 0
+    - target: all foes
+    - effect: summons a fire storm for the opposing team
 
 - Blastoise
   - Typing: Water/Steel
   - Ability: Bulletproof
   - Stats: 158, 73, 130, 115, 85, 48
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Cannonade
+    - basemove: Hydro Cannon
+    - Type: Water
+    - category: special
+    - BP: 50
+    - acc: 0
+    - target: all foes
+    - effect: hits 5 times
 
 - Butterfree
   - Typing: Bug/Flying
@@ -95,6 +100,7 @@
   - Ability: Electric Surge
   - Stats: 140, 90, 60, 90, 70, 75
   - Giga Move: Volt Crash
+    - basemove: Volt Tackle
     - Type: Electric
     - category: physical
     - BP: 150
@@ -120,6 +126,7 @@
   - Ability: No Guard
   - Stats: 180, 150, 80, 45, 85, 55
   - Giga Move: Chi Strike
+    - basemove: Cross Chop
     - Type: Fighting 
     - category: physical
     - BP: 120
@@ -132,6 +139,7 @@
   - Ability: Gravitational Pull
   - Stats: 120, 25, 70, 150, 145, 50
   - Giga Move: Black Hole
+    - basemove: Dark Pulse
     - Type: Dark 
     - category: special
     - BP: 1
@@ -156,6 +164,7 @@
   - Ability: Hydro Veil
   - Stats: 220, 65, 130, 125, 110, 45
   - Giga Move: Resonance
+    - basemove: Ice Beam
     - Type: Ice
     - category: special
     - BP: 110
@@ -193,6 +202,7 @@
   - Ability: Corrosion
   - Stats: 160, 115, 82, 50, 82, 65
   - Giga Move: Landfill
+    - basemove: Gunk Shot
     - Type: physical
     - category: physical
     - BP: 120
@@ -200,11 +210,25 @@
     - target: all foes
     - effect: for each foe hit, set up a random entry hazard for the opposing team
 
+- Ferrothorn
+  - Typing: Grass/Rock
+  - Ability: Poison Heal
+  - Stats: 148, 114, 131, 34, 126, 10
+  - Giga Move: Overgrowth
+    - basemove: Power Whip
+    - Type: Grass
+    - category: physical
+    - BP: 120
+    - acc: 0
+    - target: all foes
+    - effect: inflicts leech seed on all targets
+
 - Vanilluxe
   - Typing: Ice/Flying
   - Ability: Snow Cloak
   - Stats: 142, 95, 85, 110, 95, 79
   - Giga Move: Flash Freeze
+    - basemove: Sheer Cold
     - Type: Flying
     - category: special
     - BP: 120
@@ -229,6 +253,7 @@
   - Ability: Grassy Surge
   - Stats: 200, 155, 90, 50, 70, 65
   - Giga Move: Giant's Drum
+    - basemove: Drum Beating
     - Type: Grass
     - category: physical
     - BP: 150
@@ -241,6 +266,7 @@
   - Ability: Libero
   - Stats: 160, 146, 65, 35, 65, 139
   - Giga Move: Flame Strike
+    - basemove: Pyro Ball
     - Type: Fire
     - category: physical
     - BP: 150
@@ -253,6 +279,7 @@
   - Ability: Sniper
   - Stats: 140, 105, 65, 145, 65, 80
   - Giga Move: Hydrosnipe
+    - basemove: Snipe Shot
     - Type: Water
     - category: special
     - BP: 110
@@ -265,6 +292,7 @@
   - Ability: Gale Wings
   - Stats: 196, 87, 125, 43, 95, 47
   - Giga Move: Wind Rage
+    - basemove: Hurricane
     - Type: Flying
     - category: physical
     - BP: 130
@@ -289,6 +317,7 @@
   - Ability: Swift Swim
   - Stats: 180, 135, 90, 38, 58, 74
   - Giga Move: Stonesurge
+    - basemove: Liquidation
     - Type: Water
     - category: physical
     - BP: 120
@@ -301,6 +330,7 @@
   - Ability: Steam Engine
   - Stats: 220, 80, 120, 80, 90, 30
   - Giga Move: Volcalith
+    - basemove: Stone Edge
     - Type: Rock
     - category: physical
     - BP: 120
@@ -325,6 +355,7 @@
   - Ability: Gluttony
   - Stats: 220, 55, 80, 120, 100, 20
   - Giga Move: Honeypot
+    - basemove: Apple Acid
     - Type: Bug
     - category: special
     - BP: 110
@@ -349,6 +380,7 @@
   - Ability: Punk Rock
   - Stats: 150, 68, 70, 144, 70, 75
   - Giga Move: Acid Rock
+    - basemove: Boomburst
     - Type: Poison
     - category: special
     - BP: 140
@@ -359,8 +391,9 @@
 - Centiskorch
   - Typing: Fire/Dragon
   - Ability: Drought
-  - Stats: 200, 125, 75, 50, 100, 65
+  - Stats: 200, 125, 65, 100, 100, 25
   - Giga Move: Centiferno
+    - basemove: Inferno
     - Type: Fire
     - category: physical
     - BP: 120
@@ -373,6 +406,7 @@
   - Ability: Psychic Surge
   - Stats: 114, 45, 115, 146, 123, 29
   - Giga Move: Smite
+    - basemove: Dazzling Gleam
     - Type: Fairy
     - category: special
     - BP: 130
@@ -385,6 +419,7 @@
   - Ability: Dark Aura
   - Stats: 190, 135, 65, 115, 75, 25
   - Giga Move: Snooze
+    - basemove: False Surrender
     - Type: Dark
     - category: special
     - BP: 110
@@ -397,6 +432,7 @@
   - Ability: Misty Surge
   - Stats: 130, 30, 85, 145, 166, 24
   - Giga Move: Finale
+    - basemove: Draining Kiss
     - Type: Fairy
     - category: special
     - BP: 30
@@ -409,6 +445,7 @@
   - Ability: Huge Power
   - Stats: 244, 100, 129, 30, 89, 30
   - Giga Move: Steelsurge
+    - basemove: Iron Head
     - Type: Steel
     - category: physical
     - BP: 120
@@ -421,6 +458,7 @@
   - Ability: Stalwart
   - Stats: 140, 55, 125, 140, 80, 65
   - Giga Move: Depletion
+    - basemove: Dragon Pulse
     - Type: Dragon
     - category: special
     - BP: 140
@@ -451,24 +489,20 @@
     - acc:
     - target:
     - effect:
-  
-
 
 ### Pokemon Changes
 
 - Meganium line
   - added Fairy typing
   - base stat buffs: 80, 82, 110, 83, 110, 80
-  - ability: Leaf Guard -> Magic Guard
-  - extra ability: Pastel Veil
-  - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
+  - ability: Leaf Guard -> Pastel Veil
+  - line learns Rage Powder, Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
 
 - Inteleon line
   - extra ability: Drizzle
 
 - Empoleon Line
   - ability: Defiant -> Competitive
-  - extra ability: Swift Swim
   - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
     
 - Serperior
@@ -635,9 +669,6 @@
   - now are part normal type
   - learns Double Edge at level 52 and 58 respectively
 
-- Meganium
-  - learns Rage Powder at level 1
-
 - Ledian
   - gains Huge Power instead of Iron Fist
 
@@ -672,6 +703,7 @@
 - Ampharos
   - mega form gains Electric Surge instead of Mold Breaker
   - mega stat buffs: 90, 75, 125, 165, 110, 45
+  - learns tail glow at level 1 and upon evolving
 
 - Houndoom
   - base stat buffs: 75, 100, 60, 110, 80, 95
@@ -731,6 +763,21 @@
 - Oranguru
   - Trick Room added to Egg Moves
 
+- Feraligatr
+  - Learns Fishious Rend at level 85
+
+- Umbreon
+  - Inner Focus default ability
+  - Hidden ability -> Magic Guard
+
+- Samurott
+  - Hidden ability -> Defiant
+
+- Minior
+  - Shields down base stats: 60, 120, 60, 120, 60, 120
+  - *Crash Landing ability (unreleased currently except for Zetta, balance TBD)
+  - 
+
 ### New Pokemon
 - Alpha Larvesta
   - Bug/Fire
@@ -775,7 +822,10 @@
   - Ability: Multiscale
   - Notable LUM: Quiver Dance, Tail Glow, Dazzling GLeam, Hurricane, Sea Breeze, Spring Breeze, Rainbow Scales
       
-   
+- Alpha Empoleon (The Emperor)
+  - Water/Steel
+  - BST: 84, 106, 138, 131, 101, 70
+  - Ability: Swift Swim
 ## Abilities
 
 ### Updates
@@ -902,7 +952,7 @@
 
 - Aftermath
   - boosts explosion moves by x1.5 power
-  - user self-destructs (200 BP) after fainting to an attack
+  - user self-destructs (200 BP normal) after fainting to an attack
 
 - Normalize
   - x1.5 boost to all attacks
@@ -913,8 +963,9 @@
 - Magician
   - if the user is holding an item, now makes the target's item disappear
   - x1.3 power when removing items
-  - (check)
-  - (consider changing to "use trick on entry")
+
+- Iron Fist
+  - x1.3 damage boost for punching moves
 
  
 ### New Abilities
@@ -959,11 +1010,17 @@
   - summons gravity for 5 turns on entry, user is immune to gravity effects (is airborne, no evasion lowering, can use anti-gravity attacks)
   - doubles inversely gains speed in gravity
 
-- Power Surge
+- Anabolic
   - Skips the first time the user needs to charge or recharge. In electric terrain, x1.5 special attack and does not need to charge/recharge
 
 - Gold Envy
   - Foes can only use attacking moves
+
+- Crash Landing
+  - User crashes when entering battlefield, taking 50% hp in exchange for dealing 150 BP physical rock type damage to all other pokemon
+
+- Power Wash
+  - Summons infinite rain + 5 turns of electric terrain on entry, + has quark drive
 
 ## Items
 
@@ -994,7 +1051,7 @@
 - Cherrim Crest
   - gains fire STAB
   - doubles speed in the sunlight
-  - resist fire type attacks
+  - halves damage from fire type attacks
   - boosts sun-based attacks:
     - growth: +3 to attack and special attack
     - weather ball: x4 power, fire type
@@ -1152,8 +1209,9 @@
   - +1 special attack before using sound type moves
 
 - Sunflora Crest
-  - x1.3 attack and special attack
-  - x2 special attack in the sun
+  - x2 damage in the sun
+  - Desolate Land
+  - Gains fire weaknesses, resistances, and fire STAB
 
 - Braviary Crest
   - gains STAB on Fighting attacks
@@ -1173,6 +1231,12 @@
   
 - Emboar Crest
   - Doubles Emboar's HP, all attacks scale with Emboar's remaining HP (x2 at full, x1 at half, etc.)
+
+- Electivire Crest
+  - Protect, Light Screen, Reflect -> raises user's defense and special defense by 1
+  - Special Electric attack -> raises user's special attack by 1
+  - Punching moves -> raises user's attack by 1
+  - x1.3 attack and special attack
  
 ## Attacks
 
@@ -1287,8 +1351,7 @@
 - Explosion
   - BP 250 -> 500
     
-- SelfDestruct
-  - BP 200 -> 300
+- Self-Destruct
   - typing matches user's primary type
     
 - Judgement
@@ -1812,6 +1875,14 @@
   - Single Target
   - 20% chance to inflict frostbite, +1 priority in the hail
 
+- Power Surge (Talon's Signature move)
+  - Electric
+  - Special
+  - BP: 80
+  - acc: 100
+  - Single Target
+  - in Electric terrain: doubles in power against grounded foes, +1 priority, spread attack. 30% chance to extend Electric Terrain by 1 turn (100% chance in Rain)
+
 # Field Effect Updates
 - Snowy Mountain
   - Centiferno transforms into Cave
@@ -1826,6 +1897,7 @@
 
 - Mountain 
   - Southern Wind, Heavenly Wing transforms into Sky
+  - Sea Breeze, Round, Echoed Voice powered up
 
 - Dimensional 
   - Cold Truth (single use) transforms into Frozen Dimensional
@@ -1850,8 +1922,7 @@
   - speed reduction for non-aquatic pokemon x0.5
 
 - Murkwater Surface
-  - speed reduction for non-aquatic pokemon x0.5 (check)
-  - Poison hits Steel not-very-effectively
+  - speed reduction for non-aquatic pokemon x0.5
 
 - Underwater
   - speed reduction for non-aquatic pokemon x0.25
@@ -1859,13 +1930,23 @@
 - Bewitched Woods
   - Fairy is no longer weak to Poison
   - Steel is now weak to Grass
+  - Nature Power -> Moonblast
+  - Dark Pulse, Night Daze, Moonblast -> x1.3 boost
+  - Sleep Powder, Poison Powder, Stun Spore, Grasswhistle -> 95% accuracy
+  - Purify no longer transforms terrain
+  - Trick Room fails
+  - Ingrained users can switch out
 
 - Starlight
   - Corviknight Crest activates quick guard effect (kinda clunky, update somehow?)
   - Hail does not block out the field
 
-- Swamp Field
+- Swamp
   - Honeypot is boosted in power by x1.5
+
+- Infernal
+  - Centiferno boosted in power by x1.5
+  - Precipice Blades never miss
 
 # Battles
 - Valarie (Gym)
@@ -1875,11 +1956,20 @@
 - Crawli (Gym)
 - Venam x Saki (Terajuma Beach)
 - Amber x Venam at Teila (13.5)
-- Jenner in Aquamarine
+- Jenner in Aquamarine (rework)
 - Madelis in Aquamarine
-- Neved in Teila (double check)
-- Angie
+- Neved in Teila 
+- Angie (rework)
 - Crawli (Jynobi)
+- Eli x Sharon (Valor)
+- Zetta x Geara (Valor Summit)
+- Amber (Gym)
+- Kanon (Past)
+- Karrina (Past)
+- Amanda (West Gearen)
+- Erick (Gym)
+- Flora (Gym)
+- Florin (Gym)
 - Melanie
 - Melia (League Administration)
 - Ren (Desert)

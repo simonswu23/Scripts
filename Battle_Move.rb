@@ -709,10 +709,10 @@ class PokeBattle_Move
       mod1=2 if (otype1 == :NORMAL) && (atype == :GHOST)
       mod2=2 if (otype2 == :NORMAL) && (atype == :GHOST)
     end
-    if @battle.FE == :MURKWATERSURFACE
-      mod1=1 if (otype1 == :STEEL) && (atype == :POISON)
-      mod2=1 if (otype2 == :STEEL) && (atype == :POISON)
-    end
+    # if @battle.FE == :MURKWATERSURFACE
+    #   mod1=1 if (otype1 == :STEEL) && (atype == :POISON)
+    #   mod2=1 if (otype2 == :STEEL) && (atype == :POISON)
+    # end
     if @battle.FE == :BEWITCHED
       mod1=2 if (otype1 == :GRASS) && (atype == :POISON)
       mod2=2 if (otype2 == :GRASS) && (atype == :POISON)
@@ -1225,8 +1225,11 @@ class PokeBattle_Move
       when :GOODRA
         typemod /= 2 if [:FAIRY, :GRASS, :POISON, :BUG, :FIGHTING].include?(type)
         typemod *= 2 if [:GROUND, :PSYCHIC].include?(type)
+      when :SUNFLORA
+        typemod /= 2 if [:ICE,:BUG,:GRASS,:FIRE,:STEEL,:FAIRY].include?(type)
+        typemod *= 2 if [:GROUND, :ROCK, :WATER].include?(type)
       when :CHERRIM
-        typemod /= 4 if type == :FIRE
+        typemod /= 2 if type == :FIRE
       when :SEVIPER
         typemod = 0 if type == :PSYCHIC
         typemod /= 2 if (type == :DARK || type == :GHOST)
@@ -1628,9 +1631,9 @@ class PokeBattle_Move
       when :TOUGHCLAWS    then basemult*=1.3 if contactMove?
       when :IRONFIST
         if @battle.FE == :CROWD
-          basemult*=1.2 if punchMove?
+          basemult*=1.5 if punchMove?
         else
-          basemult*=1.2 if punchMove?
+          basemult*=1.3 if punchMove?
         end
       when :RECKLESS      then basemult*=1.3 if [0xFA,0x0D2,0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN
       when :AFTERMATH     then basemult*=1.5 if [0x0E0,0x30A,0x175].include?(@function) || @move == :MELTDOWN && @move != :AFTERMATH
@@ -1753,7 +1756,7 @@ class PokeBattle_Move
     end
     #type mods
     case type
-      when :FIRE then basemult*=0.33 if @battle.state.effects[:WaterSport]>0
+      when :FIRE then basemult*=0.33 if @battle.state.effects[:WaterSport]!=0
       when :ELECTRIC 
         basemult*=0.33 if @battle.state.effects[:MudSport]>0
         basemult*=2.0 if attacker.effects[:Charge]>0
@@ -2070,7 +2073,7 @@ class PokeBattle_Move
           atkmult*=2.0 if pbIsPhysical?(type)
         end
       when :SOLARPOWER then atkmult*=1.5 if @battle.pbWeather== :SUNNYDAY && pbIsSpecial?(type) && (@battle.FE != :GLITCH &&  @battle.FE != :FROZENDIMENSION)
-      when :POWERSURGE then atkmult*=1.5 if @battle.state.effects[:ELECTERRAIN] > 0 && pbIsSpecial?(type) && (@battle.FE != :GLITCH)
+      when :ANABOLIC then atkmult*=1.5 if @battle.state.effects[:ELECTERRAIN] > 0 && pbIsSpecial?(type) && (@battle.FE != :GLITCH)
       when :SLOWSTART then atkmult*=0.5 if attacker.turncount<5 && pbIsPhysical?(type) && !@battle.FE == :DEEPEARTH
       when :GORILLATACTICS then atkmult*=1.5 if pbIsPhysical?(type)
       when :QUARKDRIVE then atkmult*=1.3 if (attacker.effects[:Quarkdrive][0] == PBStats::ATTACK && pbIsPhysical?(type)) || (attacker.effects[:Quarkdrive][0] == PBStats::SPATK && pbIsSpecial?(type))
@@ -2167,7 +2170,7 @@ class PokeBattle_Move
       end
     end
     atkmult*=0.5 if (opponent.ability == :THICKFAT) && (type == :ICE || type == :FIRE) && !(opponent.moldbroken)
-    atkmult*=0.5 if (opponent.ability == :STEAMENGINE || opponent.ability == :WATERCOMPACTION) && (type == :WATER) && !(opponent.moldbroken)
+    atkmult*=0.5 if (opponent.ability == :STEAMENGINE || opponent.ability == :WATERCOMPACTION) && (type == :WATER || :type == :FIRE) && !(opponent.moldbroken)
     atkmult*=0.5 if opponent.crested == :ALCREMIE && (type == :ICE || type == :FIRE || type == :WATER)
     atkmult*=1.5 if attacker.crested == :DARKRAI && opponent.status==:SLEEP
     atkmult*=0.33 if opponent.ability == :HEAVYMETAL && (type == :FIGHTING) && !(opponent.moldbroken)
@@ -2438,7 +2441,7 @@ class PokeBattle_Move
       when :GOTHITELLE then typecrest = true if type == :PSYCHIC || type == :DARK
       when :REUNICLUS then typecrest = true if type == :FIGHTING
       # @SWu these don't work for some reason?
-      when :CHERRIM then typecrest = true if type == :FIRE
+      when :SUNFLORA then typecrest = true if type == :FIRE
       when :GOODRA then  typecrest = true if type == :POISON
       when :PLUSLE then typecrest = true if type == :FIRE
       when :MINUN then typecrest = true if type == :ICE
@@ -2797,6 +2800,7 @@ class PokeBattle_Move
     
     pri = 0 if @zmove && @basedamage > 0
     pri += 1 if @move == :GRASSYGLIDE && (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0)
+    pri += 1 if @move == :POWERSURGE && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0)
     pri += 1 if @move == :QUASH && @battle.FE == :DIMENSIONAL
     pri += 1 if @battle.FE == :CHESS && attacker.pokemon && attacker.pokemon.piece == :KING
     pri += 1 if attacker.crested == :FERALIGATR && @basedamage != 0 && attacker.turncount == 1 # Feraligatr Crest
@@ -2823,7 +2827,7 @@ class PokeBattle_Move
 # cass's lazy field effect thingy section (i never said i knew what i was doing)
 ################################################################################
   def ignitecheck
-    return @battle.state.effects[:WaterSport] <= 0 && @battle.pbWeather != :RAINDANCE
+    return @battle.state.effects[:WaterSport] == 0 && @battle.pbWeather != :RAINDANCE
   end
 
   def suncheck

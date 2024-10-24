@@ -78,8 +78,7 @@ class PokeBattle_Battler
   attr_accessor :isbattlernew #currently only used in Deso for Crowd Field
   attr_accessor :forewarn
   attr_accessor :anticipation
-  attr_accessor :powerSurge
-  attr_accessor :giga
+  attr_accessor :anabolic
   attr_accessor :gear
 
   def inHyperMode?; return false; end
@@ -795,7 +794,7 @@ class PokeBattle_Battler
     return true if self.hasType?(:FLYING) && @effects[:Roost]==false
     return true if self.ability == :LEVITATE || self.ability == :SOLARIDOL || self.ability == :LUNARIDOL
     return true if self.hasWorkingItem(:AIRBALLOON)
-    return true if @effects[:MagnetRise]>0
+    return true if @effects[:MagnetRise]!=0
     return true if @effects[:Telekinesis]>0
     return false
   end
@@ -1526,20 +1525,20 @@ class PokeBattle_Battler
     return if !@pokemon
     if !@effects[:Transform]
       if (@pokemon.species == :CASTFORM)   ||
-        (@pokemon.species == :CHERRIM)    ||
-        #(@pokemon.species == :MELOETTA)   ||
-        (@pokemon.species == :AEGISLASH && self.form < 2)  ||
-        (@pokemon.species == :WISHIWASHI) ||
-        @pokemon.species == :DITTO        ||
-        @pokemon.species == :MEW          ||
-        @pokemon.species == :MORPEKO      ||
-        @pokemon.species == :CRAMORANT    ||
-        @giga
+          (@pokemon.species == :CHERRIM)    ||
+          #(@pokemon.species == :MELOETTA)   ||
+          (@pokemon.species == :AEGISLASH && self.form < 2)  ||
+          (@pokemon.species == :WISHIWASHI) ||
+          @pokemon.species == :DITTO        ||
+          @pokemon.species == :MEW          ||
+          @pokemon.species == :MORPEKO      ||
+          @pokemon.species == :CRAMORANT
         self.form=0
-        @giga=0
       elsif (@pokemon.species == :DARMANITAN) ||
         (@pokemon.species == :MINIOR)
         self.form=@startform
+      elsif self.isGiga?
+        @pokemon.makeUnmega
       end
     end
     pbUpdate(true)
@@ -1590,7 +1589,7 @@ class PokeBattle_Battler
         @battle.pbCommonAnimation("Rain",nil,nil)
       end
 
-      if (self.ability == :DESOLATELAND) && !@battle.state.effects[:HarshSunlight] && @battle.canSetWeather?
+      if (self.ability == :DESOLATELAND || self.crested == :SUNFLORA) && !@battle.state.effects[:HarshSunlight] && @battle.canSetWeather?
         @battle.state.effects[:HarshSunlight] = true
         @battle.state.effects[:HeavyRain] = false
         @battle.weatherduration=-1
@@ -1621,7 +1620,7 @@ class PokeBattle_Battler
         if @battle.state.effects[:HeavyRain]
           @battle.pbDisplay(_INTL("The heavy rain has lifted."))
           @battle.state.effects[:HeavyRain] = false
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM)) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1633,7 +1632,7 @@ class PokeBattle_Battler
         if @battle.state.effects[:HarshSunlight]
           @battle.pbDisplay(_INTL("The harsh sunlight faded!"))
           @battle.state.effects[:HarshSunlight] = false
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM)) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1644,7 +1643,7 @@ class PokeBattle_Battler
       if !@battle.pbCheckGlobalAbility(:DELTASTREAM) && !@battle.pbCheckGlobalAbility(:TEMPEST) && ![:Winds,:BlowingLeaves,:SwirlingLeaves].include?($game_screen.weather_type) && !((self.pbOwnSide.effects[:Tailwind]>0 || self.pbOpposingSide.effects[:Tailwind]>0) && [:MOUNTAIN,:SNOWYMOUNTAIN,:VOLCANICTOP,:SKY].include?(@battle.FE))
         if @battle.weather == :STRONGWINDS
           @battle.pbDisplay(_INTL("The mysterious air current has dissipated!"))
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM)) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1699,7 +1698,7 @@ class PokeBattle_Battler
     #Surges
     duration=5
     duration=8 if self.hasWorkingItem(:AMPLIFIELDROCK)
-    if self.ability == :ELECTRICSURGE && onactive && ((!Rejuv && @battle.canChangeFE?(:ELECTERRAIN)) || @battle.canChangeFE?([:ELECTERRAIN,:DRAGONSDEN])) && !(@battle.state.effects[:ELECTERRAIN] > 0)
+    if (self.ability == :ELECTRICSURGE || self.ability == :POWERWASH) && onactive && ((!Rejuv && @battle.canChangeFE?(:ELECTERRAIN)) || @battle.canChangeFE?([:ELECTERRAIN,:DRAGONSDEN])) && !(@battle.state.effects[:ELECTERRAIN] > 0)
       if @battle.FE == :FROZENDIMENSION
         @battle.pbDisplay(_INTL("The frozen dimension remains unchanged."))
       else
@@ -1764,7 +1763,7 @@ class PokeBattle_Battler
     end    
 
     # Weather Abilities
-    if (ability == :DRIZZLE) && onactive && @battle.weather!=:RAINDANCE
+    if (ability == :DRIZZLE || ability == :POWERWASH) && onactive && @battle.weather!=:RAINDANCE
       if @battle.state.effects[:HeavyRain]
         @battle.pbDisplay(_INTL("There's no relief from this heavy rain!"))
       elsif @battle.state.effects[:HarshSunlight]
@@ -1790,7 +1789,12 @@ class PokeBattle_Battler
         @battle.weatherduration=8 if self.hasWorkingItem(:DAMPROCK) || @battle.FE == :SKY
         @battle.weatherduration=-1 if $game_switches[:Gen_5_Weather]==true
         @battle.pbCommonAnimation("Rain",nil,nil)
-        @battle.pbDisplay(_INTL("{1}'s Drizzle made it rain!",pbThis))
+        if ability == :DRIZZLE
+          @battle.pbDisplay(_INTL("{1}'s Drizzle made it rain!",pbThis))
+        elsif ability == :POWERWASH
+          @battle.pbDisplay(_INTL("{1}'s Power Wash made it rain!",pbThis))
+          @battle.weatherduration=-1
+        end
       end
     end
 
@@ -2010,12 +2014,6 @@ class PokeBattle_Battler
         self.pbPartner.status=nil
         self.pbPartner.statusCount=0
         @battle.pbDisplay(_INTL("{1}'s Pastel Veil cured its partner's poison problem!",self.pbThis))
-      end
-    end
-    if self.ability == :FLASHFIRE && @battle.FE == :VOLCANICTOP
-      if !i.effects[:FlashFire]
-        i.effects[:FlashFire]=true
-        pbDisplay(_INTL("{1}'s {2} raised its Fire power!", i.pbThis,getAbilityName(i.ability)))
       end
     end
     # Intimidate
@@ -2840,8 +2838,8 @@ class PokeBattle_Battler
         end
       end
     end
-    if self.ability == :POWERSURGE && onactive
-      self.powerSurge = true;
+    if self.ability == :ANABOLIC && onactive
+      self.anabolic = true;
     end
     # Anticipation
     if self.ability == :ANTICIPATION && onactive
@@ -2927,7 +2925,7 @@ class PokeBattle_Battler
       end
     end
     # Quark Drive / Protosynthesis
-    if self.ability == :QUARKDRIVE && onactive
+    if (self.ability == :QUARKDRIVE || self.ability == :POWERWASH) && onactive
       aBoost = self.attack * 1.0+(0.5*@stages[PBStats::ATTACK])
       dBoost = self.defense * 1.0+(0.5*@stages[PBStats::DEFENSE])
       saBoost = self.spatk * 1.0+(0.5*@stages[PBStats::SPATK])
@@ -2991,6 +2989,11 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("{1} transformed into {2}!",oldname,choice.pbThis(true)))
         self.pbAbilitiesOnSwitchIn(true)
       end
+    end
+
+    if self.ability == :CRASHLANDING && onactive
+      @battle.pbDisplay(_INTL("{1} crashed into the battlefield!",self.pbThis))
+      self.pbUseMoveSimple(:METEORIMPACTOR)
     end
     
   end
@@ -3195,7 +3198,6 @@ class PokeBattle_Battler
     end
 
     if damage>0
-
       if target.ability == :AFTERMATH && !user.isFainted? && target.hp <= 0 && !@battle.pbCheckGlobalAbility(:DAMP)
         # @battle.scene.pbDamageAnimation(user,0)
         if @battle.FE == :CORROSIVEMIST
@@ -4143,6 +4145,8 @@ class PokeBattle_Battler
       target=:SingleNonUser
     elsif (@battle.FE == :PSYTERRAIN || @battle.state.effects[:PSYTERRAIN] > 0 ) && move.move == :EXPANDINGFORCE
       target=:AllOpposing
+    elsif (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0 ) && move.move == :POWERSURGE
+      target=:AllOpposing
     elsif @battle.FE == :FLOWERGARDEN5 && PBFields::MAXGARDENMOVES.include?(move.move)
       target=:AllOpposing
     elsif @battle.FE == :HAUNTED && (move.move == :MEANLOOK || move.move == :FIRESPIN)
@@ -4156,6 +4160,7 @@ class PokeBattle_Battler
     elsif self.ability == :WORLDOFNIGHTMARES && move.move == :NIGHTMARE
       target=:AllOpposing
     end
+    # @SWu TODO: run through all Giga moves to fix their targeting here
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
     if @battle.zMove[side][owner]==self.index && self.item == :KOMMONIUMZ
@@ -4455,7 +4460,7 @@ class PokeBattle_Battler
     end
     if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
       (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
-      @battle.FE == :PSYTERRAIN && !target.isAirborne?) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
+      @battle.FE == :PSYTERRAIN && !target.isAirborne? || (@battle.state.effects[:PSYTERRAIN] > 0 && !target.isAirborne?)) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
       if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
@@ -4643,7 +4648,7 @@ class PokeBattle_Battler
           @battle.pbDisplay(_INTL("{1}'s Air Balloon makes Ground moves miss!",target.pbThis))
           return false
         end
-        if target.effects[:MagnetRise]>0
+        if target.effects[:MagnetRise]!=0
           @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Magnet Rise!",target.pbThis))
           return false
         end
@@ -4970,8 +4975,25 @@ class PokeBattle_Battler
       pbCheckForm(basemove)
     end
     flags[:passedtrying]=true
-    if (self.crested == :WIGGLYTUFF && basemove.isSoundBased? && self.pbCanIncreaseStatStage?(PBStats::SPATK)) 
+
+    if (self.crested == :WIGGLYTUFF && basemove.isSoundBased? && self.pbCanIncreaseStatStage?(PBStats::SPATK))
       self.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+      @battle.pbDisplay(_INTL("{1}'s crest raised its special attack!",pbThis)) 
+    end
+    if (self.crested == :ELECTIVIRE)
+      if (basemove.move == :LIGHTSCREEN || basemove.move == :REFLECT || basemove.move == :PROTECT)
+        @battle.pbDisplay(_INTL("SHIELDS UP"))
+        self.pbIncreaseStat(PBStats::DEFENSE,1,abilitymessage:false)
+        self.pbIncreaseStat(PBStats::SPDEF,1,abilitymessage:false)
+      else
+        if basemove.punchMove?
+          @battle.pbDisplay(_INTL("POWERING UP"))
+          self.pbIncreaseStat(PBStats::ATTACK,1,abilitymessage:false)
+          @battle.pbDisplay(_INTL("POWERING UP"))
+        elsif basemove.pbIsSpecial?(basemove.type) && basemove.type == :ELECTRIC
+          self.pbIncreaseStat(PBStats::SPATK,1,abilitymessage:false)
+        end
+      end
     end
     return true
   end
@@ -5157,6 +5179,7 @@ class PokeBattle_Battler
         addleffect=100 if basemove.move == :SUNDAE && @battle.weather == :HAIL
         addleffect=100 if basemove.move == :SOLARFLARE && @battle.weather == :SUNNYDAY
         addleffect=100 if basemove.move == :MIRAGEBEAM && @battle.weather == :SUNNYDAY
+        addleffect=100 if basemove.move == :POWERSURGE && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0 )
 
 
         addleffect=100 if user.ability == :SILVERSCALES && (PBFields::WINDMOVES.include?(basemove.move) || PBFields::WINDRIDERMOVES.include?(basemove.move))
@@ -6180,7 +6203,7 @@ class PokeBattle_Battler
 ################################################################################
 
   def ignitecheck
-    return @battle.state.effects[:WaterSport] <= 0 && @battle.pbWeather != :RAINDANCE
+    return @battle.state.effects[:WaterSport] == 0 && @battle.pbWeather != :RAINDANCE
   end
 
   def suncheck

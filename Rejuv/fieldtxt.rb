@@ -1675,7 +1675,7 @@ FIELDEFFECTS = {
 	:naturePower => :ROCKSLIDE,
 	:mimicry => :ROCK,
 	:damageMods => {
-		1.5 => [:VITALTHROW, :CIRCLETHROW, :STORMTHROW, :OMINOUSWIND, :ICYWIND, :SILVERWIND, :TWISTER, :RAZORWIND, :FAIRYWIND, :THUNDER, :ERUPTION, :AVALANCHE, :HYPERVOICE, :MOUNTAINGALE],
+		1.5 => [:VITALTHROW, :CIRCLETHROW, :STORMTHROW, :OMINOUSWIND, :ICYWIND, :SILVERWIND, :TWISTER, :RAZORWIND, :SEABREEZE, :FAIRYWIND, :THUNDER, :ERUPTION, :AVALANCHE, :HYPERVOICE, :MOUNTAINGALE],
 	},
 	:accuracyMods => {
 		0 => [:THUNDER]
@@ -1684,7 +1684,7 @@ FIELDEFFECTS = {
 		"{1} was thrown partway down the mountain!" => [:VITALTHROW, :CIRCLETHROW, :STORMTHROW],
 		"The wind strengthened the attack!" => [:OMINOUSWIND, :ICYWIND, :SILVERWIND, :TWISTER, :RAZORWIND, :FAIRYWIND, :MOUNTAINGALE],
 		"The mountain strengthened the attack!" => [:THUNDER, :ERUPTION, :AVALANCHE],
-		"Yodelayheehoo~" => [:HYPERVOICE],
+		"Yodelayheehoo~" => [:HYPERVOICE,:ROUND,:ECHOEDVOICE],
 	},
 	:typeMods => {},
 	:typeAddOns => {},
@@ -2815,15 +2815,15 @@ FIELDEFFECTS = {
 	],
 	:graphic => ["Darchlight"],
 	:secretPower => "NEEDLEARM",
-	:naturePower => :DAZZLINGGLEAM,
+	:naturePower => :MOONBLAST,
 	:mimicry => :FAIRY,
 	:damageMods => {
 		1.5 => [:HEX, :MYSTICALFIRE, :SPIRITBREAK],
 		1.4 => [:ICEBEAM, :HYPERBEAM, :SIGNALBEAM, :AURORABEAM, :CHARGEBEAM, :PSYBEAM, :FLASHCANNON, :MIRRORBEAM, :MAGICALLEAF, :BUBBLEBEAM],
-		1.2 => [:DARKPULSE, :NIGHTDAZE, :MOONBLAST],
+		1.3 => [:DARKPULSE, :NIGHTDAZE, :MOONBLAST],
 	},
 	:accuracyMods => {
-		85 => [:SLEEPPOWDER, :POISONPOWDER, :STUNSPORE, :GRASSWHISTLE],
+		95 => [:SLEEPPOWDER, :POISONPOWDER, :STUNSPORE, :GRASSWHISTLE],
 	},
 	:moveMessages => {
 		"Magic aura amplified the attack!" => [:HEX, :MYSTICALFIRE, :SPIRITBREAK, :ICEBEAM, :HYPERBEAM, :SIGNALBEAM, :AURORABEAM, :CHARGEBEAM, :PSYBEAM, :FLASHCANNON, :MIRRORBEAM, :MAGICALLEAF, :BUBBLEBEAM],
@@ -2848,9 +2848,9 @@ FIELDEFFECTS = {
 	:typeEffects => {},
 	:changeCondition => {
 	},
-	:fieldChange => {
-		:FOREST => [:PURIFY],
-	},
+	# :fieldChange => {
+	# 	:FOREST => [:PURIFY],
+	# },
 	:dontChangeBackup => [],
 	:changeMessage => {
 		 "The evil spirits have been exorcised!" => [:PURIFY],
@@ -2996,11 +2996,11 @@ FIELDEFFECTS = {
 	:mimicry => :FIRE,
 	:damageMods => {
 		2.0 => [:PUNISHMENT, :SMOG, :DREAMEATER],
-		1.5 => [:BLASTBURN, :EARTPOWER, :INFERNOOVERDRIVE, :PRECIPICEBLADES, :INFERNO, :RAGINGFURY, :INFERNALPARADE],
+		1.5 => [:BLASTBURN, :EARTHPOWER, :INFERNOOVERDRIVE, :PRECIPICEBLADES, :INFERNO, :RAGINGFURY, :INFERNALPARADE, :CENTIFERNO],
 		0  => [:RAINDANCE, :HAIL],
 	},
 	:accuracyMods => {
-		0 => [:WILLOWISP, :DARKVOID, :INFERNO],
+		0 => [:WILLOWISP, :DARKVOID, :INFERNO, :PRECIPICEBLADES],
 	},
 	:moveMessages => {
 		"Hellish Suffering!" => [:PUNISHMENT, :SMOG, :DREAMEATER],
