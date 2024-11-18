@@ -736,7 +736,11 @@ class PokeBattle_Pokemon
       end 
     end
 
+
     # will need to handle urshifu at some point
+    if v.is_a?(Hash)
+      return true
+    end
 
     # owning giga stone handled in call pbCanGigaEvolve
     return true
@@ -758,7 +762,6 @@ class PokeBattle_Pokemon
   def isGiga?
     v = $cache.pkmn[@species].formData.dig(:GigaForm) if (Rejuv && !v)
     # @SWu: Do urshifu below
-    # v.values.each{|a| v=a if a.is_a?(Hash)} if v # filter for nested hashes aka Urshifu (if there is ever a mon with more than 1 megastone and a nested hash this needs rewriting)
     return true if v.is_a?(Hash) && v.values.include?(self.form)
     return false if v.is_a?(Hash)
     return v!=nil && self.form >= v
@@ -795,6 +798,7 @@ class PokeBattle_Pokemon
       when :VENUSUAR        then return true if move.move == :FRENZYPLANT
       when :BLASTOISE       then return true if move.move == :HYDROCANNON
       when :FERROTHORN      then return true if move.move == :POWERWHIP
+      when :URSHIFU         then return true if move.move == :WICKEDBLOW
     end
     return false
   end
@@ -1030,7 +1034,6 @@ class PokeBattle_Pokemon
 
   def healHp(amount)
     return if egg?
-    return if @hp == 0
     @hp = [@hp + amount, @totalhp].min
   end
 

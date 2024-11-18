@@ -9,7 +9,7 @@ class PokeBattle_Battler
   # End of Minior streamlining
 
   def pbCanStatus?(showMessages,ignorestatus=false) #catchall true/false for situations where one can't be statused
-    if ((@ability == :FLOWERVEIL || pbPartner.ability == :FLOWERVEIL) && (hasType?(:GRASS) || @battle.FE == :BEWITCHED)) && !(self.moldbroken)
+    if ((@ability == :FLOWERVEIL || pbPartner.ability == :FLOWERVEIL || @effects[:FlowerVeil]) && (hasType?(:GRASS) || @battle.FE == :BEWITCHED)) && !(self.moldbroken)
       @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
       return false
     end
@@ -681,7 +681,7 @@ end
         @battle.pbDisplay(_INTL("{1}'s {2} prevents Accuracy loss!",pbThis,abilityname)) if showMessages
         return false
       end
-      if (((ability == :FLOWERVEIL) || (pbPartner.ability == :FLOWERVEIL)) && (hasType?(:GRASS) || @battle.FE == :BEWITCHED)) && !(self.moldbroken)
+      if (((ability == :FLOWERVEIL) || (pbPartner.ability == :FLOWERVEIL) || self.effects[:FlowerVeil]) && (hasType?(:GRASS) || @battle.FE == :BEWITCHED)) && !(self.moldbroken)
         @battle.pbDisplay(_INTL("{1} is protected by Flower Veil!",pbThis)) if showMessages
         return false
       end

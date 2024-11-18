@@ -1,6 +1,7 @@
  class PokeBattle_Battle 
   attr_accessor :zettacounter
   attr_accessor :snapshot
+  attr_accessor :permWeather
 
   def canChangeFE?(newfield=[])
     newfield = [newfield] if newfield && !newfield.is_a?(Array)
@@ -53,8 +54,10 @@
         end
       end
     when :KLINKLANG
-      @battlers[index].effects[:MagnetRise]=8
-      pbAnimation(:MAGNETRISE,@battlers[index],nil) # Magnet Rise animation
+      pbDisplay(_INTL("OVERCLOCKING SPEED"))
+      @battlers[index].effects[:MagnetRise]=-1
+      pbAnimation(:MAGNETRISE,@battlers[index],nil)
+      @battle.pbDisplay(_INTL("{1} levitates with electromagnetism!",@battlers[index].pbThis))
     when :THIEVUL
       if !@battlers[index].pbOpposing1.isFainted?
         opposing=@battlers[index].pbOpposing1
@@ -128,11 +131,17 @@
     case @battlers[index].species
     when :FURRET
       attacker = @battlers[index]
-      attacker.effects[:UsingSubstituteRightNow]=true
-      attacker.battle.scene.pbAnimation(:SUBSTITUTE,attacker,attacker,1)  #pbShowAnimation(@move,attacker,nil,hitnum,alltargets,true)
-      attacker.effects[:UsingSubstituteRightNow]=false
-      attacker.effects[:Substitute]=sublife
-      pbDisplay(_INTL("{1} put up a substitute!",battlers[index].pbThis))
+      sublife=[(attacker.totalhp/4.0).floor,1].max
+      if attacker.hp<=sublife
+        @battle.pbDisplay(_INTL("It was too weak to make a substitute!"))
+      else
+        attacker.pbReduceHP(sublife,false,false)
+        attacker.effects[:UsingSubstituteRightNow]=true
+        attacker.battle.scene.pbAnimation(:SUBSTITUTE,attacker,attacker,1)  #pbShowAnimation(@move,attacker,nil,hitnum,alltargets,true)
+        attacker.effects[:UsingSubstituteRightNow]=false
+        attacker.effects[:Substitute]=sublife
+        pbDisplay(_INTL("{1} put up a substitute!",battlers[index].pbThis))
+      end
     when :DELCATTY
       pbDisplay(_INTL("{1} gained strength from The Power of Friendship!",battlers[index].pbThis))
     when :REUNICLUS
@@ -216,6 +225,69 @@
     end
   end
 
+  def runstarterskills()
+    for i in 0...4
+      pkmn = @battlers[i]
+      party = @battle.pbParty(pkmn.index)
+      monindex = party.index(pkmn.pokemon)
+      trainer = pbPartyGetOwner(pkmn.index,monindex)
+      next if trainer.nil?
+      next if trainer.trainereffect.nil?
+      next if trainer.trainereffect[:effectmode].nil?
+      # run starter skills
+      if trainer.trainereffect[-1]
+        trainereffect = trainer.trainereffect[-1]
+        if trainereffect[:message] && trainereffect[:message] != ""
+          pbDisplayPaused(_INTL(trainereffect[:message]))
+        end
+        if trainereffect[:setWeather] && trainereffect[:setWeather] != @weather
+          weather = trainereffect[:setWeather][0]
+          @weather = weather
+          @weatherduration= trainereffect[:setWeather][1]
+          weatherMessage = trainereffect[:setWeather][2] if weatherMessage
+          primal = trainereffect[:setWeather][3]
+          weatherText = ""
+          if (weather == :RAINDANCE)
+            weatherText = "Rain"
+          elsif (weather == :SUNNYDAY)
+            weatherText = "Sunny"
+          elsif (weather == :HAIL)
+            weatherText = "Hail"
+          elsif (weather == :SANDSTORM)
+            weatherText = "Sandstorm"
+            weatherMessage = "A sandstorm kicked up!" if !weatherMessage
+          elsif (weather == :STRONGWINDS)
+            weatherText = "Wind"
+          end
+          if (primal)
+            if (weather == :SUNNYDAY)
+              @state.effects[:HarshSunlight] = true
+            elsif (weather == :RAINDANCE)
+              @state.effects[:HeavyRain] = true
+            elsif (weather == :HAIL)
+              @state.effects[:AbsoluteZero] = true
+            elsif (weather == :SANDSTORM)
+              @state.effects[:DesertNova] = true
+            elsif (weather == :STRONGWINDS)
+            end
+            @permWeather = true
+          end
+          @weatherbackup = weather
+          @weatherbackupanim = weatherText
+          pbCommonAnimation(weatherText)
+          pbDisplayBrief(_INTL("{1}", weatherMessage)) if weatherMessage
+        end
+        if trainereffect[:fieldChange] && trainereffect[:fieldChange][0] != @field.effect
+          pbAnimation(:MAGICROOM,pkmn,nil)
+          setField(trainereffect[:fieldChange][0],trainereffect[:fieldChange][2])
+          fieldmessage = (trainereffect[:fieldChange][1] != "") ? trainereffect[:fieldChange][1] : "The field was changed!"
+          pbDisplay(_INTL("{1}",fieldmessage))
+        end
+      end
+      return
+    end
+  end
+
   def runtrainerskills(pkmn,delay=false)
     party = @battle.pbParty(pkmn.index)
     monindex = party.index(pkmn.pokemon)
@@ -287,7 +359,6 @@
       weather = trainereffect[:setWeather][0]
       @weather = weather
       @weatherduration= trainereffect[:setWeather][1]
-      # weatherMessage = trainereffect[:setWeather][2]
       weatherText = ""
       if (weather == :RAINDANCE)
         weatherText = "Rain"
@@ -301,7 +372,6 @@
         weatherText = "Wind"
       end
       pbCommonAnimation(weatherText)
-      # pbDisplayBrief(_INTL("{1}", weatherMessage))
     end
     if trainereffect[:typeChange]
       pkmn.type1 = trainereffect[:typeChange][0]
@@ -310,7 +380,18 @@
       pbDisplay(_INTL(typechangeMessage,pkmn.pbThis)) if typechangeMessage
     end
     trainereffect[:pokemonEffect].each_pair {|effect,effectval|
-      pkmn.effects[effect] = effectval[0]
+      val = effectval[0]
+      val = monindex if effect == :MeanLook
+      if (trainereffect[:pokemonEffect] == :MagicGuard)
+        abil1 = effectval[3]
+        abil2 = effectval[4]
+        if (!abil2)
+          pkmn.ability = abil1
+        elsif (pkmn.ability != abil1)
+          pkmn.ability = abil2
+        end
+      end
+      pkmn.effects[effect] = val
       pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
       effectmessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
       pbDisplay(_INTL(effectmessage,trainer.name,pkmn.pbThis(true)))
@@ -385,10 +466,6 @@
         i.statdownanimplayed=false
       end
     } if trainereffect[:opposingSideStatChanges]
-    if trainereffect[:applyStatus]
-      pkmn.status = trainereffect[:applyStatus][0]
-      pbDisplay(_INTL(trainereffect[:applyStatus][2])) if trainereffect[:applyStatus][2]
-    end
     if trainereffect[:instantMove]
       pkmn.pbUseMoveSimple(trainereffect[:instantMove][0],-1,trainereffect[:instantMove][1],false,true)
     end
@@ -403,6 +480,20 @@
     if trainereffect[:delayedaction]
       trainer.trainerdelayedeffect = trainereffect[:delayedaction]
       trainer.trainerdelaycounter = (trainereffect[:delayedaction][:delay])
+    end
+    if trainereffect[:applyStatus]
+      status = trainereffect[:applyStatus][0]
+      targetSelf = trainereffect[:applyStatus][1]
+      val = trainereffect[:applyStatus][2]
+      message = trainereffect[:applyStatus][3]
+      if (status == :BURN)
+        target = targetSelf ? pkmn : pkmn.pbOpposing1
+        if (targetSelf || target.pbCanBurn?(false))
+          target.pbBurn(pkmn)
+          pbDisplay(_INTL("{1} was burned!",target.pbThis))
+        end
+      end
+      pbDisplay(_INTL(message)) if message
     end
     @scene.pbHideOpponent if showtrainer
   end

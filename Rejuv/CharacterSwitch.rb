@@ -274,6 +274,15 @@ def characterSwitch(character)
         $Trainer.id = trainerinfo[0].id
         $Trainer.party = trainerinfo[2]
         $PokemonBag.pbStoreItem(:SILVCREST,1)
+        $PokemonBag.pbStoreItem(:MEGARING,1)
+        $PokemonBag.pbStoreItem(:GIGABAND,1)
+        $PokemonBag.pbStoreItem(:CORVIKNITE,1)
+        $PokemonBag.pbStoreItem(:ASSAULTVEST,1)
+        $PokemonBag.pbStoreItem(:ROCKYHELMET,1)
+        $PokemonBag.pbStoreItem(:CHOICEBAND,1)
+        $PokemonBag.pbStoreItem(:CHOICESPECS,1)
+        $PokemonBag.pbStoreItem(:CHOICESCARF,1)
+        $PokemonBag.pbStoreItem(:SITRUSBERRY,1)
         $PokemonBag.pbStoreItem(:PUPPETCOIN,1) if $game_variables[:PlayerDataBackup][6].pbHasItem?(:PUPPETCOIN)
   
       when "Ren - Pyramid"

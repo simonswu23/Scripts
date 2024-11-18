@@ -13954,7 +13954,7 @@ MOVEHASH = {
 	:basedamage => 75,
 	:accuracy => 100,
 	:maxpp => 10,
-	:target => :SingleNonUser,
+	:target => :AllOpposing,
 	:healingmove => true,
 	:desc => "The user attacks the target with a life-draining magic, healing itself and its allies."
 },
@@ -14262,11 +14262,11 @@ MOVEHASH = {
 	:ID => 929,
 	:name => "Self-Destruct",
 	:function => 0x0E0,
-	:type => :QMARKS,
+	:type => :NORMAL,
 	:category => :physical,
 	:basedamage => 200,
 	:accuracy => 100,
-	:maxpp => 1,
+	:maxpp => 999,
 	:target => :AllNonUsers,
 	:kingrock => true,
 	:desc => "called for Aftermath."
@@ -14312,6 +14312,49 @@ MOVEHASH = {
 	:desc => "Erick Signature move -- Rising Voltage x Expanding Force x Grassy Glide" 
 },
 
+:TACHYONCUTTER => {
+	:ID => 932,
+	:name => "Tachyon Cutter",
+	:function => 0x0BD,
+	:type => :STEEL,
+	:category => :special,
+	:basedamage => 50,
+	:accuracy => 100,
+	:maxpp => 10,
+	:target => :SingleNonUser,
+	:kingrock => true,
+	:desc => "Twice"
+},
+
+:ZCONVERSION => {
+	:ID => 933,
+	:name => "Z-Conversion",
+	:function => 0x05E,
+	:type => :NORMAL,
+	:category => :status,
+	:basedamage => 0,
+	:accuracy => 0,
+	:maxpp => 1,
+	:effect => 100,
+	:target => :User,
+  :desc => "Z Conversion Helper"
+},
+
+:MATCHAGOTCHA => {
+	:ID => 934,
+	:name => "Matcha Gotcha",
+	:function => 0x0DD,
+	:type => :GRASS,
+	:category => :special,
+	:basedamage => 80,
+	:accuracy => 90,
+	:effect => 20,
+	:maxpp => 10,
+	:target => :AllOpposing,
+	:kingrock => true,
+	:desc => "GOTCHA"
+},
+
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14325,8 +14368,8 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,
-	:effect => 00,
-	:target => :SingleOpposing,
+	:effect => 100,
+	:target => :AllOpposing,
 	:highcrit => true,
 	:desc => "The target is hit by a strike of magic light from the sky, leaving them confused."
 },
@@ -14686,7 +14729,7 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 5,
 	:giga => true,
-	:target => :SingleOpposing,
+	:target => :SingleNonUser,
 	:contact => true,
 	:effect => 100,
 	:desc => "Kung Fu"
@@ -14726,8 +14769,8 @@ MOVEHASH = {
 	:function => 0x0C0,
 	:type => :WATER,
 	:category => :special,
-	# hits five times
-	:basedamage => 50,
+	# hits four - five times
+	:basedamage => 35,
 	:accuracy => 0,
 	:maxpp => 5,
 	:target => :AllOpposing,
@@ -14748,4 +14791,17 @@ MOVEHASH = {
   	:desc => "Ferrothorn"
 },
 
+:ONEBLOW => {
+	:ID => 2029,
+	:name => "One Blow",
+	:function => 0x0AD,
+	:type => :DARK,
+	:category => :physical,
+	:basedamage => 120,
+	:accuracy => 0,
+	:maxpp => 5,
+	:contact => true,
+	:target => :SingleNonUser,
+  :desc => "Urshifu SS"
+},
 }

@@ -320,11 +320,14 @@ class PokeBattle_AI
 			@opponent = pbCloneBattler(0)	#Copy the player's mon cuz it's the only one there!
 			$ai_log_data[@index].expected_damage.push((checkAIdamage()*100.0/@attacker.totalhp).round(1)) if $INTERNAL
 			$ai_log_data[@index].expected_damage_name.push(getMonName(@opponent.species)) if $INTERNAL
+			if @opponent.hp == 0
+				return
+			end
 			#get the moves the pokemon can choose, in case of choice item/encore/taunt/torment
 			for moveindex in 0...@attacker.moves.length
 				next if !@battle.pbCanChooseMove?(@index,moveindex,false)
 				@move = pbChangeMove(@attacker.moves[moveindex],@attacker)
-				if @move.basedamage != 0	
+				if @move.basedamage != 0
 					@mondata.roughdamagearray[0][moveindex] = [(pbRoughDamage*100)/(@opponent.hp),110].min
 					#The old function makes some adjustments for two-turn moves here. I'm leaving that for later.
 				else
@@ -1170,7 +1173,7 @@ class PokeBattle_AI
 				end
 			end
 			if ioncheck && @move.type == :NORMAL
-				score*=0.3 if [:LIGHTNINGROD,:VOLTABSORB,:MOTORDRIVE].include?(@opponent.ability) || @opponent.pbPartner.ability == :LIGHTNINGROD
+				score*=0.3 if [:LIGHTNINGROD,:VOLTABSORB,:MOTORDRIVE,:STORMHEAL].include?(@opponent.ability) || @opponent.pbPartner.ability == :LIGHTNINGROD
 			end
 			score*=0.2 if widecheck && [:AllOpposing, :AllNonUsers].include?(@move.target)
 			score*=0.2 if powdercheck && @move.pbType(@attacker)==:FIRE
@@ -2825,9 +2828,9 @@ class PokeBattle_AI
 				end
 			when 0x13f # Venom Drench
 				if @opponent.status== :POISON || @battle.FE == :CORROSIVE || @battle.FE == :CORROSIVEMIST || @battle.FE == :WASTELAND || @battle.FE == :MURKWATERSURFACE
-					miniscore = oppstatdrop([1,0,1,0,1,0,0]) 
+					miniscore = oppstatdrop([2,0,2,0,2,0,0]) 
 				else
-					miniscore = 0
+					miniscore = oppstatdrop([1,0,1,0,1,0,0]) 
 				end
 			when 0x140 # Spiky Shield
 				miniscore = protecteffectcode()
@@ -6136,7 +6139,7 @@ class PokeBattle_AI
 		case @opponent.ability
 			when :SANDVEIL
 				miniscore*=1.1 if @battle.pbWeather!=:SANDSTORM
-			when :VOLTABSORB, :LIGHTNINGROD
+			when :VOLTABSORB, :LIGHTNINGROD, :STOMRHEAL
 				miniscore*=3 if @move.pbType(@attacker)==:ELECTRIC && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:ELECTRIC && PBTypes.twoTypeEff((:ELECTRIC),@opponent.type1,@opponent.type2)>4
 			when :WATERABSORB, :STORMDRAIN, :DRYSKIN
@@ -6146,10 +6149,10 @@ class PokeBattle_AI
 			when :FLASHFIRE
 				miniscore*=3 if @move.pbType(@attacker)==:FIRE && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:FIRE && PBTypes.twoTypeEff((:FIRE),@opponent.type1,@opponent.type2)>4
-			when :LEVITATE, :LUNARIDOL, :SOLARIDOL, :DETRITOVORE
+			when :LEVITATE, :LUNARIDOL, :SOLARIDOL, :EARTHEATER
 				miniscore*=3 if @move.pbType(@attacker)==:GROUND && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:GROUND && PBTypes.twoTypeEff((:GROUND),@opponent.type1,@opponent.type2)>4
-			when :DETRITOVORE, :PASTELVEIL
+			when :PASTELVEIL
 				miniscore*=3 if @move.pbType(@attacker)==:POISON && damcount==1
 				miniscore*=2 if @move.pbType(@attacker)==:POISON && PBTypes.twoTypeEff((:POISON),@opponent.type1,@opponent.type2)>4
 			when :WONDERGUARD
@@ -6849,7 +6852,7 @@ class PokeBattle_AI
 		miniscore*=1.5 if (@attacker.ability == :LIGHTNINGROD || @attacker.ability == :VOLTABSORB) && @attacker.hp.to_f < 0.6*@attacker.totalhp && maxnormal
 		miniscore*=1.1 if @attacker.hasType?(:GROUND)
 		if @battle.doublebattle
-			miniscore*=1.2 if [:MOTORDRIVE, :LIGHTNINGROD, :VOLTABSORB].include?(@attacker.pbPartner.ability)
+			miniscore*=1.2 if [:MOTORDRIVE, :LIGHTNINGROD, :VOLTABSORB, :STORMHEAL].include?(@attacker.pbPartner.ability)
 			miniscore*=1.1 if @attacker.pbPartner.hasType?(:GROUND)
 		end
 		miniscore*=0.5 if !maxnormal
@@ -6934,7 +6937,7 @@ class PokeBattle_AI
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:FIRE || bestmove2.pbType(@attacker.pbOpposing2) ==:FIRE
 		elsif @opponent.ability == :STORMDRAIN || @opponent.ability == :DRYSKIN || @opponent.ability == :WATERABSORB
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:WATER || bestmove2.pbType(@attacker.pbOpposing2) ==:WATER
-		elsif @opponent.ability == :MOTORDRIVE || @opponent.ability == :LIGHTNINGROD || @opponent.ability == :VOLTABSORB
+		elsif @opponent.ability == :MOTORDRIVE || @opponent.ability == :LIGHTNINGROD || @opponent.ability == :VOLTABSORB || @opponent.ability == :STORMHEAL
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:ELECTRIC ||bestmove2.pbType(@attacker.pbOpposing2) ==:ELECTRIC
 		elsif @opponent.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GRASS
@@ -7386,7 +7389,7 @@ class PokeBattle_AI
 		healing += 0.125 if attacker.crested == :GOTHITELLE && attacker.type1 == :PSYCHIC
 		healing += 0.0625 if attacker.crested == :VESPIQUEN && attacker.effects[:VespiCrest] == false
 		healing += (attacker.pbEnemyFaintedPokemonCount*0.05) if attacker.crested == :SPIRITOMB
-		healing += 0.0625 if attacker.ability == :RAINDISH && @battle.pbWeather== :RAINDANCE
+		healing += 0.0625 if (attacker.ability == :RAINDISH || attacker.ability == :STORMHEAL) && @battle.pbWeather== :RAINDANCE
 		healing += 0.0625 if (attacker.crested == :CASTFORM && attacker.form == 2) && @battle.pbWeather== :RAINDANCE
 		healing += 0.0625 if attacker.ability == :ICEBODY && (@battle.pbWeather== :HAIL || @battle.FE == :ICY || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :FROZENDIMENSION)
 		healing += 0.0625 if attacker.crested == :DRUDDIGON && @battle.pbWeather== :SUNNYDAY
@@ -7394,11 +7397,11 @@ class PokeBattle_AI
 		healing += 0.125 if (attacker.status == :POISON || @battle.FE == :CORROSIVE || @battle.FE == :WASTELAND) && (attacker.ability == :POISONHEAL || attacker.crested == :ZANGOOSE)
 		healing += 0.0625 if Rejuv && (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0) && attacker.ability == :SAPSIPPER
 		healing += 0.0625 if (@battle.FE == :GRASSY || @battle.state.effects[:GRASSY] > 0) && !attacker.isAirborne? && !PBStuff::TWOTURNMOVE.include?(attacker.effects[:TwoTurnAttack])
-		healing += 0.0625 if Rejuv && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN ] > 0) && attacker.ability == :VOLTABSORB
+		healing += 0.0625 if Rejuv && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN ] > 0) && (attacker.ability == :VOLTABSORB || attacker.ability == :STORMHEAL)
 		if @battle.FE != :INDOOR
 			healing += 0.0625 if @battle.FE == :RAINBOW && attacker.status == :SLEEP
 			healing += 0.0625 if @battle.FE == :FOREST && attacker.ability == :SAPSIPPER
-			healing += 0.0625 if @battle.FE == :SHORTCIRCUIT && attacker.ability == :VOLTABSORB
+			healing += 0.0625 if @battle.FE == :SHORTCIRCUIT && (attacker.ability == :VOLTABSORB || attacker.ability == :STORMHEAL)
 			healing += 0.0625 if (@battle.FE == :WATERSURFACE || @battle.FE == :UNDERWATER) && attacker.ability == :WATERABSORB
 			healing += 0.0625 if @battle.FE == :BEWITCHED && attacker.hasType?(:GRASS) && !attacker.isAirborne?
 			healing *= 0.67 if @battle.FE == :BACKALLEY
@@ -7428,13 +7431,19 @@ class PokeBattle_AI
 				when :LIGHTNINGROD,:MOTORDRIVE			then return -1 if type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC))
 				when :DRYSKIN 							then return -1 if type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)) && opponent.effects[:HealBlock]==0
 				when :VOLTABSORB 						then return -1 if type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC)) && opponent.effects[:HealBlock]==0
+				when :STORMHEAL 						then return -1 if type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC)) && opponent.effects[:HealBlock]==0
 				when :WATERABSORB 						then return -1 if type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)) && opponent.effects[:HealBlock]==0
 				when :BULLETPROOF 						then return 0 if (PBStuff::BULLETMOVE).include?(id)
 				when :FLASHFIRE 						then return -1 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))
+				when :HEATPROOF             then return 0 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))
 				when :MAGMAARMOR 						then return 0 if (type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))) && (@battle.FE == :DRAGONSDEN || @battle.FE == :INFERNAL || @battle.FE == :VOLCANICTOP)
 				when :TELEPATHY 						then return 0 if  move.basedamage>0 && opponent.index == attacker.pbPartner.index
-				when :DETRITOVORE						then return -1 if type == :GROUND || type == :POISON
+				when :EARTHEATER						then return -1 if type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND))
 			end
+		end
+		
+		if ( @opponent.ability == :PASTELVEIL || @opponent.pbPartner.ability == :PASTELVEIL)
+			return 0 if type == :POISON || (!secondtype.nil? && secondtype.include?(:POISON))
 		end
 		case opponent.crested
 			when :WHISCASH					 		then return -1 if type == :GRASS || (!secondtype.nil? && secondtype.include?(:GRASS))
@@ -7675,7 +7684,7 @@ class PokeBattle_AI
 				abilityscore*=1.3 if opponent.stages[PBStats::SPEED]<2
 			when :SANDVEIL
 				abilityscore*=1.3 if @battle.pbWeather== :SANDSTORM
-			when :VOLTABSORB, :LIGHTNINGROD, :MOTORDRIVE
+			when :VOLTABSORB, :LIGHTNINGROD, :MOTORDRIVE, :STORMHEAL
 				for i in attacker.moves
 					next if i.nil?
 					elecmove=i if i.pbType(attacker)==:ELECTRIC
@@ -8766,7 +8775,7 @@ class PokeBattle_AI
 					weatherscore+=80 if (i.ability == :SLUSHRUSH) || (i.item == :EMPCREST && i.species == :EMPOLEON)
 					weatherscore+=30 if (i.ability == :ICEFACE) && i.form == 1
 				when :RAINDANCE
-					weatherscore+=50 if (i.ability == :DRYSKIN) || (i.ability == :HYDRATION) || (i.ability == :RAINDISH)
+					weatherscore+=50 if (i.ability == :DRYSKIN) || (i.ability == :HYDRATION) || (i.ability == :RAINDISH) || i.ability == :STORMHEAL
 					weatherscore+=80 if (i.ability == :SWIFTSWIM)
 				when :SUNNYDAY
 					weatherscore-=40 if (i.ability == :DRYSKIN)
@@ -8933,7 +8942,7 @@ class PokeBattle_AI
 							end
 						end
 					when :TRACE 
-						if [:WATERABSORB,:VOLTABSORB,:STORMDRAIN,:MOTORDRIVE,:FLASHFIRE,:LEVITATE,:LUNARIDOL,:SOLARIDOL,:LIGHTNINGROD,
+						if [:WATERABSORB,:VOLTABSORB,:STORMHEAL,:STORMDRAIN,:MOTORDRIVE,:FLASHFIRE,:LEVITATE,:LUNARIDOL,:SOLARIDOL,:LIGHTNINGROD,
 							:SAPSIPPER,:DRYSKIN,:SLUSHRUSH,:SANDRUSH,:SWIFTSWIM,:CHLOROPHYLL,:SPEEDBOOST,:DETRITOVORE,
 							:WONDERGUARD,:PRANKSTER].include?(@opponent.ability) || 
 							(pbAIfaster?() && ((@opponent.ability == :ADAPTABILITY) || (@opponent.ability == :DOWNLOAD) || (@opponent.ability == :PROTEAN) || (@opponent.ability == :LIBERO))) || 
@@ -9104,7 +9113,7 @@ class PokeBattle_AI
 				  	fieldscore+=25 if (i.ability == :TRANSISTOR)
 				  	fieldscore+=25 if i.hasType?(:ELECTRIC)
 				  	fieldscore+=20 if Rejuv && (i.ability == :STATIC)
-				  	fieldscore+=15 if Rejuv && (i.ability == :VOLTABSORB)
+				  	fieldscore+=15 if Rejuv && (i.ability == :VOLTABSORB || i.ability == :STORMHEAL)
 				when :GRASSY
 				  	fieldscore+=30 if (i.ability == :GRASSPELT)
 				  	fieldscore+=30 if (i.ability == :COTTONDOWN)
@@ -9227,7 +9236,7 @@ class PokeBattle_AI
 				  	fieldscore+=25 if (i.ability == :TECHNICIAN)
 				  	fieldscore+=25 if (i.ability == :GALVANIZE)
 				when :SHORTCIRCUIT
-				  	fieldscore+=20 if (i.ability == :VOLTABSORB)
+				  	fieldscore+=20 if (i.ability == :VOLTABSORB || i.ability == :STORMHEAL)
 				  	fieldscore+=20 if (i.ability == :STATIC)
 				  	fieldscore+=25 if (i.ability == :GALVANIZE)
 				  	fieldscore+=50 if (i.ability == :SURGESURFER)
@@ -10548,9 +10557,6 @@ class PokeBattle_AI
 				end
 			end
 		end
-		if type == :POISON && (opponent.ability == :PASTELVEIL || opponent.pbPartner.ability == :PASTELVEIL) && ([:MISTY,:RAINBOW].include?(@battle.FE) || @battle.state.effects[:MISTY] > 0)
-			basedamage = (basedamage*0.5).round
-		end
 		for terrain in [:ELECTERRAIN,:GRASSY,:MISTY,:PSYTERRAIN]
 			if @battle.state.effects[terrain] > 0
 				overlaymult = move.moveOverlayBoost(terrain)
@@ -10948,7 +10954,7 @@ class PokeBattle_AI
 			############ MISC CHECKS ############
 			# Charge
 			if attacker.effects[:Charge]>0 && type == :ELECTRIC
-				basedamage=(basedamage*2.0).round
+				basedamage=(basedamage*1.5).round
 			end
 			# Helping Hand
 			if attacker.effects[:HelpingHand]
@@ -11612,6 +11618,15 @@ class PokeBattle_AI
 				dmgs=[200,80,60,50,40]
 				ppleft=[move.pp-1,4].min   # PP is reduced before the move is used
 				return dmgs[ppleft]
+			when 0x90E # Last Respects
+				base = 1
+				party=@battle.pbParty(attacker.index)
+				# Count Fainted Pokemon
+				for i in 0...party.length
+					next if !party[i] || party[i].isEgg?
+					base += 1 if party[i].hp == 0
+				end
+				return (base + 1) * 50
 			when 0x98 # Flail / Reversal
 				return [attacker.happiness,250].min if attacker.crested == :LUVDISC
 				return 200 if @battle.FE == :CONCERT4
@@ -11654,7 +11669,7 @@ class PokeBattle_AI
 				return basedamage*1.5
 			when 0xBD, 0xBE # Double Kick, Twineedle
 				return basedamage*2
-			when 0xBF # Triple Kick
+			when 0xBF, 0x90A # Triple Kick, Finale
 				return basedamage*6
 			when 0xC0 # Fury Attack
 				if attacker.ability == :SKILLLINK

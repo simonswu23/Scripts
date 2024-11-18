@@ -10447,9 +10447,30 @@ ITEMHASH = {
 },
 
 :FERROTHORNITE => {
-	:ID => 2032,
+	:ID => 2036,
 	:name => "Ferrothorn Core",
 	:desc => "One variety of Giga Stone. This stone will enable Ferrothorn to Giga Evolve in battle.",
+	:price => 999,
+	:crystal => true,
+	:noUseInBattle => true,
+	:noUse => true,
+	:keyitem => true,
+},
+
+:ABSOLITEE => {
+	:ID => 2037,
+	:name => "Erin's Absolite",
+	:desc => "For Erin",
+	:price => 999,
+	:crystal => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:BASTIODONITE => {
+	:ID => 2038,
+	:name => "Bastiodon Core",
+	:desc => "One variety of Giga Stone. This stone will enable Bastiodon to Giga Evolve in battle.",
 	:price => 999,
 	:crystal => true,
 	:noUseInBattle => true,

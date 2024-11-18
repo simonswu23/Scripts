@@ -1,4 +1,9 @@
 ## General
+
+### Story
+  - Move relearner automatically relearns egg moves
+
+### Battle
   -  Giga Evolution Changes
     - Requires Giga Band (not MegaZRing) key item, given to player by Crawli after Jynobi Pass battle
     - Giga evolutions now require no held item (Giga stone still required to be in bag)
@@ -40,6 +45,8 @@
 
   - Terrains (Grassy, Electric, Psychic, Misty) no longer overlap with each other (just like in main series games)
 
+  - Charge now lasts for the entire active duration of the user
+
 ## Pokemon
 
 ### Giga Evolution
@@ -72,7 +79,7 @@
 - Blastoise
   - Typing: Water/Steel
   - Ability: Bulletproof
-  - Stats: 158, 73, 130, 115, 85, 48
+  - Stats: 158, 63, 130, 115, 105, 38
   - Giga Move: Cannonade
     - basemove: Hydro Cannon
     - Type: Water
@@ -111,7 +118,7 @@
 - Meowth
   - Typing: Normal/Steel
   - Ability: Gold Envy
-  - Stats: 200, 85, 75, 60, 60, 60
+  - Stats: 120, 85, 75, 60, 60, 60
   - Giga Move: Gold Rush
     - basemove: Pay Day
     - Type: Steel
@@ -174,16 +181,16 @@
 
 - Eevee
   - Typing: Normal/Fairy
-  - Ability: Cute Aura*
-  - Stats: 220, 75, 60, 75, 85, 75
-  - Giga Move:
+  - Ability: Cute Aura
+  - Stats: 110, 75, 60, 75, 85, 75
+  - Giga Move: Cuddlestorm
     - basemove: Charm
     - Type: Fairy
     - category: physical
     - BP: 120
     - acc: 0
     - target: Single Target
-    - effect: Lowers the target's attack and special attack by 2
+    - effect: Lowers the target's attack and special attack by 1, and infatuates them
 
 - Snorlax
   - Typing: Normal/Ground 
@@ -226,7 +233,7 @@
 - Vanilluxe
   - Typing: Ice/Flying
   - Ability: Snow Cloak
-  - Stats: 142, 95, 85, 110, 95, 79
+  - Stats: 142, 85, 85, 130, 95, 69
   - Giga Move: Flash Freeze
     - basemove: Sheer Cold
     - Type: Flying
@@ -470,13 +477,13 @@
   - Typing: Fighting/Dark
   - Ability: Adaptability
   - Stats: 200, 150, 100, 43, 60, 97
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: One Blow
+    - Type: Dark
+    - category: physical
+    - BP: 120
+    - acc: 0
+    - target: single target
+    - effect: 100% chance to crit, breaks through protect fully
 
 - Urshifu (RS)
   - Typing: Fighting/Water
@@ -503,7 +510,7 @@
 
 - Empoleon Line
   - ability: Defiant -> Competitive
-  - line learns Wish, Strength Sap, Baton Pass, Play Rough, Chain Drain, Dazzling Gleam
+  - Piplup, Prinplup, Empoleon learns Ice Beam at levels 36, 42, 46 respectively (instead of Mist)
     
 - Serperior
   - added Dragon typing
@@ -516,6 +523,7 @@
 - Mamoswine Line
   - added Ice Body as ability for Swinub and Piloswine
   - added Slush Rush as ability for Mamoswine
+  - Mamoswine learns Ice Shard at level 1
     
 - Volcarona Line
   - added Flash Fire as ability for Larvesta and Volcarona
@@ -584,6 +592,7 @@
  
 - Swampert
   - ability: Damp -> Regenerator
+  - learns Wave Crash at level 68
  
 - Eternatus
   - ability: Pressure -> Levitate
@@ -598,7 +607,7 @@
   - onix base stat buffs: 70, 70, 160, 30, 45, 70
   - steelix base stat buffs: 115, 85, 200, 55, 65, 30
   - mega base stat buffs: 115, 135, 230, 55, 95, 20
-  - mega ability: Sand Force -> Adamantine Body
+  - mega ability: Sand Force -> Earth Eater
  
 - Thievul Line
   - added Unnerve as ability for Nickit, Thievul
@@ -678,9 +687,10 @@
 
 - Absol
   - base stat buffs: 65, 130, 60, 105, 60, 85
-  - mega base stat buffs: 65, 190, 60, 115, 60, 115
+  - mega base stat buffs: 65, 170, 65, 125, 65, 115
   - gains Forewarn instead of Justified
   - mega form gains Fairy typing
+  - mega ability -> Magic Guard
 
 - Aggron line
   - gains Earth Eater
@@ -710,7 +720,7 @@
   - mega stat buffs: 75, 100, 80, 150, 90, 125
 
 - Sceptile
-  - mega form gains Anabolic as an ability instead of Lightningrod
+  - mega form gains Grassy Surge as an ability instead of Lightningrod
   - learns Meteor Beam by Tutor
 
 - Medicham
@@ -721,11 +731,18 @@
   - mega stat buffs: 75, 130, 110, 110, 105, 80
 
 - Glalie
+  - base stat buffs: 85, 85, 85, 85, 85, 85
   - mega stat buffs: 80, 150, 80, 90, 80, 100
+  - gains Ice Face instead of Inner Focus
+  - learns ExtremeSpeed at level 1
+
+- Glalie (Aevian)
+  - base stat buffs: 110,100,90,65,90,50
 
 - Audino
   - base stat buffs: 103, 70, 86, 70, 106, 50
   - mega stat buffs: 103, 60, 136, 100, 136, 50
+  - learns Baton Pass at level 1 and Chain Drain at level 63
 
 - Darmanitan
   - learns Trick Room by TM
@@ -774,9 +791,70 @@
   - Hidden ability -> Defiant
 
 - Minior
-  - Shields down base stats: 60, 120, 60, 120, 60, 120
+  - Shields Down base stats: 60, 120, 60, 120, 60, 120
   - *Crash Landing ability (unreleased currently except for Zetta, balance TBD)
-  - 
+
+- Paras and Parsect
+  - compatible with Infestation
+
+- Slowbro
+  - mega form gains Simple as an ability
+
+- Gyarados
+  - learns Wave Crash at level 66
+
+- Aerodactyl
+  - learns Brave Bird as an egg move
+
+- Politoed
+  - learns Fake Out at level 11
+
+- Shedinja
+  - compatible with Pain Split
+
+- Manectric line
+  - Electrike/Manectric base form: added Intimidate as an ability
+
+- Wailord
+  - base stat buffs: 255, 90, 45, 90, 45, 60
+
+- Camerupt
+  - mega base stat buffs: 70, 120, 100, 150, 105, 15
+
+- Altaria
+  - learns Play Rough at level 42
+
+- Abomasnow
+  - Mega Ability -> Absolute Zero
+
+- Tyranitar
+  - Mega Ability -> Desert Nova
+  - compatible with Knock Off
+
+- Musharna
+  - learns Trick Room at level 1
+
+- Lycanroc
+  - Midday form:
+    - Rock/Normal
+    - base stat buffs: 75, 115, 65, 65, 85, 122
+    - learns: Sucker Punch, Extremespeed, Feint, Fake Out, Helping Hand, Stone Axe
+    - gains Velocity instead of Steadfast
+  - Midnight Form:
+    - Rock/Fighting
+    - base stat buffs: 85, 130, 95, 60, 75, 82
+    - learns: Sucker Punch, Dynamic Punch, Hypnosis, Wide Guard, Rock Wrecker
+
+### Placeolder Forms
+- Iron Bundle
+- Sinistcha
+- Great Tusk
+- Iron Treads
+- Iron Thorns
+- Iron Valiant
+- Iron Jugulis
+- Iron Crown
+- Iron Boulder
 
 ### New Pokemon
 - Alpha Larvesta
@@ -792,10 +870,10 @@
   - Notable LUM: Quiver Dance, Victory Dance, Petal Dance, Solar Flare, Fiery Dance, Flare Blitz, Earth Power, Mirage Beam, BLossom Storm
  
 - Alpha Vespiquen
-  - Bug/Steel
+  - Bug/Flying
   - BST: 70, 100, 132, 80, 112, 40
   - Ability: Hive Queen
-  - Notable LUM: Rage Powder, Shield Bash, Defend Order, Attack Order, Heal Order, Captivate, Spring Breeze
+  - Notable LUM: Rage Powder, Cocoon Bash, Defend Order, Attack Order, Heal Order, Captivate, Spring Breeze
  
 - Alpha Toxapex
   - Poison/Water
@@ -826,6 +904,7 @@
   - Water/Steel
   - BST: 84, 106, 138, 131, 101, 70
   - Ability: Swift Swim
+  
 ## Abilities
 
 ### Updates
@@ -882,7 +961,7 @@
   - cannot be trapped
 
 - Healer
-  - Friendly HP restoration is doubled
+  - Friendly HP restoration is doubled, and friendly status conditions are cured at the end of each turn
 
 - Hydration
   - x1.5 special defense boost in Rain
@@ -967,6 +1046,9 @@
 - Iron Fist
   - x1.3 damage boost for punching moves
 
+- Rivalry 
+  - x1.3 damage against pokemon that share a same typing
+
  
 ### New Abilities
 
@@ -1022,6 +1104,26 @@
 - Power Wash
   - Summons infinite rain + 5 turns of electric terrain on entry, + has quark drive
 
+- Cute Aura
+  - Infatuates all pokemon on entry. Infatuated pokemon cannot switch, and the user takes x0.75 damage from their attacks.
+
+- Protosythnesis
+
+- Desert Nova
+  - Summons tier 2 weather: Sand, Rock attacks x1.5 power, Water attacks x0.5 power, sandstorm damage doubled
+
+- Absolute Zero
+  - Summons tier 2 weather: Hail, Ice attacks x1.5 power, Fire attacks x0.5 power, hail damage doubled
+
+- Storm Heal  
+  - Rain Dish x Volt Absorb (Valarie's Tentacruel)
+
+- Lucky Wind
+  - Summons 4 turns of Tailwind on entry (Hapi)
+
+- Accelerate
+  - Priority attacks have x1.5 power
+
 ## Items
 
 ### Updates
@@ -1049,9 +1151,7 @@
   - Drains 1/16th from all foes at the end of each turn, 1/8 if they have a status condition
  
 - Cherrim Crest
-  - gains fire STAB
   - doubles speed in the sunlight
-  - halves damage from fire type attacks
   - boosts sun-based attacks:
     - growth: +3 to attack and special attack
     - weather ball: x4 power, fire type
@@ -1100,6 +1200,9 @@
   - also gains Dark STAB
   - gains Dark immunity and resistances
   - (todo): add weaknesses too (can maybe revert these changes once sig pkmn are implemented)
+
+- Typhlosion Crest
+  - extra burst of damage applied to all attacks
 
 ### New Items
 - Poison Potion
@@ -1195,6 +1298,7 @@
 - Cinderace Crest
   - special attack = attack
   - moves cannot miss
+  - attack boosted by x1.1
 
 - Inteleon Crest
   - x1.3 speed
@@ -1222,7 +1326,7 @@
 
 - Klinklang Crest
   - alternates between speed form (default) and attack form after using Shift Gear / Gear Up
-  - attack form gives Klinklang x1.5 to offenses + extra attack and special attack boost to gear shift moves, speed for grants x2 speed and extra speed boost to gear shift moves
+  - attack form gives Klinklang x1.5 to offenses, speed for grants x2 speed
   - Gear Grind never misses
   - applies Magnet Rise to Klinklang
 
@@ -1633,7 +1737,11 @@
 - Cold Truth
   - second additional effect: inflicts frostbite 30% of the time
 
+- Spit Up + Swallow
+  - remove stockpile effects, but no longer lowers defenses
 
+- Stockpile
+  - independent of defense boosts now
 
     
 ### New Attacks
@@ -1706,7 +1814,7 @@
   - Special
   - bp: 75
   - acc: 100
-  - Single Target
+  - All Foes
   - user restores 50% of damage dealt, then restores all friendly pokemon (including those in party)'s hp by 1/16th of their max
   - TODO: too powerful, update to exclude the initial 50% drain effect
  
@@ -1875,13 +1983,29 @@
   - Single Target
   - 20% chance to inflict frostbite, +1 priority in the hail
 
-- Power Surge (Talon's Signature move)
+- Power Surge (Erick's Signature move)
   - Electric
   - Special
   - BP: 80
   - acc: 100
   - Single Target
   - in Electric terrain: doubles in power against grounded foes, +1 priority, spread attack. 30% chance to extend Electric Terrain by 1 turn (100% chance in Rain)
+
+- Tachyon Cutter
+  - Steel
+  - Special
+  - bp: 50
+  - acc: 100
+  - Single Target
+  - hits twice
+
+- Matcha Gotcha
+  - Grass
+  - Special
+  - bp: 80
+  - acc: 90
+  - All Foes
+  - 20% chance to burn, restores 50% of damage dealt
 
 # Field Effect Updates
 - Snowy Mountain
@@ -1900,11 +2024,12 @@
   - Sea Breeze, Round, Echoed Voice powered up
 
 - Dimensional 
-  - Cold Truth (single use) transforms into Frozen Dimensional
+  - Sheer Cold, Flash Freeze (single use) transforms into Frozen Dimensional
 
 - Frozen Dimensional 
   - x1.5 buff to Ice moves
   - x0.25 nerf to Fire moves
+  - Chilling Water gets x1.2 boost + added Ice subtyping
 
 - Sky 
   - boost the power of Befuddle, Southern Wind, Spring Breeze by 50%
@@ -1926,6 +2051,7 @@
 
 - Underwater
   - speed reduction for non-aquatic pokemon x0.25
+  - Surf and Shore Up bring the battle back to the surface
 
 - Bewitched Woods
   - Fairy is no longer weak to Poison
@@ -1936,6 +2062,7 @@
   - Purify no longer transforms terrain
   - Trick Room fails
   - Ingrained users can switch out
+  - Matcha Gotcha side effect chance doubled
 
 - Starlight
   - Corviknight Crest activates quick guard effect (kinda clunky, update somehow?)
@@ -1947,6 +2074,15 @@
 - Infernal
   - Centiferno boosted in power by x1.5
   - Precipice Blades never miss
+
+- Electric Terrain
+  - Wind Rage boosted in power by x1.5 and gains electric sub typing
+
+- Back Alley Field
+  - Skitter Smack, Acid Rock, Venams Kiss boosted in power by x1.5
+  - Tidepool Tyrant raises user's attack by 1 on entry
+  - Rivalry raises user's offenses by 1 on entry
+  - Punk Rock raises user's special attack by 1 on entry
 
 # Battles
 - Valarie (Gym)
@@ -1964,13 +2100,29 @@
 - Eli x Sharon (Valor)
 - Zetta x Geara (Valor Summit)
 - Amber (Gym)
+- Sprit Jenner
 - Kanon (Past)
 - Karrina (Past)
 - Amanda (West Gearen)
 - Erick (Gym)
 - Flora (Gym)
 - Florin (Gym)
+- Melia x Erin
+- Vivian
+- Captain Valarie
+- Survivor Kenneth
+- Melia (Doomed Timeline)
 - Melanie
+- Venam (GDC)
+- Zetta (Puppet Master)
+- Neon and Magenta
+- Souta
+- Thomas Blakeory
+- Kieran (Past) -- also updated Ren's team
+- Ren (Desert)
+- Adam
+- Ryland
+
 - Melia (League Administration)
 - Ren (Desert)
 - Angie + Cera (Diamond Route)

@@ -80,6 +80,7 @@ class PokeBattle_Battler
   attr_accessor :anticipation
   attr_accessor :anabolic
   attr_accessor :gear
+  attr_accessor :giga
 
   def inHyperMode?; return false; end
   def isShadow?; return false; end
@@ -93,7 +94,7 @@ class PokeBattle_Battler
     :PowerTrick, :ProtectNegation, :QuickDrawSnipe, :Quash, :RagePowder, :Rage, :Roost,
     :Round, :ShellTrap, :SkyDrop, :SmackDown, :Snatch, :Tantrum, :TarShot, :Torment,
     :Trace, :Transform, :Truant, :TyphBond,:UsingSubstituteRightNow, :Shelter, :SwampWeb,
-    :HydreigonCrest]
+    :HydreigonCrest, :FlowerShield, :MagicGuard]
   #turn count vars
   TurnEff = [:Bide, :Charge, :Confusion, :Disable, :Embargo, :Encore, 
     :FuryCutter, :HealBlock, :HyperBeam, :LaserFocus, :LockOn, :MagnetRise, 
@@ -800,7 +801,7 @@ class PokeBattle_Battler
   end
 
   def nullsElec?
-    return [:VOLTABSORB,:LIGHTNINGROD,:MOTORDRIVE].include?(@ability) || pbPartner.ability == :LIGHTNINGROD
+    return [:VOLTABSORB,:LIGHTNINGROD,:MOTORDRIVE, :STORMHEAL].include?(@ability) || pbPartner.ability == :LIGHTNINGROD
   end
 
   def nullsWater?
@@ -861,6 +862,8 @@ class PokeBattle_Battler
         speed*=2 if @battle.pbWeather== :HAIL || @battle.FE==:ICY || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:FROZENDIMENSION
       when :SLOWSTART   
         speed*=0.5 if self.turncount<5 && !@battle.FE == :DEEPEARTH
+      when :PROTOSYNTHESIS
+        speed*=1.5 if self.effects[:Quarkdrive][0] == PBStats::SPEED
       when :QUARKDRIVE
         speed*=1.5 if self.effects[:Quarkdrive][0] == PBStats::SPEED
       when :MINUS
@@ -1013,6 +1016,7 @@ class PokeBattle_Battler
     end
     if self.isMega? || self.isGiga?
       @pokemon.makeUnmega
+      @giga = false
     end
     if self.isUltra?
       @pokemon.makeUnultra(@startform)
@@ -1539,6 +1543,7 @@ class PokeBattle_Battler
         self.form=@startform
       elsif self.isGiga?
         @pokemon.makeUnmega
+        @giga = false
       end
     end
     pbUpdate(true)
@@ -1577,8 +1582,16 @@ class PokeBattle_Battler
     rainbowhold=0
     if onactive
       if (self.ability == :PRIMORDIALSEA) && !@battle.state.effects[:HeavyRain] && @battle.canSetWeather?
+        # if (@battle.state.effects[:DesertNova])
+        #   @battle.breakField if @battle.FE == :DESERT
+        # end
+        # if (@battle.state.effects[:AbsoluteZero])
+        #   @battle.breakField if @battle.FE == :FROZENDIMENSION
+        # end
         @battle.state.effects[:HeavyRain] = true
         @battle.state.effects[:HarshSunlight] = false
+        @battle.state.effects[:DesertNova] = false
+        @battle.state.effects[:AbsoluteZero] = false
         @battle.weatherduration=-1
         @battle.pbDisplay(_INTL("A heavy rain began to fall!"))
         if @battle.weather== :SUNNYDAY
@@ -1590,37 +1603,92 @@ class PokeBattle_Battler
       end
 
       if (self.ability == :DESOLATELAND || self.crested == :SUNFLORA) && !@battle.state.effects[:HarshSunlight] && @battle.canSetWeather?
+        # if (@battle.state.effects[:DesertNova])
+        #   @battle.breakField if @battle.FE == :DESERT
+        # end
+        # if (@battle.state.effects[:AbsoluteZero])
+        #   @battle.breakField if @battle.FE == :FROZENDIMENSION
+        # end
         @battle.state.effects[:HarshSunlight] = true
         @battle.state.effects[:HeavyRain] = false
+        @battle.state.effects[:DesertNova] = false
+        @battle.state.effects[:AbsoluteZero] = false
         @battle.weatherduration=-1
         @battle.pbDisplay(_INTL("The sunlight turned extremely harsh!"))
         if @battle.weather== :RAINDANCE
           rainbowhold=5
           rainbowhold=8 if self.hasWorkingItem(:HEATROCK)
         end
-        if (Rejuv && @battle.FE == :GRASSY)
-          setField(:DESERT)
-          @battle.pbDisplay(_INTL("The extremely harsh sunlight dried out the meadow!"))
-        end 
+        # if (Rejuv && @battle.FE == :GRASSY)
+        #   setField(:DESERT)
+        #   @battle.pbDisplay(_INTL("The extremely harsh sunlight dried out the meadow!"))
+        # end 
         @battle.weather=:SUNNYDAY
         @battle.pbCommonAnimation("Sunny",nil,nil)
       end
 
+      if (self.ability == :DESERTNOVA) && !@battle.state.effects[:DesertNova] && @battle.canSetWeather? 
+        # if (@battle.state.effects[:AbsoluteZero])
+        #   @battle.breakField if @battle.FE == :FROZENDIMENSION
+        # end
+        @battle.state.effects[:HeavyRain] = false
+        @battle.state.effects[:HarshSunlight] = false
+        @battle.state.effects[:DesertNova] = true
+        @battle.state.effects[:AbsoluteZero] = false
+        @battle.weatherduration=-1
+        @battle.pbDisplay(_INTL("Sand swallowed the field!"))
+        # if (Rejuv)
+        #   setField(:DESERT)
+        #   @battle.pbDisplay(_INTL("A desert was created!"))
+        # end 
+        @battle.weather=:SANDSTORM
+        @battle.pbCommonAnimation("Sandstorm",nil,nil)
+      end
+
+      if (self.ability == :ABSOLUTEZERO) && !@battle.state.effects[:AbsoluteZero] && @battle.canSetWeather?
+        # if (@battle.state.effects[:DesertNova])
+        #   @battle.breakField if @battle.FE == :DESERT
+        # end
+        @battle.state.effects[:HeavyRain] = false
+        @battle.state.effects[:HarshSunlight] = false
+        @battle.state.effects[:DesertNova] = false
+        @battle.state.effects[:AbsoluteZero] = true
+        @battle.weatherduration=-1
+        @battle.pbDisplay(_INTL("The temperature dropped to zero!"))
+        # if (Rejuv)
+        #   setField(:FROZENDIMENSION)
+        #   @battle.pbDisplay(_INTL("The dimenson froze!"))
+        # end 
+        @battle.weather=:HAIL
+        @battle.pbCommonAnimation("Hail",nil,nil)
+      end
+
       if (self.ability == :DELTASTREAM) && @battle.weather!=:STRONGWINDS && @battle.canSetWeather?
         @battle.weather=:STRONGWINDS
-        @battle.state.effects[:HarshSunlight] = false
         @battle.state.effects[:HeavyRain] = false
+        @battle.state.effects[:HarshSunlight] = false
+        # if (@battle.state.effects[:DesertNova])
+        #   @battle.breakField if @battle.FE == :DESERT
+        # end
+        # if (@battle.state.effects[:AbsoluteZero])
+        #   @battle.breakField if @battle.FE == :FROZENDIMENSION
+        # end
+        @battle.state.effects[:DesertNova] = false
+        @battle.state.effects[:AbsoluteZero] = false
         @battle.weatherduration=-1
         @battle.pbDisplay(_INTL("A mysterious air current is protecting Flying-type Pokémon!"))
       end
     end
 
-    if @battle.state.effects[:HeavyRain] || @battle.state.effects[:HarshSunlight] || @battle.weather == :STRONGWINDS
-      if !@battle.pbCheckGlobalAbility(:PRIMORDIALSEA)
+    if @battle.state.effects[:HeavyRain] || @battle.state.effects[:HarshSunlight] || 
+       @battle.state.effects[:DesertNova] || @battle.state.effects[:AbsoluteZero] || @battle.weather == :STRONGWINDS
+
+      if !@battle.pbCheckGlobalAbility(:PRIMORDIALSEA) && !@battle.permWeather
         if @battle.state.effects[:HeavyRain]
           @battle.pbDisplay(_INTL("The heavy rain has lifted."))
           @battle.state.effects[:HeavyRain] = false
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 
+            (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1628,11 +1696,45 @@ class PokeBattle_Battler
         end
       end
 
-      if !@battle.pbCheckGlobalAbility(:DESOLATELAND)
+      sunflora = false
+      for i in 0...@battle.battlers.length
+        return @battle.battlers[i] if @battle.battlers[i].crested == :SUNFLORA
+      end
+
+      if !@battle.pbCheckGlobalAbility(:DESOLATELAND) && !sunflora && !@battle.permWeather
         if @battle.state.effects[:HarshSunlight]
           @battle.pbDisplay(_INTL("The harsh sunlight faded!"))
           @battle.state.effects[:HarshSunlight] = false
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 
+            (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
+            @battle.weatherduration = 0
+            @battle.weather = 0
+            @battle.persistentWeather
+          end
+        end
+      end
+
+      if !@battle.pbCheckGlobalAbility(:DESERTNOVA) && !@battle.permWeather
+        if @battle.state.effects[:DesertNova]
+          @battle.pbDisplay(_INTL("The sand disappeared."))
+          @battle.state.effects[:DesertNova] = false
+          # @battle.breakField if @battle.FE == :DESERT
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 
+                  (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
+            @battle.weatherduration = 0
+            @battle.weather = 0
+            @battle.persistentWeather
+          end
+        end
+      end
+
+      if !@battle.pbCheckGlobalAbility(:ABSOLUTEZERO) && !@battle.permWeather
+        if @battle.state.effects[:AbsoluteZero]
+          @battle.pbDisplay(_INTL("The temperature returned to normal."))
+          @battle.state.effects[:AbsoluteZero] = false
+          # @battle.breakField if @battle.FE == :DESERT
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 
+                  (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1643,7 +1745,8 @@ class PokeBattle_Battler
       if !@battle.pbCheckGlobalAbility(:DELTASTREAM) && !@battle.pbCheckGlobalAbility(:TEMPEST) && ![:Winds,:BlowingLeaves,:SwirlingLeaves].include?($game_screen.weather_type) && !((self.pbOwnSide.effects[:Tailwind]>0 || self.pbOpposingSide.effects[:Tailwind]>0) && [:MOUNTAIN,:SNOWYMOUNTAIN,:VOLCANICTOP,:SKY].include?(@battle.FE))
         if @battle.weather == :STRONGWINDS
           @battle.pbDisplay(_INTL("The mysterious air current has dissipated!"))
-          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
+          unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 
+            (self.ability == :DELTASTREAM) || self.crested == :SUNFLORA) && onactive
             @battle.weatherduration = 0
             @battle.weather = 0
             @battle.persistentWeather
@@ -1661,6 +1764,7 @@ class PokeBattle_Battler
       end
     end
 
+    @battle.protosynthesisCheck
 
     # END OF PRIMAL WEATHER DEACTIVATION TESTS
     if !@battle.pbCheckGlobalAbility(:DARKSURGE) && (@battle.FE==:DARKNESS1 || @battle.FE==:DARKNESS2 || @battle.FE==:DARKNESS3)
@@ -1779,6 +1883,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The dark dimension swallowed the rain."))
       elsif @battle.FE == :INFERNAL
         @battle.pbDisplay(_INTL("The rain evaporated."))
+      elsif @battle.state.effects[:DesertNova]
+        @battle.pbDisplay(_INTL("The sand swallowed up the rain"))
+      elsif @battle.state.effects[:AbsoluteZero]
+        @battle.pbDisplay(_INTL("The relentless cold was not disturbed!"))
       else
         if @battle.weather== :SUNNYDAY
           rainbowhold=5
@@ -1811,6 +1919,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("You're too deep to notice the weather!"))
       elsif @battle.FE == :DIMENSIONAL
         @battle.pbDisplay(_INTL("The dark dimension swallowed the sand."))
+      elsif @battle.state.effects[:DesertNova]
+        @battle.pbDisplay(_INTL("The sand was swept away into the Desert Nova!"))
+      elsif @battle.state.effects[:AbsoluteZero]
+        @battle.pbDisplay(_INTL("The relentless cold was not disturbed!"))
       else
         @battle.weather=:SANDSTORM
         @battle.weatherduration=5
@@ -1835,6 +1947,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("You're too deep to notice the weather!"))
       elsif @battle.FE == :DIMENSIONAL
         @battle.pbDisplay(_INTL("The sunlight cannot pierce the darkness."))
+      elsif @battle.state.effects[:DesertNova]
+        @battle.pbDisplay(_INTL("The sand swallowed up the sun!"))
+      elsif @battle.state.effects[:AbsoluteZero]
+        @battle.pbDisplay(_INTL("The relentless cold was not disturbed!"))
       else
         if @battle.weather== :RAINDANCE
           rainbowhold=5
@@ -1875,6 +1991,10 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The hail melted away."))
       elsif @battle.FE == :DIMENSIONAL
         @battle.pbDisplay(_INTL("The dark dimension swallowed the hail."))
+      elsif @battle.state.effects[:DesertNova]
+        @battle.pbDisplay(_INTL("The sand swallowed up the hail"))
+      elsif @battle.state.effects[:AbsoluteZero]
+        @battle.pbDisplay(_INTL("The relentless cold was not disturbed!"))
       else
         @battle.weather=:HAIL
         @battle.weatherduration=5
@@ -1942,6 +2062,9 @@ class PokeBattle_Battler
         @battle.pbDisplay(_INTL("The weather refreshed the rainbow!"))
       end
     end 
+
+    @battle.protosynthesisCheck
+    
     #### END OF WEATHER ABILITIES
 
     if (self.ability == :GRAVPULL && @battle.state.effects[:Gravity]==0)
@@ -2052,17 +2175,28 @@ class PokeBattle_Battler
         self.pbIncreaseStat(PBStats::EVASION,1,abilitymessage:false)
       end
     end
-    if Rejuv
-      rejuvAbilities(onactive)
-    end
     # Hydro Veil
     if self.ability == :HYDROVEIL && onactive
       self.effects[:AquaRing]=true
-      @battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water!",self.pbThis))
+      @battle.pbDisplay(_INTL("{1} surrounded itself with a veil of water with its {2}!",self.pbThis,getAbilityName(self.ability)))
     end
     if self.ability == :DAMP && onactive
       @battle.state.effects[:WaterSport] += 5
       @battle.pbDisplay(_INTL("{1}'s {2} weakened the power of fire moves!",self.pbThis,getAbilityName(self.ability)))
+    end
+    if self.ability == :LUCKYWIND && onactive
+      @battle.pbAnimation(:TAILWIND,self,nil)
+      self.pbOwnSide.effects[:Tailwind]+=4
+      self.pbOwnSide.effects[:Tailwind]+=6 if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP || @battle.FE == :CLOUDS)
+      self.pbOwnSide.effects[:Tailwind]+=8 if @battle.FE == :SKY
+      @battle.pbDisplay(_INTL("{1}'s {2} brought in a Tailwind for its team!",self.pbThis,getAbilityName(self.ability)))
+      if (@battle.FE == :MOUNTAIN || @battle.FE == :SNOWYMOUNTAIN || @battle.FE == :VOLCANICTOP || @battle.FE == :SKY) && !@battle.state.effects[:HeavyRain] && !@battle.state.effects[:HarshSunlight]
+        @battle.weather=:STRONGWINDS
+        @battle.weatherduration=6
+        @battle.weatherduration=8 if @battle.FE == :SKY
+        @battle.pbCommonAnimation("Wind",nil,nil)
+        @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
+      end
     end
     # Download
     if self.ability == :DOWNLOAD && onactive
@@ -2615,18 +2749,39 @@ class PokeBattle_Battler
       end
     end
     if @battle.FE == :BACKALLEY
-      if (self.ability == :PICKPOCKET || self.ability == :MERCILESS) && onactive
+      if (self.ability == :PICKPOCKET || self.ability == :MERCILESS || self.ability == :TIDEPOOLTYRANT) && onactive
         if !pbTooHigh?(PBStats::ATTACK)
           pbIncreaseStatBasic(PBStats::ATTACK,1)
           @battle.pbCommonAnimation("StatUp",self,nil)
           @battle.pbDisplay(_INTL("Merciless cutpurses like {1} get ready to strike!",pbThis))
         end
       end
+      if self.ability == :RIVALRY && onactive
+        statchange = false
+        if !pbTooHigh?(PBStats::ATTACK)
+          pbIncreaseStatBasic(PBStats::ATTACK,1)
+          @battle.pbCommonAnimation("StatUp",self,nil)
+          statchange = true
+        end
+        if !pbTooLow?(PBStats::SPATK)
+          pbIncreaseStatBasic(PBStats::SPATK,1)
+          @battle.pbCommonAnimation("StatUp",self,nil)
+          statchange = true
+        end
+        @battle.pbDisplay(_INTL("{1}'s {2} is making it aggressive!",pbThis,getAbilityName(ability))) if statchange
+      end
       if self.ability == :MAGICIAN && onactive
         if !pbTooHigh?(PBStats::SPATK)
           pbIncreaseStatBasic(PBStats::SPATK,1)
           @battle.pbCommonAnimation("StatUp",self,nil)
           @battle.pbDisplay(_INTL("The Street Magician's tricks raise {1}'s Special Attack!",pbThis))
+        end
+      end
+      if self.ability == :PUNKROCK && onactive
+        if !pbTooHigh?(PBStats::SPATK)
+          pbIncreaseStatBasic(PBStats::SPATK,1)
+          @battle.pbCommonAnimation("StatUp",self,nil)
+          @battle.pbDisplay(_INTL("{1}'s Punk Rock raises its Special Attack!",pbThis))
         end
       end
       if (self.ability == :ANTICIPATION || self.ability == :FOREWARN) && onactive
@@ -2840,6 +2995,26 @@ class PokeBattle_Battler
     end
     if self.ability == :ANABOLIC && onactive
       self.anabolic = true;
+      @battle.pbDisplay(_INTL("{1} is storing power!",pbThis))
+    end
+    if self.ability == :CUTEAURA && onactive
+      for opponent in [pbOpposing1,pbOpposing2]
+        next if opponent.isFainted?
+        if !@battle.pbCheckSideAbility(:AROMAVEIL,opponent).nil? && !(opponent.moldbroken)
+          @battle.pbDisplay(_INTL("The Aroma Veil protects #{opponent.pbThis} from infatuation!"))
+        end
+        if opponent.pbCanAttract?(self)
+          opponent.effects[:Attract]=self.index
+          @battle.pbCommonAnimation("Attract",opponent,nil)
+          @battle.pbDisplay(_INTL("{1} fell in love!",opponent.pbThis))
+          if opponent.hasWorkingItem(:DESTINYKNOT) && self.ability != :OBLIVIOUS && self.effects[:Attract]<0
+            self.effects[:Attract]=opponent.index
+            @battle.pbCommonAnimation("Attract",self,nil)
+            @battle.pbDisplay(_INTL("{1}'s {2} infatuated {3}!",opponent.pbThis,
+            getItemName(opponent.item),self.pbThis(true)))
+          end
+        end
+      end
     end
     # Anticipation
     if self.ability == :ANTICIPATION && onactive
@@ -2867,12 +3042,12 @@ class PokeBattle_Battler
       
     end
     if self.ability == :UNNERVE && onactive
-       if @battle.pbOwnedByPlayer?(@index)
-       @battle.pbDisplay(_INTL("The opposing team is too nervous to eat berries!",pbThis))
-       elsif !@battle.pbOwnedByPlayer?(@index)
-       @battle.pbDisplay(_INTL("Your team is too nervous to eat berries!",pbThis))
-       end
-     end
+      if @battle.pbOwnedByPlayer?(@index)
+      @battle.pbDisplay(_INTL("The opposing team is too nervous to eat berries!",pbThis))
+      elsif !@battle.pbOwnedByPlayer?(@index)
+      @battle.pbDisplay(_INTL("Your team is too nervous to eat berries!",pbThis))
+      end
+    end
     # Forewarn
     if self.ability == :FOREWARN && onactive
       highpower=0
@@ -2924,8 +3099,9 @@ class PokeBattle_Battler
         end
       end
     end
-    # Quark Drive / Protosynthesis
-    if (self.ability == :QUARKDRIVE || self.ability == :POWERWASH) && onactive
+    # Quark Drive
+    if (self.ability == :QUARKDRIVE || self.ability == :POWERWASH || self.ability == :PROTOSYNTHESIS) && onactive
+      abilName = getAbilityName(self.ability)
       aBoost = self.attack * 1.0+(0.5*@stages[PBStats::ATTACK])
       dBoost = self.defense * 1.0+(0.5*@stages[PBStats::DEFENSE])
       saBoost = self.spatk * 1.0+(0.5*@stages[PBStats::SPATK])
@@ -2933,15 +3109,16 @@ class PokeBattle_Battler
       spdBoost = self.speed * 1.0+(0.5*@stages[PBStats::SPEED])
       stats = [aBoost,dBoost,saBoost,sdBoost,spdBoost]
       boostStat = stats.index(stats.max)+1
-      if (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0) && self.effects[:Quarkdrive][0] == 0
+      if (((self.ability == :QUARKDRIVE || self.ability == :POWERWASH) && (@battle.FE == :ELECTERRAIN || @battle.state.effects[:ELECTERRAIN] > 0)) ||
+          (self.ability == :PROTOSYNTHESIS && @battle.pbWeather == :SUNNYDAY)) && self.effects[:Quarkdrive][0] == 0
         self.effects[:Quarkdrive] = [boostStat,false]
-        @battle.pbDisplay(_INTL("{1}'s Quark Drive heightened its {2}!", pbThis,pbGetStatName(boostStat)))
+        @battle.pbDisplay(_INTL("{1}'s {2} heightened its {3}!", pbThis,abilName,pbGetStatName(boostStat)))
       end
       if self.item == :BOOSTERENERGY && self.effects[:Quarkdrive][0] == 0
         self.pbDisposeItem(false)
         @battle.pbDisplay(_INTL("{1}'s Booster Energy was used up...", pbThis))
         self.effects[:Quarkdrive] = [boostStat,true]
-        @battle.pbDisplay(_INTL("{1}'s Quark Drive heightened its {2}!", pbThis,pbGetStatName(boostStat)))
+        @battle.pbDisplay(_INTL("{1}'s {2} heightened its {3}!", pbThis,abilName,pbGetStatName(boostStat)))
       end
     end
     # Imposter
@@ -3014,12 +3191,12 @@ class PokeBattle_Battler
           end
           @battle.pbDisplay(_INTL("{1}'s {2} was transferred to {3}!",target.pbThis,getItemName(user.item),user.pbThis(true)))
         end
-        if target.hasWorkingItem(:ROCKYHELMET,true) && !user.isFainted? && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        if target.hasWorkingItem(:ROCKYHELMET,true) && !user.isFainted? && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           @battle.scene.pbDamageAnimation(user,0)
           user.pbReduceHP((user.totalhp/6.0).floor)
           @battle.pbDisplay(_INTL("{1} was hurt by the {2}!",user.pbThis, getItemName(target.item)))
          end
-        if target.effects[:BeakBlast] && user.ability != (:MAGICGUARD)&& !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM) && user.pbCanBurn?(false)
+        if target.effects[:BeakBlast] && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM) && user.pbCanBurn?(false)
           user.pbBurn(target)
           @battle.pbDisplay(_INTL("{1} was burned by the heat!",user.pbThis))
         end
@@ -3047,7 +3224,7 @@ class PokeBattle_Battler
           negator = getItemName(target.item) if target.crested == :VOLCARONA
           @battle.pbDisplay(_INTL("{1}'s {2} burned {3}!",target.pbThis,negator,user.pbThis(true)))
         end
-        if target.ability == :IRONBARBS && !user.isFainted? && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        if target.ability == :IRONBARBS && !user.isFainted? && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           @battle.scene.pbDamageAnimation(user,0)
           user.pbReduceHP((user.totalhp/8.0).floor)
           @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
@@ -3111,7 +3288,7 @@ class PokeBattle_Battler
           user.pbPoison(target)
           @battle.pbDisplay(_INTL("{1}'s {2} poisoned {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
         end
-        if target.ability == :ROUGHSKIN && !user.isFainted? && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        if target.ability == :ROUGHSKIN && !user.isFainted? && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           @battle.scene.pbDamageAnimation(user,0)
           user.pbReduceHP((user.totalhp/8.0).floor)
           @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
@@ -3236,7 +3413,7 @@ class PokeBattle_Battler
       end
 
       if target.ability == :INNARDSOUT && !user.isFainted? &&
-        target.hp <= 0 && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        target.hp <= 0 && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
         PBDebug.log("[#{user.pbThis} hurt by Innards Out]")
         @battle.scene.pbDamageAnimation(user,0)
         user.pbReduceHP(innards)
@@ -3346,7 +3523,7 @@ class PokeBattle_Battler
         end
         if target.ability == :GULPMISSILE && target.species == :CRAMORANT && !user.isFainted? && target.form!=0
           @battle.scene.pbDamageAnimation(user,0)
-          if user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+          if user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
             if @battle.FE == :UNDERWATER
               eff=PBTypes.twoTypeEff(:WATER,user.type1,user.type2)
               user.pbReduceHP((user.totalhp*eff/16.0).floor)
@@ -3777,7 +3954,7 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("{1}'s {2} restored its HP a little!",pbThis,itemname))
       return
     end
-    if hpcure && (self.item == :BLACKSLUDGE && !hasType?(:POISON)) && self.ability != :MAGICGUARD && !(self.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+    if hpcure && (self.item == :BLACKSLUDGE && !hasType?(:POISON)) && self.ability != :MAGICGUARD && !self.effects[:MagicGuard] && !(self.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
       hploss = self.totalhp/8
       hploss = self.totalhp/4 if @battle.FE == :CORRUPTED
       pbReduceHP((hploss).floor,true)
@@ -4458,8 +4635,8 @@ class PokeBattle_Battler
         return false
       end
     end
-    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
-      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
+    if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
+      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
       @battle.FE == :PSYTERRAIN && !target.isAirborne? || (@battle.state.effects[:PSYTERRAIN] > 0 && !target.isAirborne?)) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
       if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
@@ -5044,7 +5221,7 @@ class PokeBattle_Battler
           #TODO: Not shown if message is "It doesn't affect XXX..."
           @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
           damage=[1,(user.totalhp/2.0).floor].max
-          if (user.ability == :MAGICGUARD) || (self.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+          if (user.ability == :MAGICGUARD) || (self.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) || self.effects[:MagicGuard] 
             damage=0
           end
           if damage>0
@@ -5120,7 +5297,7 @@ class PokeBattle_Battler
 
       # Adamantine Body
       if target.ability == :ADAMANTINEBODY && !user.isFainted? && basemove.contactMove?
-        if target.damagestate.calcdamage>0 && !target.damagestate.substitute && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        if target.damagestate.calcdamage>0 && !target.damagestate.substitute && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM) && !user.effects[:MagicGuard]
           user.pbReduceHP([1,((target.damagestate.hplost)).floor].max)
           user.pbReduceHP((user.totalhp/8.0).floor)
           @battle.pbDisplay(_INTL("{1}'s {2} hurt {3}!",target.pbThis, getAbilityName(target.ability),user.pbThis(true)))
@@ -5130,7 +5307,7 @@ class PokeBattle_Battler
       # Bastiodon Crest
       if target.crested == :BASTIODON || target.crested == :AGGRON
         if target.damagestate.calcdamage>0 && !target.damagestate.substitute &&
-          user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+          user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM) && !user.effects[:MagicGuard]
           user.pbReduceHP([1,((target.damagestate.hplost)/2).floor].max)
           target.pbRecoverHP([1,((target.damagestate.hplost)/2).floor].max) if !target.isFainted?
           @battle.pbDisplay(_INTL("{1}'s crest causes {2} to take recoil damage and {3} to recover!",
@@ -5190,6 +5367,7 @@ class PokeBattle_Battler
 
         addleffect=basemove.moreeffect
         addleffect*=2 if user.ability == (:SERENEGRACE) || @battle.FE == :RAINBOW
+        addleffect*=2 if basemove.move == :MATCHAGOTCHA && @battle.FE == :BEWITCHED
 
         addleffect=100 if $DEBUG && Input.press?(Input::CTRL) && !@battle.isOnline?
         if @battle.pbRandom(100)<addleffect
@@ -5948,7 +6126,7 @@ class PokeBattle_Battler
           user.effects[:HydreigonCrest] = false
         end
 
-        if numhits == 1 && basemove.contactMove? && user.crested == :TYPHLOSION && !choice[2].zmove
+        if numhits == 1 && user.crested == :TYPHLOSION && !choice[2].zmove # && basemove.contactMove? 
           counter1=0
           counter2=0
           for k in @battle.battlers
@@ -6091,7 +6269,7 @@ class PokeBattle_Battler
         end
 
         # Life Orb
-        if user.hasWorkingItem(:LIFEORB) && flags[:totaldamage]>0 && user.ability != (:MAGICGUARD) && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
+        if user.hasWorkingItem(:LIFEORB) && flags[:totaldamage]>0 && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           hploss=user.pbReduceHP([(user.totalhp/10.0).floor,1].max,true)
           if hploss>0
             @battle.pbDisplay(_INTL("{1} lost some of its HP!",user.pbThis))

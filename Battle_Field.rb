@@ -260,6 +260,7 @@ class PokeBattle_Battle
         end
       end
       quarkdriveCheck
+      protosynthesisCheck
       return
     end
     animfieldref = @field.effect
@@ -297,6 +298,7 @@ class PokeBattle_Battle
     @state.effects[:Gravity]=-1 if fieldeffect == :DEEPEARTH
     @state.effects[:Gravity]=0 if oldfield == :DEEPEARTH && @state.effects[:Gravity]==-1
     quarkdriveCheck
+    protosynthesisCheck
     seedCheck
     noWeather
   end
@@ -314,6 +316,7 @@ class PokeBattle_Battle
     pbChangeBGSprite
     @state.effects[:Gravity]=0 if oldfield == :DEEPEARTH && @state.effects[:Gravity]==-1
     quarkdriveCheck
+    protosynthesisCheck
     seedCheck
     noWeather
   end
@@ -333,6 +336,7 @@ class PokeBattle_Battle
     @field.setData
     pbChangeBGSprite
     quarkdriveCheck
+    protosynthesisCheck
     seedCheck
     noWeather
   end
@@ -861,7 +865,7 @@ end
 
 class PokeBattle_Battler
   def burningFieldPassiveDamage?
-    return false if hasType?(:FIRE) || @effects[:AquaRing]
+    return false if hasType?(:FIRE) || @effects[:AquaRing] || @effects[:MagicGuard]
     return false if [:FLAREBOOST,:MAGMAARMOR,:FLAMEBODY,:FLASHFIRE].include?(@ability)
     return false if [:WATERVEIL,:MAGICGUARD,:HEATPROOF,:WATERBUBBLE].include?(@ability)
     return false if $cache.moves[@effects[:TwoTurnAttack]] && [0xCA,0xCB].include?($cache.moves[@effects[:TwoTurnAttack]].function) # Dig, Dive
@@ -873,7 +877,7 @@ class PokeBattle_Battler
 
   def underwaterFieldPassiveDamamge?
     return false if hasType?(:WATER) 
-    return false if @ability == :SWIFTSWIM || @ability == :MAGICGUARD
+    return false if @ability == :SWIFTSWIM || @ability == :MAGICGUARD || @effects[:MagicGuard]
     return false if PBTypes.twoTypeEff(:WATER,@type1,@type2) <= 4
     if self.isbossmon 
       return false if self.immunities[:fieldEffectDamage].include?(@battle.FE)
@@ -883,6 +887,7 @@ class PokeBattle_Battler
 
   def murkyWaterSurfacePassiveDamage?
     return false if hasType?(:STEEL) || hasType?(:POISON) 
+    return false if @effects[:MagicGuard]
     return false if [:POISONHEAL, :MAGICGUARD, :WONDERGUARD, :TOXICBOOST, :IMMUNITY, :PASTELVEIL].include?(@ability)
     return false if Rejuv && @ability == :SURGESURFER
     return false if self.crested == :ZANGOOSE || self.crested == :GOODRA

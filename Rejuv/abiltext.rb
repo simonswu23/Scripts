@@ -1901,7 +1901,7 @@ ABILHASH = {
 
 :ANABOLIC => {
 	:ID => 333,
-	:name => "Power Surge",
+	:name => "Anabolic",
 	:desc => "Skips the first time the user needs to charge or recharge. In electric terrain, x1.5 special attack and does not need to charge/recharge."
 },
 
@@ -1921,6 +1921,49 @@ ABILHASH = {
 	:ID => 336,
 	:name => "Power Wash",
 	:desc => "Erick's Rotom."
+},
+
+:CUTEAURA => {
+	:ID => 337,
+	:name => "Cute Aura",
+	:desc => "All other foes are infatuated with this pokemon and cannot switch."
+},
+
+:PROTOSYNTHESIS => {
+	:ID => 338,
+	:name => "Protosynthesis",
+	:desc => "Boosts highest stat in Sun...",
+	:fullDesc => "Raises the Pokémon's highest stat while in Sun by 30% (50% if highest stat is speed). Can also be activated with Booster Energy."
+},
+
+:DESERTNOVA => {
+	:ID => 339,
+	:name => "Desert Nova",
+	:desc => "Summons super-sand: extra x1.5 boost to rock attacks and x0.5 nerf to water."
+},
+
+:ABSOLUTEZERO => {
+	:ID => 340,
+	:name => "Absoute Zero",
+	:desc => "Summons super-hail: extra x1.5 boost to ice attacks and x0.5 nerf to fire."
+},
+
+:STORMHEAL => {
+	:ID => 341,
+	:name => "Rain Dish, Volt Absorb",
+	:desc => "Valarie: Volt Absorb x Rain Dish."
+},
+
+:LUCKYWIND => {
+	:ID => 342,
+	:name => "Lucky Wind",
+	:desc => "Signature ability for Hapi, summons 4 turns of Tailwind on entry."
+},
+
+:ACCELERATE => {
+	:ID => 343,
+	:name => "Accelerate",
+	:desc => "Priority attacks have x1.5 power."
 },
 
 }

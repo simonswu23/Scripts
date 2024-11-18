@@ -924,11 +924,12 @@ class PokeBattle_Move_903 < PokeBattle_Move
       hpgain=((opponent.damagestate.hplost+1)*3/4).floor if Rejuv && @battle.FE == :GRASSY && [:ABSORB,:MEGADRAIN,:GIGADRAIN,:HORNLEECH].include?(@move)
       if opponent.ability == :LIQUIDOOZE
         hpgain*=2 if @battle.FE == :WASTELAND || @battle.FE == :MURKWATERSURFACE || @battle.FE == :CORRUPTED
-        attacker.pbReduceHP(hpgain,true)
+        # attacker.pbReduceHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!",attacker.pbThis))  
         activepkmn=[]
         for i in @battle.battlers
           next if attacker.pbIsOpposing?(i.index)
+          next if i.hp == 0
           i.pbReduceHP(((attacker.totalhp+1)/16).floor,true)
           activepkmn.push(i.pokemonIndex)
         end
@@ -936,6 +937,7 @@ class PokeBattle_Move_903 < PokeBattle_Move
         for i in 0...party.length
           next if attacker.include?(i)
           next if !party[i] || party[i].isEgg?
+          next if party[i].hp == 0
           i.pbReduceHP(((attacker.totalhp+1)/16).floor,true)
         end
         @battle.pbDisplay(_INTL("{1} hurt its teammates!",attacker.pbThis))
@@ -946,11 +948,12 @@ class PokeBattle_Move_903 < PokeBattle_Move
           hpgain=(hpgain*1.3).floor if attacker.hasWorkingItem(:BIGROOT)
         end
         hpgain=(hpgain*1.3).floor if attacker.crested == :SHIINOTIC
-        attacker.pbRecoverHP(hpgain,true)
+        # attacker.pbRecoverHP(hpgain,true)
         @battle.pbDisplay(_INTL("{1} had its energy drained!",opponent.pbThis))
         activepkmn=[]
         for i in @battle.battlers
           next if attacker.pbIsOpposing?(i.index)
+          next if i.hp == 0
           i.pbRecoverHP(((attacker.totalhp+1)/16).floor,true)
           activepkmn.push(i.pokemonIndex)
         end
@@ -958,15 +961,10 @@ class PokeBattle_Move_903 < PokeBattle_Move
         for i in 0...party.length
           next if activepkmn.include?(i) || i == attacker
           next if !party[i] || party[i].isEgg?
+          next if party[i].hp == 0
           party[i].healHp(((party[i].totalhp+1)/16).floor);
         end
         @battle.pbDisplay(_INTL("{1} healed its teammates!",attacker.pbThis))
-      end
-      if Rejuv && @battle.FE == :SWAMP 
-        stat = [PBStats::ATTACK,PBStats::DEFENSE,PBStats::SPATK,PBStats::SPDEF,PBStats::SPEED].sample
-        if opponent.pbCanReduceStatStage?(stat,true)
-          opponent.pbReduceStat(stat,1,abilitymessage:false, statdropper: attacker)
-        end
       end
     end
     return ret
@@ -1510,11 +1508,14 @@ end
 ################################################################################
 class PokeBattle_Move_90E< PokeBattle_Move
   def pbBaseDamage(basedmg,attacker,opponent)
-    fainted = 0
+    base = 1
+    party=@battle.pbParty(attacker.index)
+    # Count Fainted Pokemon
     for i in 0...party.length
-      fainted += 1 if party[i].isFainted?
+      next if !party[i] || party[i].isEgg?
+      base += 1 if party[i].hp == 0
     end
-    return (fainted + 1) * @basedmg
+    return (base + 1) * basedmg
   end
 
   def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)

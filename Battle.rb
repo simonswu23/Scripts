@@ -279,6 +279,7 @@ class PokeBattle_Battle
   attr_accessor(:sosbattle)       # Stores fight is an sos battle or not
   attr_accessor(:eruption)        # Eruption variable for Volcano Top field
   attr_accessor(:storm9)          # Controll attribute for Tempest being active (for shutoff check)
+  attr_accessor(:startSkillUsed)
   MAXPARTYSIZE = 6
   MAXPARTYSIZE2 = 12
 
@@ -467,6 +468,51 @@ class PokeBattle_Battle
     return @weather
   end
 
+  def protosynthesisCheck
+    priority == pbPriority
+    if @battle.pbWeather == :SUNNYDAY || @battle.FE == :DESERT
+      for i in priority
+        next if i.isFainted?
+        next if i.ability != :PROTOSYNTHESIS
+        next if i.effects[:Quarkdrive][0] > 0
+        aBoost = i.attack * 1.0+(0.5*i.stages[PBStats::ATTACK])
+        dBoost = i.defense * 1.0+(0.5*i.stages[PBStats::DEFENSE])
+        saBoost = i.spatk * 1.0+(0.5*i.stages[PBStats::SPATK])
+        sdBoost = i.spdef * 1.0+(0.5*i.stages[PBStats::SPDEF])
+        spdBoost = i.speed * 1.0+(0.5*i.stages[PBStats::SPEED])
+        stats = [aBoost,dBoost,saBoost,sdBoost,spdBoost]
+        boostStat = stats.index(stats.max)+1
+        i.effects[:Quarkdrive] = [boostStat,false]
+        @battle.pbDisplay(_INTL("{1}'s Quark Drive heightened its {2}!", i.pbThis,i.pbGetStatName(boostStat)))
+      end
+    end
+    if @battle.pbWeather != :SUNNYDAY && @battle.FE != :DESERT
+      for i in priority
+        next if i.isFainted?
+        next if i.effects[:Quarkdrive][0] == 0
+        next if i.effects[:Quarkdrive][1]
+        next if i.ability != :PROTOSYNTHESIS
+
+        pbDisplay(_INTL("{1}'s Protosynthesis wore off!",i.pbThis))
+        i.effects[:Quarkdrive] = [0,false]
+        
+        if i.item == :BOOSTERENERGY
+          i.pbDisposeItem(false)
+          @battle.pbDisplay(_INTL("{1}'s Booster Energy was used up...", i.pbThis))
+          aBoost = i.attack * 1.0+(0.5*i.stages[PBStats::ATTACK])
+          dBoost = i.defense * 1.0+(0.5*i.stages[PBStats::DEFENSE])
+          saBoost = i.spatk * 1.0+(0.5*i.stages[PBStats::SPATK])
+          sdBoost = i.spdef * 1.0+(0.5*i.stages[PBStats::SPDEF])
+          spdBoost = i.speed * 1.0+(0.5*i.stages[PBStats::SPEED])
+          stats = [aBoost,dBoost,saBoost,sdBoost,spdBoost]
+          boostStat = stats.index(stats.max)+1
+          i.effects[:Quarkdrive] = [boostStat,true]
+          @battle.pbDisplay(_INTL("{1}'s Protosynthesis heightened its {2}!", i.pbThis,i.pbGetStatName(boostStat)))
+        end
+      end
+    end
+  end
+
   def quarkdriveCheck
     priority == pbPriority
     if @field.effect == :ELECTERRAIN || @state.effects[:ELECTERRAIN] > 0
@@ -552,6 +598,17 @@ class PokeBattle_Battle
           battler.effects[:MultiTurn]=4
           battler.effects[:MultiTurnUser]=battler.index
 
+        when :SKY
+          pbAnimation(:TAILWIND,battler,nil)
+          battler.pbOwnSide.effects[:Tailwind] += 4
+          pbDisplay(_INTL("A tailwind blows from behind {1}'s team!",battler.pbThis))
+          if self.pbWeather != :STRONGWINDS && !@battle.state.effects[:HeavyRain] && !@battle.state.effects[:HarshSunlight] && !@battle.state.effects[:DesertNova] && !@battle.state.effects[:AbsoluteZero]
+            @weather == :STRONGWINDS
+            @weatherduration = 8
+            pbCommonAnimation("Wind",nil,nil)
+            pbDisplay(_INTL("Strong winds kicked up around the field!"))
+          end
+
         when :SWAMP
           if Rejuv 
             battler.ability=:CLEARBODY
@@ -568,7 +625,7 @@ class PokeBattle_Battle
           return if @field.effect == :CORROSIVEMIST || @field.effect == :CORRUPTED
 
         when :ICY
-          if !battler.isAirborne? && battler.ability != :MAGICGUARD
+          if !battler.isAirborne? && battler.ability != :MAGICGUARD && !battler.effects[:MagicGuard]
             spikesdiv=[8,8,6,4][battler.pbOwnSide.effects[:Spikes]]
             @scene.pbDamageAnimation(battler,0)
             battler.pbReduceHP([(battler.totalhp.to_f/spikesdiv).floor,1].max)
@@ -580,7 +637,7 @@ class PokeBattle_Battle
           return
 
         when :ROCKY, :CAVE
-          if battler.ability != :MAGICGUARD
+          if battler.ability != :MAGICGUARD && !battler.effects[:MagicGuard]
             atype=(:ROCK) || 0
             eff=PBTypes.twoTypeEff(atype,battler.type1,battler.type2)
             if eff>0
@@ -1603,7 +1660,7 @@ class PokeBattle_Battle
     end
     # Ingrain
     if thispkmn.effects[:Ingrain]
-      return true if @field.effect == :BEWITCHED
+      return true if @field.effect == :BEWITCHED && !thispkmn.isGiga?
       pbDisplayPaused(_INTL("{1} can't be switched out!",thispkmn.pbThis)) if showMessages
       return false
     end
@@ -1627,6 +1684,10 @@ class PokeBattle_Battle
     if @battle.state.effects[:Gravity] == -1
       opp = opp1 if opp1.ability == :GRAVPULL && thispkmn.weight < opp1.weight
       opp = opp2 if opp2.ability == :GRAVPULL && thispkmn.weight < opp2.weight
+    end
+    if (thispkmn.effects[:Attract] >= 0)
+      opp=opp1 if opp1.ability == :CUTEAURA && thispkmn.effects[:Attract]==opp1.index
+      opp=opp2 if opp2.ability == :CUTEAURA && thispkmn.effects[:Attract]==opp2.index
     end
     if (thispkmn.status == :SLEEP || thispkmn.ability == :COMATOSE)
       opp=opp1 if opp1.crested == :DARKRAI && opp1.ability == :BADDREAMS
@@ -2234,7 +2295,7 @@ class PokeBattle_Battle
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @megaEvolution[side][owner]==-1
-    return false if @megaEvolution[side][owner]!=index
+    return false if @megaEvolution[side][owner]!=index && pbBelongsToPlayer?(index)
     return true
   end
 
@@ -2448,6 +2509,7 @@ class PokeBattle_Battle
     # choice.moves.each {|moveloop| @battle.ai.addMoveToMemory(choice,moveloop) }  if !@battle.isOnline?
 
     # Re-update ability of giga-evolved mon
+    @battlers[index].giga = true
     @battlers[index].pbAbilitiesOnSwitchIn(true)
   end
 
@@ -3114,7 +3176,7 @@ class PokeBattle_Battle
       pkmn.pbOwnSide.effects[:Spikes]=0 if @field.effect == :WATERSURFACE || @field.effect == :MURKWATERSURFACE || @field.effect == :SKY || @field.effect == :CLOUDS
       if pkmn.pbOwnSide.effects[:Spikes]>0
         if (!pkmn.isAirborne? || (Rejuv && @battle.FE == :ELECTERRAIN)) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
-          if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+          if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.effects[:MagicGuard]
             spikesdiv=[8,8,6,4][pkmn.pbOwnSide.effects[:Spikes]]
             if Rejuv && @battle.FE == :ELECTERRAIN
               atype = :ELECTRIC
@@ -3154,7 +3216,7 @@ class PokeBattle_Battle
       end
       # Stealth Rock
       if pkmn.pbOwnSide.effects[:StealthRock]
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
           atype = :ROCK
           atype = @field.getRoll if @field.effect == :CRYSTALCAVERN
           atype = :FIRE if @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
@@ -3183,7 +3245,7 @@ class PokeBattle_Battle
         end
       end
       if pkmn.pbOwnSide.effects[:Steelsurge]
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
           atype = :STEEL
           # @SWu to figure out alternate field interactions
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
@@ -3199,7 +3261,7 @@ class PokeBattle_Battle
         end
       end
       if pkmn.pbOwnSide.effects[:Volcalith]
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard]
           atype = :FIRE
           # @SWu to figure out alternate field interactions
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
@@ -3236,7 +3298,7 @@ class PokeBattle_Battle
       end
       # Corrosive Field Entry
       if @field.effect == :CORROSIVE
-        if !(pkmn.ability == :MAGICGUARD || pkmn.ability == :POISONHEAL || pkmn.ability == :IMMUNITY || pkmn.ability == :WONDERGUARD || 
+        if !(pkmn.ability == :MAGICGUARD || pkmn.ability == :POISONHEAL || pkmn.ability == :IMMUNITY || pkmn.ability == :WONDERGUARD || pkmn.effects[:MagicGuard] ||
             pkmn.ability == :TOXICBOOST || pkmn.ability == :PASTELVEIL) && !pkmn.isAirborne? && !pkmn.hasType?(:POISON) && !pkmn.hasType?(:STEEL) && pkmn.crested != :ZANGOOSE && pkmn.crested != :GOODRA && !(pkmn.isbossmon && pkmn.immunities[:fieldEffectDamage].include?(@field.effect))
           atype = :POISON
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
@@ -3712,6 +3774,10 @@ class PokeBattle_Battle
       $game_variables[:Cave_Collapse] = 0
     end
     # END OF UPDATE
+
+    # If there are opposing start effects, set them up now:
+    runstarterskills if Rejuv
+
     priority=pbPriority
     if Rejuv
       for i in priority
@@ -4317,7 +4383,7 @@ class PokeBattle_Battle
       case @field.effect
         when :ELECTERRAIN # Electric Terrain
           next if i.hp<=0
-          if i.ability == :VOLTABSORB && i.effects[:HealBlock]==0 && Rejuv
+          if (i.ability == :VOLTABSORB || i.ability == :STORMHEAL) && i.effects[:HealBlock]==0 && Rejuv
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
@@ -4407,7 +4473,7 @@ class PokeBattle_Battle
                i.ability == (:SHELLARMOR) || i.ability == (:WATERBUBBLE) ||
                i.ability == (:MAGICGUARD) || i.ability == (:WONDERGUARD) ||
                i.ability == (:PRISMARMOR) || i.effects[:AquaRing] || i.ability == :SOLARIDOL ||
-               i.pbOwnSide.effects[:WideGuard] || (i.pbOwnSide.effects[:AreniteWall]>0)
+               i.pbOwnSide.effects[:WideGuard] || (i.pbOwnSide.effects[:AreniteWall]>0) || i.effects[:MagicGuard]
               pbDisplay(_INTL("{1} is immune to the eruption!",i.pbThis))
             else
               eff=PBTypes.twoTypeEff(:FIRE,i.type1,i.type2)
@@ -4469,7 +4535,7 @@ class PokeBattle_Battle
           # eruption check - insane, too much, but makes typh op, so i no question
         when :SHORTCIRCUIT # Shortcircuit Field
           next if i.hp<=0
-          if i.ability == :VOLTABSORB && i.effects[:HealBlock]==0
+          if (i.ability == :VOLTABSORB || i.ability == :STORMHEAL) && i.effects[:HealBlock]==0
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
@@ -4590,7 +4656,7 @@ class PokeBattle_Battle
       end
       if @state.effects[:ELECTERRAIN] > 0
         next if i.hp<=0
-        if i.ability == :VOLTABSORB && i.effects[:HealBlock]==0
+        if (i.ability == :VOLTABSORB || i.ability == :STORMHEAL) && i.effects[:HealBlock]==0
           hpgain=(i.totalhp/16.0).floor
           hpgain=i.pbRecoverHP(hpgain,true)
           pbDisplay(_INTL("{1} absorbed stray electricity!",i.pbThis)) if hpgain>0
@@ -4783,13 +4849,13 @@ class PokeBattle_Battle
             for i in priority
               next if i.isFainted?
               if (!i.hasType?(:GROUND) && !i.hasType?(:ROCK) && !i.hasType?(:STEEL) && !(i.ability == :SANDVEIL  || i.ability == :SANDRUSH ||
-                i.ability == :SANDFORCE || i.ability == :MAGICGUARD || i.ability == :TEMPEST || (i.ability == :WONDERGUARD && @field.effect == :COLOSSEUM) || i.ability == :OVERCOAT) &&
+                i.ability == :SANDFORCE || i.ability == :MAGICGUARD || i.effects[:MagicGuard] || i.ability == :TEMPEST || (i.ability == :WONDERGUARD && @field.effect == :COLOSSEUM) || i.ability == :OVERCOAT) &&
               !(i.item == :SAFETYGOGGLES) && ($cache.moves[i.effects[:TwoTurnAttack]].nil? || ![0xCA,0xCB].include?($cache.moves[i.effects[:TwoTurnAttack]].function))) || # Dig, Dive
-              (i.effects[:DesertsMark] && !(i.ability == :MAGICGUARD)) # Desert's mark sand immunity negation
+              (i.effects[:DesertsMark] && !(i.ability == :MAGICGUARD) && !i.effects[:MagicGuard]) # Desert's mark sand immunity negation
                 pbDisplay(_INTL("The Pokémon were buffeted by the sandstorm!",i.pbThis)) if !endmessage
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
-                if Rejuv && @field.effect == :DESERT
+                if (state.effects[:DesertNova]) || Rejuv && @field.effect == :DESERT
                   i.pbReduceHP((i.totalhp/8.0).floor)
                 else
                   i.pbReduceHP((i.totalhp/16.0).floor)
@@ -4819,12 +4885,12 @@ class PokeBattle_Battle
             endmessage=false
             for i in priority
               next if i.isFainted?
-              if !i.hasType?(:ICE) && i.ability != :TEMPEST && i.ability != :ICEBODY && i.ability != :SNOWCLOAK && i.ability != :SLUSHRUSH && i.ability != :LUNARIDOL && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && i.ability != :OVERCOAT &&
+              if !i.hasType?(:ICE) && i.ability != :TEMPEST && i.ability != :ICEBODY && i.ability != :SNOWCLOAK && i.ability != :SLUSHRUSH && i.ability != :LUNARIDOL && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && i.ability != :OVERCOAT &&
                 !(i.item == :SAFETYGOGGLES) && ($cache.moves[i.effects[:TwoTurnAttack]].nil? || ![0xCA,0xCB].include?($cache.moves[i.effects[:TwoTurnAttack]].function)) # Dig, Dive
                 pbDisplay(_INTL("The Pokémon were buffeted by the hail!",i.pbThis)) if !endmessage
                 endmessage=true
                 @scene.pbDamageAnimation(i,0)
-                if @field.effect == :FROZENDIMENSION
+                if (state.effects[:AbsoluteZero]) || @field.effect == :FROZENDIMENSION
                   i.pbReduceHP((i.totalhp/8.0).floor)
                 else
                   i.pbReduceHP((i.totalhp/16.0).floor)
@@ -4880,6 +4946,7 @@ class PokeBattle_Battle
           end
         end
     end
+    protosynthesisCheck
     # Temporal Shift
     for i in priority
       next if i.isFainted?
@@ -4988,6 +5055,7 @@ class PokeBattle_Battle
         for j in 0...party.length
           next if @battle.battlers.include?(j)
           next if !party[j] || party[j].isEgg?
+          next if party[j].hp == 0
           party[j].healHp(((party[j].totalhp+1)/16).floor);
         end
         pbDisplay(_INTL("The Meganium Crest restored the team's HP a little!",i.pbThis(true)))
@@ -5006,7 +5074,7 @@ class PokeBattle_Battle
 
 
       # Rain Dish
-      if ((i.ability == :RAINDISH || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE))&& i.effects[:HealBlock]==0
+      if ((i.ability == :RAINDISH || i.ability == :STORMHEAL || (i.crested == :CASTFORM && i.form == 2)) && (pbWeather== :RAINDANCE))&& i.effects[:HealBlock]==0
         hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
         pbDisplay(_INTL("{1}'s Rain Dish restored its HP a little!",i.pbThis)) if hpgain>0
       end
@@ -5285,7 +5353,12 @@ class PokeBattle_Battle
       # Healer
       if i.ability == :HEALER
         partner=i.pbPartner
-        if partner.hp >0 && !partner.status.nil?
+        if i.hp > 0 && !i.status.nil?
+          pbDisplay(_INTL("{1}'s Healer cured its {2} problem!",i.pbThis,i.status.downcase))
+          i.status=nil
+          i.statusCount=0
+        end
+        if partner.hp > 0 && !partner.status.nil?
           pbDisplay(_INTL("{1}'s Healer cured its partner's {2} problem!",i.pbThis,partner.status.downcase))
           partner.status=nil
           partner.statusCount=0
@@ -5367,7 +5440,7 @@ class PokeBattle_Battle
     for i in priority
       if i.effects[:LeechSeed]>=0
         recipient=@battlers[i.effects[:LeechSeed]]
-        if recipient && !recipient.isFainted? && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)# if recipient exists
+        if recipient && !recipient.isFainted? && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)# if recipient exists
           hploss=(i.totalhp/8.0).floor
           hploss= hploss * 2 if @field.effect == :WASTELAND
           pbCommonAnimation("LeechSeed",recipient,i)
@@ -5417,7 +5490,7 @@ class PokeBattle_Battle
       # Petrification
       if i.status== :PETRIFIED && (i.effects[:Petrification]>=0) 
         recipient=@battlers[i.effects[:Petrification]]
-        if recipient && !recipient.isFainted?  && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) # if recipient exists
+        if recipient && !recipient.isFainted?  && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) # if recipient exists
           pbCommonAnimation("Petrification",recipient,i)
           hploss=i.pbReduceHP((i.totalhp/8).floor,true)
           next if recipient.isFainted?
@@ -5452,7 +5525,7 @@ class PokeBattle_Battle
         end
       end
       # Poison/Bad poison
-      if i.status== :POISON && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !(i.ability == :GUTS && @battle.FE == :CROWD)
+      if i.status== :POISON && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !(i.ability == :GUTS && @battle.FE == :CROWD)
         if (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA)
           if i.effects[:HealBlock]==0
             if i.hp<i.totalhp
@@ -5495,10 +5568,10 @@ class PokeBattle_Battle
         end
       end
       # Burn
-      if i.status== :BURN && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+      if i.status== :BURN && i.ability != :MAGICGUARD && i.ability != :HEATPROOF && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
         i.pbContinueStatus
         if !(i.ability == :GUTS && @battle.FE == :CROWD)
-          if i.ability == :HEATPROOF || @field.effect == :ICY
+          if @field.effect == :ICY
             i.pbReduceHP((i.totalhp/32.0).floor)
           else
             i.pbReduceHP((i.totalhp/16.0).floor)
@@ -5506,7 +5579,7 @@ class PokeBattle_Battle
         end
       end
       # Frostbite
-      if i.status== :FROSTBITE && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+      if i.status== :FROSTBITE && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
         mult = 1
         if (@field.effect == :FROZENDIMENSION)
           mult = 2
@@ -5599,7 +5672,7 @@ class PokeBattle_Battle
       end
       
       # Nightmare
-      if i.effects[:Nightmare] && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
+      if i.effects[:Nightmare] && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
         if ((i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) || @battle.FE == :INFERNAL || i.pbOpposing1.ability == :WORLDOFNIGHTMARES || i.pbOpposing2.ability == :WORLDOFNIGHTMARES)
           pbCommonAnimation("Nightmare",i,nil)
           pbDisplay(_INTL("{1} is locked in a nightmare!",i.pbThis))
@@ -5623,7 +5696,7 @@ class PokeBattle_Battle
         i.effects[:Curse] = false
         pbDisplay(_INTL("{1}'s curse was lifted!",i.pbThis))
       end
-      if i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+      if i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
         pbCommonAnimation("Curse",i,nil)
         pbDisplay(_INTL("{1} is afflicted by the curse!",i.pbThis))
         i.pbReduceHP((i.totalhp/4.0).floor,true)
@@ -5644,7 +5717,7 @@ class PokeBattle_Battle
         if i.effects[:MultiTurn]==0
           pbDisplay(_INTL("{1} was freed from {2}!",i.pbThis,movename))
           i.effects[:BindingBand] = false
-        elsif !(i.ability == :MAGICGUARD) && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+        elsif !(i.ability == :MAGICGUARD) && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
           pbDisplay(_INTL("{1} is hurt by {2}!",i.pbThis,movename))
           if (i.effects[:MultiTurnAttack] == :BIND)
             pbCommonAnimation("Bind",i,nil)
@@ -6175,7 +6248,7 @@ class PokeBattle_Battle
         end
       end
       #sleepyswamp #sleepydimension #spookydreams #fairyringsleep
-      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && !(i.ability == :MAGICGUARD)
+      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && !(i.ability == :MAGICGUARD) && !i.effects[:MagicGuard]
         if @field.effect == :SWAMP # Swamp Field
           if i.effects[:MultiTurn]>0
             hploss=i.pbReduceHP((i.totalhp/8.0).floor,true)
@@ -6207,7 +6280,7 @@ class PokeBattle_Battle
         end
       end
       #sleepycorro
-      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !(i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && i.ability != :TOXICBOOST &&
+      if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA) && i.ability != :TOXICBOOST &&
       i.ability != :WONDERGUARD && !i.isAirborne? && !i.hasType?(:STEEL) && !i.hasType?(:POISON) && @field.effect == :CORROSIVE
         hploss=i.pbReduceHP((i.totalhp/16.0).floor,true)
         pbDisplay(_INTL("{1} is seared by the corrosion!",i.pbThis)) if hploss>0
@@ -6256,7 +6329,7 @@ class PokeBattle_Battle
       end
     end
     # Bad Dreams
-    if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
+    if (i.status== :SLEEP || (i.ability == :COMATOSE && @battle.FE != :ELECTERRAIN)) && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && @field.effect != :RAINBOW
       if i.pbOpposing1.ability == (:BADDREAMS) || i.pbOpposing2.ability == (:BADDREAMS)
         crested = i.pbOpposing1.crested == :DARKRAI || i.pbOpposing2.crested == :DARKRAI
         hpdrain=(i.totalhp/8.0).floor
@@ -6382,7 +6455,7 @@ class PokeBattle_Battle
         pbDisplay(_INTL("{1} was burned by its {2}!",i.pbThis,getItemName(i.item)))
       end
       # Sticky Barb
-      if i.item == :STICKYBARB && i.ability != :MAGICGUARD && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
+      if i.item == :STICKYBARB && i.ability != :MAGICGUARD && !i.effects[:MagicGuard] && !(i.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM)
         pbDisplay(_INTL("{1} is hurt by its {2}!",i.pbThis,getItemName(i.item)))
         @scene.pbDamageAnimation(i,0)
         i.pbReduceHP((i.totalhp/8.0).floor)
@@ -6469,7 +6542,7 @@ class PokeBattle_Battle
         @battlers[i].effects[:Snatch]=true
       end
       @battlers[i].effects[:Electrify]=false
-      @battlers[i].effects[:Charge]-=1 if @battlers[i].effects[:Charge]>0
+      # @battlers[i].effects[:Charge]-=1 if @battlers[i].effects[:Charge]>0
       @battlers[i].lastHPLost=0
       @battlers[i].lastAttacker=-1
       @battlers[i].effects[:Counter]=-1

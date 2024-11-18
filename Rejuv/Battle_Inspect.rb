@@ -40,7 +40,7 @@ PokeBattle_Battler.class_eval{
     atkmult=(atkmult*1.5).round if self.ability == (:QUEENLYMAJESTY) && (@battle.FE==:CHESS || @battle.FE==:FAIRYTALE)
     atkmult=(atkmult*1.5).round if self.ability == (:LONGREACH) && (@battle.FE==:MOUNTAIN || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:SKY)
     atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) || self.ability == (:TIDEPOOLTYRANT) || self.crested == :SWALOT) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
-    atkmult=(atkmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::ATTACK    
+    atkmult=(atkmult*1.3).round if (self.ability == :QUARKDRIVE || self.ability == :PROTOSYNTHESIS) && self.effects[:Quarkdrive][0] == PBStats::ATTACK    
     atk=(atk*atkmult*1.0/0x1000).round
     return atk
   end
@@ -81,7 +81,7 @@ PokeBattle_Battler.class_eval{
     atkmult=(atkmult*1.5).round if self.ability == (:QUEENLYMAJESTY) && (@battle.FE==:CHESS || @battle.FE==:FAIRYTALE)
     atkmult=(atkmult*1.5).round if self.ability == (:LONGREACH) && (@battle.FE==:MOUNTAIN || @battle.FE==:SNOWYMOUNTAIN || @battle.FE==:SKY)
     atkmult=(atkmult*1.5).round if (self.ability == (:CORROSION) || self.ability == (:TIDEPOOLTYRANT)) && (@battle.FE==:CORROSIVE || @battle.FE==:CORROSIVEMIST ||  @battle.FE==:CORRUPTED)
-    atkmult=(atkmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::SPATK   
+    atkmult=(atkmult*1.3).round if (self.ability == :QUARKDRIVE || self.ability == :PROTOSYNTHESIS) && self.effects[:Quarkdrive][0] == PBStats::SPATK   
     atk=(atk*atkmult*1.0/0x1000).round
     return atk
   end  
@@ -117,7 +117,7 @@ PokeBattle_Battler.class_eval{
     defmult=(defmult*1.3).round if self.ability == (:PRISMARMOR) && (@battle.FE==:DARKCRYSTALCAVERN || @battle.FE==:RAINBOW || @battle.FE==:CRYSTALCAVERN)
     defmult=(defmult*1.5).round if self.ability == (:SHADOWSHIELD) && (@battle.FE==:STARLIGHT || @battle.FE==:NEWWORLD || @battle.FE==:DARKCRYSTALCAVERN)
     defmult=(defmult*2.0).round if self.ability == (:SHADOWSHIELD) && (@battle.FE==:DIMENSIONAL) 
-    defmult=(defmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::DEFENSE
+    defmult=(defmult*1.3).round if (self.ability == :QUARKDRIVE || self.ability == :PROTOSYNTHESIS) && self.effects[:Quarkdrive][0] == PBStats::DEFENSE
     defense=(defense*defmult*1.0/0x1000).round    
     return defense
   end    
@@ -161,7 +161,7 @@ PokeBattle_Battler.class_eval{
     defmult=(defmult*1.3).round if self.ability == (:PRISMARMOR) && (@battle.FE==:DARKCRYSTALCAVERN || @battle.FE==:RAINBOW || @battle.FE==:CRYSTALCAVERN)
     defmult=(defmult*1.5).round if self.ability == (:SHADOWSHIELD) && (@battle.FE==:STARLIGHT || @battle.FE==:NEWWORLD || @battle.FE==:DARKCRYSTALCAVERN)
     defmult=(defmult*2.0).round if self.ability == (:SHADOWSHIELD) && (@battle.FE==:DIMENSIONAL) 
-    defmult=(defmult*1.3).round if self.ability == :QUARKDRIVE && self.effects[:Quarkdrive][0] == PBStats::SPDEF   
+    defmult=(defmult*1.3).round if (self.ability == :QUARKDRIVE || self.ability == :PROTOSYNTHESIS) && self.effects[:Quarkdrive][0] == PBStats::SPDEF   
     defense=(defense*defmult*1.0/0x1000).round
     return defense
   end  
@@ -326,6 +326,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Power Trick")) if pkmn.effects[:PowerTrick]
   report.push(_INTL("Smacked Down")) if pkmn.effects[:SmackDown]
   report.push(_INTL("Sheltered")) if pkmn.effects[:Shelter]
+  report.push(_INTL("Magic Guard")) if pkmn.effects[:MagicGuard]
   report.push(_INTL("Quark Drive active")) if pkmn.effects[:Quarkdrive][0]!=0
   report.push(_INTL("Air Balloon")) if pkmn.hasWorkingItem(:AIRBALLOON)
   report.push(_INTL("Magnet Rise: {1} turns",pkmn.effects[:MagnetRise])) if pkmn.effects[:MagnetRise]>0

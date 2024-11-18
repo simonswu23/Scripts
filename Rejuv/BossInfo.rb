@@ -2096,7 +2096,7 @@ BOSSINFOHASH = {
             :moves => [:THUNDERCAGE,:ZINGZAP,:PROTECT,:BULLDOZE],
             :gender => "M",
             :nature => :BRAVE,
-            :item => :LEFTOVERS,
+            :item => :KLINKLANGCREST,
             :ability => :SPEEDBOOST,
             :shiny => false,
             :iv => 31,
@@ -2222,6 +2222,42 @@ BOSSINFOHASH = {
             :ev => [4,0,0,252,0,252]
         },
         :onBreakEffects => {
+        }
+    },
+    :BOSSPORYGON2 => {
+        :name => "Astrolobica",
+        :entryText => "Astrolobica stares at you intently!",
+        :shieldCount => 1,
+        :immunities => {},
+        :moninfo => {
+            :species => :PORYGON2,
+            :level => 80,
+            :item => :EVIOLITE,
+            :moves => [:PSYCHIC,:ICEBEAM,:THUNDERBOLT,:RECOVER],
+            :ability => :TRACE,
+            :gender => "F",
+            :nature => :MODEST,
+            :form => 1,
+            :iv => 31,
+            :ev => [252,252,252,252,252,252]
+        },
+        :onBreakEffects => {
+            1 => {
+                :threshold => 0,
+                :message => "CONVERGING POWER",
+                :abilitychange => :GRAVFLUX,
+                :movesetUpdate => [:ZAPCANNON,:BLIZZARD,:OBLIVIONWING,:GRAVITY],
+                :statDropCure => true,
+                :statusCure => true,
+                :effectClear => true,
+                :bossStatChanges => {
+                    PBStats::ATTACK => 1,
+                    PBStats::DEFENSE => 1,
+                    PBStats::SPATK => 1,
+                    PBStats::SPDEF => 1,
+                    PBStats::SPEED => 1,
+                }
+            }
         }
     },
     :STORMNINE => {
@@ -2822,7 +2858,7 @@ BOSSINFOHASH = {
             :form => 1,
             :moves => [:SHIFTGEAR,:GEARGRIND,:FACADE,:WILDCHARGE],
             :nature => :ADAMANT,
-            :item => :LEFTOVERS,
+            :item => :KLINKLANGCREST,
             :iv => 31,
             :happiness => 0,
             :ev => [252,252,0,0,0,4]
@@ -2843,7 +2879,7 @@ BOSSINFOHASH = {
             1 => {
                 :threshold => 0,
                 :message => "Gears appear all around!",
-                :movesetUpdate => [:SUBSTITUTE,:GEARGRIND,:FACADE,:WILDCHARGE],
+                :movesetUpdate => [:OVERHEAT,:GEARGRIND,:FACADE,:WILDCHARGE],
                 :fieldChange => :FACTORY,
                 :bossStatChanges => {
                     PBStats::ATTACK => 1,

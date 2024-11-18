@@ -246,6 +246,7 @@ class PokeBattle_Battler
         when :INTELEON
           @speed *= 1.3
         when :CINDERACE
+          @attack *= 1.1
           @spatk = @attack
         when :PHIONE
           @defense *= 1.5
@@ -318,7 +319,6 @@ class PokeBattle_Battler
           defense = @defense
           @defense = @spdef
           @spdef = defense
-          # @SWu check w/ Dedenne Crest too
         when :PLUSLE
           @spatk *= 1.5
         when :MINUN
