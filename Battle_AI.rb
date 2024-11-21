@@ -532,8 +532,7 @@ class PokeBattle_AI
 							(move.pbType(battler) == :WATER && (battler.pbPartner.ability == :WATERABSORB || battler.pbPartner.ability == :STORMDRAIN || battler.pbPartner.ability == :DRYSKIN)) ||
 							(move.pbType(battler) == :GRASS && (battler.pbPartner.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON)) ||
 							(move.pbType(battler) == :ELECTRIC && (battler.pbPartner.ability == :VOLTABSORB || battler.pbPartner.ability == :LIGHTNINGROD || battler.pbPartner.ability == :MOTORDRIVE)) ||
-							(move.pbType(battler) == :GROUND && (battler.pbPartner.crested == :SKUNTANK) || battler.pbPartner.ability == :DETRITOVORE) ||
-							(move.pbType(battler) == :POISON && battler.pbPartner.ability == :DETRITOVORE)
+							(move.pbType(battler) == :GROUND && (battler.pbPartner.crested == :SKUNTANK) || battler.pbPartner.ability == :EARTHEATER) ||
 						scoremult*=2
 					elsif battler.pbPartner.hp > 0 && (battler.pbPartner.hp.to_f > 0.1* battler.pbPartner.totalhp || pbAIfaster?(move,nil,battler,battler.pbPartner)) && !(!@battle.pbOwnedByPlayer?(battler.index) && battler.name=="Spacea")
 						scoremult = [(1-2*mondata.scorearray[pi][moveindex]/100.0), 0].max # multiplier to control how much to arbitrarily care about hitting partner; lower cares more
@@ -1842,6 +1841,9 @@ class PokeBattle_AI
 				miniscore = statswapcode(PBStats::ATTACK,PBStats::SPATK)
 			when 0x53 # Guard Swap
 				miniscore = statswapcode(PBStats::DEFENSE,PBStats::SPDEF)
+			when 0x16E # Spectral Thief
+				boostarray,droparray = psychupcode()
+				miniscore = selfstatboost(boostarray.clone)
 			when 0x54 # Heart Swap
 				boostarray,droparray = psychupcode()
 				buffscore = selfstatboost(boostarray.clone) - selfstatdrop(droparray.clone,score)
@@ -6941,10 +6943,8 @@ class PokeBattle_AI
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:ELECTRIC ||bestmove2.pbType(@attacker.pbOpposing2) ==:ELECTRIC
 		elsif @opponent.ability == :SAPSIPPER || battler.pbPartner.crested == :WHISCASH || battler.pbPartner.crested == :GASTRODON
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GRASS || bestmove2.pbType(@attacker.pbOpposing2) ==:GRASS
-		elsif battler.pbPartner.crested == :SKUNTANK || @opponent.ability == :DETRITOVORE
+		elsif battler.pbPartner.crested == :SKUNTANK || @opponent.ability == :EARTHEATER
 			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:GROUND || bestmove2.pbType(@attacker.pbOpposing2) ==:GROUND
-		elsif @opponent.ability == :DETRITOVORE
-			miniscore*=3 if bestmove1.pbType(@attacker.pbOpposing1) ==:POISON || bestmove2.pbType(@attacker.pbOpposing2) ==:POISON
 		end
 		miniscore*=2 if (bestmove1.contactMove? || bestmove2.contactMove?) && checkAImoves([:KINGSSHIELD, :BANEFULBUNKER, :SPIKYSHIELD])
 		miniscore*=2 if checkAImoves([:COUNTER, :METALBURST, :MIRRORCOAT])
@@ -7721,19 +7721,14 @@ class PokeBattle_AI
 					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :FIRE}
 					abilityscore*=2 if pbTypeModNoMessages(firemove.pbType(attacker),attacker,opponent,firemove)>4
 				end
-			when :DETRITOVORE
+			when :EARTHEATER
 				for i in attacker.moves
 					next if i.nil?
 					groundmove=i if i.pbType(attacker)==:GROUND
-					poisonmove=i if i.pbType(attacker)==:POISON
 				end
 				if attacker.moves.any? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GROUND}
 					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GROUND}
 					abilityscore*=2 if pbTypeModNoMessages(groundmove.pbType(attacker),attacker,opponent,groundmove)>4
-				end
-				if attacker.moves.any? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :GRPOISONOUND}
-					abilityscore*=3 if attacker.moves.all? {|moveloop| moveloop!=nil && moveloop.pbType(attacker) == :POISON}
-					abilityscore*=2 if pbTypeModNoMessages(poisonmove.pbType(attacker),attacker,opponent,poisonmove)>4
 				end
 			when :LEVITATE, :LUNARIDOL, :SOLARIDOL
 				for i in attacker.moves
@@ -8507,6 +8502,11 @@ class PokeBattle_AI
 				$ai_log_data[@attacker.index].switch_name.push("")
 				next
 			end
+			if i.pokemon.species == :DURANT && i.pokemon.form == 1
+				partyScores.push(-9999999)
+				PBDebug.log(sprintf("Saki Durant Score: 0\n"))
+				next
+			end
 			PBDebug.log(sprintf("Scoring for %s switching to: %s",getMonName(@attacker.species),getMonName(i.species))) if $INTERNAL
 			if hard_switch
 				if !@battle.pbCanSwitch?(@attacker.index,partyindex,false)
@@ -8943,7 +8943,7 @@ class PokeBattle_AI
 						end
 					when :TRACE 
 						if [:WATERABSORB,:VOLTABSORB,:STORMHEAL,:STORMDRAIN,:MOTORDRIVE,:FLASHFIRE,:LEVITATE,:LUNARIDOL,:SOLARIDOL,:LIGHTNINGROD,
-							:SAPSIPPER,:DRYSKIN,:SLUSHRUSH,:SANDRUSH,:SWIFTSWIM,:CHLOROPHYLL,:SPEEDBOOST,:DETRITOVORE,
+							:SAPSIPPER,:DRYSKIN,:SLUSHRUSH,:SANDRUSH,:SWIFTSWIM,:CHLOROPHYLL,:SPEEDBOOST,:EARTHEATER,:ICEBODY,
 							:WONDERGUARD,:PRANKSTER].include?(@opponent.ability) || 
 							(pbAIfaster?() && ((@opponent.ability == :ADAPTABILITY) || (@opponent.ability == :DOWNLOAD) || (@opponent.ability == :PROTEAN) || (@opponent.ability == :LIBERO))) || 
 							(@opponent.attack>@opponent.spatk && (@opponent.ability == :INTIMIDATE)) || (@opponent.ability == :UNAWARE) || (i.hp==i.totalhp && ((@opponent.ability == :MULTISCALE) || (@opponent.ability == :SHADOWSHIELD)))
@@ -11554,7 +11554,7 @@ class PokeBattle_AI
 			when 0x86 # Acrobatics
 				return basedamage*2 if attacker.item.nil? || attacker.hasWorkingItem(:FLYINGGEM) || @battle.FE == :BIGTOP
 			when 0x87 # Weather Ball
-				return basedamage*2 if (@battle.pbWeather!=0 || @battle.FE == :RAINBOW)
+				return basedamage*2 if (@battle.pbWeather!=0 || @battle.FE == :RAINBOW || attacker.crested == :CHERRIM)
 			when 0x89 # Return
 				return [attacker.happiness,250].min if attacker.crested == :LUVDISC
 				return 102 if @battle.FE == :CONCERT4

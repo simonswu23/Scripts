@@ -87,7 +87,7 @@ class PokeBattle_Battler
 
   #simple true/false vars
   SwitchEff = [:AquaRing, :BindingBand, :BeakBlast, :BurnUp, :ClangedScales, :Curse,
-    :DefenseCurl, :DestinyBond, :DestinyRate, :Disguise, :Electrify, :Endure, :FairyLockRate,
+    :DefenseCurl, :DestinyBond, :DestinyRate, :Disguise, :Electrify, :Endure, :Sturdy, :FairyLockRate,
     :FlashFire, :Flinch, :FollowMe, :Foresight, :GastroAcid, :Grudge, :HelpingHand, :IceFace,
     :Imprison, :Ingrain, :Jealousy, :LashOut, :MagicCoat, :MeFirst, :Minimize,
     :MiracleEye, :Nightmare, :NoRetreat, :ParentalBond, :Powder,
@@ -853,7 +853,7 @@ class PokeBattle_Battler
       when :TELEPATHY
         speed*=2 if (@battle.FE == :PSYTERRAIN || @battle.state.effects[:PSYTERRAIN] > 0)
       when :CHLOROPHYLL
-        speed*=2 if (@battle.pbWeather== :SUNNYDAY || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,4,5)) && !self.hasWorkingItem(:UTILITYUMBRELLA)
+        speed*=2 if (@battle.pbWeather== :SUNNYDAY || @battle.FE == :FOREST || @battle.ProgressiveFieldCheck(PBFields::FLOWERGARDEN,4,5)) && !self.hasWorkingItem(:UTILITYUMBRELLA)
       when :QUICKFEET
         speed*=1.5 if (!self.status.nil? || (Rejuv && @battle.FE == :ELECTERRAIN))
       when :SANDRUSH
@@ -3552,7 +3552,7 @@ class PokeBattle_Battler
         end
         # Illusion goes here
         if (target.ability == :ILLUSION || target.crested == :ZOROARK) 
-          if target.effects[:Illusion]!=nil
+          if target.effects[:Illusion]!=nil && !target.effects[:Disguise]
             target.effects[:Illusion]=nil
             @battle.pbAnimation(:TRANSFORM,target,target) if !target.isFainted? 
             @battle.scene.pbChangePokemon(target,target.pokemon)
@@ -4179,7 +4179,7 @@ class PokeBattle_Battler
 
   def pbDisposeItem(berry=true,symbiosis=true)
     self.pokemon.itemRecycle=self.item
-    self.pokemon.itemInitial=nil if self.pokemon.itemInitial==self.item
+    # self.pokemon.itemInitial=nil if self.pokemon.itemInitial==self.item
     self.item=nil
     pbBurp(self) if berry
     pbSymbiosis(self)
@@ -5938,7 +5938,8 @@ class PokeBattle_Battler
     # Status Z-move effects
     pbZStatus(basemove.move,user) if choice[2].zmove && choice[2].category == :status && PBStuff::TYPETOZCRYSTAL[basemove.type] == user.item
     # moldbreaker
-    if (user.ability == :MOLDBREAKER || user.ability == :TERAVOLT || user.ability == :TURBOBLAZE) ||
+    # neutralizing gas here?
+    if (user.ability == :MOLDBREAKER || user.ability == :TERAVOLT || user.ability == :TURBOBLAZE) || @battle.pbCheckGlobalAbility(:NEUTRALIZINGGAS) ||
        basemove.function==0x166 || basemove.function==0x176 || basemove.function==0x200 # Solgaluna/crozma signatures
       for i in 0..3
         @battle.battlers[i].moldbroken = true

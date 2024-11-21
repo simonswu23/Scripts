@@ -792,13 +792,14 @@ class PokeBattle_Pokemon
       when :DREDNAW         then return true if move.move == :LIQUIDATION
       when :MELMETAL        then return true if move.move == :HYPERBEAM
       when :COALOSSAL       then return true if move.move == :STONEEDGE
-      when :VANILLUXE       then return true if move.move == :SHEERCOLD
+      when :VANILLUXE       then return true if move.move == :BLIZZARD
       when :MACHAMP         then return true if move.move == :CROSSCHOP
       when :CHARIZARD       then return true if move.move == :BLASTBURN
       when :VENUSUAR        then return true if move.move == :FRENZYPLANT
       when :BLASTOISE       then return true if move.move == :HYDROCANNON
       when :FERROTHORN      then return true if move.move == :POWERWHIP
       when :URSHIFU         then return true if move.move == :WICKEDBLOW
+      when :SANDACONDA      then return true if move.move == :HURRICANE
     end
     return false
   end

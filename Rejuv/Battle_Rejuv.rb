@@ -240,6 +240,17 @@
         if trainereffect[:message] && trainereffect[:message] != ""
           pbDisplayPaused(_INTL(trainereffect[:message]))
         end
+        if trainereffect[:opposingsideChanges]
+          side = pkmn.pbOpposingSide
+          trainereffect[:opposingsideChanges].each_pair {|effect,effectval|
+            side.effects[effect] = effectval[0]
+            pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+            if effectval[2] != nil
+              statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
+              pbDisplay(_INTL(statemessage,trainer.name))
+            end
+          }
+        end
         if trainereffect[:setWeather] && trainereffect[:setWeather] != @weather
           weather = trainereffect[:setWeather][0]
           @weather = weather
@@ -255,7 +266,6 @@
             weatherText = "Hail"
           elsif (weather == :SANDSTORM)
             weatherText = "Sandstorm"
-            weatherMessage = "A sandstorm kicked up!" if !weatherMessage
           elsif (weather == :STRONGWINDS)
             weatherText = "Wind"
           end
@@ -480,6 +490,18 @@
     if trainereffect[:delayedaction]
       trainer.trainerdelayedeffect = trainereffect[:delayedaction]
       trainer.trainerdelaycounter = (trainereffect[:delayedaction][:delay])
+    end
+    if trainereffect[:changeAbility]
+      if (pkmn.ability == :LUCKYWIND)
+        pbAnimation(:TAILWIND,anim,nil)
+        pkmn.pbOwnSide.effects[:Tailwind]+=4
+        @battle.pbDisplay(_INTL("{1}'s {2} brought in a Tailwind for its team!",pkmn.pbThis,getAbilityName(pkmn.ability)))
+      end
+      pkmn.ability = trainereffect[:changeAbility][0]
+      animation = trainereffect[:changeAbility][1]
+      message = trainereffect[:changeAbility][2]
+      pbAnimation(animation,anim,nil) if !animation.nil?
+      pbDisplay(_INTL("{1}", message)) if !message.nil?
     end
     if trainereffect[:applyStatus]
       status = trainereffect[:applyStatus][0]

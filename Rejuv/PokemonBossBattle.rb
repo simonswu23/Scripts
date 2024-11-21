@@ -102,7 +102,7 @@ class PokeBattle_Move
           opponent.damagestate.pawnsturdyused = true
           opponent.damagestate.pawnsturdy = true
           damage=damage-1
-        elsif damage==opponent.totalhp && opponent.ability == :STURDY && !opponent.moldbroken
+        elsif damage==opponent.totalhp && ((opponent.ability == :STURDY || (opponent.effects[:Sturdy])) && !opponent.moldbroken)
           opponent.damagestate.sturdy=true
           damage=damage-1
         elsif opponent.damagestate.focussash && damage==opponent.totalhp && opponent.item

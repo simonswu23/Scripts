@@ -298,12 +298,15 @@ class PokeBattle_Battler
           @spatk += @spdef * 0.25
           @speed += @spdef * 0.25
         when :ZOROARK
-          blacklist = PBStuff::ABILITYBLACKLIST - [:STANCECHANGE,:TRACE]
+          blacklist = PBStuff::ABILITYBLACKLIST - [:STANCECHANGE,:TRACE,:DISGUISE]
           party = @battle.pbPartySingleOwner(@index)
           party=party.find_all {|item| item && !item.egg? && item.hp>0 }
           if party.length > 0
             if party[party.length-1] != self.pokemon
               @ability = party[party.length-1].ability if !blacklist.include?(party[party.length-1].ability)
+              if (@ability == :DISGUISE)
+                @effects[:Disguise] = true
+              end
             end
           end
         when :DARKRAI

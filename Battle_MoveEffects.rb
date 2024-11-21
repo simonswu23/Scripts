@@ -1302,12 +1302,12 @@ class PokeBattle_Move_023 < PokeBattle_Move
     if @move == :CHISTRIKE
       if attacker.effects[:FocusEnergy]<1
         attacker.effects[:FocusEnergy]+=1
-        pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+        pbShowAnimation(@move,attacker,opponent)
         @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbThis))
       end
       if attacker.pbPartner.effects[:FocusEnergy]<1
         attacker.pbPartner.effects[:FocusEnergy]+=1
-        pbShowAnimation(@move,attacker.pbPartner,opponent,hitnum,alltargets,showanimation)
+        pbShowAnimation(@move,attacker,opponent)
         @battle.pbDisplay(_INTL("{1} is getting pumped!",attacker.pbPartner.pbThis))
       end
     elsif attacker.effects[:FocusEnergy]<2
@@ -3635,7 +3635,7 @@ end
 ################################################################################
 class PokeBattle_Move_070 < PokeBattle_Move
   def pbAccuracyCheck(attacker,opponent)
-    return false if opponent.ability == :STURDY && !opponent.moldbroken
+    return false if (opponent.ability == :STURDY || (opponent.effects[:Sturdy])) && !opponent.moldbroken
     return false if opponent.pokemon.piece==:PAWN && @battle.FE == :CHESS
     return false if opponent.level > attacker.level || (@move == :SHEERCOLD && opponent.hasType?(:ICE))
     return true if opponent.level <= attacker.level && (attacker.ability == :NOGUARD || opponent.ability == :NOGUARD) # no guard OHKO move situation.
@@ -5758,7 +5758,7 @@ end
 class PokeBattle_Move_0C2 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
     ret=super(attacker,opponent,hitnum,alltargets,showanimation)
-    if opponent.damagestate.calcdamage>0 && !(attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0)
+    if opponent.damagestate.calcdamage>0 && (attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0)
       @battle.pbDisplay(_INTL("{1}'s {2} flowed through the user!",attacker.pbThis,getAbilityName(attacker.ability)))
     elsif opponent.damagestate.calcdamage>0 && opponent.anabolic
       opponent.anabolic = false
@@ -9217,7 +9217,7 @@ class PokeBattle_Move_11F < PokeBattle_Move
     for i in @battle.battlers
       if i.hasWorkingItem(:ROOMSERVICE)
         if i.pbCanReduceStatStage?(PBStats::SPEED)
-          i.pbReduceStatBasic(PBStats::SPEED,1)
+          i.pbReduceStatBasic(PBStats::SPEED,6)
           @battle.pbCommonAnimation("StatDown",i,nil)
           @battle.pbDisplay(_INTL("The Room Service lowered #{i.pbThis}'s Speed!"))
           i.pbDisposeItem(false)

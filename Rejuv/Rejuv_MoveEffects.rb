@@ -166,6 +166,8 @@ end
 ##############################################################################
 class PokeBattle_Move_205 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret = 0
+    ret = super(attacker,opponent,hitnum,alltargets,showanimation) if @basedamage>0
     pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
     if ((opponent.ability == :MULTITYPE) ||
       (opponent.ability == :RKSSYSTEM) || opponent.crested == :SILVALLY) &&
@@ -190,8 +192,7 @@ class PokeBattle_Move_205 < PokeBattle_Move
         @battle.pbDisplay(_INTL("{1} was trapped within a Sand Tomb!",opponent.pbThis))        
       end
     end
-
-    return 0
+    return ret
   end
 end
 

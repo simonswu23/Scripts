@@ -12162,7 +12162,7 @@ MOVEHASH = {
 	:basedamage => 100,
 	:accuracy => 100,
 	:maxpp => 10,
-	:effect => 20,
+	:effect => 100,
 	:target => :SingleNonUser,
 	:kingrock => true,
 	:desc => "This attack will be Physical or Special, depending on which would do more damage."
@@ -13727,7 +13727,7 @@ MOVEHASH = {
 	:basedamage => 90,
 	:accuracy => 100,
 	:maxpp => 10,
-	:effect => 20,
+	:effect => 100,
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
@@ -13809,7 +13809,6 @@ MOVEHASH = {
 :ULTRAMEGADEATH2 => {
 	:ID => 900,
 	:name => "Super U.M.D. Move",
-	:longname => "OG Super Ultra Mega Death Move",
 	:function => 0x900,
 	:type => :STEEL,
 	:category => :physical,
@@ -13824,7 +13823,6 @@ MOVEHASH = {
 
 :ULTRAMEGAHAMMER2 => {
 	:name => "Super U.M.D. Move ANIMATION",
-	:longname => "OG Super Ultra Mega Death Move",
 	:function => 0x900,
 	:type => :STEEL,
 	:category => :physical,
@@ -14355,6 +14353,22 @@ MOVEHASH = {
 	:desc => "GOTCHA"
 },
 
+:ICESPINNER => {
+	:ID => 935,
+	:name => "Ice Spinner",
+	# @SWu change to destroy layered terrain
+	:function => 0x000,
+	:type => :ICE,
+	:category => :physical,
+	:basedamage => 80,
+	:accuracy => 100,
+	:maxpp => 10,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:desc => "GOTCHA"
+},
+
 # ====================== GIGA MOVES ============================ #
 
 :SMITE => {
@@ -14801,7 +14815,22 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 5,
 	:contact => true,
+	:bypassprotect => true,
 	:target => :SingleNonUser,
   :desc => "Urshifu SS"
 },
+
+:DESERTSTORM => {
+	:ID => 2030,
+	:name => "Desert Storm",
+	:function => 0x205,
+	:type => :FLYING,
+	:category => :physical,
+	:basedamage => 130,
+	:accuracy => 0,
+	:maxpp => 5,
+	:target => :AllOpposing,
+  :desc => "Sandaconda"
+},
+
 }

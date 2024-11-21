@@ -4548,7 +4548,7 @@ class PokeBattle_Battle
           end
         when :WATERSURFACE # Water Surface
           next if i.hp<=0
-          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN || i.ability == :DETRITOVORE) && i.effects[:HealBlock]==0 && !i.isAirborne?
+          if (i.ability == :WATERABSORB || i.ability == :DRYSKIN) && i.effects[:HealBlock]==0 && !i.isAirborne?
             hpgain=(i.totalhp/16.0).floor
             hpgain=i.pbRecoverHP(hpgain,true)
             pbDisplay(_INTL("{1} absorbed some of the water!",i.pbThis)) if hpgain>0
@@ -4598,7 +4598,7 @@ class PokeBattle_Battle
           if i.isFainted?
             return if !i.pbFaint
           end
-          if i.hasType?(:POISON) && (i.ability == :DRYSKIN || i.ability == :WATERABSORB || i.ability == :DETRITOVORE) || (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA)  && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
+          if i.hasType?(:POISON) && (i.ability == :DRYSKIN || i.ability == :WATERABSORB) || (i.ability == :POISONHEAL || i.crested == :ZANGOOSE || i.crested == :GOODRA)  && !i.isAirborne? && i.effects[:HealBlock]==0 && i.hp<i.totalhp
             pbCommonAnimation("Poison",i,nil)
             i.pbRecoverHP((i.totalhp/8.0).floor,true)
             pbDisplay(_INTL("{1} was healed by the poisoned water!",i.pbThis))
@@ -5046,11 +5046,11 @@ class PokeBattle_Battle
       next if i.isFainted?
 
       # Meganium + Meganium Crest
-      if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?)
+      if i.crested == :MEGANIUM || (i.pbPartner.crested == :MEGANIUM && !i.pbPartner.isFainted?) # || i.ability == :HEALER || (i.pbPartner.ability == :HEALER && !i.pbPartner.isFainted?) # @SWu check how abiltiy suppression is handled here
           hpgain=i.pbRecoverHP((i.totalhp/16).floor,true)
       end
 
-      if i.crested == :MEGANIUM
+      if i.crested == :MEGANIUM # || i.ability == :HEALER 
         party=@battle.pbParty(i.index)
         for j in 0...party.length
           next if @battle.battlers.include?(j)
@@ -5225,6 +5225,11 @@ class PokeBattle_Battle
         end
       end
 
+      if (i.ability) == :EARTHEATER && (@field.effect == :DESERT || pbWeather == :SANDSTORM)
+        hpgain=i.pbRecoverHP((i.totalhp/8.0).floor,true)
+        pbDisplay(_INTL("{1} swallowed the sand!",i.pbThis)) if hpgain>0
+      end
+
       # Dry Skin
       if (i.ability == :DRYSKIN)
         if (pbWeather== :RAINDANCE) && i.effects[:HealBlock]==0
@@ -5351,19 +5356,19 @@ class PokeBattle_Battle
         end
       end
       # Healer
-      if i.ability == :HEALER
-        partner=i.pbPartner
-        if i.hp > 0 && !i.status.nil?
-          pbDisplay(_INTL("{1}'s Healer cured its {2} problem!",i.pbThis,i.status.downcase))
-          i.status=nil
-          i.statusCount=0
-        end
-        if partner.hp > 0 && !partner.status.nil?
-          pbDisplay(_INTL("{1}'s Healer cured its partner's {2} problem!",i.pbThis,partner.status.downcase))
-          partner.status=nil
-          partner.statusCount=0
-        end
-      end
+      # if i.ability == :HEALER
+      #   partner=i.pbPartner
+      #   if i.hp > 0 && !i.status.nil?
+      #     pbDisplay(_INTL("{1}'s Healer cured its {2} problem!",i.pbThis,i.status.downcase))
+      #     i.status=nil
+      #     i.statusCount=0
+      #   end
+      #   if partner.hp > 0 && !partner.status.nil?
+      #     pbDisplay(_INTL("{1}'s Healer cured its partner's {2} problem!",i.pbThis,partner.status.downcase))
+      #     partner.status=nil
+      #     partner.statusCount=0
+      #   end
+      # end
     end
     # Held berries/Leftovers/Black Sludge
     for i in priority

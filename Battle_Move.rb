@@ -324,17 +324,11 @@ class PokeBattle_Move
     if (darttype = :ICE || fieldsecondtype.include?(:ICE)) && (opp1.ability == :ICEBODY && !opp1.moldbroken) || (@battle.FE == :GLITCH && opp1.species == :GENESECT && opp1.hasWorkingItem(:CHILLDRIVE) && !opp1.moldbroken)
       return [opp2]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || ((opp2.ability == :EARTHEATER || opp2.ability == :DETRITOVORE) && !opp2.moldbroken))
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp2.isAirborne? || opp2.crested == :SKUNTANK || ((opp2.ability == :EARTHEATER) && !opp2.moldbroken))
       return [opp1]
     end
-    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || ((opp1.ability == :EARTHEATER || opp1.ability == :DETRITOVORE) && !opp1.moldbroken))
+    if (darttype = :GROUND || fieldsecondtype.include?(:GROUND)) && (opp1.isAirborne? || opp1.crested == :SKUNTANK || ((opp1.ability == :EARTHEATER) && !opp1.moldbroken))
       return [opp2]
-    end
-    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && ((opp1.ability == :DETRITOVORE) && !opp1.moldbroken)
-      return [opp2]
-    end
-    if (darttype = :POISON || fieldsecondtype.include?(:POISON)) && ((opp2.ability == :DETRITOVORE) && !opp2.moldbroken)
-      return [opp1]
     end
     
     # is dragon darts being called by a status move on a mon with prankster and is either target dark type?
@@ -822,14 +816,13 @@ class PokeBattle_Move
     if (!(opponent.moldbroken) && (((opponent.ability == :DRYSKIN || opponent.ability == :WATERABSORB) &&  type == :WATER) || 
                                    ((opponent.ability == :VOLTABSORB || opponent.ability == :STORMHEAL)&& type == :ELECTRIC))) ||
                                   ((opponent.ability == :LUNARIDOL || opponent.ability == :ICEBODY) && type == :ICE) ||
-                                  ((opponent.ability == :EARTHEATER || opponent.ability == :DETRITOVORE) && type == :GROUND) ||
-                                  (opponent.ability == :DETRITOVORE && type == :POISON)
+                                  ((opponent.ability == :EARTHEATER) && type == :GROUND) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && type == :WATER) ||
                                   ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && type == :ICE) ||
                                   ((Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY && type == :WATER)
       if opponent.effects[:HealBlock]==0
         negator = getAbilityName(opponent.ability)
-        if ![:WATERABSORB,:VOLTABSORB,:STORMHEAL,:DRYSKIN,:LUNARIDOL,:ICEBODY,:EARTHEATER,:DETRITOVORE].include?(opponent.ability)
+        if ![:WATERABSORB,:VOLTABSORB,:STORMHEAL,:DRYSKIN,:LUNARIDOL,:ICEBODY,:EARTHEATER,:EARTHEATER].include?(opponent.ability)
           negator = getItemName(opponent.item) if (Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && (opponent.item == :DOUSEDRIVE || opponent.item == :CHILLDRIVE))
           negator = "unquenchable thirst" if (Rejuv && @battle.FE == :DESERT) && (opponent.hasType?(:GRASS) || opponent.hasType?(:WATER)) && @battle.pbWeather == :SUNNYDAY
         end
@@ -1030,9 +1023,7 @@ class PokeBattle_Move
     if ((opponent.ability == :DRYSKIN && !(opponent.moldbroken)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       ((opponent.ability == :VOLTABSORB || opponent.ability == :STORMHEAL) && !(opponent.moldbroken) && (type == :ELECTRIC || (!secondtype.nil? && secondtype.include?(:ELECTRIC)))) ||
       (opponent.ability == :WATERABSORB && !(opponent.moldbroken) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
-      (opponent.ability == :DETRITOVORE && !(opponent.moldbroken) && 
-                                                                  (type == :WATER || type == :GROUND || type == :POISON || 
-                                                                  (!secondtype.nil? && secondtype.include?(:WATER)) || (!secondtype.nil? && secondtype.include?(:GROUND)) || (!secondtype.nil? && secondtype.include?(:POISON)))) ||
+      (opponent.ability == :ICEBODY && !(opponent.moldbroken) && (type == :ICE || (!secondtype.nil? && secondtype.include?(:ICE)))) ||
       (opponent.ability == :EARTHEATER && !(opponent.moldbroken) && (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:DOUSEDRIVE)) && (type == :WATER || (!secondtype.nil? && secondtype.include?(:WATER)))) ||
       ((Rejuv && @battle.FE == :GLITCH && opponent.species == :GENESECT && opponent.hasWorkingItem(:CHILLDRIVE)) && (type == :ICE || (!secondtype.nil? && secondtype.include?(:ICE)))) ||
@@ -2295,7 +2286,7 @@ class PokeBattle_Move
     #Item defense boost
     if opponent.hasWorkingItem(:EVIOLITE) && !(@battle.FE == :GLITCH && pbIsSpecial?(type)) 
       evos=pbGetEvolvedFormData(opponent.pokemon.species,opponent.pokemon)
-      if evos && evos.length>0 || opponent.pokemon.species == :DURALUDON
+      if (evos && evos.length>0) || opponent.pokemon.species == :DURALUDON
         defmult*=1.5
       end
     end
@@ -2636,19 +2627,24 @@ class PokeBattle_Move
     defense*=defmult
     totaldamage=(((((2.0*attacker.level/5+2).floor*basedmg*atk/defense).floor/50.0).floor+1)*damage*finalmult).round
     totaldamage=1 if totaldamage < 1
+
+    if opponent.ability == :STALWART && !opponent.moldbroken && totaldamage > (opponent.hp / 2)
+      @battle.pbDisplay(_INTL("{1}'s Stalwart reduced the damage taken!!",opponent.name))
+      totaldamage *= 0.5
+    end
     opponent.damagestate.calcdamage=totaldamage
     return totaldamage
   end
 
   def pbReduceHPDamage(damage,attacker,opponent)
+    
     endure=false
     futureMoves=[:FUTUREDUMMY,:DOOMDUMMY,:HEXDUMMY]
+  
     if futureMoves.include?(@move)
       damage=pbCalcDamage(attacker,opponent)
     end
-    if opponent.ability == :STALWART && !opponent.moldbroken
-      damage *= 0.5 if damage > opponent.totalhp / 2
-    end
+
     if opponent.effects[:Substitute]>0 && (!attacker || attacker.index!=opponent.index) &&
      attacker.ability != :INFILTRATOR && !isSoundBased? && 
      @move!=:SPECTRALTHIEF &&  @move!=:HYPERSPACEHOLE &&  @move!=:HYPERSPACEFURY #spectral thief/ hyperspace hole/ hyperspace fury
@@ -2691,7 +2687,7 @@ class PokeBattle_Move
           opponent.damagestate.pawnsturdyused = true
           opponent.damagestate.pawnsturdy = true
           damage=damage-1
-        elsif damage==opponent.totalhp && opponent.ability == :STURDY && !opponent.moldbroken
+        elsif damage==opponent.totalhp && (opponent.ability == :STURDY || (opponent.effects[:Sturdy])) && !opponent.moldbroken
           opponent.damagestate.sturdy=true
           damage=damage-1
         elsif opponent.damagestate.focussash && damage==opponent.totalhp && opponent.item

@@ -1,7 +1,8 @@
 ## General
 
-### Story
+### Mechanics
   - Move relearner automatically relearns egg moves
+  - Usable held items are no longer permanently consumed after each battle
 
 ### Battle
   -  Giga Evolution Changes
@@ -235,7 +236,7 @@
   - Ability: Snow Cloak
   - Stats: 142, 85, 85, 130, 95, 69
   - Giga Move: Flash Freeze
-    - basemove: Sheer Cold
+    - basemove: Blizzard
     - Type: Flying
     - category: special
     - BP: 120
@@ -374,13 +375,14 @@
   - Typing: Ground/Flying
   - Ability: Sand Veil
   - Stats: 144, 117, 145, 55, 90, 31
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: Desert Storm
+    - basemove: Hurricane
+    - Type: Flying
+    - category: physical
+    - BP: 130
+    - acc: 0
+    - target: all foes
+    - effect: inflicts Desert Mark on targets
 
 - Toxtricity
   - Typing: Poison/Electric
@@ -517,7 +519,7 @@
   - base stat buffs: 75, 95, 95, 95, 95, 113
     
 - Goodra line
-  - added Detritivore as ability for Goomy, Sliggoo, and Goodra
+  - added Earth Eater as ability for Goomy, Sliggoo, and Goodra
   - added Regenerator as ability for Sliggoo (Hisui) and Goodra (Hisui)
     
 - Mamoswine Line
@@ -694,6 +696,7 @@
 
 - Aggron line
   - gains Earth Eater
+  - Mega gains Adamantine Body
 
 - Luvdisc
   - base stat buffs: 43, 30, 55, 40, 65, 117
@@ -742,7 +745,7 @@
 - Audino
   - base stat buffs: 103, 70, 86, 70, 106, 50
   - mega stat buffs: 103, 60, 136, 100, 136, 50
-  - learns Baton Pass at level 1 and Chain Drain at level 63
+  - learns Baton Pass at level 1, Follow Me as an egg move, and Chain Drain at level 63
 
 - Darmanitan
   - learns Trick Room by TM
@@ -961,7 +964,7 @@
   - cannot be trapped
 
 - Healer
-  - Friendly HP restoration is doubled, and friendly status conditions are cured at the end of each turn
+  - Friendly HP restoration is doubled
 
 - Hydration
   - x1.5 special defense boost in Rain
@@ -991,6 +994,7 @@
   - x1.5 defense in ice
 
 - Ice Body
+  - restores HP when it by Ice attack
   - restores 1/8 HP at the end of each turn in Hail
 
 - Rain Dish
@@ -1049,6 +1053,7 @@
 - Rivalry 
   - x1.3 damage against pokemon that share a same typing
 
+
  
 ### New Abilities
 
@@ -1069,6 +1074,7 @@
  
 - Earth Eater
   - restores HP when hit by ground attacks
+  - restores 1/8 hp at the end of each turn in the sand
  
 - Adamantine Body
   - doubles defense, returns 50% of damage dealt from direct contact physical attacks
@@ -1203,6 +1209,9 @@
 
 - Typhlosion Crest
   - extra burst of damage applied to all attacks
+
+- Room Service
+  - reduces speed by 6 in Trick Room
 
 ### New Items
 - Poison Potion
@@ -1743,6 +1752,8 @@
 - Stockpile
   - independent of defense boosts now
 
+- Super UMD
+  - 100% effect chance
     
 ### New Attacks
 
@@ -2007,6 +2018,14 @@
   - All Foes
   - 20% chance to burn, restores 50% of damage dealt
 
+- Ice Spinner
+  - Ice
+  - Physical
+  - bp: 80
+  - acc: 100
+  - Single Target
+  - No additional effect (TODO: destroys surge terrain)
+
 # Field Effect Updates
 - Snowy Mountain
   - Centiferno transforms into Cave
@@ -2118,20 +2137,19 @@
 - Neon and Magenta
 - Souta
 - Thomas Blakeory
-- Kieran (Past) -- also updated Ren's team
+- Ren v Kieran
 - Ren (Desert)
 - Adam
 - Ryland
-
+- Aelita v Texen
 - Melia (League Administration)
-- Ren (Desert)
-- Angie + Cera (Diamond Route)
-- Geara (Axis Factory)
-- Saki (Gym)
 
+- Angie + Cera (Diamond Route)
+- Hazuki (Nightmare)
+- Geara (Axis Factory)
+- *Saki (Gym)
 - Talon (Rooftop)
 - Xara and Jean (Spirits)
-- Hazuki (Nightmare)
 - Crescent (nasty)
 - Ren x Venam (Inevitable Grief)
   
@@ -2151,13 +2169,16 @@
     - Fairy weak to Bug
 
 - Wishlist
-  - Embargo
-    - affects the whole opposing team
-    - (complete 9/6)
-    - TODO: implement
-   
-  - Terrains: x1.3 boost to x1.5 boost
-    
+  - Escape Routes
+    - from Flora (to Floria)
+    - from Valarie Bad Future
+  - Starting QoL
+    - PC of every obtainable pokemon up to that point
+    - Bag full of every obtainable relevant item up to that point
+    - Extra starter machine
+    - **In-battle single-use items are returned to you after the battle ends**
+
+
 - Incomplete Implementation:
   - Gastrodon Crest
  

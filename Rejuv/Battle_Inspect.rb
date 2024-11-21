@@ -326,7 +326,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Power Trick")) if pkmn.effects[:PowerTrick]
   report.push(_INTL("Smacked Down")) if pkmn.effects[:SmackDown]
   report.push(_INTL("Sheltered")) if pkmn.effects[:Shelter]
-  report.push(_INTL("Magic Guard")) if pkmn.effects[:MagicGuard]
+  report.push(_INTL("Magic Guard effect")) if pkmn.effects[:MagicGuard]
   report.push(_INTL("Quark Drive active")) if pkmn.effects[:Quarkdrive][0]!=0
   report.push(_INTL("Air Balloon")) if pkmn.hasWorkingItem(:AIRBALLOON)
   report.push(_INTL("Magnet Rise: {1} turns",pkmn.effects[:MagnetRise])) if pkmn.effects[:MagnetRise]>0
@@ -374,6 +374,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[:StickyWeb]
   report.push()
   report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : getAbilityName(shownmon.ability)))
+  report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : "Sturdy (what a cheater!)")) if pkmn.effects[:Sturdy]
   report.push(_INTL("Wonder Room Stat Swap active")) if pkmn.wonderroom==true
   report.push(_INTL("Field effect: {1}", @battle.field.isFieldEffect? ? PokeBattle_Field.getFieldName(@battle.field.effect) : "No Field"))
   @participants = @battle.pbPartySingleOwner(pkmn.index).find_all {|mon| mon && !mon.isEgg? && mon.hp>0}

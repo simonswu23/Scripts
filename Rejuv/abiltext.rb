@@ -1849,12 +1849,6 @@ ABILHASH = {
 	:desc => "The steals items, moves, and stats from the foe. It is an expert at getting away."
 },
 
-:DETRITOVORE => {
-	:ID => 325,
-	:name => "Detritivore",
-	:desc => "Ground and poison type attacks restore hp instead of dealing damage."
-},
-
 :MASSIVESHELL => {
 	:ID => 326,
 	:name => "Massive Shell",
