@@ -251,6 +251,25 @@
             end
           }
         end
+        if trainereffect[:trainersideChanges]
+          side = pkmn.pbOwnSide
+          trainereffect[:trainersideChanges].each_pair {|effect,effectval|
+            side.effects[effect] = effectval[0]
+            pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+            if effectval[2] != nil
+              statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
+              pbDisplay(_INTL(statemessage,trainer.name))
+            end
+          }
+        end
+        if trainereffect[:stateChanges]
+          trainereffect[:stateChanges].each_pair {|effect,effectval|
+            @battle.state.effects[effect] = effectval[0]
+            pbAnimation(effectval[1],pkmn,nil) if !effectval[1].nil?
+            statemessage = effectval[2] != "" ? effectval[2] : "The state of the battle was changed!"
+            pbDisplay(_INTL(statemessage,trainer.name))
+          }
+        end
         if trainereffect[:setWeather] && trainereffect[:setWeather] != @weather
           weather = trainereffect[:setWeather][0]
           @weather = weather
@@ -429,7 +448,7 @@
       side.effects[effect] = effectval[0]
       pbAnimation(effectval[1],anim,nil) if !effectval[1].nil?
       statemessage = effectval[2] != "" ? effectval[2] : "An effect was put up by {1}!"
-      pbDisplay(_INTL(statemessage,trainer.name))
+      pbDisplay(_INTL(statemessage,trainer.name)) if statemessage != "empty"
     } if trainereffect[:trainersideChanges]
     side = pkmn.pbOpposingSide
     trainereffect[:opposingsideChanges].each_pair {|effect,effectval|

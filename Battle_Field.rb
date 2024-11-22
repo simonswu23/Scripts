@@ -460,7 +460,7 @@ class PokeBattle_Battle
         next if i.pbOwnSide.effects[:WideGuard]
         next if i.ability == :FLASHFIRE
         next if i.effects[:SkyDrop]
-        combustdamage -= 1 if (i.effects[:Endure] || i.ability == :STURDY) && @field.effect == :CORROSIVEMIST
+        combustdamage -= 1 if (i.effects[:Endure] || i.ability == :STURDY || i.effects[:Sturdy]) && @field.effect == :CORROSIVEMIST
         i.pbReduceHP(combustdamage) if combustdamage != 0
         i.pbFaint if i.isFainted?
       end
@@ -491,7 +491,7 @@ class PokeBattle_Battle
         next if PBStuff::TWOTURNMOVE.include?(i.effects[:TwoTurnAttack])
         next if i.pbOwnSide.effects[:WideGuard]
         next if i.effects[:SkyDrop]
-        quakedrop -= 1 if i.effects[:Endure] || i.ability == :STURDY
+        quakedrop -= 1 if i.effects[:Endure] || i.ability == :STURDY || i.effects[:Sturdy]
         quakedrop /= 2 if i.ability == :SHELLARMOR || i.ability == :BATTLEARMOR
         quakedrop /= 3 if i.ability == :PRISMARMOR || i.ability == :SOLIDROCK
         i.pbReduceHP(quakedrop) if quakedrop != 0

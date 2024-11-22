@@ -600,8 +600,10 @@ class PokeBattle_Battle
 
         when :SKY
           pbAnimation(:TAILWIND,battler,nil)
-          battler.pbOwnSide.effects[:Tailwind] += 4
-          pbDisplay(_INTL("A tailwind blows from behind {1}'s team!",battler.pbThis))
+          if (battler.pbOwnSide.effects[:Tailwind] >= 0)
+            battler.pbOwnSide.effects[:Tailwind] += 4
+            pbDisplay(_INTL("A tailwind blows from behind {1}'s team!",battler.pbThis))
+          end
           if self.pbWeather != :STRONGWINDS && !@battle.state.effects[:HeavyRain] && !@battle.state.effects[:HarshSunlight] && !@battle.state.effects[:DesertNova] && !@battle.state.effects[:AbsoluteZero]
             @weather == :STRONGWINDS
             @weatherduration = 8
@@ -654,9 +656,9 @@ class PokeBattle_Battle
 
         when :WASTELAND
           battler.pbDisposeItem(false)
-          battler.pbOwnSide.effects[:StealthRock]=true
-          battler.pbOpposingSide.effects[:StealthRock]=true
-          pbDisplay(_INTL("{1} laid Stealth Rocks everywhere!", battler.pbThis))
+          battler.pbOwnSide.effects[:Steelsurge]=true
+          battler.pbOpposingSide.effects[:Steelsurge]=true
+          pbDisplay(_INTL("{1} laid metal debris everywhere!", battler.pbThis))
           return
 
         when :UNDERWATER
@@ -3215,7 +3217,7 @@ class PokeBattle_Battle
         return
       end
       # Stealth Rock
-      if pkmn.pbOwnSide.effects[:StealthRock]
+      if pkmn.pbOwnSide.effects[:StealthRock] 
         if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
           atype = :ROCK
           atype = @field.getRoll if @field.effect == :CRYSTALCAVERN
@@ -3244,6 +3246,43 @@ class PokeBattle_Battle
           end
         end
       end
+
+      # Inverse Stealth Rock
+      if pkmn.pbOwnSide.effects[:InvStealthRock] 
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard]
+          atype = :ROCK
+          atype = @field.getRoll if @field.effect == :CRYSTALCAVERN
+          atype = :FIRE if @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
+          atype = :POISON if @field.effect == :CORRUPTED
+          eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
+          # Inverted here
+          switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
+          eff = switcheff[eff]
+          # Inverse inverts back
+          if @field.effect == :INVERSE
+            switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
+            eff = switcheff[eff]
+          end
+          
+          if eff>0
+            if @field.effect == :ROCKY || @field.effect == :CAVE
+              eff = eff*2
+            end
+            @scene.pbDamageAnimation(pkmn,0)
+            pkmn.pbReduceHP([(pkmn.totalhp*eff/32).floor,1].max)
+            if @field.effect == :CRYSTALCAVERN
+              pbDisplay(_INTL("{1} was hurt by the crystalized mysterious rocks!",pkmn.pbThis))
+            elsif @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
+              pbDisplay(_INTL("{1} was hurt by the molten mysterious rocks!",pkmn.pbThis))
+            elsif @field.effect == :CORRUPTED
+              pbDisplay(_INTL("{1} was hurt by the corrupted mysterious rocks!",pkmn.pbThis))
+            else
+              pbDisplay(_INTL("{1} was hurt by the mysterious rocks!",pkmn.pbThis))
+            end
+          end
+        end
+      end
+
       if pkmn.pbOwnSide.effects[:Steelsurge]
         if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
           atype = :STEEL
@@ -4679,7 +4718,7 @@ class PokeBattle_Battle
     end
     # eruption check 2 (having the hazard removal in the main loop above causes the messaging to malfunction)
     if @field.effect == :VOLCANICTOP
-      if @eruption
+      if @eruption && !@state.effects[:LockHazards]
         hazardsOnSide = false
         for i in priority
           if i.pbOwnSide.effects[:Spikes]>0
@@ -4692,6 +4731,18 @@ class PokeBattle_Battle
           end
           if i.pbOwnSide.effects[:StealthRock]
             i.pbOwnSide.effects[:StealthRock]=false
+            hazardsOnSide = true
+          end
+          if i.pbOwnSide.effects[:InvStealthRock]
+            i.pbOwnSide.effects[:InvStealthRock]=false
+            hazardsOnSide = true
+          end
+          if i.pbOwnSide.effects[:Steelsurge]
+            i.pbOwnSide.effects[:Steelsurge]=false
+            hazardsOnSide = true
+          end
+          if i.pbOwnSide.effects[:Voclalith]
+            i.pbOwnSide.effects[:Voclalith]=false
             hazardsOnSide = true
           end
           if i.pbOwnSide.effects[:StickyWeb]
@@ -5160,60 +5211,74 @@ class PokeBattle_Battle
               @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
             end
           end
-          if i.pbOwnSide.effects[:Spikes]>0 || j.pbOwnSide.effects[:Spikes]>0
-            i.pbOwnSide.effects[:Spikes]=0
-            j.pbOwnSide.effects[:Spikes]=0
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
-            else
-              @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+          if (!@state.effects[:LockHazards])
+            if i.pbOwnSide.effects[:Spikes]>0 || j.pbOwnSide.effects[:Spikes]>0
+              i.pbOwnSide.effects[:Spikes]=0
+              j.pbOwnSide.effects[:Spikes]=0
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+              else
+                @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+              end
             end
-          end
-          if i.pbOwnSide.effects[:StealthRock] || j.pbOwnSide.effects[:StealthRock]
-            i.pbOwnSide.effects[:StealthRock]=false
-            j.pbOwnSide.effects[:StealthRock]=false
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
-            else
-              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+            if i.pbOwnSide.effects[:StealthRock] || j.pbOwnSide.effects[:StealthRock]
+              i.pbOwnSide.effects[:StealthRock]=false
+              j.pbOwnSide.effects[:StealthRock]=false
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+              else
+                @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+              end
             end
-          end
-          if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
-            i.pbOwnSide.effects[:Steelsurge]=false
-            j.pbOwnSide.effects[:Steelsurge]=false
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The steel debris disappeared from around your opponent's team!"))
-            else
-              @battle.pbDisplay(_INTL("The steel debris disappeared from around your team!"))
+            if i.pbOwnSide.effects[:InvStealthRock] || j.pbOwnSide.effects[:InvStealthRock]
+              i.pbOwnSide.effects[:InvStealthRock]=false
+              j.pbOwnSide.effects[:InvStealthRock]=false
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your opponent's team!"))
+              else
+                @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your team!"))
+              end
             end
-          end
-          if i.pbOwnSide.effects[:Volcalith] || j.pbOwnSide.effects[:Volcalith]
-            i.pbOwnSide.effects[:Volcalith]=false
-            j.pbOwnSide.effects[:Volcalith]=false
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
-            else
-              @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+            if i.pbOwnSide.effects[:Steelsurge] || j.pbOwnSide.effects[:Steelsurge]
+              i.pbOwnSide.effects[:Steelsurge]=false
+              j.pbOwnSide.effects[:Steelsurge]=false
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The steel debris disappeared from around your opponent's team!"))
+              else
+                @battle.pbDisplay(_INTL("The steel debris disappeared from around your team!"))
+              end
             end
-          end
-          if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
-            i.pbOwnSide.effects[:ToxicSpikes]=0
-            j.pbOwnSide.effects[:ToxicSpikes]=0
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
-            else
-              @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+            if i.pbOwnSide.effects[:Volcalith] || j.pbOwnSide.effects[:Volcalith]
+              i.pbOwnSide.effects[:Volcalith]=false
+              j.pbOwnSide.effects[:Volcalith]=false
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+              else
+                @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+              end
             end
-          end
-          if i.pbOwnSide.effects[:StickyWeb] || j.pbOwnSide.effects[:StickyWeb]
-            attacker.pbOwnSide.effects[:StickyWeb]=false
-            j.pbOwnSide.effects[:StickyWeb]=false
-            if !@battle.pbIsOpposing?(i.index)
-              @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
-            else
-              @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+            if i.pbOwnSide.effects[:ToxicSpikes]>0 || j.pbOwnSide.effects[:ToxicSpikes]>0
+              i.pbOwnSide.effects[:ToxicSpikes]=0
+              j.pbOwnSide.effects[:ToxicSpikes]=0
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+              else
+                @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+              end
             end
+            if i.pbOwnSide.effects[:StickyWeb] || j.pbOwnSide.effects[:StickyWeb]
+              attacker.pbOwnSide.effects[:StickyWeb]=false
+              j.pbOwnSide.effects[:StickyWeb]=false
+              if !@battle.pbIsOpposing?(i.index)
+                @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+              else
+                @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+              end
+            end
+          else
+            @battle.pbDisplay(_INTL("Entry hazards are locked!"))
           end
+          
         end
         if (@battle.state.effects[:PSYTERRAIN] > 0 || @battle.state.effects[:GRASSY] > 0 ||
           @battle.state.effects[:ELECTERRAIN] > 0 || @battle.state.effects[:MISTY] > 0)
@@ -6083,6 +6148,8 @@ class PokeBattle_Battle
       for i in priority
         is_fainted_before = i.isFainted?
         partner_fainted_before = @doublebattle && i.pbPartner.isFainted?
+        next if @state.effects[:LockHazards]
+
         # Stealth Rock
         if i.pbOwnSide.effects[:StealthRock]
           pbDisplay(_INTL("The waste swallowed up the pointed stones!"))
@@ -6091,6 +6158,23 @@ class PokeBattle_Battle
           for mon in [i, i.pbPartner]
             next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
             eff=PBTypes.twoTypeEff(:ROCK,mon.type1,mon.type2)
+            next if eff <=0
+            @scene.pbDamageAnimation(mon,0)
+            mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)
+          end
+        end
+
+        # Inverse Stealth Rock
+        if i.pbOwnSide.effects[:InvStealthRock]
+          pbDisplay(_INTL("The waste swallowed up the mysterious stones!"))
+          i.pbOwnSide.effects[:InvStealthRock]=false
+          pbDisplay(_INTL("...Rocks spewed out from the ground below!"))
+          for mon in [i, i.pbPartner]
+            next if mon.isFainted? || PBStuff::TWOTURNMOVE.include?(mon.effects[:TwoTurnAttack])
+            eff=PBTypes.twoTypeEff(:ROCK,mon.type1,mon.type2)
+            # Inverted here
+            switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
+            eff = switcheff[eff]
             next if eff <=0
             @scene.pbDamageAnimation(mon,0)
             mon.pbReduceHP([(mon.totalhp*eff/16).floor,1].max)

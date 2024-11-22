@@ -3469,7 +3469,7 @@ class PokeBattle_AI
 		miniscore*= 1.3 if @battle.trickroom > 0 && @attacker.pbSpeed > pbRoughStat(@opponent,PBStats::SPEED)
 		miniscore*= 1.3 if @battle.field.duration > 0 && getFieldDisruptScore(@attacker,@opponent) > 1.0
 		miniscore*= 1.3 if @attacker.pbOpposingSide.screenActive?
-		miniscore*= 1.2 if @attacker.pbOpposingSide.effects[:Tailwind] > 0
+		miniscore*= 1.2 if @attacker.pbOpposingSide.effects[:Tailwind] != 0
 		if @opponent.status== :POISON || @opponent.status== :BURN || (@battle.pbWeather == :HAIL && !@opponent.hasType?(:ICE)) || (@battle.pbWeather == :SANDSTORM && !@opponent.hasType?(:ROCK) && !@opponent.hasType?(:GROUND) && !@opponent.hasType?(:STEEL)) || (@battle.pbWeather == :SHADOWSKY && !@opponent.hasType?(:SHADOW)) || @opponent.effects[:LeechSeed]>-1 || @opponent.effects[:Curse]
 			miniscore*=1.1
 			miniscore*=1.2 if @opponent.effects[:Toxic]>0
@@ -4142,14 +4142,14 @@ class PokeBattle_AI
 		miniscore*=3 if @opponent.pbOwnSide.effects[:AuroraVeil]>0
 		miniscore*=1.3 if @opponent.pbOwnSide.effects[:Mist]>0
 		if @move == :COURTCHANGE 
-			miniscore*=3 if @opponent.pbOwnSide.effects[:Tailwind]>0
+			miniscore*=3 if @opponent.pbOwnSide.effects[:Tailwind]!=0
 
 			miniscore*=0.5 if @attacker.pbOwnSide.effects[:Reflect]>0
 			miniscore*=0.5 if @attacker.pbOwnSide.effects[:LightScreen]>0
 			miniscore*=0.7 if @attacker.pbOwnSide.effects[:Safeguard]>0
 			miniscore*=0.3 if @attacker.pbOwnSide.effects[:AuroraVeil]>0
 			miniscore*=0.7 if @attacker.pbOwnSide.effects[:Mist]>0
-			miniscore*=0.2 if @attacker.pbOwnSide.effects[:Tailwind]>0
+			miniscore*=0.2 if @attacker.pbOwnSide.effects[:Tailwind]!=0
 		end
 		return miniscore
 	end
@@ -4354,7 +4354,7 @@ class PokeBattle_AI
 	end
 
 	def tailwindcode
-		return 0 if @attacker.pbOwnSide.effects[:Tailwind]>0
+		return 0 if @attacker.pbOwnSide.effects[:Tailwind]!=0
 		miniscore=1.5
 		if pbAIfaster?() && !@mondata.roles.include?(:LEAD)
 			miniscore*=0.9
@@ -4805,7 +4805,7 @@ class PokeBattle_AI
 		miniscore*= 1.3 if @battle.trickroom > 0 && !pbAIfaster?()
 		miniscore*= 1.3 if @battle.field.duration > 0 && getFieldDisruptScore(@attacker,@opponent) > 1.0
 		miniscore*= 1.3 if @attacker.pbOpposingSide.screenActive?
-		miniscore*= 1.2 if @attacker.pbOpposingSide.effects[:Tailwind] > 0
+		miniscore*= 1.2 if @attacker.pbOpposingSide.effects[:Tailwind] != 0
 		miniscore*= 0.3 if @opponent.moves.any? {|moveloop| moveloop!=nil && (PBStuff::SETUPMOVE).include?(moveloop.move)}
 		if @attacker.ability == :SPEEDBOOST && !pbAIfaster?() && @battle.trickroom==0
 			miniscore*=8
@@ -5183,7 +5183,7 @@ class PokeBattle_AI
 		end
 		miniscore*=0.5 if !@attacker.status.nil? || @attacker.effects[:Curse] || @attacker.effects[:Attract]>-1 || @attacker.effects[:Confusion]>0
 		miniscore*=hpGainPerTurn()
-		miniscore*=0.7 if @attacker.pbOwnSide.screenActive? || @attacker.pbOwnSide.effects[:Tailwind]>0 
+		miniscore*=0.7 if @attacker.pbOwnSide.screenActive? || @attacker.pbOwnSide.effects[:Tailwind]!=0 
 		miniscore*=1.3 if @opponent.effects[:PerishSong]!=0 && @attacker.effects[:PerishSong]==0
 		if pbAIfaster?()
 			miniscore*=3 if @opponent.vanished
@@ -8424,7 +8424,7 @@ class PokeBattle_AI
 			itemscore*= (1.0/fielddisrupt)
 
 			itemscore*=0.9 if @battle.trickroom > 0
-			itemscore*=0.6 if @attacker.pbOwnSide.effects[:Tailwind]>0
+			itemscore*=0.6 if @attacker.pbOwnSide.effects[:Tailwind]!=0
 			itemscore*=0.9 if @attacker.pbOwnSide.effects[:Reflect]>0
 			itemscore*=0.9 if @attacker.pbOwnSide.effects[:LightScreen]>0
 			itemscore*=0.8 if @attacker.pbOwnSide.effects[:AuroraVeil]>0
@@ -8676,7 +8676,7 @@ class PokeBattle_AI
 				if theseRoles.include?(:TANK)
 					rolescore+=40 if @opponent.status== :PARALYSIS || @opponent.effects[:LeechSeed]>0
 					rolescore+=40 if @opponent.pbPartner.status== :PARALYSIS || @opponent.pbPartner.effects[:LeechSeed]>0
-					rolescore+=30 if @attacker.pbOwnSide.effects[:Tailwind]>0
+					rolescore+=30 if @attacker.pbOwnSide.effects[:Tailwind]!=0
 				end
 				if theseRoles.include?(:LEAD)
 					rolescore+=10
@@ -8814,7 +8814,7 @@ class PokeBattle_AI
 					movesscore+=50 if pbAIfaster?(nil,nil,i,@opponent.pbPartner) && (@opponent.pbPartner.hp.to_f)/@opponent.pbPartner.totalhp<0.2
 				end
 				if i.pbHasMove?(:TAILWIND)
-					movesscore+= @attacker.pbOwnSide.effects[:Tailwind]>0 ? -60 : 30
+					movesscore+= @attacker.pbOwnSide.effects[:Tailwind]!=0 ? -60 : 30
 				end
 				if i.pbHasMove?(:PURSUIT) || (i.pbHasMove?(:SANDSTORM) || i.pbHasMove?(:HAIL)) && @opponent.item != :SAFETYGOGGLES ||
 					 i.pbHasMove?(:TOXIC) || i.pbHasMove?(:LEECHSEED)

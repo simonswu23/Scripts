@@ -345,6 +345,7 @@ def pbShowBattleStats(pkmn)
   turns="" if @battle.state.effects[:Gravity]<0
   report.push(_INTL("Gravity: {1} {2}",dur,turns)) if @battle.state.effects[:Gravity]!=0  
   report.push(_INTL("Tailwind: {1} turns",pkmn.pbOwnSide.effects[:Tailwind])) if pkmn.pbOwnSide.effects[:Tailwind]>0   
+  report.push(_INTL("Tailwind: Permanent")) if pkmn.pbOwnSide.effects[:Tailwind]<0   
   report.push(_INTL("Reflect: {1} turns",pkmn.pbOwnSide.effects[:Reflect])) if pkmn.pbOwnSide.effects[:Reflect]>0
   report.push(_INTL("Light Screen: {1} turns",pkmn.pbOwnSide.effects[:LightScreen])) if pkmn.pbOwnSide.effects[:LightScreen]>0
   report.push(_INTL("Aurora Veil: {1} turns",pkmn.pbOwnSide.effects[:AuroraVeil])) if pkmn.pbOwnSide.effects[:AuroraVeil]>0
@@ -369,9 +370,11 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Spikes: {1} layers",pkmn.pbOwnSide.effects[:Spikes])) if pkmn.pbOwnSide.effects[:Spikes]>0
   report.push(_INTL("Toxic Spikes: {1} layers",pkmn.pbOwnSide.effects[:ToxicSpikes])) if pkmn.pbOwnSide.effects[:ToxicSpikes]>0
   report.push(_INTL("Stealth Rock active")) if pkmn.pbOwnSide.effects[:StealthRock]
+  report.push(_INTL("Inverse Stealth Rock active")) if pkmn.pbOwnSide.effects[:InvStealthRock]
   report.push(_INTL("Steelsurge active")) if pkmn.pbOwnSide.effects[:Steelsurge]
   report.push(_INTL("Steelsurge active")) if pkmn.pbOwnSide.effects[:Volcalith]
   report.push(_INTL("Sticky Web active")) if pkmn.pbOwnSide.effects[:StickyWeb]
+  report.push(_INTL("Hazards are locked")) if @battle.state.effects[:LockHazards]
   report.push()
   report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : getAbilityName(shownmon.ability)))
   report.push(_INTL("Ability: {1}",pkmn.ability.nil? ? "Ability Negated" : "Sturdy (what a cheater!)")) if pkmn.effects[:Sturdy]

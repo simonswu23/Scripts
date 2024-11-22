@@ -21,6 +21,7 @@ class Battle_Side
     @effects[:Retaliate]   = false
     @effects[:StickyWeb]   = false
     @effects[:StealthRock] = false
+    @effects[:InvStealthRock] = false
     @effects[:Steelsurge] = false
     @effects[:Volcalith] = false
     #has stages of activation
@@ -72,6 +73,7 @@ class Battle_Global
     @effects[:HarshSunlight]      = false
     @effects[:AbsoluteZero]          = false
     @effects[:DesertNova]      = false
+    @effects[:LockHazards]      = false
   end
 end
 

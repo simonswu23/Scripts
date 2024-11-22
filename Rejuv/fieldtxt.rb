@@ -1041,12 +1041,12 @@ FIELDEFFECTS = {
 	:typeEffects => {},
 	:changeCondition => {},
 	:fieldChange => {
-		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND,:DRAGONASCENT],
 		:MOUNTAIN => [:BLIZZARD, :GLACIATE, :SUBZEROSLAMMER],
 	},
 	:dontChangeBackup => [],
 	:changeMessage => {
-		 "The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		 "The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND,:DRAGONASCENT],
 		 "The field cooled off!" => [:BLIZZARD, :GLACIATE, :SUBZEROSLAMMER],
 	},
 	:statusMods => [:TAILWIND, :STEALTHROCK, :SMOKESCREEN, :POISONGAS],
@@ -1701,13 +1701,13 @@ FIELDEFFECTS = {
 	:changeCondition => {},
 	:fieldChange => {
 		:SNOWYMOUNTAIN => [:BLIZZARD, :GLACIATE, :SUBZEROSLAMMER, :MOUNTAINGALE],
-		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND,:DRAGONASCENT],
 		:VOLCANICTOP => [:LAVAPLUME, :MAGMADRIFT, :ERUPTION, :INFERNOOVERDRIVE],
 	},
 	:dontChangeBackup => [],
 	:changeMessage => {
 		"The mountain was covered in snow!" => [:BLIZZARD, :GLACIATE, :SUBZEROSLAMMER, :MOUNTAINGALE],
-		"The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		"The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND,:DRAGONASCENT],
 		"The mountain erupted!" => [:LAVAPLUME, :MAGMADRIFT, :ERUPTION, :INFERNOOVERDRIVE],
 	},
 	:statusMods => [:TAILWIND, :SUNNYDAY],
@@ -1769,13 +1769,13 @@ FIELDEFFECTS = {
 	:fieldChange => {
 		:MOUNTAIN => [:HEATWAVE, :SEARINGSHOT, :FLAMEBURST, :LAVAPLUME, :FIREPLEDGE, :MINDBLOWN, :INCINERATE, :INFERNOOVERDRIVE, :RAGINGFURY,:CENTIFERNO],
 		:VOLCANICTOP => [:ERUPTION, :MAGMADRIFT],
-		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		:SKY => [:FLY, :BOUNCE,:HEAVENLYWING,:DRAGONASCENT,:SOUTHERNWIND],
 	},
 	:dontChangeBackup => [],
 	:changeMessage => {
 		"The snow melted away!" => [:HEATWAVE, :SEARINGSHOT, :FLAMEBURST, :LAVAPLUME, :FIREPLEDGE, :MINDBLOWN, :INCINERATE, :INFERNOOVERDRIVE, :RAGINGFURY, :CENTIFERNO],
 		"The mountain erupted!" => [:ERUPTION, :MAGMADRIFT],
-		"The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:SOUTHERNWIND],
+		"The battle was taken to the skies!" => [:FLY, :BOUNCE,:HEAVENLYWING,:DRAGONASCENT,:SOUTHERNWIND],
 	},
 	:statusMods => [:TAILWIND, :SUNNYDAY, :HAIL],
 	:changeEffects => {},

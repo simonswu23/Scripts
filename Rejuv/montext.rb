@@ -41202,7 +41202,7 @@ MONHASH = {
 	"Aevian Form" => {
 		:Type1 => :FLYING,
 		:BaseStats => [55, 85, 50, 50, 50, 70],
-		:Abilities => [:WONDERSKIN, :UNNERVE, :RUNAWAY],
+		:Abilities => [:WONDERSKIN, :UNNERVE,],
 		:EggMoves => [:ANCIENTPOWER,:FORESIGHT,:HEALBLOCK,:IMPRISON,:MORNINGSUN,:ZENHEADBUTT],
 		:Moveset => [
 			[1,:GUST],
@@ -41351,7 +41351,7 @@ MONHASH = {
 	"Aevian Form" => {
 		:Type1 => :FLYING,
 		:BaseStats => [85, 60, 60, 135, 100, 110],
-		:Abilities => [:SHIELDDUST, :PRESSURE, :GALEWINGS],
+		:Abilities => [:SHIELDDUST, :PRESSURE],
 		:preevo => {
 			:species => :LARVESTA,
 			:form => 1,

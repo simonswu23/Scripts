@@ -1965,7 +1965,7 @@
   - BP: 90
   - acc: 100
   - All Foes
-  - ground secondary typing (but can hit flying), defog + extends tailwind by 3 turns. Kicks up strong winds in sky field. 20% chance to omniboost (doubled in Skies).
+  - ground secondary typing (but can hit flying), defog + kicks up strong winds in the Sky Field. 20% chance to omniboost (doubled in Skies).
 
 - Cannonball
   - Water
@@ -2103,18 +2103,20 @@
   - Rivalry raises user's offenses by 1 on entry
   - Punk Rock raises user's special attack by 1 on entry
 
+- Wasteland
+  - Synthetic Seed spits out Metal Debris instead of Stealth Rock
+
 # Battles
 - Valarie (Gym)
 - Geara (Terajuma Beach)
 - Zetta/Neved (Terajuma Falls)
 - Ren (Helojak Factory)
 - Crawli (Gym)
-- Venam x Saki (Terajuma Beach)
-- Amber x Venam at Teila (13.5)
-- Jenner in Aquamarine (rework)
-- Madelis in Aquamarine
-- Neved in Teila 
-- Angie (rework)
+- Venam x Saki (Boom Battle)
+- Jenner (Aquamarine)**
+- Madelis (Aquamarine)**
+- Neved (Teila)
+- Angie (Gym)
 - Crawli (Jynobi)
 - Eli x Sharon (Valor)
 - Zetta x Geara (Valor Summit)
@@ -2139,15 +2141,19 @@
 - Thomas Blakeory
 - Ren v Kieran
 - Ren (Desert)
+- Eli x Sharon (Airship)
+- Aelita v Texen
 - Adam
 - Ryland
-- Aelita v Texen
 - Melia (League Administration)
 
 - Angie + Cera (Diamond Route)
+- Madelis (Pearl Route)
+- Cassandra (Pearl Route)
 - Hazuki (Nightmare)
 - Geara (Axis Factory)
 - *Saki (Gym)
+- Amber x Venam at Teila (13.5)
 - Talon (Rooftop)
 - Xara and Jean (Spirits)
 - Crescent (nasty)

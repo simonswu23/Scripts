@@ -32123,38 +32123,27 @@ TEAMARRAY = [{
 :defeat => "...And it's done. Bravo! You are truly the better trainer!",
 :items => [:BUTTERFREENITE],
 :trainereffect => { 
-	:effectmode => :Fainted,
+	:effectmode => :Party,
 	:buffactivation => :Limited,
-	0 => {
+	-1 => {
 		:trainersideChanges => {
-			:TAILWIND => [8,:TAILWIND,"A gust of wind blows from {1}'s side of the field!"],
+			:Tailwind => [-1,:TAILWIND,"A gust of wind blows from {1}'s side of the field!"],
 		},
-		:pokemonStatChanges => { 
-			PBStats::SPATK => 1,
-	  },
-	},
-	4 => {
-		:fieldChange => [:SKY,"TALON: To the skies!",0],
-		:setWeather => [:STRONGWINDS, -1],
-	},
-	6 => {
-		:fieldChange => [:SKY,"TALON: Fly once again!",0],
-		:setWeather => [:STRONGWINDS, -1],
 	},
 },
 :mons => [{
 	:species => :NOIVERN,
-	:level => 87,
+	:level => 90,
 	:item => :FLYINIUMZ,
 	:moves => [:FLAMETHROWER,:HURRICANE,:SOUTHERNWIND,:TAUNT],
 	:ability => :INFILTRATOR,
 	:gender => "F",
-	:nature => :TIMID,
+	:nature => :MODEST,
 	:iv => 31,
-	:ev => [0, 0, 0, 252, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :TORNADUS,
-	:level => 87,
+	:level => 90,
 	:item => :ASSAULTVEST,
 	:moves => [:HEATWAVE,:SOUTHERNWIND,:HURRICANE,:UTURN],
 	:ability => :REGENERATOR,
@@ -32162,50 +32151,60 @@ TEAMARRAY = [{
 	:nature => :TIMID,
 	:form => 1,
 	:iv => 31,
-	:ev => [0, 252, 0, 252, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :ENAMORUS,
-	:level => 87,
-	:item => :LIFEORB,
+	:level => 90,
+	:item => :FOCUSSASH,
 	:moves => [:SPRINGTIDESTORM,:SUPERPOWER,:FLY,:WEATHERBALL],
 	:ability => :CONTRARY,
 	:gender => "M",
 	:nature => :TIMID,
 	:form => 0,
 	:iv => 31,
-	:ev => [0, 252, 0, 252, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :BUTTERFREE,
-	:level => 89,
+	:level => 92,
 	:item => :ELEMENTALSEED,
 	:moves => [:BEFUDDLE,:SOUTHERNWIND,:QUIVERDANCE,:DRAININGKISS],
 	:ability => :COMPOUNDEYES,
 	:gender => "F",
 	:nature => :TIMID,
 	:iv => 31,
-	:ev => [0, 0, 0, 252, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :LUGIA,
-	:level => 89,
+	:level => 90,
 	:item => :ELEMENTALSEED,
 	:moves => [:AEROBLAST,:ROOST,:SOUTHERNWIND,:ICEBEAM],
 	:ability => :MULTISCALE,
 	:nature => :TIMID,
 	:iv => 31,
-	:ev => [0, 0, 0, 252, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :SALAMENCE,
-	:level => 89,
+	:level => 93,
 	:item => :SALAMENCITE,
 	:moves => [:DRAGONDANCE,:DOUBLEEDGE,:FLY,:AQUATAIL],
 	:ability => :MOXIE,
 	:gender => "F",
 	:nature => :JOLLY,
 	:iv => 31,
-	:ev => [0, 252, 0, 4, 0, 252]},
+	:ev => [252, 252, 252, 252, 252, 252]},
+# {
+# 	:species => :RAYQUAZA,
+# 	:level => 95,
+# 	:item => :LIFEORB,
+# 	:moves => [:DRAGONDANCE,:DRAGONASCENT,:VCREATE,:EXTREMESPEED],
+# 	:ability => :DELTASTREAM,
+# 	:nature => :JOLLY,
+# 	:form => 1,
+# 	:iv => 31,
+# 	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :BRAVIARY,
-	:level => 90,
+	:level => 94,
 	:item => :BRAVIARYCREST,
 	:moves => [:SKYATTACK,:ROOST,:CLOSECOMBAT,:BULKUP],
 	:ability => :DEFIANT,
@@ -32213,7 +32212,7 @@ TEAMARRAY = [{
 	:shiny => true,
 	:nature => :ADAMANT,
 	:iv => 31,
-	:ev => [0, 252, 0, 0, 0, 252]}]},
+	:ev => [252, 252, 252, 252, 252, 252]}]},
 {
 :teamid => ["Talon",:LEADER_TALON_1,0],
 :defeat => "...I couldn't stop you. I couldn't stop... Stop...",
@@ -37179,7 +37178,7 @@ TEAMARRAY = [{
 {
 	:species => :DURANT,
 	:level => 90,
-	:item => :STEELIUMZ,
+	:item => :FOCUSSASH,
 	:moves => [:ENDEAVOR,:FIRSTIMPRESSION,:ULTRAMEGADEATH,:EXTREMESPEED],
 	:ability => :WONDERGUARD,
 	:gender => "F",
@@ -47512,50 +47511,56 @@ TEAMARRAY = [{
 	:buffactivation => :Always,
 	-1 => {
 		:opposingsideChanges => {	
-			:StealthRock  => [1,:STEALTHROCK,"{1} threw out rocks!"], 
-	  }
+			:InvStealthRock  => [true,:STEALTHROCK,"{1} raised strange rocks around the battlefield!"], 
+	  	},
+		:stateChanges => { 
+		  :LockHazards => [true,:FAIRYLOCK,"Entry hazards are locked in!"],
+	  	},
 	},
 	0 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:NORMALIZE, :STEAMENGINE],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
+		:trainersideChanges => {	
+			:InvStealthRock  => [true,nil,"empty"], 
+	  	},
 	},
 	1 => {
 		:abilityHelper => [:NORMALIZE, :DEFEATIST],
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:NORMALIZE, :DEFEATIST],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 	2 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:MOLDBREAKER],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 	3 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:QUARKDRIVE],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 	4 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:ACCELERATE],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 	5 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:STURDY],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 	6 => {
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:UNNERVE],
-			:Endure => [true, :ENDURE, "{2} braced itself for impact!"],
+			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
 		},
 	},
 },
@@ -47568,8 +47573,8 @@ TEAMARRAY = [{
 	:ability => :MAGICGUARD,
 	:gender => "M",
 	:nature => :ADAMANT,
-	:iv => 31,
 	:form => 1,
+	:iv => 31,
 	:happiness => 255,
 	:ev => [252, 252, 252, 252, 252, 252]},
 {

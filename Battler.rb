@@ -833,7 +833,7 @@ class PokeBattle_Battler
     if @unburdened
       speed=speed*2
     end
-    if self.pbOwnSide.effects[:Tailwind]>0
+    if self.pbOwnSide.effects[:Tailwind]!=0
       speed=speed*2
     end
     
@@ -1742,7 +1742,7 @@ class PokeBattle_Battler
         end
       end
       
-      if !@battle.pbCheckGlobalAbility(:DELTASTREAM) && !@battle.pbCheckGlobalAbility(:TEMPEST) && ![:Winds,:BlowingLeaves,:SwirlingLeaves].include?($game_screen.weather_type) && !((self.pbOwnSide.effects[:Tailwind]>0 || self.pbOpposingSide.effects[:Tailwind]>0) && [:MOUNTAIN,:SNOWYMOUNTAIN,:VOLCANICTOP,:SKY].include?(@battle.FE))
+      if !@battle.pbCheckGlobalAbility(:DELTASTREAM) && !@battle.pbCheckGlobalAbility(:TEMPEST) && ![:Winds,:BlowingLeaves,:SwirlingLeaves].include?($game_screen.weather_type) && !((self.pbOwnSide.effects[:Tailwind]!=0 || self.pbOpposingSide.effects[:Tailwind]!=0) && [:MOUNTAIN,:SNOWYMOUNTAIN,:VOLCANICTOP,:SKY].include?(@battle.FE))
         if @battle.weather == :STRONGWINDS
           @battle.pbDisplay(_INTL("The mysterious air current has dissipated!"))
           unless ((self.ability == :PRIMORDIALSEA) || (self.ability == :DESOLATELAND) || (self.ability == :ABSOLUTEZERO) || (self.ability == :DESERTNOVA) || 

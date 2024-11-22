@@ -1145,58 +1145,71 @@ class PokeBattle_Move_908 < PokeBattle_Move
         @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
       end
     end
-    if attacker.pbOwnSide.effects[:Spikes]>0 || opponent.pbOwnSide.effects[:Spikes]>0
-      attacker.pbOwnSide.effects[:Spikes]=0
-      opponent.pbOwnSide.effects[:Spikes]=0
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+    if (@battle.state.effects[:LockHazards])
+      @battle.pbDisplay(_INTL("Entry hazards are locked!"))
+    else
+      if attacker.pbOwnSide.effects[:Spikes]>0 || opponent.pbOwnSide.effects[:Spikes]>0
+        attacker.pbOwnSide.effects[:Spikes]=0
+        opponent.pbOwnSide.effects[:Spikes]=0
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:StealthRock] || opponent.pbOwnSide.effects[:StealthRock]
-      attacker.pbOwnSide.effects[:StealthRock]=false
-      opponent.pbOwnSide.effects[:StealthRock]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:StealthRock] || opponent.pbOwnSide.effects[:StealthRock]
+        attacker.pbOwnSide.effects[:StealthRock]=false
+        opponent.pbOwnSide.effects[:StealthRock]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
-      attacker.pbOwnSide.effects[:Steelsurge]=false
-      opponent.pbOwnSide.effects[:Steelsurge]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:InvStealthRock] || opponent.pbOwnSide.effects[:InvStealthRock]
+        attacker.pbOwnSide.effects[:InvStealthRock]=false
+        opponent.pbOwnSide.effects[:InvStealthRock]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
-      attacker.pbOwnSide.effects[:Volcalith]=false
-      opponent.pbOwnSide.effects[:Volcalith]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
+        attacker.pbOwnSide.effects[:Steelsurge]=false
+        opponent.pbOwnSide.effects[:Steelsurge]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
-      attacker.pbOwnSide.effects[:ToxicSpikes]=0
-      opponent.pbOwnSide.effects[:ToxicSpikes]=0
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+      if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
+        attacker.pbOwnSide.effects[:Volcalith]=false
+        opponent.pbOwnSide.effects[:Volcalith]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:StickyWeb] || opponent.pbOwnSide.effects[:StickyWeb]
-      attacker.pbOwnSide.effects[:StickyWeb]=false
-      opponent.pbOwnSide.effects[:StickyWeb]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+      if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
+        attacker.pbOwnSide.effects[:ToxicSpikes]=0
+        opponent.pbOwnSide.effects[:ToxicSpikes]=0
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+        end
+      end
+      if attacker.pbOwnSide.effects[:StickyWeb] || opponent.pbOwnSide.effects[:StickyWeb]
+        attacker.pbOwnSide.effects[:StickyWeb]=false
+        opponent.pbOwnSide.effects[:StickyWeb]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+        end
       end
     end
 
@@ -1357,22 +1370,6 @@ end
 class PokeBattle_Move_90D < PokeBattle_Move
 
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if (@battle.FE == :SKY) && !@battle.state.effects[:HeavyRain] && !@battle.state.effects[:HarshSunlight]
-      @battle.weather=:STRONGWINDS
-      @battle.weatherduration=-1
-      @battle.pbCommonAnimation("Wind",nil,nil)
-      @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
-    end
-
-    if (attacker.pbOwnSide.effects[:Tailwind] == 0)
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The tailwind blew from behind your team!"))
-      else
-        @battle.pbDisplay(_INTL("The tailwind blew from behind the opposing team!"))
-      end  
-    end
-    attacker.pbOwnSide.effects[:Tailwind]+=3
-
     # Defog
     if attacker.pbOpposingSide.effects[:Reflect]>0
       attacker.pbOpposingSide.effects[:Reflect]=0
@@ -1422,58 +1419,71 @@ class PokeBattle_Move_90D < PokeBattle_Move
         @battle.pbDisplay(_INTL("Your team is no longer protected by Safeguard."))
       end
     end
-    if attacker.pbOwnSide.effects[:Spikes]>0 || opponent.pbOwnSide.effects[:Spikes]>0
-      attacker.pbOwnSide.effects[:Spikes]=0
-      opponent.pbOwnSide.effects[:Spikes]=0
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+    if (@battle.state.effects[:LockHazards])
+      @battle.pbDisplay(_INTL("Entry hazards are locked!"))
+    else
+      if attacker.pbOwnSide.effects[:Spikes]>0 || opponent.pbOwnSide.effects[:Spikes]>0
+        attacker.pbOwnSide.effects[:Spikes]=0
+        opponent.pbOwnSide.effects[:Spikes]=0
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The spikes disappeared from around your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The spikes disappeared from around your team's feet!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:StealthRock] || opponent.pbOwnSide.effects[:StealthRock]
-      attacker.pbOwnSide.effects[:StealthRock]=false
-      opponent.pbOwnSide.effects[:StealthRock]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:StealthRock] || opponent.pbOwnSide.effects[:StealthRock]
+        attacker.pbOwnSide.effects[:StealthRock]=false
+        opponent.pbOwnSide.effects[:StealthRock]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
-      attacker.pbOwnSide.effects[:Steelsurge]=false
-      opponent.pbOwnSide.effects[:Steelsurge]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:InvStealthRock] || opponent.pbOwnSide.effects[:InvStealthRock]
+        attacker.pbOwnSide.effects[:InvStealthRock]=false
+        opponent.pbOwnSide.effects[:InvStealthRock]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The mysterious stones disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
-      attacker.pbOwnSide.effects[:Volcalith]=false
-      opponent.pbOwnSide.effects[:Volcalith]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
-      else
-        @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+      if attacker.pbOwnSide.effects[:Steelsurge] || opponent.pbOwnSide.effects[:Steelsurge]
+        attacker.pbOwnSide.effects[:Steelsurge]=false
+        opponent.pbOwnSide.effects[:Steelsurge]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The metal debris disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The metal debris disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
-      attacker.pbOwnSide.effects[:ToxicSpikes]=0
-      opponent.pbOwnSide.effects[:ToxicSpikes]=0
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+      if attacker.pbOwnSide.effects[:Volcalith] || opponent.pbOwnSide.effects[:Volcalith]
+        attacker.pbOwnSide.effects[:Volcalith]=false
+        opponent.pbOwnSide.effects[:Volcalith]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The molten rocks disappeared from around your opponent's team!"))
+        else
+          @battle.pbDisplay(_INTL("The molten rocks disappeared from around your team!"))
+        end
       end
-    end
-    if attacker.pbOwnSide.effects[:StickyWeb] || opponent.pbOwnSide.effects[:StickyWeb]
-      attacker.pbOwnSide.effects[:StickyWeb]=false
-      opponent.pbOwnSide.effects[:StickyWeb]=false
-      if !@battle.pbIsOpposing?(attacker.index)
-        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
-      else
-        @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+      if attacker.pbOwnSide.effects[:ToxicSpikes]>0 || opponent.pbOwnSide.effects[:ToxicSpikes]>0
+        attacker.pbOwnSide.effects[:ToxicSpikes]=0
+        opponent.pbOwnSide.effects[:ToxicSpikes]=0
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The poison spikes disappeared from around your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The poison spikes disappeared from around your team's feet!"))
+        end
+      end
+      if attacker.pbOwnSide.effects[:StickyWeb] || opponent.pbOwnSide.effects[:StickyWeb]
+        attacker.pbOwnSide.effects[:StickyWeb]=false
+        opponent.pbOwnSide.effects[:StickyWeb]=false
+        if !@battle.pbIsOpposing?(attacker.index)
+          @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your opponent's team's feet!"))
+        else
+          @battle.pbDisplay(_INTL("The sticky web has disappeared from beneath your team's feet!"))
+        end
       end
     end
 
@@ -1484,6 +1494,12 @@ class PokeBattle_Move_90D < PokeBattle_Move
       @battle.state.effects[:ELECTERRAIN] = 0
       @battle.state.effects[:MISTY] = 0
       @battle.pbDisplay(_INTL("The terrain effects were cleared!"))
+    end
+    if (@battle.FE == :SKY)
+      @battle.weather=:STRONGWINDS
+      @battle.weatherduration=-1
+      @battle.pbCommonAnimation("Wind",nil,nil)
+      @battle.pbDisplay(_INTL("Strong winds kicked up around the field!"))
     end
     return super(attacker,opponent,hitnum,alltargets,showanimation)
   end
@@ -1540,8 +1556,9 @@ class PokeBattle_Move_1100 < PokeBattle_Move
     rocks = true
     steel = true
     volc = true
-    while (!chosen && (spikes || tspikes || webs || rocks || steel || volc))
-      hazard = @battle.pbRandom(6)
+    irocks = true
+    while (!chosen && (spikes || tspikes || webs || rocks || steel || volc || irocks))
+      hazard = @battle.pbRandom(7)
       case hazard
         when 0
           if (attacker.pbOpposingSide.effects[:Spikes]<3)
@@ -1574,9 +1591,9 @@ class PokeBattle_Move_1100 < PokeBattle_Move
             # pbShowAnimation(:STEALTHROCK,attacker,opponent)
             attacker.pbOpposingSide.effects[:StealthRock]=true
             if !@battle.pbIsOpposing?(attacker.index)
-              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your opponent's team!"))
+              @battle.pbDisplay(_INTL("The pointed stones float around your opponent's team!"))
             else
-              @battle.pbDisplay(_INTL("The pointed stones disappeared from around your team!"))
+              @battle.pbDisplay(_INTL("The pointed stones float from around your team!"))
             end
             chosen = true
           else
@@ -1613,13 +1630,26 @@ class PokeBattle_Move_1100 < PokeBattle_Move
             # pbShowAnimation(:STEALTHROCK,attacker,opponent)
             attacker.pbOpposingSide.effects[:Volcalith]=true
             if !@battle.pbIsOpposing?(attacker.index)
-              @battle.pbDisplay(_INTL("Flaming rocks float in the air around your foe's team!"))
+              @battle.pbDisplay(_INTL("Molten rocks float in the air around your foe's team!"))
             else
-              @battle.pbDisplay(_INTL("Flaming rocks float in the air around your team!"))
+              @battle.pbDisplay(_INTL("Molten rocks float in the air around your team!"))
             end
             chosen = true
           else
             volc = false
+          end
+        when 6
+          if (!attacker.pbOpposingSide.effects[:InvStealthRock])
+            # pbShowAnimation(:STEALTHROCK,attacker,opponent)
+            attacker.pbOpposingSide.effects[:InvStealthRock]=true
+            if !@battle.pbIsOpposing?(attacker.index)
+              @battle.pbDisplay(_INTL("The mysterious stones float around your opponent's team!"))
+            else
+              @battle.pbDisplay(_INTL("The mysterious stones float around your team!"))
+            end
+            chosen = true
+          else
+            rocks = false
           end
         end
     end
