@@ -568,13 +568,15 @@ class PokeBattle_Battler
   end
 
 
-  def pbUpdate(fullchange=false)
+  def pbUpdate(fullchange=false,giga=false,keephp=false)
     return if !@pokemon
 
     @pokemon.calcStats
     @level     = @pokemon.level
-    @hp        = @pokemon.hp
-    @totalhp   = @pokemon.totalhp
+    @hp        = giga ? @hp * 2 : @pokemon.hp
+    if (!keephp)
+      @totalhp   = giga ? @totalhp * 2 : @pokemon.totalhp
+    end
     return if @effects[:Transform]
 
     @attack    = @pokemon.attack

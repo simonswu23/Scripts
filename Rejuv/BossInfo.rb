@@ -2211,15 +2211,15 @@ BOSSINFOHASH = {
         :immunities => {},
         :moninfo => {
             :species => :GOTHITELLE,
-            :level => 90,
+            :level => 100,
             :item => :GOTHCREST,
-            :moves => [:GRAVITY,:GRASSKNOT,:PSYCHIC,:DARKPULSE],
+            :moves => [:GRASSKNOT,:GEOMANCY,:PSYCHIC,:DARKPULSE],
             :ability => :SHADOWTAG,
             :gender => "F",
-            :nature => :MODEST,
+            :nature => :TIMID,
             :form => 1,
             :iv => 31,
-            :ev => [4,0,0,252,0,252]
+            :ev => [252,252,252,252,252,252]
         },
         :onBreakEffects => {
         }

@@ -240,6 +240,12 @@
         if trainereffect[:message] && trainereffect[:message] != ""
           pbDisplayPaused(_INTL(trainereffect[:message]))
         end
+        if trainereffect[:instantgiga]
+          # giga evolve current battler
+          if (pkmn && pbCanGigaEvolve?(i))
+            pbGigaEvolve(i)
+          end
+        end
         if trainereffect[:opposingsideChanges]
           side = pkmn.pbOpposingSide
           trainereffect[:opposingsideChanges].each_pair {|effect,effectval|
@@ -371,6 +377,12 @@
     if trainereffect[:message] && trainereffect[:message] != ""
       pbDisplayPaused(_INTL(trainereffect[:message]))
     end
+    if trainereffect[:instantgiga]
+      # giga evolve current battler
+      if (pkmn && pbCanGigaEvolve?(pkmn.index))
+        pbGigaEvolve(pkmn.index)
+      end
+    end
     anim = pkmn
     if (trainereffect[:friendlyEffect])
       anim = pkmn.pbOpposing1
@@ -410,7 +422,7 @@
     end
     trainereffect[:pokemonEffect].each_pair {|effect,effectval|
       val = effectval[0]
-      val = monindex if effect == :MeanLook
+      val = i if effect == :MeanLook
       if (trainereffect[:pokemonEffect] == :MagicGuard)
         abil1 = effectval[3]
         abil2 = effectval[4]

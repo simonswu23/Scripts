@@ -4602,8 +4602,7 @@ class PokeBattle_Move_09B < PokeBattle_Move
     ret=80 if n>=3
     ret=100 if n>=4
     ret=120 if n>=5 || @battle.FE == :CONCERT4
-    ret+=30 if @move == :BLACKHOLE
-    ret*= 2 if @move == :BLACKHOLE && @battle.state.effects[:Gravity]!=0
+    ret*= 1.5 if @move == :BLACKHOLE && @battle.state.effects[:Gravity]!=0
     return ret
   end
 

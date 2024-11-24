@@ -1,6 +1,6 @@
 TEAMARRAY = [{
 :teamid => ["SWu",:LEADER_KETA,0],
-:items => [:SNORLAXITE, :VANILLUXITE, :GENGARITEG, :EEVEETITE],
+:items => [:SNORLAXITE, :VANILLUXITE, :GENGARITEG, :LAPRASITE],
 =begin
 :trainereffect => { # in party order
 	:effectmode => :Party, #effect mode switches how the effects are applied (:Party = on party index; :Fainted = first sendout after this number of pokemon are fainted)
@@ -35,49 +35,41 @@ TEAMARRAY = [{
 =end
 :trainereffect => {
 	:effectmode => :Party,
-	:buffactivation => :Limited,
-	# 0 => {
-	# 	:fieldChange => [:COLOSSEUM,"SAKI: Wait shit, this isn't the right one!",0],
-	# 	:message => "SAKI: OH SHIT TIME TO ENABLE THE CHEATS",
-	# 	:dummy => [:true,:MAGICCOAT," acquired Wonder Guard!"],
-	# 	:pokemonEffect => {
-	# 		:Sturdy => [true, :ENDURE, "{2} acquired Sturdy!"],
-	# 	},
-	# },
+	:buffactivation => :Always,
+	0 => {
+		:instantgiga => true,
+		# :fieldChange => [:COLOSSEUM,"SAKI: Wait shit, this isn't the right one!",0],
+		# :message => "SAKI: OH SHIT TIME TO ENABLE THE CHEATS",
+		# :dummy => [:true,:MAGICCOAT," acquired Wonder Guard!"],
+		# :pokemonEffect => {
+		# 	:Sturdy => [true, :ENDURE, "{2} acquired Sturdy!"],
+		# },
+	},
+	1 => {
+		:instantgiga => true,
+	}
 },
-
 :mons => [
-# 	{
-# 	:species => :LAPRAS,
-# 	:level => 40,
-# 	:item => :LIGHTCLAY,
-# 	:moves => [:FREEZEDRY,:REST,:cc,:SURF],
-# 	:ability => :HYDRATION,
-# 	:gender => "M",
-# 	:nature => :MODEST,
-# 	:iv => 20,
-# },
-{
-	:species => :DURANT,
-	:level => 20,
-	:item => :STEELIUMZ,
-	:moves => [:ENDEAVOR,:FIRSTIMPRESSION,:ULTRAMEGADEATH,:EXTREMESPEED],
-	:ability => :ICEBODY,
-	:gender => "F",
-	:nature => :JOLLY,
+	{
+	:species => :LAPRAS,
+	:level => 40,
+	:item => :LIGHTCLAY,
+	:moves => [:FREEZEDRY,:REST,:SURF],
+	:ability => :HYDRATION,
+	:gender => "M",
+	:nature => :MODEST,
+	:iv => 20,
+},
+	{
+	:species => :SNORLAX,
+	:level => 100,
+	:item => :EVIOLITE,
+	:moves => [:SPLASH],
+	:ability => :GOLDENVY,
+	:form => 0,
+	:nature => :SERIOUS,
 	:iv => 31,
-	:name => "ANTS TROUBLED",
-	:ev => [252, 252, 252, 252, 252, 252]},
-	# {
-	# :species => :MUNCHLAX,
-	# :level => 100,
-	# :item => :EVIOLITE,
-	# :moves => [:SPLASH],
-	# :ability => :GOLDENVY,
-	# :form => 0,
-	# :nature => :SERIOUS,
-	# :iv => 31,
-	# :ev => [252, 252, 252, 252, 252, 252]}
+	:ev => [252, 252, 252, 252, 252, 252]}
 ]},
 {
 :teamid => ["Aevis",:TRAINER_AEVIS,9],
@@ -18313,7 +18305,7 @@ TEAMARRAY = [{
 	:species => :LIEPARD,
 	:level => 46,
 	:ability => :LIMBER,
-},
+},c
 {
 	:species => :PURUGLY,
 	:level => 44,
@@ -37178,7 +37170,7 @@ TEAMARRAY = [{
 {
 	:species => :DURANT,
 	:level => 90,
-	:item => :FOCUSSASH,
+	:item => :HEAVYDUTYBOOTS,
 	:moves => [:ENDEAVOR,:FIRSTIMPRESSION,:ULTRAMEGADEATH,:EXTREMESPEED],
 	:ability => :WONDERGUARD,
 	:gender => "F",
@@ -47505,7 +47497,7 @@ TEAMARRAY = [{
 :teamid => ["Adam",:LEADER_ADAM,0],
 :ace => "THE Adam Might DOESN'T lose! I'm just waiting for my trap card! C'mon!",
 :defeat => "THE Adam Might lost? How is that possible?!",
-:items => [],
+:items => [:COALOSSALITE],
 :trainereffect => { 
 	:effectmode => :Party,
 	:buffactivation => :Always,
@@ -47516,8 +47508,11 @@ TEAMARRAY = [{
 		:stateChanges => { 
 		  :LockHazards => [true,:FAIRYLOCK,"Entry hazards are locked in!"],
 	  	},
+		# @SWU todo: add instant giga evolve code here (apply to battler if it can giga evolve)
+		:instantgiga => true,
 	},
 	0 => {
+		
 		:pokemonEffect => {
 			:MagicGuard => [true, :MAGICCOAT, "A magic guard protects {2}!",:NORMALIZE, :STEAMENGINE],
 			:Sturdy => [true, :ENDURE, "{2} braced itself for impact, acquiring Sturdy!"],
@@ -47573,7 +47568,7 @@ TEAMARRAY = [{
 	:ability => :MAGICGUARD,
 	:gender => "M",
 	:nature => :ADAMANT,
-	:form => 1,
+	:form => 0,
 	:iv => 31,
 	:happiness => 255,
 	:ev => [252, 252, 252, 252, 252, 252]},
@@ -51959,35 +51954,27 @@ TEAMARRAY = [{
 :trainereffect => {
 	:effectmode => :Party,
 	:buffactivation => :Limited,
-	5 => {
+	-1 => {
+		:setWeather => [:SANDSTORM,-1,nil,false],
+	},
+	6 => {
 		:message => "CRESCENT: You're the only one who is ever capable of pushing me THIS far...",
 		:instantMove => [:CHTHONICMALADY,0],
 	},
 },
 :mons => [
-		{
-    :species => :BRONZONG,
-    :level => 86,
-    :item => :BRONZONGCREST,
-    :moves => [:GRASSKNOT,:SHIELDBASH,:CALMMIND,:TERRAINPULSE],
-    :ability => :REFLECTOR,
-    :nature => :RELAXED,
-    :form => 1,
-    :iv => 31,
-    :ev => [252,252,252,252,252,252]},
 	{
     :species => :TYRANITAR,
-    :level => 86,
+    :level => 90,
     :item => :TYRANITARITE,
     :moves => [:STONEAXE,:CEASELESSEDGE,:HEAVYSLAM,:EARTHQUAKE],
     :ability => :SANDSTREAM,
     :nature => :IMPISH,
     :iv => 31,
     :ev => [252,252,252,252,252,252]},
-
 {
     :species => :GARCHOMP,
-    :level => 87,
+    :level => 90,
     :item => :GARCHOMPITE,
     :moves => [:DRAGONDANCE,:DRAGONRUSH,:EARTHQUAKE,:IRONHEAD],
     :ability => :SANDVEIL,
@@ -51996,8 +51983,17 @@ TEAMARRAY = [{
     :iv => 31,
     :ev => [252,252,252,252,252,252]},
 {
+	:species => :STEELIX,
+	:level => 90,
+	:item => :STEELIXITE,
+	:moves => [:GYROBALL,:EARTHQUAKE,:STONEEDGE,:BODYPRESS],
+	:ability => :SANDVEIL,
+	:nature => :BRAVE,
+	:iv => 31,
+	:ev => [252,252,252,252,252,252]},
+{
     :species => :METAGROSS,
-    :level => 88,
+    :level => 90,
     :item => :METAGROSSITE,
     :moves => [:ZENHEADBUTT,:GYROBALL,:GRASSKNOT,:EARTHQUAKE],
     :ability => :LIGHTMETAL,
@@ -52006,7 +52002,7 @@ TEAMARRAY = [{
     :ev => [252,252,252,252,252,252]},
 {
     :species => :ZYGARDE,
-    :level => 89,
+    :level => 90,
     :item => :LEFTOVERS,
     :moves => [:COREENFORCER,:THOUSANDWAVES,:COIL,:GLARE],
     :ability => :POWERCONSTRUCT,
@@ -52016,7 +52012,7 @@ TEAMARRAY = [{
     :ev => [252,252,252,252,252,252]},
 {
     :species => :MALAMAR,
-    :level => 88,
+    :level => 90,
     :item => :IRONBALL,
     :moves => [:SUPERPOWER,:FLING,:TOPSYTURVY,:PSYCHOCUT],
     :ability => :CONTRARY,
@@ -52027,21 +52023,20 @@ TEAMARRAY = [{
 {
     :species => :GOTHITELLE,
 		:boss => :BOSSGOTHITELLE,
-    :level => 90,
+    :level => 100,
     :item => :GOTHCREST,
-    :moves => [:GRAVITY,:GRASSKNOT,:PSYCHIC,:DARKPULSE],
+    :moves => [:GRASSKNOT,:GEOMANCY,:PSYCHIC,:DARKPULSE],
     :ability => :SHADOWTAG,
     :gender => "F",
     :nature => :MODEST,
     :form => 1,
     :iv => 31,
-    :ev => [252,252,252,252,252,252]
-},
+    :ev => [252,252,252,252,252,252]},
 {
     :species => :GENGAR,
-    :level => 89,
+    :level => 90,
     :item => :TELLURICSEED,
-    :moves => [:HYPNOSIS,:HEX,:DREAMEATER,:DARKPULSE],
+    :moves => [:HYPNOSIS,:THUNDERBOLT,:DREAMEATER,:DARKPULSE],
     :ability => :CURSEDBODY,
     :gender => "F",
     :nature => :MODEST,

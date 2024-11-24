@@ -2304,9 +2304,9 @@ class PokeBattle_Battle
   def pbCanGigaEvolve?(index)
     return false if $game_switches[:No_Mega_Evolution]==true
     return false if !@battlers[index].hasGiga?
+    # return true if !pbBelongsToPlayer?(index)
     return false if !pbHasGigaBand(index)
     return false if !pbHasGigaStone(index)
-    # return true if !pbBelongsToPlayer?(index)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @gigaEvolution[side][owner]==-1
@@ -2470,7 +2470,7 @@ class PokeBattle_Battle
     @battlers[index].pokemon.makeGiga
     @battlers[index].form=@battlers[index].pokemon.form
     @battlers[index].backupability = @battlers[index].pokemon.ability
-    @battlers[index].pbUpdate(true)
+    @battlers[index].pbUpdate(true, true)
     @scene.pbChangePokemon(@battlers[index],@battlers[index].pokemon) if @battlers[index].effects[:Substitute]==0
 
     # Battle message finish
@@ -2783,7 +2783,7 @@ class PokeBattle_Battle
           curlevel+=1
           if curlevel>newlevel
             thispoke.calcStats
-            battler.pbUpdate(false) if battler
+            battler.pbUpdate(false,false,true) if battler
             @scene.pbRefresh
             break
           end
@@ -2793,7 +2793,7 @@ class PokeBattle_Battle
         next if newlevel<=oldlevel
         #leveled up!
         thispoke.calcStats
-        battler.pbUpdate(false) if battler
+        battler.pbUpdate(false,false,true) if battler
         @scene.pbRefresh
         pbDisplayPaused(_INTL("{1} grew to Level {2}!",thispoke.name,newlevel))
         @scene.pbLevelUp(thispoke,battler,oldtotalhp,oldattack,olddefense,oldspeed,oldspatk,oldspdef)
@@ -2811,6 +2811,7 @@ class PokeBattle_Battle
         #evolve if able to
         newspecies=checkEvolution(thispoke)
         next if newspecies.nil?
+        next if battler.giga
         pbFadeOutInWithMusic(99999){
           evo=PokemonEvolutionScene.new
           evo.pbStartScreen(thispoke,newspecies)
@@ -2821,7 +2822,7 @@ class PokeBattle_Battle
             @scene.pbChangePokemon(@battlers[battler.index],@battlers[battler.index].pokemon)
             battler.species = battler.pokemon.species
             battler.form = battler.pokemon.form
-            battler.pbUpdate(true)
+            battler.pbUpdate(false,false,true)
             @scene.sprites["battlebox#{battler.index}"].refresh
             battler.name=thispoke.name
             for ii in 0...4
@@ -2884,7 +2885,7 @@ class PokeBattle_Battle
       end
     end
     battler = @battlers.find {|battler| battler.pokemon == thispoke}
-    battler.pbUpdate if battler
+    battler.pbUpdate(false,false,true) if battler
     @scene.sprites["battlebox#{battler.index}"].refresh if battler
   end
 
@@ -4240,7 +4241,7 @@ class PokeBattle_Battle
           i.type1=protype
           i.type2=nil
           if i.species == :REUNICLUS
-            i.pbUpdate(false)
+            i.pbUpdate(false,false,false)
           end
           pbDisplay(_INTL("{1} had its type changed to {2}!",i.pbThis,protype.capitalize))
         end
@@ -6582,7 +6583,7 @@ class PokeBattle_Battle
       next if i.isFainted?
       if i.ability == :HUNGERSWITCH && (i.species == :MORPEKO) && @battle.FE != :FROZENDIMENSION
         i.form=(i.form==0) ? 1 : 0
-        i.pbUpdate(true)
+        i.pbUpdate(true,false,false)
         scene.pbChangePokemon(i,i.pokemon)
         pbDisplay(_INTL("{1} transformed!",i.pbThis))
       end

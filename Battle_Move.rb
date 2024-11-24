@@ -2259,7 +2259,7 @@ class PokeBattle_Move
       when :QUARKDRIVE then defmult*=1.3 if (opponent.effects[:Quarkdrive][0] == PBStats::DEFENSE && pbIsPhysical?(type)) || (opponent.effects[:Quarkdrive][0] == PBStats::SPDEF && pbIsSpecial?(type))
       when :PROTOSYNTHESIS then defmult*=1.3 if (opponent.effects[:Quarkdrive][0] == PBStats::DEFENSE && pbIsPhysical?(type)) || (opponent.effects[:Quarkdrive][0] == PBStats::SPDEF && pbIsSpecial?(type))
       when :SHIELDDUST then defmult*=2 if effect > 0
-      when :GRAVPULL then defmult *= (opponent.weight*2/attacker.weight).floor if @battle.FE == :DEEPEARTH
+      when :GRAVPULL then defmult *= (opponent.weight/attacker.weight).floor if @battle.FE == :DEEPEARTH
       when :CUTEAURA then defmult *= 1.25 if opponent.ability == :CUTEAURA && attacker.effects[:Attract]==opponent.index
       when :FLUFFY
         defmult*=2.0 if contactMove? && attacker.ability != :LONGREACH && !(opponent.moldbroken)
