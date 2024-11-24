@@ -715,10 +715,11 @@ class PokeBattle_Pokemon
       end 
     end
     #check if conditions are met
-    if @species==:RAYQUAZA && !pbIsZCrystal?(@item)
+    if @species==:RAYQUAZA && @form == 0 && !pbIsZCrystal?(@item)
       for i in @moves
-         return true if i.id==:DRAGONASCENT
+         return true if i.move==:DRAGONASCENT
       end
+      return false
     end
 	  return v.keys.include?(@item)
   end

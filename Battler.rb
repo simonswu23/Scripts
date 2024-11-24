@@ -2968,7 +2968,7 @@ class PokeBattle_Battler
       end
       for i in items
         itemname=getItemName(i.item)
-        @battle.pbDisplay(_INTL("{1} frisked {2} and suppressed its {3}!",pbThis,i.pbThis(true),itemname)) if @battle.pbOwnedByPlayer?(@index)
+        @battle.pbDisplay(_INTL("{1} frisked {2} and suppressed its {3}!",pbThis,i.pbThis(true),itemname))
         i.effects[:Embargo]=5
         if @battle.FE == :BACKALLEY
           if (i.effects[:Substitute]==0) && (i.ability != :STICKYHOLD || i.moldbroken) && self.item.nil?
@@ -2981,7 +2981,7 @@ class PokeBattle_Battler
               end
               i.effects[:ChoiceBand]=nil
               # In a wild battle
-              if !@battle.opponent && self.pokemon.itemInitial.nil? && i.pokemon.itemInitial==self.item && @battle.pbOwnedByPlayer?(@index)
+              if !@battle.opponent && self.pokemon.itemInitial.nil? && i.pokemon.itemInitial==self.item
                 self.pokemon.itemInitial=self.item
                 self.pokemon.itemReallyInitialHonestlyIMeanItThisTime=self.item
                 i.pokemon.itemInitial=nil

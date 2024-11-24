@@ -3121,6 +3121,14 @@ class PokeBattle_Battle
           @battle.pbDisplay(_INTL("{1}'s {2} is affected by the magnetic field!",pkmn.pbThis,getItemName(pkmn.item)))
         end
       end
+      if pkmn.hasWorkingItem(:ROOMSERVICE) && @battle.trickroom != 0
+        if pkmn.pbCanReduceStatStage?(PBStats::SPEED)
+          pkmn.pbReduceStatBasic(PBStats::SPEED,6)
+          @battle.pbCommonAnimation("StatDown",pkmn,nil)
+          @battle.pbDisplay(_INTL("The Room Service lowered #{pkmn.pbThis}'s Speed!"))
+          pkmn.pbDisposeItem(false)
+        end
+      end
       # Shadow Pokemon
       if pkmn.isShadow? && pbIsOpposing?(pkmn.index)
         pbCommonAnimation("Shadow",pkmn,nil)
