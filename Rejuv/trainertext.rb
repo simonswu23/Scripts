@@ -18305,7 +18305,7 @@ TEAMARRAY = [{
 	:species => :LIEPARD,
 	:level => 46,
 	:ability => :LIMBER,
-},c
+},
 {
 	:species => :PURUGLY,
 	:level => 44,
