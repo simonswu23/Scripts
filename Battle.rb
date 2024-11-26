@@ -5188,6 +5188,14 @@ class PokeBattle_Battle
               @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
             end
           end
+          if i.pbOpposingSide.effects[:PriorityGuard]>0
+            i.pbOpposingSide.effects[:PriorityGuard]=0
+            if !@battle.pbIsOpposing?(i.index)
+              @battle.pbDisplay(_INTL("The opposing team is no longer protected from priority attacks!"))
+            else
+              @battle.pbDisplay(_INTL("Your team is no longer protected from priority attacks!"))
+            end
+          end
           if i.pbOpposingSide.effects[:AuroraVeil]>0
             i.pbOpposingSide.effects[:AuroraVeil]=0
             if !@battle.pbIsOpposing?(i.index)
@@ -6039,6 +6047,12 @@ class PokeBattle_Battle
       next if sides[i].effects[:Tailwind] == 0
       sides[i].effects[:Tailwind]-=1
       pbDisplay(_INTL("#{texts[i]} team's tailwind stopped blowing!")) if sides[i].effects[:Tailwind]==0
+    end
+    # Priority Guard
+    for i in 0...2
+      next if sides[i].effects[:PriorityGuard] == 0
+      sides[i].effects[:PriorityGuard]-=1
+      pbDisplay(_INTL("#{texts[i]} team is no longer protected from priority attacks!")) if sides[i].effects[:PriorityGuard]==0
     end
     # Lucky Chant
     for i in 0...2

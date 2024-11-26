@@ -382,6 +382,16 @@ class PokeBattle_Move_006 < PokeBattle_Move
     @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
     return true
   end
+
+    # Replacement animation till a proper one is made
+    def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+      return if !showanimation
+      if id == :MELTDOWN
+        @battle.pbAnimation(:EXPLOSION,attacker,opponent,hitnum)
+      else
+        @battle.pbAnimation(id,attacker,opponent,hitnum)
+      end
+    end
 end
 
 ################################################################################
@@ -2385,6 +2395,14 @@ class PokeBattle_Move_049 < PokeBattle_Move
         @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
       end
     end
+    if attacker.pbOpposingSide.effects[:PriorityGuard]>0
+      attacker.pbOpposingSide.effects[:PriorityGuard]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team is no longer protected from priority attacks!"))
+      else
+        @battle.pbDisplay(_INTL("Your team is no longer protected from priority attacks!"))
+      end
+    end
     if attacker.pbOpposingSide.effects[:AuroraVeil]>0
       attacker.pbOpposingSide.effects[:AuroraVeil]=0
       if !@battle.pbIsOpposing?(attacker.index)
@@ -2509,6 +2527,7 @@ class PokeBattle_Move_049 < PokeBattle_Move
     end
     opponent.pbOwnSide.effects[:Reflect] = 0
     opponent.pbOwnSide.effects[:LightScreen] = 0
+    opponent.pbOwnSide.effects[:PriorityGuard] = 0
     opponent.pbOwnSide.effects[:AuroraVeil] = 0
     opponent.pbOwnSide.effects[:AreniteWall] = 0
     opponent.pbOwnSide.effects[:Mist] = 0
@@ -8504,6 +8523,14 @@ class PokeBattle_Move_10A < PokeBattle_Move
         @battle.pbDisplay(_INTL("The opposing team's Light Screen wore off!"))
       else
         @battle.pbDisplay(_INTL("Your team's Light Screen wore off!"))
+      end
+    end
+    if attacker.pbOpposingSide.effects[:PriorityGuard]>0
+      attacker.pbOpposingSide.effects[:PriorityGuard]=0
+      if !@battle.pbIsOpposing?(attacker.index)
+        @battle.pbDisplay(_INTL("The opposing team is no longer protected from priority attacks!"))
+      else
+        @battle.pbDisplay(_INTL("Your team is no longer protected from priority attacks!"))
       end
     end
     if attacker.pbOpposingSide.effects[:AuroraVeil]>0

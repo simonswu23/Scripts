@@ -350,6 +350,7 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Light Screen: {1} turns",pkmn.pbOwnSide.effects[:LightScreen])) if pkmn.pbOwnSide.effects[:LightScreen]>0
   report.push(_INTL("Aurora Veil: {1} turns",pkmn.pbOwnSide.effects[:AuroraVeil])) if pkmn.pbOwnSide.effects[:AuroraVeil]>0
   report.push(_INTL("Arenite Wall: {1} turns",pkmn.pbOwnSide.effects[:AreniteWall])) if pkmn.pbOwnSide.effects[:AreniteWall]>0
+  report.push(_INTL("Priority Guard: {1} turns",pkmn.pbOwnSide.effects[:PriorityGuard])) if pkmn.pbOwnSide.effects[:PriorityGuard]>0
   report.push(_INTL("Safeguard: {1} turns",pkmn.pbOwnSide.effects[:Safeguard])) if pkmn.pbOwnSide.effects[:Safeguard]>0
   report.push(_INTL("Lucky Chant: {1} turns",pkmn.pbOwnSide.effects[:LuckyChant])) if pkmn.pbOwnSide.effects[:LuckyChant]>0
   report.push(_INTL("Mist: {1} turns",pkmn.pbOwnSide.effects[:Mist])) if pkmn.pbOwnSide.effects[:Mist]>0 

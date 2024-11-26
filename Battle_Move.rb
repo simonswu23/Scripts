@@ -874,12 +874,12 @@ class PokeBattle_Move
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
         end
-      when :VANILLUXE
-        if type == :FIRE && @battle.weather == :HAIL
-          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-              opponent.pbThis,getItemName(opponent.item),self.name))
-          return 0
-        end
+      # when :VANILLUXE
+      #   if type == :FIRE && @battle.weather == :HAIL
+      #     @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+      #         opponent.pbThis,getItemName(opponent.item),self.name))
+      #     return 0
+      #   end
       when :SKUNTANK
         if type == :GROUND
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)
@@ -1088,12 +1088,12 @@ class PokeBattle_Move
               opponent.pbThis,getItemName(opponent.item),self.name))
           return 0
         end
-      when :VANILLUXE 
-        if (type == :FIRE || !secondtype.nil? && secondtype.include?(:FIRE)) && @battle.pbWeather == :HAIL
-          @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
-              opponent.pbThis,getItemName(opponent.item),self.name))
-          return 0
-        end
+      # when :VANILLUXE 
+      #   if (type == :FIRE || !secondtype.nil? && secondtype.include?(:FIRE)) && @battle.pbWeather == :HAIL
+      #     @battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+      #         opponent.pbThis,getItemName(opponent.item),self.name))
+      #     return 0
+      #   end
       when :SKUNTANK
         if (type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND)))
           if opponent.pbCanIncreaseStatStage?(PBStats::ATTACK)

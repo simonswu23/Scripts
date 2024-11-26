@@ -7449,7 +7449,7 @@ class PokeBattle_AI
 			when :WHISCASH					 		then return -1 if type == :GRASS || (!secondtype.nil? && secondtype.include?(:GRASS))
 			when :SKUNTANK 							then return -1 if type == :GROUND || (!secondtype.nil? && secondtype.include?(:GROUND))
 			when :DRUDDIGON							then return -1 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE))
-			when :VANILLUXE							then return  0 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE)) && @battle.pbWeather == :HAIL
+			# when :VANILLUXE							then return  0 if type == :FIRE || (!secondtype.nil? && secondtype.include?(:FIRE)) && @battle.pbWeather == :HAIL
 		end
 		if @battle.FE == :ROCKY && (opponent.effects[:Substitute]>0 || opponent.stages[PBStats::EVASION] > 0)
 		  	return 0 if (PBStuff::BULLETMOVE).include?(id)

@@ -2255,12 +2255,14 @@ class PokeBattle_Battler
     if self.ability == :SCREENCLEANER && onactive
       pbOwnSide.effects[:Reflect]     = 0
       pbOwnSide.effects[:LightScreen] = 0
+      pbOwnSide.effects[:PriorityGuard] = 0
       pbOwnSide.effects[:AuroraVeil]  = 0
       pbOwnSide.effects[:AreniteWall] = 0
       pbOpposingSide.effects[:Reflect]     = 0
       pbOpposingSide.effects[:LightScreen] = 0
       pbOpposingSide.effects[:AuroraVeil]  = 0
       pbOpposingSide.effects[:AreniteWall] = 0
+      pbOpposingSide.effects[:PriorityGuard] = 0
       @battle.pbDisplay(_INTL("{1} has {2}!",pbThis,getAbilityName(self.ability)))
       @battle.pbDisplay(_INTL("The effects of protective barriers disappeared."))
     end
@@ -2516,6 +2518,11 @@ class PokeBattle_Battler
           @battle.pbAnimation(:SPOTLIGHT,self,self.pbPartner)
           @battle.pbDisplay(_INTL("{1}'s dazzling shine put a spotlight on its partner!",pbThis))
         end
+      end
+      if self.ability == :MIRRORARMOR 
+        self.pbOwnSide.effects[:PriorityGuard] = 5
+        @battle.pbAnimation(:QUICKGUARD,self, self.pbPartner)
+        @battle.pbDisplay(_INTL("{1}'s Mirror Armor put up a protective guard against priority attacks!",pbThis))
       end
     end
     # Psychic Terrain Entry
@@ -4638,8 +4645,8 @@ class PokeBattle_Battler
       end
     end
     if ((((target.ability == :DAZZLING || target.ability == :QUEENLYMAJESTY || target.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.ability == :MIRRORARMOR)) || 
-      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN || (@battle.FE == :STARLIGHT && target.pbPartner.ability == :MIRRORARMOR))) && !target.moldbroken) ||
-      @battle.FE == :PSYTERRAIN && !target.isAirborne? || (@battle.state.effects[:PSYTERRAIN] > 0 && !target.isAirborne?)) && target.pbPartner!=user || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
+      (target.pbPartner.ability == :DAZZLING || target.pbPartner.ability == :QUEENLYMAJESTY || target.pbPartner.ability == :HIVEQUEEN)) && !target.moldbroken) ||
+      @battle.FE == :PSYTERRAIN && !target.isAirborne? || (@battle.state.effects[:PSYTERRAIN] > 0 && !target.isAirborne?)) && target.pbPartner!=user # || (battle.FE == :STARLIGHT && (target.crested == :CORVIKNIGHT || target.pbPartner.crested == :CORVIKNIGHT))
       if (basemove.priorityCheck(user, target) > 0) || (user.ability == (:PRANKSTER) && !basemove.zmove && !flags[:instructed] && @battle.choices[user.index][2]!=basemove)
         @battle.pbDisplay(_INTL("{1} wasn't affected!",target.pbThis))
         return false
@@ -4719,6 +4726,11 @@ class PokeBattle_Battler
       end
       if target.pbOwnSide.effects[:QuickGuard] && (basemove.priorityCheck(user, target) > 0) && basemove.canProtect? && !target.effects[:ProtectNegation] && !unseenfist
         @battle.pbDisplay(_INTL("{1}'s Quick Guard prevented damage!",target.pbThis))
+        user.pbCancelMoves
+        return false
+      end
+      if target.pbOwnSide.effects[:PriorityGuard] != 0 && (basemove.priorityCheck(user, target) > 0) && basemove.canProtect? && !target.effects[:ProtectNegation] && !unseenfist
+        @battle.pbDisplay(_INTL("{1}'s team is protected from priority attacks!",target.pbThis))
         user.pbCancelMoves
         return false
       end

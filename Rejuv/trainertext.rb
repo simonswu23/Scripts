@@ -12591,16 +12591,6 @@ TEAMARRAY = [{
 :teamid => ["Geara",:XENEXECUTIVE_3,3],
 :defeat => "Really? Being difficult again? Why don't you take a hike?!",
 :items => [:HYPERPOTION,:GRIMMSNARLITE],
-:trainereffect => { # in party order
-	:effectmode => :Fainted, 
-	:buffactivation => :Limited, 
-	3 => {
-		:message => "GEARA: Giratina, do something useful!", 
-		:trainersideChanges => {	
-			:TAILWIND => [8,:TAILWIND,"Giratina blew a Tailwind for the opposing team!"], 
-		},
-	},
-},
 :mons => [{
 	:species => :STOUTLAND,
 	:level => 42,
@@ -21072,10 +21062,20 @@ TEAMARRAY = [{
 :teamid => ["Geara",:XENEXECUTIVE_3,2],
 :defeat => "I refuse to let it end here...",
 :items => [:ULTRAPOTION,:GRIMMSNARLITE],
+:trainereffect => { # in party order
+	:effectmode => :Fainted, 
+	:buffactivation => :Limited, 
+	3 => {
+		:message => "GEARA: Giratina, do something useful!", 
+		:trainersideChanges => {	
+			:TAILWIND => [8,:TAILWIND,"Giratina blew a Tailwind for the opposing team!"], 
+		},
+	},
+},
 :mons => [
 {
 	:species => :ARCANINE,
-	:level => 53,
+	:level => 55,
 	:item => :FOCUSSASH,
 	:moves => [:ROCKSLIDE,:FLAREBLITZ,:EARTHQUAKE,:EXTREMESPEED],
 	:ability => :FLASHFIRE,
@@ -21087,7 +21087,7 @@ TEAMARRAY = [{
 },
 	{
 	:species => :KROOKODILE,
-	:level => 52,
+	:level => 55,
 	:item => :DARKINIUMZ,
 	:moves => [:EARTHQUAKE,:ROCKSLIDE,:CRUNCH,:LOWKICK],
 	:ability => :MOXIE,
@@ -21098,7 +21098,7 @@ TEAMARRAY = [{
 },
 {
 	:species => :GRIMMSNARL,
-	:level => 53,
+	:level => 55,
 	:item => :LIFEORB,
 	:moves => [:FALSESURRENDER,:SPIRITBREAK,:SUCKERPUNCH,:BRICKBREAK],
 	:ability => :PRANKSTER,
@@ -21120,7 +21120,7 @@ TEAMARRAY = [{
 	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :MAROWAK,
-	:level => 52,
+	:level => 55,
 	:item => :THICKCLUB,
 	:moves => [:BONEMERANG,:SHADOWBONE,:ROCKSLIDE,:FLAREBLITZ],
 	:ability => :LIGHTNINGROD,
@@ -21158,7 +21158,7 @@ TEAMARRAY = [{
 },
 :mons => [{
 	:species => :MINIOR,
-	:level => 52,
+	:level => 55,
 	:item => :TELLURICSEED,
 	:moves => [:EXPLOSION,:ACROBATICS,:ROCKSLIDE,:SHELLSMASH],
 	:ability => :CRASHLANDING,
@@ -21169,7 +21169,7 @@ TEAMARRAY = [{
 },
 {
 	:species => :MANECTRIC,
-	:level => 53,
+	:level => 55,
 	:item => :MANECTITE,
 	:moves => [:THUNDER,:HIDDENPOWERGRA,:FLAMETHROWER,:VOLTSWITCH],
 	:ability => :INTIMIDATE,
@@ -21191,7 +21191,7 @@ TEAMARRAY = [{
 },
 {
 	:species => :RILLABOOM,
-	:level => 41,
+	:level => 55,
 	:item => :RILLACREST,
 	:moves => [:GRASSYGLIDE,:DRUMBEATING,:BOOMBURST,:FAKEOUT],
 	:ability => :GRASSYSURGE,
@@ -21202,7 +21202,7 @@ TEAMARRAY = [{
 },
 {
 	:species => :DRAGONITE,
-	:level => 53,
+	:level => 55,
 	:item => :WEAKNESSPOLICY,
 	:moves => [:EXTREMESPEED,:DRAGONCLAW,:DUALWINGBEAT,:DRAGONDANCE],
 	:ability => :MULTISCALE,
@@ -37048,7 +37048,7 @@ TEAMARRAY = [{
 		# 	:Steelsurge => [1,:STEALTHROCK,"{1} threw out metal debris!"], 
 	  # },
 		:message => "SAKI: DIE, NERD!",
-		:fieldChange => [:GLITCH,"AMBER: GURL U SNEAKY BITCH??",0],
+		:fieldChange => [:GLITCH,"AMBER: GURL WHY DID U LIE??",0],
 	},
 	1 => {
 		:message => "SAKI: Hey, watch this!",
@@ -37067,7 +37067,7 @@ TEAMARRAY = [{
 						:message => "SAKI: I'm a city gal though!",
 						:fieldChange => [:CITY,"AMBER: WILL YOU STOP CHEATING AND SETTLE ON A FIELD???",0],
 						:delayedaction => {
-							:delay => 14,
+							:delay => 10,
 							:message => "SAKI: ok im bored",
 							:fieldChange => [:COLOSSEUM,"AMBER: BITCH??",0],
 							:setWeather => [:SANDSTORM,-1,"Sand kicked up on the field!", false],
@@ -40988,7 +40988,7 @@ TEAMARRAY = [{
 	:ev => [252, 252, 252, 252, 252, 252]},
 {
 	:species => :CHANDELURE,
-	:level => 84,
+	:level => 85,
 	:item => :MAGICALSEED,
 	:moves => [:DAZZLINGGLEAM,:SHADOWBALL,:THUNDERBOLT,:BURNINGJEALOUSY],
 	:ability => :ILLUMINATE,
@@ -41005,9 +41005,9 @@ TEAMARRAY = [{
 	:ability => :STEADFAST,
 	:gender => "M",
 	:shiny => true,
-	:nature => :JOLLY,
+	:nature => :BRAVE,
 	:iv => 31,
-	:ev => [252, 252, 252, 252, 252, 252]},
+	:ev => [252, 252, 252, 252, 252, 0]},
 {
 	:species => :AURORUS,
 	:level => 86,
@@ -41016,24 +41016,24 @@ TEAMARRAY = [{
 	:ability => :SNOWWARNING,
 	:gender => "M",
 	:shiny => true,
-	:nature => :MODEST,
+	:nature => :QUIET,
 	:iv => 31,
-	:ev => [252, 252, 252, 252, 252, 252]},
+	:ev => [252, 252, 252, 252, 252, 0]},
 {
 	:species => :MAWILE,
 	:level => 85,
 	:item => :MAWILITE,
 	:moves => [:SUCKERPUNCH,:SWORDSDANCE,:PLAYROUGH,:IRONHEAD],
-	:ability => :TANGLEDFEET,
+	:ability => :INTIMIDATE,
 	:gender => "M",
-	:nature => :ADAMANT,
+	:nature => :BRAVE,
 	:iv => 31,
-	:ev => [252, 252, 252, 252, 252, 252]},
+	:ev => [252, 252, 252, 252, 252, 0]},
 {
 	:species => :JIRACHI,
 	:level => 85,
 	:item => :MAGICALSEED,
-	:moves => [:DOOMDESIRE,:HEALINGWISH,:LUSTERPURGE,:METEORBEAM],
+	:moves => [:DOOMDESIRE,:COSMICPOWER,:LUSTERPURGE,:METEORBEAM],
 	:ability => :SERENEGRACE,
 	:nature => :TIMID,
 	:iv => 31,
@@ -41041,8 +41041,8 @@ TEAMARRAY = [{
 {
 	:species => :SOLGALEO,
 	:level => 85,
-	:item => :SOLGANIUMZ,
-	:moves => [:SUNSTEELSTRIKE,:PSYCHICFANGS,:TRICKROOM,:COSMICPOWER],
+	:item => :ROOMSERVICE,
+	:moves => [:SUNSTEELSTRIKE,:PSYCHICFANGS,:TRICKROOM,:SWORDSDANCE],
 	:ability => :FULLMETALBODY,
 	:gender => "M",
 	:nature => :ADAMANT,
@@ -41057,7 +41057,7 @@ TEAMARRAY = [{
 	:gender => "F",
 	:nature => :QUIET,
 	:iv => 31,
-	:ev => [252, 252, 252, 252, 252, 252]}]},
+	:ev => [252, 252, 252, 252, 252, 0]}]},
 {
 :teamid => ["Aelita",:STUDENT_3,4],
 :mons => [{
@@ -41812,6 +41812,13 @@ TEAMARRAY = [{
 :ace => "Battle heals an aching soul. Come now, fight 'till your very last breath!",
 :defeat => "Outstanding.",
 :items => [:ULTRAPOTION,:ULTRAPOTION,:CORVIKNITE],
+:trainereffect => { 
+	:effectmode => :Party,
+	:buffactivation => :Always,
+	3 => {
+		:dummy => [:true,:TAILWIND,"{1} acquired Delta Stream!"],
+	},
+},
 :mons => [{
 	:species => :HAWLUCHA,
 	:level => 75,
@@ -41848,7 +41855,7 @@ TEAMARRAY = [{
 	:species => :VOLCARONA,
 	:level => 75,
 	:item => :ELEMENTALSEED,
-	:moves => [:ETHEREALTEMPEST,:PSYCHIC,:QUIVERDANCE,:AURASPHERE],
+	:moves => [:HEAVENLYWING,:PSYCHIC,:QUIVERDANCE,:AURASPHERE],
 	:ability => :DELTASTREAM,
 	:gender => "F",
 	:nature => :MODEST,

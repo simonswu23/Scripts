@@ -13,6 +13,7 @@ class Battle_Side
     @effects[:Safeguard]   = 0
     @effects[:Tailwind]    = 0
     @effects[:Embargo]     = 0
+    @effects[:PriorityGuard]  = 0
     #is either active or it's not
     @effects[:WideGuard]   = false
     @effects[:QuickGuard]  = false
