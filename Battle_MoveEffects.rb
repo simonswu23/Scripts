@@ -9265,7 +9265,7 @@ class PokeBattle_Move_11F < PokeBattle_Move
         if i.pbCanReduceStatStage?(PBStats::SPEED)
           i.pbReduceStatBasic(PBStats::SPEED,6)
           @battle.pbCommonAnimation("StatDown",i,nil)
-          @battle.pbDisplay(_INTL("The Room Service lowered #{i.pbThis}'s Speed!"))
+          @battle.pbDisplay(_INTL("The Room Service drastically lowered #{i.pbThis}'s Speed!"))
           i.pbDisposeItem(false)
         end
       end

@@ -3122,11 +3122,12 @@ class PokeBattle_Battle
           @battle.pbDisplay(_INTL("{1}'s {2} is affected by the magnetic field!",pkmn.pbThis,getItemName(pkmn.item)))
         end
       end
+      # Room Service
       if pkmn.hasWorkingItem(:ROOMSERVICE) && @battle.trickroom != 0
         if pkmn.pbCanReduceStatStage?(PBStats::SPEED)
           pkmn.pbReduceStatBasic(PBStats::SPEED,6)
           @battle.pbCommonAnimation("StatDown",pkmn,nil)
-          @battle.pbDisplay(_INTL("The Room Service lowered #{pkmn.pbThis}'s Speed!"))
+          @battle.pbDisplay(_INTL("The Room Service drastically lowered #{pkmn.pbThis}'s Speed!"))
           pkmn.pbDisposeItem(false)
         end
       end
@@ -3264,6 +3265,7 @@ class PokeBattle_Battle
           atype = :FIRE if @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
           atype = :POISON if @field.effect == :CORRUPTED
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
+          
           # Inverted here
           switcheff = { 16 => 1, 8 => 2, 4 => 4, 2 => 8, 1 => 16, 0 => 16}
           eff = switcheff[eff]

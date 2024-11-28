@@ -142,7 +142,6 @@ def characterSwitch(character)
         $PokemonBag.pbStoreItem(:LIFEORB,1)
         $PokemonBag.pbStoreItem(:ELEMENTALSEED,1)
         $PokemonBag.pbStoreItem(:FOCUSSASH,1)
-        $PokemonBag.pbStoreItem(:TM17,1)
   
       when "Huey Realm"
         pbChangePlayer(21)

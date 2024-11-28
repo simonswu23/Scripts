@@ -848,6 +848,9 @@
     - base stat buffs: 85, 130, 95, 60, 75, 82
     - learns: Sucker Punch, Dynamic Punch, Hypnosis, Wide Guard, Rock Wrecker
 
+- Emboar
+  - Gains Magic Guard as hidden ability instead of Reckless
+
 ### Placeolder Forms
 - Iron Bundle
 - Sinistcha
