@@ -2167,6 +2167,7 @@
 # TODO:
 
 - Fix Additional Effect Implementations (shield dust / bug types with moves like Ceaseless Edge)
+- Fix Giga move targeting (first turn -> autotargets to single?)
 
 - Passwords:
   - Better Bugs
@@ -2178,12 +2179,11 @@
   - Escape Routes
     - from Flora (to Floria)
     - from Valarie Bad Future
+    - from Diamond / Pearl routes
   - Starting QoL
     - PC of every obtainable pokemon up to that point
     - Bag full of every obtainable relevant item up to that point
     - Extra starter machine
-    - **In-battle single-use items are returned to you after the battle ends**
-
 
 - Incomplete Implementation:
   - Gastrodon Crest

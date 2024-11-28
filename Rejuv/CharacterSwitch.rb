@@ -65,7 +65,6 @@ def characterSwitch(character)
         trainerinfo = pbLoadTrainer(:STUDENT_3,"Aelita",6,true)
         $Trainer.id = trainerinfo[0].id
         $Trainer.party = trainerinfo[2]
-        $PokemonBag.pbStoreItem(:SILVCREST,1)
         $PokemonBag.pbStoreItem(:MEGARING,1)
         $PokemonBag.pbStoreItem(:GIGABAND,1)
         $PokemonBag.pbStoreItem(:URSHIFITE,1)
@@ -133,6 +132,17 @@ def characterSwitch(character)
         $Trainer.id = trainerinfo[0].id
         $Trainer.party = trainerinfo[2]
         $PokemonBag.pbStoreItem(:MEGARING,1)
+        $PokemonBag.pbStoreItem(:GIGABAND,1)
+        $PokemonBag.pbStoreItem(:BUTTERFREENITE,1)
+        $PokemonBag.pbStoreItem(:ASSAULTVEST,1)
+        $PokemonBag.pbStoreItem(:CHOICEBAND,1)
+        $PokemonBag.pbStoreItem(:CHOICESPECS,1)
+        $PokemonBag.pbStoreItem(:CHOICESCARF,1)
+        $PokemonBag.pbStoreItem(:SITRUSBERRY,1)
+        $PokemonBag.pbStoreItem(:LIFEORB,1)
+        $PokemonBag.pbStoreItem(:ELEMENTALSEED,1)
+        $PokemonBag.pbStoreItem(:FOCUSSASH,1)
+        $PokemonBag.pbStoreItem(:TM17,1)
   
       when "Huey Realm"
         pbChangePlayer(21)
