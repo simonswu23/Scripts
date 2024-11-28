@@ -1045,7 +1045,7 @@ end
 ################################################################################
 class PokeBattle_Move_907 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
-    rnd=@battle.pbRandom(5)
+    rnd=@battle.pbRandom(4)
     case rnd
       when 0
         return false if !opponent.pbCanSleep?(false)
@@ -1060,10 +1060,6 @@ class PokeBattle_Move_907 < PokeBattle_Move
         opponent.pbParalyze(attacker)
         @battle.pbDisplay(_INTL("{1} is paralyzed! It may be unable to move!",opponent.pbThis))
       when 3
-        return false if !opponent.pbCanSleep?(false)
-        opponent.pbSleep
-        @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
-      when 4
         return false if !opponent.pbCanSleep?(false)
         opponent.pbSleep
         @battle.pbDisplay(_INTL("{1} fell asleep!",opponent.pbThis))
