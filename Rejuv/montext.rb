@@ -40489,7 +40489,16 @@ MONHASH = {
 		:BattlerAltitude => 0,
 	},
 
+	"Kingambit" => {
+		:name => "Kingambit",
+		:Type1 => :DARK,
+		:Type2 => :STEEL,
+		:Abilities => [:DEFIANT,:SUPREMEOVERLORD],
+		:BaseStats => [100, 135, 120, 60, 85, 50],
+	},
+
 	:OnCreation => {},
+	:DefaultForm => 0,
 },
 
 :BOUFFALANT => {

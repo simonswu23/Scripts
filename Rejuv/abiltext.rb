@@ -1960,4 +1960,11 @@ ABILHASH = {
 	:desc => "Priority attacks have x1.5 power."
 },
 
+:SUPREMEOVERLORD => {
+	:ID => 344,
+	:name => "Supreme Overlord",
+	:desc => "Power of attacks are increased with every fainted ally."
+},
+
+
 }

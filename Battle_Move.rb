@@ -1715,6 +1715,16 @@ class PokeBattle_Move
       when :DRYSKIN       then basemult*=1.25 if !(opponent.moldbroken) && type == :FIRE
       when :TRANSISTOR    then basemult*=0.5 if (@battle.FE == :ELECTERRAIN && type == :GROUND) && !(opponent.moldbroken)
     end
+    if (attacker.ability == :SUPREMEOVERLORD)
+      faintCount = 0
+      party=@battle.pbParty(attacker.index)
+      # Count Fainted Pokemon
+      for i in 0...party.length
+        next if !party[i] || party[i].isEgg?
+        faintCount += 1 if party[i].hp == 0
+      end
+      basemult *= (1 + 0.1 * faintCount)
+    end
     if attitemworks
       if $cache.items[attacker.item].checkFlag?(:typeboost) == type
         basemult*=1.2
