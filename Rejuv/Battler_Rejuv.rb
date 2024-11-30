@@ -215,7 +215,7 @@ class PokeBattle_Battler
           @attack = @spatk
         when :CLAYDOL
           @spatk = @defense
-        when :DEDENNE
+        when :DEDENNE, :CROBAT
           @attack = @speed
           @spatk = @speed
         when :RELICANTH, :COPPERAJAH

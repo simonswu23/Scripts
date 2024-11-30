@@ -7700,7 +7700,7 @@ ITEMHASH = {
 :DEDECREST => {
 	:ID => 867,
 	:name => "Dedenne Crest",
-	:desc => "Dedenne's Physical attacks use its Speed stat rather than its Attack stat.",
+	:desc => "Dedenne's attacks use its Speed stat rather than its Attack stat.",
 	:price => 0,
 	:crest => true,
 	:noUseInBattle => true,
@@ -10476,6 +10476,16 @@ ITEMHASH = {
 	:noUseInBattle => true,
 	:noUse => true,
 	:keyitem => true,
+},
+
+:CROCREST => {
+	:ID => 2039,
+	:name => "Crobat Crest",
+	:desc => "Attack and Special attack use the user's speed stat",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
 },
 
 }

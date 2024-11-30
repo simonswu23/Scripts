@@ -6134,7 +6134,7 @@ class PokeBattle_Move_0CA < PokeBattle_Move
   def pbTwoTurnAttack(attacker,checking=false)
     @immediate=false
     if attacker.effects[:TwoTurnAttack]==0
-      @immediate=true if (Rejuv && @battle.FE == :DESERT)
+      @immediate=true if Rejuv && (@battle.FE == :DESERT || @battle.FE == :CAVE || @battle.FE == :CRYSTALCAVERN || @battle.FE == :DARKCRYSTALCAVERN || @battle.FE == :CORRUPTED)
       @immediate=true if (@battle.FE == :WATERSURFACE || @battle.FE == :MURKWATERSURFACE) && self.pbType(attacker,self.type) == :GROUND # for move failure on these fields
     end
     if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0

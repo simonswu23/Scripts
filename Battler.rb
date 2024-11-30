@@ -4349,10 +4349,13 @@ class PokeBattle_Battler
     # @SWu TODO: run through all Giga moves to fix their targeting here
     side=(pbIsOpposing?(self.index)) ? 1 : 0
     owner=@battle.pbGetOwnerIndex(self.index)
-    if @battle.zMove[side][owner]==self.index && self.item == :KOMMONIUMZ
-      target=:AllOpposing
-    elsif @battle.zMove[side][owner]==self.index && move.category != :status
-      target=:SingleNonUser
+    if @battle.zMove[side][owner]==self.index && !move.giga
+      target=:SingleNonUser if move.category != :status
+      target=:AllOpposing if self.item == :KOMMONIUMZ
+      # @battle.pbDisplay(_INTL("MOVE: {1}",move.move))
+      # if (self.pbGigaCompatibleBaseMove?(move))
+      #   target=PBMove.new(PBStuff::POKEMONTOGIGAMOVE[@species][0]).target
+      # end
     end
     return target
   end
@@ -5771,6 +5774,7 @@ class PokeBattle_Battler
     if @battle.zMove[side][owner]==self.index && choice[2].basedamage>0 && !danced
       crystal = pbZCrystalFromType(choice[2].type)
       zmoveID = PBStuff::CRYSTALTOZMOVE[crystal]
+      # @SWu -> Giga move change here
       choice[2]=PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(zmoveID),self,choice[2])
     end
     pbUseMove(choice, {specialusage: true, danced: danced, specialZ: specialZ})

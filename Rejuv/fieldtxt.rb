@@ -1457,7 +1457,7 @@ FIELDEFFECTS = {
 		"The cavern strengthened the attack!" => [:ROCK],
 	},
 	:typeCondition => {
-		:FLYING => "!self.contactMove?",
+		:FLYING => "!self.contactMove? && !isSoundBased?",
 	},
 	:typeEffects => {},
 	:changeCondition => {

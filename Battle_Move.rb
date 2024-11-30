@@ -48,6 +48,7 @@ class PokeBattle_Move
       @effect     = @data.checkFlag?(:effect,0)
       @moreeffect = @data.checkFlag?(:moreeffect,0)
       @zmove      = @data.checkFlag?(:zmove,false)
+      @giga       = @data.checkFlag?(:giga,false)
     end 
     if !zbase.nil?
       @zmove      = true
@@ -2029,7 +2030,7 @@ class PokeBattle_Move
     # Stat-Copy Crests, ala Claydol//Dedenne
     case attacker.crested
       when :CLAYDOL then atkstage=attacker.stages[PBStats::DEFENSE]+6 if pbIsSpecial?(type)
-      when :DEDENNE then atkstage=attacker.stages[PBStats::SPEED]+6 if !pbIsSpecial?(type)
+      when :DEDENNE, :CROBAT then atkstage=attacker.stages[PBStats::SPEED]+6
     end
     if attacker.ability == :HUSTLE && pbIsPhysical?(type)
       atk= [:BACKALLEY,:CITY].include?(@battle.FE) ? (atk*1.75).round : (atk*1.5).round
