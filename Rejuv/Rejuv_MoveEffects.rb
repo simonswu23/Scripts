@@ -1,7 +1,7 @@
 ################################################################################
 # Rejuvenation custom move functions
 # Venam's Kiss is handled in 005 (causes Poison) and pbTypeModifiers
-# Multipulse is handled in 09F (Judgment/Multiattack)
+# Multipulse is handled in 09F (JUDGEMENT/Multiattack)
 # Barbed Web is handled in 005 (cauese Poison)
 # Cold Truth is handled in 0B7 (Torment)
 # Uproot is handled in 04F (drops Spdef by 2)

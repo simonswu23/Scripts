@@ -4011,9 +4011,9 @@ MOVEHASH = {
 	:desc => "A large egg is hurled at the target with maximum force to inflict damage."
 },
 
-:JUDGMENT => {
+:JUDGEMENT => {
 	:ID => 270,
-	:name => "Judgment",
+	:name => "Judgement",
 	:function => 0x09F,
 	:type => :NORMAL,
 	:category => :special,
@@ -10094,7 +10094,7 @@ MOVEHASH = {
 	:category => :status,
 	:basedamage => 0,
 	:accuracy => 0,
-	:maxpp => 20,
+	:maxpp => 5,
 	:target => :SingleNonUser,
 	:snatchable => true,
 	:nonmirror => true,
@@ -13432,8 +13432,8 @@ MOVEHASH = {
 	:desc => "Cloaked in high energy, the user slams the target. The held Memory defines the move's type."
 },
 
-:JUDGMENTFIRE => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTFIRE => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :FIRE,
 	:category => :special,
@@ -13445,8 +13445,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTWATER => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTWATER => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :WATER,
 	:category => :special,
@@ -13458,8 +13458,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTELECTRIC => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTELECTRIC => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :ELECTRIC,
 	:category => :special,
@@ -13471,8 +13471,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTGRASS => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTGRASS => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :GRASS,
 	:category => :special,
@@ -13484,8 +13484,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTICE => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTICE => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :ICE,
 	:category => :special,
@@ -13497,8 +13497,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTFIGHTING => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTFIGHTING => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :FIGHTING,
 	:category => :special,
@@ -13510,8 +13510,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTPOISON => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTPOISON => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :POISON,
 	:category => :special,
@@ -13523,8 +13523,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTGROUND => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTGROUND => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :GROUND,
 	:category => :special,
@@ -13536,8 +13536,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTFLYING => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTFLYING => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :FLYING,
 	:category => :special,
@@ -13549,8 +13549,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTPSYCHIC => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTPSYCHIC => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :PSYCHIC,
 	:category => :special,
@@ -13562,8 +13562,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTBUG => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTBUG => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :BUG,
 	:category => :special,
@@ -13575,8 +13575,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTROCK => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTROCK => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :ROCK,
 	:category => :special,
@@ -13588,8 +13588,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTGHOST => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTGHOST => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :GHOST,
 	:category => :special,
@@ -13601,8 +13601,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTDRAGON => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTDRAGON => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :DRAGON,
 	:category => :special,
@@ -13614,8 +13614,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTDARK => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTDARK => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :DARK,
 	:category => :special,
@@ -13627,8 +13627,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTSTEEL => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTSTEEL => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :STEEL,
 	:category => :special,
@@ -13640,8 +13640,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTFAIRY => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTFAIRY => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :FAIRY,
 	:category => :special,
@@ -13653,8 +13653,8 @@ MOVEHASH = {
 	:desc => "The user releases countless shots of light. This move's type varies depending on the held Plate."
 },
 
-:JUDGMENTQMARKS => {
-	:name => "Judgment ANIMATION",
+:JUDGEMENTQMARKS => {
+	:name => "JUDGEMENT ANIMATION",
 	:function => 0x09F,
 	:type => :QMARKS,
 	:category => :special,
@@ -14366,8 +14366,27 @@ MOVEHASH = {
 	:target => :SingleNonUser,
 	:contact => true,
 	:kingrock => true,
-	:desc => "GOTCHA"
+	:desc => "ugh"
 },
+
+:ENVENOM => {
+	:ID => 936,
+	:name => "ENVENOM",
+	:function => 0x006,
+	:type => :POISON,
+	:category => :physical,
+	:basedamage => 95,
+	:accuracy => 100,
+	:maxpp => 20,
+	:effect => 100,
+	:target => :SingleNonUser,
+	:contact => true,
+	:kingrock => true,
+	:highcrit => true,
+	:sharpmove => true,
+	:desc => "Aevian Feebass/Milotic Signature."
+},
+
 
 # ====================== GIGA MOVES ============================ #
 
@@ -14758,7 +14777,7 @@ MOVEHASH = {
 	:basedamage => 150,
 	:accuracy => 0,
 	:maxpp => 5,
-	:effect => 30,
+	:effect => 40,
 	:target => :AllOpposing,
   	:desc => "Venusaur"
 },
@@ -14783,9 +14802,9 @@ MOVEHASH = {
 	:function => 0x0C0,
 	:type => :WATER,
 	:category => :special,
-	# hits four - five times
-	:basedamage => 35,
+	:basedamage => 25,
 	:accuracy => 0,
+	:effect => 15,
 	:maxpp => 5,
 	:target => :AllOpposing,
   	:desc => "Blastoise"
@@ -14830,7 +14849,21 @@ MOVEHASH = {
 	:accuracy => 0,
 	:maxpp => 5,
 	:target => :AllOpposing,
-  :desc => "Sandaconda"
+  	:desc => "Sandaconda"
+},
+
+:KINGSFEAST => {
+	:ID => 2031,
+	:name => "King's Feast",
+	:function => 0x147,
+	:type => :BUG,
+	:category => :physical,
+	:basedamage => 150,
+	:accuracy => 0,
+	:maxpp => 5,
+	:effect => 100,
+	:target => :AllOpposing,
+  :desc => "Kingler"
 },
 
 }

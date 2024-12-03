@@ -222,6 +222,10 @@ class PokeBattle_AI
 				zmove = move
 				break 
 			end
+			if (move.move == :PURIFY) && @attacker.item == :POISONIUMZ
+				zmove = move
+				break
+			end
 			if (move.move == :NATUREPOWER && @attacker.item == :NORMALIUMZ)
 				newmove = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(@battle.field.naturePower),@attacker)
 				if newmove.basedamage > 0
@@ -575,7 +579,7 @@ class PokeBattle_AI
 			end
 		end
 		#Add a possible z-move to the choosable moves. Only if the scores for non-z move are all lower than 100
-		if mondata.zmove && (chooseablemoves.all? {|array| array[:score] < 100} || [:CONVERSION,:CELEBRATE,:SPLASH,:CLANGOROUSSOULBLAZE].include?(mondata.zmove.move))
+		if mondata.zmove && (chooseablemoves.all? {|array| array[:score] < 100} || [:CONVERSION,:CELEBRATE,:PURIFY,:SPLASH,:CLANGOROUSSOULBLAZE].include?(mondata.zmove.move))
 			#find which move has been turned into z-move
 			originalmove = battler.zmoves.include?(mondata.zmove) ? mondata.zmove : :NATUREPOWER
 			if originalmove.is_a?(Symbol)
@@ -588,7 +592,7 @@ class PokeBattle_AI
 			if @battle.doublebattle
 				oi = battler.pbOppositeOpposing.index #opposite opponent
 				ci = battler.pbCrossOpposing.index
-				if  [:CONVERSION,:CELEBRATE,:SPLASH,:CLANGOROUSSOULBLAZE].include?(mondata.zmove.move)
+				if  [:CONVERSION,:CELEBRATE,:SPLASH,:PURIFY,:CLANGOROUSSOULBLAZE].include?(mondata.zmove.move)
 					chooseablemoves.push({moveindex: originalmoveindex,target: [oi,ci],score: mondata.scorearray[oi][-1] + mondata.scorearray[ci][-1],zmove: true})
 				else
 					[oi,ci].each {|targetindex| chooseablemoves.push({moveindex: originalmoveindex,target: [targetindex],score: mondata.scorearray[targetindex][-1],zmove: true}) }
@@ -3010,6 +3014,11 @@ class PokeBattle_AI
 				miniscore = psychicterraincode()
 			when 0x169 # Purify
 				miniscore = almostuselessmovecode()
+				if (@move.zmove && miniscore == 0)
+					miniscore = selfstatboost([1,1,1,1,1,0,0])
+				elsif (@move.zmove && miniscore > 0)
+					miniscore *= selfstatboost([1,1,1,1,1,0,0])
+				end
 			when 0x16b # Shell Trap
 				miniscore = shelltrapcode()
 			when 0x16c # Shore Up
@@ -6241,15 +6250,12 @@ class PokeBattle_AI
 	end
 
 	def almostuselessmovecode
-		return 0 if @opponent.index!=@attacker.pbPartner.index || @opponent.status.nil?
-		miniscore=1.5
-		if @opponent.hp>@opponent.totalhp*0.8
-			miniscore*=0.8
-		elsif @opponent.hp>@opponent.totalhp*0.3
-			miniscore*=2
+		if (@battle.FE != :HAUNTED)
+			return 3 # @SWu: idk lmao
 		end
-		miniscore*=1.3 if @opponent.effects[:Toxic]>3
-		miniscore*=1.3 if checkAImoves([:HEX])
+		return 0 if (@opponent.status.nil? || !@opponent.hasType?(:POISON))
+		miniscore += recovercode(@attacker.totalhp)
+		miniscore += 3 if @battle.FE != :HAUNTED  # thank you ghostdango
 		return miniscore
 	end
 
@@ -7088,7 +7094,7 @@ class PokeBattle_AI
 	end
 
 	def getStatusDamage(move=@move)
-		return 20 if move.zmove && (move.move == :CONVERSION || move.move == :SPLASH || move.move == :CELEBRATE)
+		return 20 if move.zmove && (move.move == :CONVERSION || move.move == :SPLASH || move.move == :CELEBRATE || move.move == :PURIFY)
 		return PBStuff::STATUSDAMAGE[move.move] if PBStuff::STATUSDAMAGE[move.move]
 		return 0
 	end
@@ -7504,6 +7510,8 @@ class PokeBattle_AI
 			  typemod /= 4 if (type == :FIRE || type == :FLYING)
 			when :GLACEON
 			  typemod /= 4 if (type == :ROCK || type == :FIGHTING)
+			when :HYDREIGON
+			  typemod /= 8 if (type == :FAIRY)
 			when :SIMISEAR
 			  typemod /= 2 if [:STEEL, :FIRE,:ICE].include?(type)
 			  typemod /= 2 if type == :WATER && @battle.FE != :UNDERWATER
@@ -7512,6 +7520,8 @@ class PokeBattle_AI
 			when :SIMISAGE
 			  typemod /= 2 if [:BUG,:STEEL,:FIRE,:GRASS,:FAIRY].include?(type)
 			  typemod /= 2 if type == :ICE && @battle.FE != :GLITCH
+			when :SEVIPER
+			  typemod = 0 if type == :PSYCHIC
 			when :TORTERRA
 			  if !($game_switches[:Inversemode] ^ (@battle.FE == :INVERSE))
 				typemod = 16 / typemod if typemod != 0

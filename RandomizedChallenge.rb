@@ -107,10 +107,10 @@ DummyMoves = [
     :MULTIATTACKFIGHTING,:MULTIATTACKFIRE,:MULTIATTACKFLYING,:MULTIATTACKGHOST,:MULTIATTACKGLITCH,
     :MULTIATTACKGRASS,:MULTIATTACKGROUND,:MULTIATTACKICE,:MULTIATTACKPOISON,:MULTIATTACKPSYCHIC,
     :MULTIATTACKROCK,:MULTIATTACKSTEEL,:MULTIATTACKWATER,
-    :JUDGMENTBUG,:JUDGMENTDARK,:JUDGMENTDRAGON,:JUDGMENTELECTRIC,:JUDGMENTFAIRY,
-    :JUDGMENTFIGHTING,:JUDGMENTFIRE,:JUDGMENTFLYING,:JUDGMENTGHOST,:JUDGMENTQMARKS,
-    :JUDGMENTGRASS,:JUDGMENTGROUND,:JUDGMENTICE,:JUDGMENTPOISON,:JUDGMENTPSYCHIC,
-    :JUDGMENTROCK,:JUDGMENTSTEEL,:JUDGMENTWATER
+    :JUDGEMENTBUG,:JUDGEMENTDARK,:JUDGEMENTDRAGON,:JUDGEMENTELECTRIC,:JUDGEMENTFAIRY,
+    :JUDGEMENTFIGHTING,:JUDGEMENTFIRE,:JUDGEMENTFLYING,:JUDGEMENTGHOST,:JUDGEMENTQMARKS,
+    :JUDGEMENTGRASS,:JUDGEMENTGROUND,:JUDGEMENTICE,:JUDGEMENTPOISON,:JUDGEMENTPSYCHIC,
+    :JUDGEMENTROCK,:JUDGEMENTSTEEL,:JUDGEMENTWATER
 ]
 
 RandOtherVars = {
@@ -225,11 +225,11 @@ class RandomizedChallenge
     :MULTIATTACKROCK,:MULTIATTACKSTEEL,:MULTIATTACKWATER
   ]
 
-  JUDGMENT = [
-    :JUDGMENTBUG,:JUDGMENTDARK,:JUDGMENTDRAGON,:JUDGMENTELECTRIC,:JUDGMENTFAIRY,
-    :JUDGMENTFIGHTING,:JUDGMENTFIRE,:JUDGMENTFLYING,:JUDGMENTGHOST,:JUDGMENTQMARKS,
-    :JUDGMENTGRASS,:JUDGMENTGROUND,:JUDGMENTICE,:JUDGMENTPOISON,:JUDGMENTPSYCHIC,
-    :JUDGMENTROCK,:JUDGMENTSTEEL,:JUDGMENTWATER
+  JUDGEMENT = [
+    :JUDGEMENTBUG,:JUDGEMENTDARK,:JUDGEMENTDRAGON,:JUDGEMENTELECTRIC,:JUDGEMENTFAIRY,
+    :JUDGEMENTFIGHTING,:JUDGEMENTFIRE,:JUDGEMENTFLYING,:JUDGEMENTGHOST,:JUDGEMENTQMARKS,
+    :JUDGEMENTGRASS,:JUDGEMENTGROUND,:JUDGEMENTICE,:JUDGEMENTPOISON,:JUDGEMENTPSYCHIC,
+    :JUDGEMENTROCK,:JUDGEMENTSTEEL,:JUDGEMENTWATER
   ]
 
   attr_accessor(:abilities)
@@ -302,8 +302,8 @@ class RandomizedChallenge
               @moveAcc.store(move, @moveAcc[:TECHNOBLAST])
             elsif MultiAttack.include?(move)
               @moveAcc.store(move, @moveAcc[:MULTIATTACK])
-            elsif JUDGMENT.include?(move)
-              @moveAcc.store(move, @moveAcc[:JUDGMENT])
+            elsif JUDGEMENT.include?(move)
+              @moveAcc.store(move, @moveAcc[:JUDGEMENT])
             else
               @moveAcc.store(move, -1)
             end
@@ -345,8 +345,8 @@ class RandomizedChallenge
               @moveAcc.store(move, @moveAcc[:TECHNOBLAST])
             elsif MultiAttack.include?(move)
               @moveAcc.store(move, @moveAcc[:MULTIATTACK])
-            elsif JUDGMENT.include?(move)
-              @moveAcc.store(move, @moveAcc[:JUDGMENT])
+            elsif JUDGEMENT.include?(move)
+              @moveAcc.store(move, @moveAcc[:JUDGEMENT])
             else
               @moveAcc.store(move, -1)
             end
@@ -372,8 +372,8 @@ class RandomizedChallenge
               @moveAcc.store(move, @moveAcc[:TECHNOBLAST])
             elsif MultiAttack.include?(move)
               @moveAcc.store(move, @moveAcc[:MULTIATTACK])
-            elsif JUDGMENT.include?(move)
-              @moveAcc.store(move, @moveAcc[:JUDGMENT])
+            elsif JUDGEMENT.include?(move)
+              @moveAcc.store(move, @moveAcc[:JUDGEMENT])
             else
               @moveAcc.store(move, -1)
             end
@@ -407,8 +407,8 @@ class RandomizedChallenge
               @moveBP.store(move, @moveBP[:TECHNOBLAST])
             elsif MultiAttack.include?(move)
               @moveBP.store(move, @moveBP[:MULTIATTACK])
-            elsif JUDGMENT.include?(move)
-              @moveAcc.store(move, @moveAcc[:JUDGMENT])
+            elsif JUDGEMENT.include?(move)
+              @moveAcc.store(move, @moveAcc[:JUDGEMENT])
             else
               @moveBP.store(move, -1)
             end
@@ -450,8 +450,8 @@ class RandomizedChallenge
               @moveBP.store(move, @moveBP[:TECHNOBLAST])
             elsif MultiAttack.include?(move)
               @moveBP.store(move, @moveBP[:MULTIATTACK])
-            elsif JUDGMENT.include?(move)
-              @moveAcc.store(move, @moveAcc[:JUDGMENT])
+            elsif JUDGEMENT.include?(move)
+              @moveAcc.store(move, @moveAcc[:JUDGEMENT])
             else
               @moveBP.store(move, -1)
             end

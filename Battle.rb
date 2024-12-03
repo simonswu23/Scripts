@@ -2307,6 +2307,7 @@ class PokeBattle_Battle
     # return true if !pbBelongsToPlayer?(index)
     return false if !pbHasGigaBand(index)
     return false if !pbHasGigaStone(index)
+    return false if pbIsZCrystal?(@battlers[index].item)
     side=(pbIsOpposing?(index)) ? 1 : 0
     owner=pbGetOwnerIndex(index)
     return true if @gigaEvolution[side][owner]==-1
@@ -3187,7 +3188,7 @@ class PokeBattle_Battle
       # Spikes
       pkmn.pbOwnSide.effects[:Spikes]=0 if @field.effect == :WATERSURFACE || @field.effect == :MURKWATERSURFACE || @field.effect == :SKY || @field.effect == :CLOUDS
       if pkmn.pbOwnSide.effects[:Spikes]>0
-        if (!pkmn.isAirborne? || (Rejuv && @battle.FE == :ELECTERRAIN)) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if (!pkmn.isAirborne? || (Rejuv && @battle.FE == :ELECTERRAIN)) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && pkmn.crested != :CINDERACE
           if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.effects[:MagicGuard]
             spikesdiv=[8,8,6,4][pkmn.pbOwnSide.effects[:Spikes]]
             if Rejuv && @battle.FE == :ELECTERRAIN
@@ -3228,7 +3229,7 @@ class PokeBattle_Battle
       end
       # Stealth Rock
       if pkmn.pbOwnSide.effects[:StealthRock] 
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && pkmn.crested != :CINDERACE && !pkmn.effects[:MagicGuard]
           atype = :ROCK
           atype = @field.getRoll if @field.effect == :CRYSTALCAVERN
           atype = :FIRE if @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
@@ -3259,7 +3260,7 @@ class PokeBattle_Battle
 
       # Inverse Stealth Rock
       if pkmn.pbOwnSide.effects[:InvStealthRock] 
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard] && pkmn.crested != :CINDERACE
           atype = :ROCK
           atype = @field.getRoll if @field.effect == :CRYSTALCAVERN
           atype = :FIRE if @field.effect == :VOLCANICTOP || @field.effect == :INFERNAL || (Rejuv && @field.effect == :DRAGONSDEN)
@@ -3295,7 +3296,7 @@ class PokeBattle_Battle
       end
 
       if pkmn.pbOwnSide.effects[:Steelsurge]
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)  && !pkmn.effects[:MagicGuard]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard] && pkmn.crested != :CINDERACE
           atype = :STEEL
           # @SWu to figure out alternate field interactions
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
@@ -3311,7 +3312,7 @@ class PokeBattle_Battle
         end
       end
       if pkmn.pbOwnSide.effects[:Volcalith]
-        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard]
+        if pkmn.ability != :MAGICGUARD && !(pkmn.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && !pkmn.effects[:MagicGuard] && pkmn.crested != :CINDERACE
           atype = :FIRE
           # @SWu to figure out alternate field interactions
           eff=PBTypes.twoTypeEff(atype,pkmn.type1,pkmn.type2)
@@ -3391,7 +3392,7 @@ class PokeBattle_Battle
       # Sticky Web
       pkmn.pbOwnSide.effects[:StickyWeb]=false if @field.effect == :SKY || @field.effect == :CLOUDS
       if pkmn.pbOwnSide.effects[:StickyWeb]
-        if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        if !pkmn.isAirborne? && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && pkmn.crested != :CINDERACE
           stat = @field.effect == :FOREST ? 2 : 1
           pbDisplay(_INTL("{1} was caught in a sticky web!",pkmn.pbThis))
           pkmn.pbReduceStat(PBStats::SPEED, stat)
@@ -3403,7 +3404,7 @@ class PokeBattle_Battle
         if pkmn.hasType?(:POISON) && @field.effect != :CORROSIVE
           pkmn.pbOwnSide.effects[:ToxicSpikes]=0
           pbDisplay(_INTL("{1} absorbed the poison spikes!",pkmn.pbThis))
-        elsif pkmn.pbCanPoisonSpikes?(true) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS)
+        elsif pkmn.pbCanPoisonSpikes?(true) && !pkmn.hasWorkingItem(:HEAVYDUTYBOOTS) && pkmn.crested != :CINDERACE
           if pkmn.pbOwnSide.effects[:ToxicSpikes]==2
             pkmn.pbPoison(pkmn,true)
             pbDisplay(_INTL("{1} was badly poisoned!",pkmn.pbThis))
@@ -6341,7 +6342,7 @@ class PokeBattle_Battle
           pbDisplay(_INTL("{1} stockpiled with Accumulation!",i.pbThis))
         end
       end
-      if @field.effect == :SWAMP && ![:WHITESMOKE,:CLEARBODY,:QUICKFEET,:SWIFTSWIM,:PROPELLERTAIL,:STEAMENGINE].include?(i.ability) && (i.item != :HEAVYDUTYBOOTS)
+      if @field.effect == :SWAMP && ![:WHITESMOKE,:CLEARBODY,:QUICKFEET,:SWIFTSWIM,:PROPELLERTAIL,:STEAMENGINE].include?(i.ability) && (i.item != :HEAVYDUTYBOOTS) && i.crested != :CINDERACE
         if !i.isAirborne?
           if !i.pbTooLow?(PBStats::SPEED)
             contcheck = i.ability == :CONTRARY

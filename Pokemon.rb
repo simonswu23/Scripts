@@ -801,6 +801,7 @@ class PokeBattle_Pokemon
       when :FERROTHORN      then return true if move.move == :POWERWHIP
       when :URSHIFU         then return true if move.move == :WICKEDBLOW
       when :SANDACONDA      then return true if move.move == :HURRICANE
+      when :KINGLER         then return true if move.move == :XSCISSOR
     end
     return false
   end

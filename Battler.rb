@@ -3521,6 +3521,18 @@ class PokeBattle_Battler
             end
         end
       end
+      if target.ability == (:KINGSARMOR) && move.contactMove? && !(user.ability == :LONGREACH)
+        if !user.damagestate.substitute && user.pbCanReduceStatStage?(PBStats::ATTACK,false,true)
+          user.pbReduceStatBasic(PBStats::ATTACK,2)
+          @battle.pbCommonAnimation("StatDown",user,nil)
+          @battle.pbDisplay(_INTL("{1}'s {2} harshly lowered {3}'s Attack!",target.pbThis,getAbilityName(target.ability),user.pbThis))
+        end
+        if target.pbCanIncreaseStatStage?(PBStats::ATTACK,false) && (@battle.FE == :HOLY || @battle.FE == :FAIRYTALE || @battle.FE == :COLOSSEUM)
+          target.pbIncreaseStatBasic(PBStats::ATTACK,2)
+          @battle.pbCommonAnimation("StatUp",target,nil)
+          @battle.pbDisplay(_INTL("{1}'s {2} sharply raised its Attack!",target.pbThis,getAbilityName(target.ability)))
+        end
+      end
       if !target.damagestate.substitute
         if (target.ability == :CURSEDBODY && @battle.FE != :HOLY && (@battle.pbRandom(10)<3 || (target.isFainted? && @battle.FE == :HAUNTED))) || target.crested == :BEHEEYEM
           if user.effects[:Disable]<=0 && move.pp>0 && !user.isFainted?
@@ -6288,6 +6300,7 @@ class PokeBattle_Battler
         end
 
         # Life Orb
+        # @SWu BUG -- Life orb should tick on hit of a substitute/disguise
         if user.hasWorkingItem(:LIFEORB) && flags[:totaldamage]>0 && user.ability != (:MAGICGUARD) && !user.effects[:MagicGuard] && !(user.ability == (:WONDERGUARD) && @battle.FE == :COLOSSEUM)
           hploss=user.pbReduceHP([(user.totalhp/10.0).floor,1].max,true)
           if hploss>0

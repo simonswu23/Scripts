@@ -388,6 +388,8 @@ class PokeBattle_Move_006 < PokeBattle_Move
       return if !showanimation
       if id == :MELTDOWN
         @battle.pbAnimation(:EXPLOSION,attacker,opponent,hitnum)
+      elsif id == :ENVENOM
+        @battle.pbAnimation(:POISONTAIL,attacker,opponent,hitnum)
       else
         @battle.pbAnimation(id,attacker,opponent,hitnum)
       end
@@ -672,6 +674,8 @@ class PokeBattle_Move_00F < PokeBattle_Move
     return if !showanimation
     if id == :MOUNTAINGALE
       @battle.pbAnimation(:AVALANCHE,attacker,opponent,hitnum)
+    elsif id == :CHIRP
+      @battle.pbAnimation(:CHATTER,attacker,opponent,hitnum)
     elsif id == :VINELASH
       @battle.pbAnimation(:FRENZYPLANT,attacker,opponent,hitnum)
     else
@@ -4682,11 +4686,11 @@ class PokeBattle_Move_09E < PokeBattle_Move
 end
 
 ################################################################################
-# Type depends on the user's held item. (Judgment / Techno Blast / Multi-Attack)
+# Type depends on the user's held item. (JUDGEMENT / Techno Blast / Multi-Attack)
 ################################################################################
 class PokeBattle_Move_09F < PokeBattle_Move
   def pbType(attacker,type=@type)
-    if ((@move == :JUDGMENT) && (attacker.species == :ARCEUS)) || 
+    if ((@move == :JUDGEMENT) && (attacker.species == :ARCEUS)) || 
       ((@move == :MULTIATTACK) && (attacker.species == :SILVALLY))
       type = $cache.pkmn[attacker.species].forms[attacker.form%19].upcase.intern
       type = :QMARKS if type == "???".intern
@@ -4702,7 +4706,7 @@ class PokeBattle_Move_09F < PokeBattle_Move
       elsif @move == :MULTIATTACK
         itemtype = $cache.items[attacker.item].checkFlag?(:memory)
         type = itemtype if itemtype
-      elsif @move == :JUDGMENT || @move == :MULTIPULSE
+      elsif @move == :JUDGEMENT || @move == :MULTIPULSE
         if PBStuff::PLATEITEMS.include?(attacker.item)
           itemtype = $cache.items[attacker.item].checkFlag?(:typeboost)
           type = itemtype if itemtype
@@ -4731,7 +4735,7 @@ class PokeBattle_Move_09F < PokeBattle_Move
       else @battle.pbAnimation(id,attacker,opponent,hitnum)
       end
     end
-    if @move == :JUDGMENT
+    if @move == :JUDGEMENT
       if attacker.itemWorks?
         m = @move.to_s
         if PBStuff::PLATEITEMS.include?(attacker.item) || PBStuff::TYPETOZCRYSTAL.values.include?(attacker.item)
@@ -5730,8 +5734,18 @@ class PokeBattle_Move_0C0 < PokeBattle_Move
     ret=hitchances[@battle.pbRandom(hitchances.length)]
     ret=5 if attacker.ability == :SKILLLINK
     ret=5 if attacker.crested == :FEAROW && @move == :FURYATTACK
-    ret=5 if @move == :CANNONADE
+    ret= hitchances*2 if @move == :CANNONADE
     return ret
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    if @move == :CANNONADE
+      if opponent.pbCanReduceStatStage?(PBStats::DEFENSE,false)
+        opponent.pbReduceStat(PBStats::DEFENSE,1,abilitymessage:false, statdropper: attacker)
+      end
+      return true
+    end
+    return false
   end
 
   # Replacement animation till a proper one is made
@@ -6134,7 +6148,7 @@ class PokeBattle_Move_0CA < PokeBattle_Move
   def pbTwoTurnAttack(attacker,checking=false)
     @immediate=false
     if attacker.effects[:TwoTurnAttack]==0
-      @immediate=true if Rejuv && (@battle.FE == :DESERT || @battle.FE == :CAVE || @battle.FE == :CRYSTALCAVERN || @battle.FE == :DARKCRYSTALCAVERN || @battle.FE == :CORRUPTED)
+      @immediate=true if Rejuv && (@battle.FE == :DESERT || @battle.FE == :CAVE)
       @immediate=true if (@battle.FE == :WATERSURFACE || @battle.FE == :MURKWATERSURFACE) && self.pbType(attacker,self.type) == :GROUND # for move failure on these fields
     end
     if attacker.ability == :ANABOLIC && @battle.state.effects[:ELECTERRAIN] > 0
@@ -9311,6 +9325,7 @@ end
 class PokeBattle_Move_122 < PokeBattle_Move
 # Handled in superclass, do not edit!
 end
+ 
 
 ################################################################################
 # Only damages Pokémon that share a type with the user. (Synchronoise)
@@ -10050,9 +10065,14 @@ end
 ################################################################################
 class PokeBattle_Move_147 < PokeBattle_Move
   def pbAdditionalEffect(attacker,opponent)
+    increment = 3
+    increment = 2 if @move == :KINGSFEAST
     if opponent.isFainted? &&
        attacker.pbCanIncreaseStatStage?(PBStats::ATTACK,false)
-      attacker.pbIncreaseStat(PBStats::ATTACK,3,abilitymessage:false)
+      attacker.pbIncreaseStat(PBStats::ATTACK,increment,abilitymessage:false)
+    end
+    if @move == :KINGSFEAST && opponent.pbCanReduceStatStage?(PBStats::SPEED,false)
+      opponent.pbReduceStat(PBStats::SPEED,increment,abilitymessage:false, statdropper: attacker)
     end
   end
 end
@@ -10770,29 +10790,40 @@ class PokeBattle_Move_168 < PokeBattle_Move
 end
 
 ################################################################################
-# Heals target by 1/4 of its max HP & removes status conditions. (Purify)
+# Heals itself if the target is poisoned (does not cure poison). (Purify)
 ################################################################################
 class PokeBattle_Move_169 < PokeBattle_Move
   def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
-    if opponent.effects[:Substitute]>0
+    if (opponent.status== :POISON || opponent.hasType?(:POISON)) && attacker.hp!=attacker.totalhp
+      attacker.pbRecoverHP(attacker.totalhp,true)
+      @battle.pbDisplay(_INTL("{1} healed itself!",attacker.pbThis))
+      return 0
+    else
       @battle.pbDisplay(_INTL("But it failed!"))
       return -1
     end
-    if opponent.status.nil?
-      @battle.pbDisplay(_INTL("{1} is already healthy!",opponent.pbThis))
-      return -1
-    else
-      pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
-      opponent.status=nil
-      opponent.statusCount=0
-      @battle.pbDisplay(_INTL("{1} was purified!",opponent.pbThis))
-      if attacker.hp!=attacker.totalhp
-        hpgain=((attacker.totalhp)/2).floor
-        attacker.pbRecoverHP(hpgain,true)
-        @battle.pbDisplay(_INTL("{1} healed itself!",attacker.pbThis))
-      end
-      return 0
-    end
+
+    # @SWu v2 purify down below
+    # healmod = 4
+    # didsomething = -1
+    # if opponent.status.nil?
+    #   @battle.pbDisplay(_INTL("{1} is already healthy!",opponent.pbThis))
+    # else
+    #   # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+    #   # opponent.status=nil
+    #   # opponent.statusCount=0
+    #   # healmod = 1
+    #   # @battle.pbDisplay(_INTL("{1} was purified!",opponent.pbThis))
+    #   # didsomething = 0
+    # end
+    # pbShowAnimation(@move,attacker,opponent,hitnum,alltargets,showanimation)
+    # if attacker.hp!=attacker.totalhp
+    #   hpgain=((attacker.totalhp)/healmod).floor
+    #   attacker.pbRecoverHP(hpgain,true)
+    #   @battle.pbDisplay(_INTL("{1} healed itself!",attacker.pbThis))
+    #   didsomething = 0
+    # end
+    # return didsomething
   end
 end
 

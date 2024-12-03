@@ -62,7 +62,7 @@
     - BP: 150
     - acc: 0
     - target: all foes
-    - effect: 30% chance to cause targets to flinch
+    - effect: 40% chance to cause targets to flinch
   
 - Charizard
   - Typing: Fire 
@@ -85,10 +85,10 @@
     - basemove: Hydro Cannon
     - Type: Water
     - category: special
-    - BP: 50
+    - BP: 25
     - acc: 0
     - target: all foes
-    - effect: hits 5 times
+    - effect: hits 4-10 times, each hit has 15% chance to lower foe's defense by 1. Hits defense stat.
 
 - Butterfree
   - Typing: Bug/Flying
@@ -157,15 +157,16 @@
 
 - Kingler
   - Typing: Water/Bug
-  - Ability: Sheer Force
+  - Ability: King's Armor
   - Stats: 110, 155, 115, 25, 50, 75
-  - Giga Move:
-    - Type:
-    - category:
-    - BP:
-    - acc:
-    - target:
-    - effect:
+  - Giga Move: King's Feast
+    - basemove: X-Scissor
+    - Type: Bug
+    - category: physical
+    - BP: 150
+    - acc: 0
+    - target: all foes
+    - effect: lowers targets speed by 2, raises user's attack by 2 upon KO
 
 - Lapras
   - Typing: Water/Ice 
@@ -847,9 +848,24 @@
     - Rock/Fighting
     - base stat buffs: 85, 130, 95, 60, 75, 82
     - learns: Sucker Punch, Dynamic Punch, Hypnosis, Wide Guard, Rock Wrecker
-
+  - Dusk Form:
+    - Rock/Normal
+    
 - Emboar
   - Gains Magic Guard as hidden ability instead of Reckless
+
+- Cobalion
+  - Gains Stalwart as a hidden ability
+
+- Virizion
+  - Gains Queenly Majesty as a hidden ability
+
+- Terrakion
+  - Gains Sheer Force as a hidden ability
+
+- Feebass/Milotic
+  - Aevian: both learn Purify at level 1
+  - Aevian Milotic: learns Envenom at level 79
 
 ### Placeolder Forms
 - Iron Bundle
@@ -1133,6 +1149,9 @@
 - Accelerate
   - Priority attacks have x1.5 power
 
+- King's Armor
+  - Lowers attacker's attack stat by 2 after being hit by a contact move.
+
 ## Items
 
 ### Updates
@@ -1215,6 +1234,9 @@
 
 - Room Service
   - reduces speed by 6 in Trick Room
+
+- Dedenne Crest
+  - Scales Crobat's attack and special attack based on its speed 
 
 ### New Items
 - Poison Potion
@@ -1309,7 +1331,7 @@
 
 - Cinderace Crest
   - special attack = attack
-  - moves cannot miss
+  - heavy duty boots effect
   - attack boosted by x1.1
 
 - Inteleon Crest
@@ -1353,6 +1375,9 @@
   - Special Electric attack -> raises user's special attack by 1
   - Punching moves -> raises user's attack by 1
   - x1.3 attack and special attack
+
+- Crobat Crest
+  - Scales Crobat's attack and special attack based on its speed (Dedenne copy)
  
 ## Attacks
 
@@ -1757,6 +1782,10 @@
 
 - Super UMD
   - 100% effect chance
+
+- Purify
+  - new effect: restores 100% hp if the target is poisoned or has the poison type, no longer cures that poison
+  - pp -> 5
     
 ### New Attacks
 
@@ -2029,6 +2058,14 @@
   - Single Target
   - No additional effect (TODO: destroys surge terrain)
 
+- Envenom
+  - Poison
+  - Physical
+  - bp: 85
+  - acc: 100
+  - Single Target
+  - 100% chance to badly poison the target
+
 # Field Effect Updates
 - Snowy Mountain
   - Centiferno transforms into Cave
@@ -2044,6 +2081,23 @@
 - Mountain 
   - Southern Wind, Heavenly Wing transforms into Sky
   - Sea Breeze, Round, Echoed Voice powered up
+
+- Cave
+  - Dig is a 1-turn move
+  - Chirp's power is not decreased
+
+- Blessed
+  - King's Armor also raises user's attack by 2 on hit by a contact move
+  - Supreme overlord's attack boost is doubled
+  - Glacial Lance, Astral Barrage, Hyperspace Fury also boosted by x1.3 power
+
+- Fairy Tale
+  - King's Armor also raises user's attack by 2 on hit by a contact move
+  - Supreme overlord's attack boost is doubled
+
+- Colosseum
+  - King's Armor also raises user's attack by 2 on hit by a contact move
+  - Supreme Overlord's attack boost is doubled
 
 - Dimensional 
   - Sheer Cold, Flash Freeze (single use) transforms into Frozen Dimensional
@@ -2169,8 +2223,12 @@
 
 # TODO:
 
-- Fix Additional Effect Implementations (shield dust / bug types with moves like Ceaseless Edge)
-- Fix Giga move targeting (first turn -> autotargets to single?)
+- Bugs
+  - Fix Additional Effect Implementations (shield dust / bug types with moves like Ceaseless Edge)
+  - Fix Giga move targeting (first turn -> autotargets to single?)
+  - Make Giga moves break through protect with 1/4 power
+  - Life Orb bug (flagged)
+  - Wonder Room
 
 - Passwords:
   - Better Bugs
@@ -2182,7 +2240,7 @@
   - Escape Routes
     - from Flora (to Floria)
     - from Valarie Bad Future
-    - from Diamond / Pearl routes
+  - Disable Interceptor's Wish for Diamond/Pearl routes (or allow it to toggle between parties)
   - Starting QoL
     - PC of every obtainable pokemon up to that point
     - Bag full of every obtainable relevant item up to that point
@@ -2193,11 +2251,9 @@
  
 - Need Animations for almost all new attacks
 
-- New FE integration of almost all new mechanics
+- FE integration with most new attacks/abilities/items
 
 - Z-Status Hash updates for all new status moves
-
-- Wonder Room Fix
 
 - Smart Damage Category double-check
 

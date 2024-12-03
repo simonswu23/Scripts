@@ -214,12 +214,14 @@ class PokeBattle_Move
   def pbHitsSpecialStat?(type = @type)
     return false if @function == 0x122  # Psyshock/Psystrike
     return true if @function == 0x204   # Matrix Shot/Psycho Cut
+    return false if @move == :CANNONADE
     return pbIsSpecial?(type)
   end
 
   def pbHitsPhysicalStat?(type = @type)
     return false if @function == 0x204
     return true if @function == 0x122
+    return true if @move == :CANNONADE
     return pbIsPhysical?(type)
   end
 
@@ -1342,7 +1344,7 @@ class PokeBattle_Move
           moddedtype = :ELECTRIC
         end
       when :CRYSTALCAVERN # Crystal Cavern
-        if (pbType(attacker) == :ROCK) || (@move == :JUDGMENT || @move == :ROCKCLIMB || @move == :STRENGTH || @move == :MULTIATTACK || @move == :PRISMATICLASER)
+        if (pbType(attacker) == :ROCK) || (@move == :JUDGEMENT || @move == :ROCKCLIMB || @move == :STRENGTH || @move == :MULTIATTACK || @move == :PRISMATICLASER)
           moddedtype = @battle.field.getRoll(update_roll: caller_locations.any? {|string| string.to_s.include?("pbCalcDamage")} && !return_type)
         end
       when :INVERSE # Inverse Field
@@ -1420,7 +1422,6 @@ class PokeBattle_Move
 		baseaccuracy = fieldmove[:accmod] if fieldmove && fieldmove[:accmod]
     return true if baseaccuracy==0
     return true if attacker.ability == :NOGUARD || opponent.ability == :NOGUARD || (attacker.ability == (:FAIRYAURA) && @battle.FE == :FAIRYTALE)
-    return true if attacker.crested == :CINDERACE
     return true if opponent.effects[:Telekinesis]>0
     return true if @function==0x0D && @battle.pbWeather== :HAIL # Blizzard
     return true if @move == :MIRAGEBEAM && @battle.pbWeather== :SUNNYDAY
@@ -1724,7 +1725,9 @@ class PokeBattle_Move
         next if !party[i] || party[i].isEgg?
         faintCount += 1 if party[i].hp == 0
       end
-      basemult *= (1 + 0.1 * faintCount)
+      inc = 0.1
+      inc = 0.2 if (@battle.FE == :HOLY || @battle.FE == :FAIRYTALE || @battle.FE == :COLOSSEUM)
+      basemult *= (1 + inc * faintCount)
     end
     if attitemworks
       if $cache.items[attacker.item].checkFlag?(:typeboost) == type

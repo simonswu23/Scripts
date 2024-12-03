@@ -1966,5 +1966,11 @@ ABILHASH = {
 	:desc => "Power of attacks are increased with every fainted ally."
 },
 
+:KINGSARMOR => {
+	:ID => 345,
+	:name => "King's Armor",
+	:desc => "Harshly lowers attackers attack stat when hit by contact move."
+},
+
 
 }

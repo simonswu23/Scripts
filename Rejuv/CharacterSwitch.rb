@@ -134,14 +134,9 @@ def characterSwitch(character)
         $PokemonBag.pbStoreItem(:MEGARING,1)
         $PokemonBag.pbStoreItem(:GIGABAND,1)
         $PokemonBag.pbStoreItem(:BUTTERFREENITE,1)
-        $PokemonBag.pbStoreItem(:ASSAULTVEST,1)
-        $PokemonBag.pbStoreItem(:CHOICEBAND,1)
-        $PokemonBag.pbStoreItem(:CHOICESPECS,1)
-        $PokemonBag.pbStoreItem(:CHOICESCARF,1)
         $PokemonBag.pbStoreItem(:SITRUSBERRY,1)
         $PokemonBag.pbStoreItem(:LIFEORB,1)
         $PokemonBag.pbStoreItem(:ELEMENTALSEED,1)
-        $PokemonBag.pbStoreItem(:FOCUSSASH,1)
   
       when "Huey Realm"
         pbChangePlayer(21)
@@ -272,6 +267,12 @@ def characterSwitch(character)
         $Trainer.id = trainerinfo[0].id
         $Trainer.party = trainerinfo[2]
         $PokemonBag.pbStoreItem(:MEGARING,1)
+        $PokemonBag.pbStoreItem(:GIGABAND,1)
+        $PokemonBag.pbStoreItem(:SNORLAXITE,1)
+        $PokemonBag.pbStoreItem(:MAGICALSEED,1)
+        $PokemonBag.pbStoreItem(:SITRUSBERRY,1)
+        $PokemonBag.pbStoreItem(:FOCUSSASH,1)
+
   
       when "Melia - Inside"
         pbChangePlayer(14)
