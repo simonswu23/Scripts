@@ -3534,9 +3534,10 @@ class PokeBattle_Battler
         end
       end
       if !target.damagestate.substitute
-        if (target.ability == :CURSEDBODY && @battle.FE != :HOLY && (@battle.pbRandom(10)<3 || (target.isFainted? && @battle.FE == :HAUNTED))) || target.crested == :BEHEEYEM
-          if user.effects[:Disable]<=0 && move.pp>0 && !user.isFainted?
+        if (target.ability == :CURSEDBODY && @battle.FE != :HOLY && (@battle.pbRandom(10)<5 || (target.isFainted? && @battle.FE == :HAUNTED))) || target.crested == :BEHEEYEM
+          if user.effects[:Disable]==0 && move.pp>0 && !user.isFainted?
             user.effects[:Disable]=4
+            user.effects[:Disable]=-1 if target.crested == :BEEHEYEM
             user.effects[:DisableMove]=move.move
             @battle.pbDisplay(_INTL("{1}'s {2} disabled {3}!",target.pbThis,
                getAbilityName(target.ability),user.pbThis(true)))
@@ -4012,13 +4013,13 @@ class PokeBattle_Battler
     end
     
     if self.item == :MENTALHERB && (@effects[:Attract]>=0 || @effects[:Taunt]>0 || @effects[:Encore]>0 ||
-       @effects[:Torment] || @effects[:Disable]>0 || @effects[:HealBlock]>0)
+       @effects[:Torment] || @effects[:Disable]!=0 || @effects[:HealBlock]>0)
       @battle.pbDisplay(_INTL("{1}'s {2} cured its love problem!",pbThis,itemname)) if @effects[:Attract]>=0
-      @battle.pbDisplay(_INTL("{1} is taunted no more!",pbThis)) if @effects[:Taunt]>0
-      @battle.pbDisplay(_INTL("{1}'s encore ended!",pbThis)) if @effects[:Encore]>0
+      @battle.pbDisplay(_INTL("{1} is taunted no more!",pbThis)) if @effects[:Taunt]!=0
+      @battle.pbDisplay(_INTL("{1}'s encore ended!",pbThis)) if @effects[:Encore]!=0
       @battle.pbDisplay(_INTL("{1} is tormented no more!",pbThis)) if @effects[:Torment]
-      @battle.pbDisplay(_INTL("{1} is disabled no more!",pbThis)) if @effects[:Disable]>0
-      @battle.pbDisplay(_INTL("{1}'s heal block ended!",pbThis)) if @effects[:HealBlock]>0
+      @battle.pbDisplay(_INTL("{1} is disabled no more!",pbThis)) if @effects[:Disable]!=0
+      @battle.pbDisplay(_INTL("{1}'s heal block ended!",pbThis)) if @effects[:HealBlock]!=0
       @effects[:Attract]=-1
       @effects[:Taunt]=0
       @effects[:Encore]=0
@@ -5013,7 +5014,7 @@ class PokeBattle_Battler
       pbDisplayPaused(_INTL("{1} can't use {2} twice in a row!",thispkmn.pbThis,basemove.name))
       return false
     end
-    if pbOpposing1.effects[:Imprison] && !@simplemove && !choice[2].zmove
+    if (pbOpposing1.effects[:Imprison]) && !@simplemove && !choice[2].zmove
       if basemove.move==pbOpposing1.moves[0].move || basemove.move==pbOpposing1.moves[1].move || basemove.move==pbOpposing1.moves[2].move || basemove.move==pbOpposing1.moves[3].move
         @battle.pbDisplay(_INTL("{1} can't use the sealed {2}!",
            pbThis,basemove.name))
@@ -5021,14 +5022,14 @@ class PokeBattle_Battler
         return false
       end
     end
-    if pbOpposing2.effects[:Imprison] && !@simplemove && !choice[2].zmove
+    if (pbOpposing2.effects[:Imprison]) && !@simplemove && !choice[2].zmove
       if basemove.move==pbOpposing2.moves[0].move || basemove.move==pbOpposing2.moves[1].move || basemove.move==pbOpposing2.moves[2].move || basemove.move==pbOpposing2.moves[3].move
         @battle.pbDisplay(_INTL("{1} can't use the sealed {2}!", pbThis,basemove.name))
         PBDebug.log("[#{pbOpposing2.pbThis} has: #{pbOpposing2.moves[0].move}, #{pbOpposing2.moves[1].move},#{pbOpposing2.moves[2].move} #{pbOpposing2.moves[3].move}]") if $INTERNAL
         return false
       end
     end
-    if @effects[:Disable]>0 && basemove.move==@effects[:DisableMove] && !choice[2].zmove
+    if @effects[:Disable]!=0 && basemove.move==@effects[:DisableMove] && !choice[2].zmove
       @battle.pbDisplayPaused(_INTL("{1}'s {2} is disabled!",pbThis,basemove.name))
       return false
     end

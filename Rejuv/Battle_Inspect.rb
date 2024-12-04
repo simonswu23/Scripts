@@ -334,7 +334,8 @@ def pbShowBattleStats(pkmn)
   report.push(_INTL("Telekinesis: {1} turns",pkmn.effects[:Telekinesis])) if pkmn.effects[:Telekinesis]!=0
   report.push(_INTL("Heal Block: {1} turns",pkmn.effects[:HealBlock])) if pkmn.effects[:HealBlock]!=0
   report.push(_INTL("Embargo: {1} turns",pkmn.effects[:Embargo])) if pkmn.effects[:Embargo]!=0
-  report.push(_INTL("Disable: {1} turns",pkmn.effects[:Disable])) if pkmn.effects[:Disable]!=0
+  report.push(_INTL("Disable: {1} turns",pkmn.effects[:Disable])) if pkmn.effects[:Disable]>0
+  report.push(_INTL("Disable: Permanent",pkmn.effects[:Disable])) if pkmn.effects[:Disable]<0
   report.push(_INTL("Encore: {1} turns",pkmn.effects[:Encore])) if pkmn.effects[:Encore]!=0
   report.push(_INTL("Taunt: {1} turns",pkmn.effects[:Taunt])) if pkmn.effects[:Taunt]!=0
   report.push(_INTL("Infatuated with {1}",@battle.battlers[pkmn.effects[:Attract]].name)) if pkmn.effects[:Attract]>=0

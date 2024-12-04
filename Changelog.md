@@ -1238,6 +1238,9 @@
 - Dedenne Crest
   - Scales Crobat's attack and special attack based on its speed 
 
+- Beeheyem Crest
+  - permanently disables the move
+
 ### New Items
 - Poison Potion
   - applies (regular) poison to the target
@@ -1378,6 +1381,9 @@
 
 - Crobat Crest
   - Scales Crobat's attack and special attack based on its speed (Dedenne copy)
+
+- Jellicent Crest
+  - Imprisons foes, foes that have moves imprisoned by Jellicent are trapped. Foes who can't select moves have their HP drained each turn (1/16th per unselectable move).
  
 ## Attacks
 

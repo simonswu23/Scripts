@@ -33,28 +33,22 @@ TEAMARRAY = [{
 	},
 },
 =end
-:trainereffect => {
-	:effectmode => :Party,
-	:buffactivation => :Always,
-	0 => {
-		:instantgiga => true,
-		# :fieldChange => [:COLOSSEUM,"SAKI: Wait shit, this isn't the right one!",0],
-		# :message => "SAKI: OH SHIT TIME TO ENABLE THE CHEATS",
-		# :dummy => [:true,:MAGICCOAT," acquired Wonder Guard!"],
-		# :pokemonEffect => {
-		# 	:Sturdy => [true, :ENDURE, "{2} acquired Sturdy!"],
-		# },
-	},
-	1 => {
-		:instantgiga => true,
-	}
-},
+# :trainereffect => {
+# 	:effectmode => :Party,
+# 	:buffactivation => :Always,
+# 	0 => {
+
+# 	},
+# 	1 => {
+
+# 	}
+# },
 :mons => [
 	{
 	:species => :LAPRAS,
 	:level => 40,
 	:item => :LIGHTCLAY,
-	:moves => [:FREEZEDRY,:REST,:SURF],
+	:moves => [:PURIFY,:SURF,:HEX,:RAINDANCE],
 	:ability => :HYDRATION,
 	:gender => "M",
 	:nature => :MODEST,

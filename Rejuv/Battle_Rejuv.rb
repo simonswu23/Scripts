@@ -96,6 +96,9 @@
         pbCommonAnimation("Poison",@battlers[index],nil)
         pbDisplay(_INTL("{1} was poisoned by its {2}!",@battlers[index].pbThis,getItemName(@battlers[index].item)))
       end
+    when :JELLICENT
+      @battlers[index].effects[:Imprison] = true
+      @battle.pbDisplay(_INTL("{1} is imprisoning its foes!",@battlers[index].pbThis))
     when :LUMINEON
       pbAnimation(:TAILWIND,@battlers[index],nil)
       @battlers[index].pbOwnSide.effects[:Tailwind]+=4

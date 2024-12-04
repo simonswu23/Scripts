@@ -10481,7 +10481,37 @@ ITEMHASH = {
 :CROCREST => {
 	:ID => 2039,
 	:name => "Crobat Crest",
-	:desc => "Attack and Special attack use the user's speed stat",
+	:desc => "Attack and Special attack use the user's speed stat.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:JELLICREST => {
+	:ID => 2040,
+	:name => "Jellicent Crest",
+	:desc => "Always has imprisoned effect, drains hp from target each turn.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:SPINCREST => {
+	:ID => 2042,
+	:name => "Spinda Crest",
+	:desc => "While active, speed order is inverted.",
+	:price => 0,
+	:crest => true,
+	:noUseInBattle => true,
+	:noUse => true,
+},
+
+:TROPCREST => {
+	:ID => 2043,
+	:name => "Tropius Crest",
+	:desc => "Has the effect of the last five berries that Tropius has eaten. Berries are eaten quickly.",
 	:price => 0,
 	:crest => true,
 	:noUseInBattle => true,

@@ -5024,7 +5024,7 @@ class PokeBattle_AI
 	end
 
 	def disablecode
-		return 0 if @opponent.effects[:Disable]>0 || ((@opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker))
+		return 0 if @opponent.effects[:Disable]!=0 || ((@opponent.ability == :AROMAVEIL || @opponent.pbPartner.ability == :AROMAVEIL) && !moldBreakerCheck(@attacker))
 		if @opponent.lastMoveUsed.is_a?(Symbol)
 			oldmove = PokeBattle_Move.pbFromPBMove(@battle,PBMove.new(@opponent.lastMoveUsed.intern),@opponent)
 		else

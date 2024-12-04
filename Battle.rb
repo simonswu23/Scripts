@@ -1266,7 +1266,7 @@ class PokeBattle_Battle
         end
         return false
     end
-    if opp1.effects[:Imprison] && !basemove.zmove
+    if (opp1.effects[:Imprison]) && !basemove.zmove
       if basemove.move==opp1.moves[0].move || basemove.move==opp1.moves[1].move || basemove.move==opp1.moves[2].move || basemove.move==opp1.moves[3].move
         if showMessages
           pbDisplayPaused(_INTL("{1} can't use the sealed {2}!",thispkmn.pbThis,basemove.name))
@@ -1274,7 +1274,7 @@ class PokeBattle_Battle
         return false
       end
     end
-    if opp2.effects[:Imprison] && !basemove.zmove
+    if (opp2.effects[:Imprison]) && !basemove.zmove
       if basemove.move==opp2.moves[0].move || basemove.move==opp2.moves[1].move || basemove.move==opp2.moves[2].move || basemove.move==opp2.moves[3].move
         if showMessages
           pbDisplayPaused(_INTL("{1} can't use the sealed {2}!",thispkmn.pbThis,basemove.name))
@@ -1671,6 +1671,7 @@ class PokeBattle_Battle
       pbDisplayPaused(_INTL("{1} can't be switched out due to Embargo!",thispkmn.pbThis)) if showMessages
       return false
     end
+    crest = false
     if thispkmn.hasType?(:STEEL)
       opp=opp1 if opp1.ability == :MAGNETPULL
       opp=opp2 if opp2.ability == :MAGNETPULL
@@ -1694,14 +1695,26 @@ class PokeBattle_Battle
     if (thispkmn.status == :SLEEP || thispkmn.ability == :COMATOSE)
       opp=opp1 if opp1.crested == :DARKRAI && opp1.ability == :BADDREAMS
       opp=opp2 if opp2.crested == :DARKRAI && opp2.ability == :BADDREAMS
+      crest = true
     end
     if (thispkmn.stages[PBStats::EVASION] < 0)
       opp=opp1 if opp1.crested == :ALCREMIE
       opp=opp2 if opp2.crested == :ALCREMIE
+      crest = true
+    end
+    for move in thispkmn.moves
+      if opp1.crested == :JELLICENT
+        opp=opp1 if opp1.moves.include?(:move)
+        crest = true
+      end
+      if opp2.crested == :JELLICENT
+        opp=opp2 if opp2.moves.include?(:move)
+        crest = true
+      end
     end
     if opp
       abilityname=getAbilityName(opp.ability)
-      abilityname= "Crest" if opp1.crested == :DARKRAI || opp2.crested == :DARKRAI || opp1.crested == :ALCREMIE || opp2.crested == :ALCRMIE 
+      abilityname= "Crest" if crest 
       pbDisplayPaused(_INTL("{1}'s {2} prevents switching!",opp.pbThis,abilityname)) if showMessages
       pbDisplayPaused(_INTL("{1} prevents escaping with {2}!", opp.pbThis, abilityname)) if (showMessages || running) && pkmnidxTo == -1
       return false
@@ -5677,6 +5690,7 @@ class PokeBattle_Battle
         i.pbContinueStatus
         i.pbReduceHP((mult * i.totalhp/16.0).floor)
       end
+
       # Shiinotic Crest
       if i.crested == :SHIINOTIC
         for j in priority
@@ -5691,22 +5705,12 @@ class PokeBattle_Battle
           j.pbReduceHP(hploss,true)
           if j.ability == :LIQUIDOOZE
             hploss= hploss * 2 if @field.effect == :MURKWATERSURFACE || @field.effect == :CORRUPTED || @field.effect == :WASTELAND
-            if Rejuv && @battle.FE == :GRASSY
-              hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
-            else
-              hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
-            end
             hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
             i.pbReduceHP(hploss,true)
             pbDisplay(_INTL("{1} sucked up the liquid ooze!",i.pbThis))
           else
             if i.effects[:HealBlock]==0
-              if Rejuv && @battle.FE == :GRASSY
-                hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
-              else
-                hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
-              end
-              hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
+              hploss=(hploss*1.3).floor
               i.pbRecoverHP(hploss,true)
             end
             pbDisplay(_INTL("{1}'s health was sapped by {2}'s Crest!",i.pbThis,i.pbThis))
@@ -5719,6 +5723,78 @@ class PokeBattle_Battle
           end
         end
       end
+      
+      # Jellicent Crest
+      if i.crested == :JELLICENT
+        for j in priority
+          next if j == i
+          next if j.isFainted?
+          next if !i.pbIsOpposing?(j.index)  
+          
+          # check for any restricted moves
+          resmoves = []
+          if (j.effects[:Disable] != 0) 
+            resmoves.append(j.effects[:DisableMove]) if !resmoves.include?(j.effects[:DisableMove])
+          end
+          if (j.effects[:Torment]) 
+            resmoves.append(j.lastRegularMoveUsed) if !resmoves.include?(j.lastRegularMoveUsed)
+          end
+
+          # self imprison check
+          if (i.effects[:Imprison])
+            for oppmove in i.moves
+              for currmove in j.moves
+                resmoves.append(currmove.move) if currmove.move == oppmove.move && !resmoves.include?(currmove.move)
+              end
+            end 
+          end
+
+          # partner imprison check
+          if (i.pbPartner.effects[:Imprison])
+            for oppmove in i.pbPartner.moves
+              for currmove in j.moves
+                resmoves.append(currmove.move) if currmove.move == oppmove.move && !resmoves.include?(currmove.move)
+              end
+            end 
+          end
+          
+          for currmove in j.moves
+            basemove = currmove
+            if (j.effects[:Encore] != 0 && basemove != j.effects[:EncoreMove]) ||
+               (j.effects[:ChoiceBand] && basemove != j.effects[:ChoiceBand]) ||
+               (j.effects[:Taunt] != 0 || (i.pbPartner.ability == :GOLDENVY && !i.pbPartner.moldbroken) && currmove.category == :status) ||
+               (j.effects[:HealBlock] != 0 && currmove.isHealingMove?)
+               resmoves.append(basemove) if !resmoves.include?(basemove)
+            end
+          end
+
+          mult = resmoves.size()
+          next if mult == 0
+          hploss=(j.totalhp/16.0 * mult).floor
+          hploss= hploss * 2 if @field.effect == :WASTELAND
+          pbCommonAnimation("LeechSeed",i,j)
+          j.pbReduceHP(hploss,true)
+
+          if j.ability == :LIQUIDOOZE
+            hploss= hploss * 2 if @field.effect == :MURKWATERSURFACE || @field.effect == :CORRUPTED || @field.effect == :WASTELAND
+            i.pbReduceHP(hploss,true)
+            pbDisplay(_INTL("{1} sucked up the liquid ooze!",i.pbThis))
+          else
+            if i.effects[:HealBlock]==0
+              hploss=(hploss*1.3).floor
+              i.pbRecoverHP(hploss,true)
+            end
+            pbDisplay(_INTL("{1}'s health was sapped by {2}'s Crest!",i.pbThis,i.pbThis))
+          end
+          if j.isFainted?
+            return if !j.pbFaint
+          end
+          if i.isFainted?
+            return if !i.pbFaint
+          end
+        end
+      end
+
       # Runerigus and Cofagrigus Crest
       if i.crested == :RUNERIGUS || i.crested == :COFAGRIGUS
         for j in priority
@@ -5726,32 +5802,23 @@ class PokeBattle_Battle
           next if j.isFainted?
           next if !i.pbIsOpposing?(j.index)
           next if j.effects[:MeanLook]<0
+
           hploss=(j.totalhp/16.0).floor
           hploss= hploss * 2 if @field.effect == :WASTELAND
           pbCommonAnimation("Curse",target=j)
           j.pbReduceHP(hploss,true)
+
           if j.ability == :LIQUIDOOZE
             hploss= hploss * 2 if @field.effect == :MURKWATERSURFACE || @field.effect == :CORRUPTED || @field.effect == :WASTELAND
-            if Rejuv && @battle.FE == :GRASSY
-              hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
-            else
-              hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
-            end
-            hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
             i.pbReduceHP(hploss,true)
             pbDisplay(_INTL("{1} sucked up the liquid ooze!",i.pbThis))
           else
             if i.effects[:HealBlock]==0
-              if Rejuv && @battle.FE == :GRASSY
-                hploss=(hploss*1.6).floor if i.hasWorkingItem(:BIGROOT)
-              else
-                hploss=(hploss*1.3).floor if i.hasWorkingItem(:BIGROOT)
-              end
-              hploss=(hploss*1.3).floor if i.crested == :SHIINOTIC
               i.pbRecoverHP(hploss,true)
             end
             pbDisplay(_INTL("{1}'s health was drained by {2}'s Crest!",i.pbThis,i.pbThis))
           end
+
           if j.isFainted?
             return if !j.pbFaint
           end
