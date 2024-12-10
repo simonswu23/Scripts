@@ -280,6 +280,7 @@ class PokeBattle_Battle
   attr_accessor(:eruption)        # Eruption variable for Volcano Top field
   attr_accessor(:storm9)          # Controll attribute for Tempest being active (for shutoff check)
   attr_accessor(:startSkillUsed)
+  attr_accessor(:SWuMod)
   MAXPARTYSIZE = 6
   MAXPARTYSIZE2 = 12
 
@@ -320,6 +321,7 @@ class PokeBattle_Battle
     @doublebattle    = false
     @cantescape      = false
     @shiftStyle      = true
+    @SWuMod          = true
     @battlescene     = true
     #### YUMIL - 5 - NPC REACTION MOD - START
     @recorded        = recorded
@@ -1785,7 +1787,7 @@ class PokeBattle_Battle
           newenemy=pbSwitchInBetween(index,false,false)
           newname = pbSwitchInName(index,newenemy) #Illusion
           opponent=pbGetOwner(index)
-          if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent && @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) && @battlers[0].effects[:Outrage]==0
+          if !@doublebattle && firstbattlerhp>0 && @shiftStyle && @opponent && @internalbattle && pbCanChooseNonActive?(0) && pbIsOpposing?(index) && @battlers[0].effects[:Outrage]==0 && !@SWuMod
             pbDisplayPaused(_INTL("{1} is about to send in {2}.",opponent.fullname,newname)) 
             if pbDisplayConfirm(_INTL("Will {1} change Pokémon?",self.pbPlayer.name))
               newpoke=pbSwitchPlayer(0,true,true)

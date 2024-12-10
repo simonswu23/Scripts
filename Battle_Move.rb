@@ -2620,7 +2620,7 @@ class PokeBattle_Move
       finalmult=(finalmult*multiplier)
     end
 
-    if @zmove || @giga
+    if (@zmove || @giga)
       if (opponent.pbOwnSide.effects[:MatBlock] || opponent.effects[:Protect] == :Protect || 
         opponent.effects[:KingsShield] || opponent.effects[:Obstruct] ||
         opponent.effects[:SpikyShield] || opponent.effects[:BanefulBunker] || opponent.effects[:Parry] ||

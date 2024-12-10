@@ -69,6 +69,8 @@ def addPassword(entrytext)
   end
   
   def checkPasswordActivation(entrytext)
+    Kernel.pbMessage(_INTL('Checking for password {1}...', entrytext))
+    Kernel.pbMessage(_INTL('found {1}', $game_switches[PASSWORD_HASH[entrytext]]))
     if PASSWORD_HASH[entrytext]
       return $game_switches[PASSWORD_HASH[entrytext]]
     end
@@ -226,10 +228,79 @@ def addPassword(entrytext)
     end
     $Unidata[:knownPasswords]=pws
   end
+
+  def pbSWuModItems()
+    # Battle Items
+    for plate in PBStuff::PLATEITEMS
+      $PokemonBag.pbStoreItem(plate,1)
+    end
+    $PokemonBag.pbStoreItem(:SITRUSBERRY,999)
+    $PokemonBag.pbStoreItem(:FOCUSSASH,1)
+    $PokemonBag.pbStoreItem(:LIGHTCLAY,1)
+    $PokemonBag.pbStoreItem(:HEATROCK,1)
+    $PokemonBag.pbStoreItem(:DAMPROCK,1)
+    $PokemonBag.pbStoreItem(:ICYROCK,1)
+    $PokemonBag.pbStoreItem(:SMOOTHROCK,1)
+
+    # QoL Items
+    for mint in PBStuff::MINTS
+      $PokemonBag.pbStoreItem(mint,999)
+    end
+    $PokemonBag.pbStoreItem(:MAXREVIVE,999)
+    $PokemonBag.pbStoreItem(:EXPCANDYXL,999)
+    $PokemonBag.pbStoreItem(:EXPCANDYL,999)
+    $PokemonBag.pbStoreItem(:EXPCANDYM,999)
+    $PokemonBag.pbStoreItem(:EXPCANDYS,999)
+    $PokemonBag.pbStoreItem(:HEARTSCALE,999)
+    $PokemonBag.pbStoreItem(:MASTERBALL,999)
+    $PokemonBag.pbStoreItem(:FULLRESTORE,999)
+    for shard in PBStuff::SHARDS
+      $PokemonBag.pbStoreItem(shard,999)
+    end
+    for stone in PBStuff::EVOSTONES
+      $PokemonBag.pbStoreItem(stone,5)
+    end
+    $PokemonBag.pbStoreItem(:POMEGBERRY,999)
+    $PokemonBag.pbStoreItem(:KELPSYBERRY,999)
+    $PokemonBag.pbStoreItem(:QUALOTBERRY,999)
+    $PokemonBag.pbStoreItem(:HONDEWBERRY,999)
+    $PokemonBag.pbStoreItem(:GREPABERRY,999)
+    $PokemonBag.pbStoreItem(:TAMATOBERRY,999)
+    $PokemonBag.pbStoreItem(:EXPALL,1)
+    $game_switches[:Exp_All_On] = true
+
+    # Other
+    items_to_give = {
+      :GOLDENHAMMER => 1,
+      :GOLDENAXE => 1,
+      :GOLDENLANTERN => 1,
+      :GOLDENSURFBOARD=> 1,
+      :GOLDENCLAWS => 1,
+      :GOLDENDRIFTBOARD => 1,
+      :GOLDENGAUNTLET => 1,
+      :GOLDENWINGS => 1,
+      :GOLDENSCUBAGEAR => 1,
+      :GOLDENJETPACK => 1,
+      :HPCARD => 1,
+      :ATKCARD => 1,
+      :DEFCARD => 1,
+      :SPATKCARD => 1,
+      :SPDEFCARD => 1,
+      :SPEEDCARD => 1,
+      :MACHOBRACE => 1,
+    }
+    items_to_give.each_pair {|item,quantity|
+      $PokemonBag.pbStoreItem(item,quantity)
+    }
+    $PokemonBag.pbStoreItem(:REMOTEPC,1)
+    Kernel.pbMessage('\PN received a medley of items.')
+    $PokemonBag.pbStoreItem(:VANILLUXECREST,1)
+    Kernel.pbMessage('\PN received a Vanilluxe Crest.')
+  end
   
   def pbTogglePassword(password, isGameStart=false)
     password_string=password.downcase()
-    if !isGameStart && ['fullivs','easyhms','nohms','hmitems','notmxneeded','freemegaz','shinycharm','earlyshiny','freeexpall','freeremotepc','hello eizen.','mintyfresh','mintpack','powerpack',"icecream"].include?(password_string) && checkPasswordActivation(password_string)
+    if !isGameStart && ['fullivs','easyhms','nohms','hmitems','notmxneeded','freemegaz','shinycharm','earlyshiny','freeexpall','freeremotepc','hello eizen.','mintyfresh','mintpack','powerpack','icecream','starteritems','swumod'].include?(password_string) && checkPasswordActivation(password_string)
       Kernel.pbMessage(_INTL('This password cannot be disabled anymore.'))
       return false
     end
@@ -268,33 +339,7 @@ def addPassword(entrytext)
     end
     Kernel.pbMessage('Password has been enabled.')
     if ['mintyfresh', 'mintpack'].include?(password_string)
-      items_to_give = {
-        :SERIOUSMINT => 5,
-        :LONELYMINT => 5,
-        :ADAMANTMINT => 5,
-        :NAUGHTYMINT => 5,
-        :BRAVEMINT => 5,
-        :BOLDMINT => 5,
-        :IMPISHMINT => 5,
-        :LAXMINT => 5,
-        :RELAXEDMINT => 5,
-        :MODESTMINT => 5,
-        :MILDMINT => 5, 
-        :RASHMINT => 5,
-        :QUIETMINT => 5,
-        :CALMMINT => 5,
-        :GENTLEMINT => 5,
-        :CAREFULMINT => 5,
-        :SASSYMINT => 5,
-        :TIMIDMINT => 5,
-        :HASTYMINT => 5,
-        :JOLLYMINT => 5,
-        :NAIVEMINT => 5
-      }
-      items_to_give.each_pair {|item,quantity|
-        $PokemonBag.pbStoreItem(item,quantity)
-      }
-      Kernel.pbMessage('\PN received a package of mints.')
+      pbSWuModItems()
     elsif ['freeexpall'].include?(password_string)
       $PokemonBag.pbStoreItem(:EXPALL,1)
       $game_switches[:Exp_All_On] = true
@@ -339,9 +384,6 @@ def addPassword(entrytext)
         $PokemonBag.pbStoreItem(item,quantity)
       }
       Kernel.pbMessage('\PN received a package of EV-training gear.')
-    elsif ['icecream']
-      # @SWu figuring out game switches here
-      $game_switches[2000] = true
     end
     #pbMonoRandEvents
     return true

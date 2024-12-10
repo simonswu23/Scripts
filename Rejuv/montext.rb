@@ -29081,8 +29081,8 @@ MONHASH = {
 	},
 
 	"Mega Form" => {
-		:BaseStats => [108, 170, 115, 120, 95, 92],
-		:Abilities => [:SANDRUSH],
+		:BaseStats => [108, 170, 115, 120, 85, 102],
+		:Abilities => [:MOLDBREAKER],
 		:BaseEXP => 315,
 		:Weight => 950,
 	},
@@ -54057,7 +54057,7 @@ MONHASH = {
 		:Type1 => :GROUND,
 		:Type2 => :FLYING,
 		:BaseStats => [144, 117, 145, 55, 90, 31],
-		:Abilities => [:SANDVEIL],
+		:Abilities => [:DESERTNOVA],
 		:Height => 220,
 		:Weight => 2456,
 	},

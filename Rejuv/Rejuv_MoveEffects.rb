@@ -1678,4 +1678,53 @@ class PokeBattle_Move_1101 < PokeBattle_Move
   end
 end
 
+################################################################################
+# Meltdown
+################################################################################
+class PokeBattle_Move_1102 < PokeBattle_Move
+
+  def pbOnStartUse(attacker)
+    bearer=@battle.pbCheckGlobalAbility(:DAMP)
+    if (bearer && !(bearer.moldbroken)) && !@move == :STEELBEAM 
+      @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} from using {4}!",
+         bearer.pbThis,getAbilityName(bearer.ability),attacker.pbThis(true),@name))
+      return -1
+    end
+    @loopcount=0
+    @totaldamage=0
+    return true
+  end
+
+  def pbEffect(attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    ret=super(attacker,opponent,hitnum,alltargets,showanimation)
+    @loopcount+=1
+    @totaldamage+=ret    
+    if @totaldamage>0 && (!attacker.midwayThroughMove || @loopcount==alltargets.length) &&
+      attacker.ability != :MAGICGUARD && !(attacker.ability == :WONDERGUARD && @battle.FE == :COLOSSEUM) && !attacker.effects[:MagicGuard]
+     if (@battle.FE == :FACTORY || @battle.FE == :CITY)
+       attacker.pbReduceHP((attacker.totalhp)/8).floor
+     else
+       attacker.pbReduceHP((attacker.totalhp)/4).floor
+     end
+   end
+   return ret
+  end
+
+  def pbAdditionalEffect(attacker,opponent)
+    opponent.pbPoison(attacker,true)
+    @battle.pbDisplay(_INTL("{1} was badly poisoned!",opponent.pbThis))
+    return true
+  end
+
+  def pbShowAnimation(id,attacker,opponent,hitnum=0,alltargets=nil,showanimation=true)
+    return if !showanimation
+    if id == :MELTDOWN
+      @battle.pbAnimation(:EXPLOSION,attacker,opponent,hitnum)
+    else
+      @battle.pbAnimation(id,attacker,opponent,hitnum)
+    end
+  end
+
+end
+
 

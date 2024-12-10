@@ -403,13 +403,15 @@ PickupRare=[
     "hello eizen." => 1763,
 
     # SWu
-    "icecream" => 2000,
-    "betterbugs" => :Better_Bugs,
+    # "icecream" => :Ice_Cream,
+    # "betterbugs" => :Better_Bugs,
+    # "starteritems" => :Starter_Items,
  }
 
  BULK_PASSWORDS = {
     "casspack" => ["noitems", "fullivs", "easyhms", "norolls"], "goodtaste" => ["noitems", "fullivs", "easyhms", "norolls"],
     "easymode" => ["fullivs", "moneybags", "litemode", "stopitems"],
     "hardmode" => ["noitems", "nopenny", "fullevs", "emptyivs"],
-    "qol"      => ["easyhms", "nopoisondam", "freeexpall","earlyincu", "pinata","unrealtime","nopoisondam"]
+    "qol"      => ["easyhms", "nopoisondam", "freeexpall","earlyincu", "pinata","unrealtime","nopoisondam"],
+    "swumod"   => ["easyhms", "fullivs", "stopitems", "noitems", "freeexpall","pinata","unrealtime","remotepc","earlyincus","mintyfresh","terajuma"]
   }

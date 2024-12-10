@@ -255,7 +255,7 @@
     - BP: 250
     - acc: 0
     - target: all other pokemon
-    - effect: 100% chance to badly poison
+    - effect: 100% chance to badly poison (overrides everything), 25% recoil
 
 - Rillaboom
   - Typing: Grass/Normal
@@ -374,7 +374,7 @@
 
 - Sandaconda
   - Typing: Ground/Flying
-  - Ability: Sand Veil
+  - Ability: Desert Nova
   - Stats: 144, 117, 145, 55, 90, 31
   - Giga Move: Desert Storm
     - basemove: Hurricane
@@ -867,6 +867,10 @@
   - Aevian: both learn Purify at level 1
   - Aevian Milotic: learns Envenom at level 79
 
+- Garchomp
+  - Mega BST: 108, 170, 115, 120, 85, 102
+  - Mega ability: Mold Breaker
+
 ### Placeolder Forms
 - Iron Bundle
 - Sinistcha
@@ -1288,7 +1292,6 @@
   - hail lasts indefinitely
   - extra x1.5 defense in the hail
   - ice attacks x1.5 power in hail
-  - immune to fire in hail
 
 - Sandaconda Crest
   - sand lasts indefinitely
@@ -2209,13 +2212,13 @@
 - Adam
 - Ryland
 - Melia (League Administration)
-
 - Angie + Cera (Diamond Route)
+- Nim (Pearl Route)
 - Madelis (Pearl Route)
 - Cassandra (Pearl Route)
 - Hazuki (Nightmare)
 - Geara (Axis Factory)
-- *Saki (Gym)
+- Saki (Gym)
 - Amber x Venam at Teila (13.5)
 - Talon (Rooftop)
 - Xara and Jean (Spirits)
