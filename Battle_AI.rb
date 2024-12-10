@@ -8229,7 +8229,7 @@ class PokeBattle_AI
 		PBDebug.log(sprintf("Beginning AI Item use check.\n")) if $INTERNAL
 		for i in items
 			next @mondata.itemscore[i] = -100000 if $cache.items[i].checkFlag?(:noUseInBattle)
-			next @mondata.itemscore[i] = -8000 if $game_switches[:Stop_Items_Password] || $game_switches[:No_Items_Password] 
+			next @mondata.itemscore[i] = -8000 if $game_switches[:Stop_Items_Password] || $game_switches[:No_Items_Password] || $game_switches[:swumod]
 			next if @mondata.itemscore.key?(i)
 			itemscore=100
 			if PBStuff::HPITEMS.include?(i)

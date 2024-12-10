@@ -1032,6 +1032,45 @@ class PokemonScreen
   end  
 end
 
+def Kernel.pbIntroItems()
+  $game_switches[:swumod] = true
+  # Adding items:
+  for plate in PBStuff::PLATEITEMS
+    $PokemonBag.pbStoreItem(plate,1)
+  end
+  $PokemonBag.pbStoreItem(:SITRUSBERRY,999)
+  $PokemonBag.pbStoreItem(:FOCUSSASH,1)
+  $PokemonBag.pbStoreItem(:LIGHTCLAY,1)
+  $PokemonBag.pbStoreItem(:HEATROCK,1)
+  $PokemonBag.pbStoreItem(:DAMPROCK,1)
+  $PokemonBag.pbStoreItem(:ICYROCK,1)
+  $PokemonBag.pbStoreItem(:SMOOTHROCK,1)
+  # QoL Items
+  for mint in PBStuff::MINTS
+    $PokemonBag.pbStoreItem(mint,999)
+  end
+  $PokemonBag.pbStoreItem(:MAXREVIVE,999)
+  $PokemonBag.pbStoreItem(:EXPCANDYXL,999)
+  $PokemonBag.pbStoreItem(:EXPCANDYL,999)
+  $PokemonBag.pbStoreItem(:EXPCANDYM,999)
+  $PokemonBag.pbStoreItem(:EXPCANDYS,999)
+  $PokemonBag.pbStoreItem(:HEARTSCALE,999)
+  $PokemonBag.pbStoreItem(:MASTERBALL,999)
+  $PokemonBag.pbStoreItem(:FULLRESTORE,999)
+  for shard in PBStuff::SHARDS
+    $PokemonBag.pbStoreItem(shard,999)
+  end
+  for stone in PBStuff::EVOSTONES
+    $PokemonBag.pbStoreItem(stone,5)
+  end
+  $PokemonBag.pbStoreItem(:POMEGBERRY,999)
+  $PokemonBag.pbStoreItem(:KELPSYBERRY,999)
+  $PokemonBag.pbStoreItem(:QUALOTBERRY,999)
+  $PokemonBag.pbStoreItem(:HONDEWBERRY,999)
+  $PokemonBag.pbStoreItem(:GREPABERRY,999)
+  $PokemonBag.pbStoreItem(:TAMATOBERRY,999)
+end
+
 def incrementBlackPrisms(obtainmentmenthod=nil,qty=1)
   # 0 = receive
   # 1 = caught

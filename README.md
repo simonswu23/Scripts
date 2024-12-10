@@ -6,20 +6,10 @@ Difficulty Mod for Pokemon Rejuvenation v13.5.6
 - To install this mod, replace the "Scripts" folder in the base game with this Scripts folder in the same directory
 - Warning: save data from this mod will not be backwards compatible with the base version of Rejuvenation. We ***strongly*** recommend you download a new copy of Rejuvenation if you want to use this mod. It's always a good idea to backup your save folder and/or an old copy of your scripts folder before installing this mod.
 - Please choose *Classic Mode*, **not** *Story Mode*  
-- Upon loading in, please use the following passwords (mandatory):
-  - stopitems
-  - noitems
-  - freeremotepc
-- Some useful QoL passwords
-  - Terajuma (note that battles are only changed starting in Terajuma and after)
-  - fullivs
-  - mintyfresh
-  - powerpack
-  - pinata
-  - icecream (for an optional sweet treat in Oceana Pier)
-  - unrealtime
-  - freeexpall
-  - easyhms
+- Upon loading in, please use the following passwords (*strongly* recommended):
+  - swumod
+- Optionally:
+  - stayfrosty (for an optional sweet treat in Oceana Pier)
 - Once installed, you will need to "Compile All Data" using debug mode (note that this will not work in the intro sequence)
 
 # Features
@@ -44,5 +34,5 @@ Difficulty Mod for Pokemon Rejuvenation v13.5.6
     - frostbite implemented
     - and much more!
   - new passwords
-    - icecream: treat yourself to some sweet and frosty updates!
+    - stayfrosty: treat yourself to some sweet and frosty updates!
   - see Changelog.md for all updates

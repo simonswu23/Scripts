@@ -200,6 +200,11 @@ Switches = {
     FieldFrenzy:                    1692,
     NoFlyZone:                      1705,
     No_Items_Password:              1766,
+
+    # SWu
+    swumod:                         9999,
+    Ice_Cream:                      9998,
+    Starter_Items:                  9997,
 }
 
 Variables = {
@@ -403,9 +408,9 @@ PickupRare=[
     "hello eizen." => 1763,
 
     # SWu
-    # "icecream" => :Ice_Cream,
-    # "betterbugs" => :Better_Bugs,
-    # "starteritems" => :Starter_Items,
+    "stayfrosty" => :Ice_Cream,
+    "starteritems" => :Starter_Items,
+    # better bugs
  }
 
  BULK_PASSWORDS = {
@@ -413,5 +418,5 @@ PickupRare=[
     "easymode" => ["fullivs", "moneybags", "litemode", "stopitems"],
     "hardmode" => ["noitems", "nopenny", "fullevs", "emptyivs"],
     "qol"      => ["easyhms", "nopoisondam", "freeexpall","earlyincu", "pinata","unrealtime","nopoisondam"],
-    "swumod"   => ["easyhms", "fullivs", "stopitems", "noitems", "freeexpall","pinata","unrealtime","remotepc","earlyincus","mintyfresh","terajuma"]
+    "swumod"   => ["easyhms", "fullivs", "noitems", "freeexpall","pinata","unrealtime","remotepc","earlyincus","terajuma"]
   }

@@ -2226,9 +2226,7 @@
 - Ren x Venam (Inevitable Grief)
   
 # Passwords
-  - icecream
-    - grants free Vanillish with Sleigh Ride in Oceana
-    - grants free Vanilluxe Crest in Oceana
+  - stayfrosty
 
 # TODO:
 
