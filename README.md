@@ -1,5 +1,8 @@
 Difficulty Mod for Pokemon Rejuvenation v13.5.6
 
+# NOTE: 
+Development for this iteration of the mod will be discontinued. SWuMod will be remade with gen 9 assets, thank you for your support!
+
 # Instructions
 - Please make sure your version is compatible with this mod (v13.5.6)
 - The mod may be loaded from any map
