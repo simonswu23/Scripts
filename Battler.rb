@@ -3025,6 +3025,16 @@ class PokeBattle_Battler
         end
       end
     end
+    # Irritating
+    if self.ability == :IRRITATING && onactive
+      pbShowAnimation(:RAGEPOWDER,attacker,nil,hitnum,alltargets,showanimation)
+      attacker.effects[:RagePowder]=true
+      if !attacker.pbPartner.isFainted?
+        attacker.pbPartner.effects[:FollowMe]=false
+        attacker.pbPartner.effects[:RagePowder]=false
+      end
+      @battle.pbDisplay(_INTL("{1} became the center of attention!",attacker.pbThis))
+    end
     # Anticipation
     if self.ability == :ANTICIPATION && onactive
       found=false

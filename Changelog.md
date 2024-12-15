@@ -2183,6 +2183,8 @@
 - Madelis (Aquamarine)**
 - Neved (Teila)
 - Angie (Gym)
+- Adam (Sanctum)
+- Texen
 - Crawli (Jynobi)
 - Eli x Sharon (Valor)
 - Zetta x Geara (Valor Summit)
@@ -2210,6 +2212,7 @@
 - Eli x Sharon (Airship)
 - Aelita v Texen
 - Adam
+- Nim (Zone Zero)
 - Ryland
 - Melia (League Administration)
 - Angie + Cera (Diamond Route)

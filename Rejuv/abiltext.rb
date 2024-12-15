@@ -1972,5 +1972,10 @@ ABILHASH = {
 	:desc => "Harshly lowers attackers attack stat when hit by contact move."
 },
 
+:IRRITATING => {
+	:ID => 346,
+	:name => "Irritating",
+	:desc => "Uses rage powder upon switch in."
+},
 
 }
